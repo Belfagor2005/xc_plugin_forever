@@ -1,0 +1,32 @@
+<!-- ***** XC-PLAY 1920x1080 ***** OK 15-05-2020 /-->
+<screen name="xc_M3uLoader" position="0,0" size="1920,1080" title="Player List" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0"     size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/back.png" />
+	<ePixmap position="220,35"  size="120,75"    pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="3" />
+	<eLabel text="M3uList Loader" position="360,30" size="800,100" font="Regular;50" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="5" />
+	<widget name="version" position="470,85"     size="200,30"  halign="right" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<eLabel  position="220,120" size="880,5"    backgroundColor="#202020" zPosition="1" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="800,35" size="300,80" font="Regular;30" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+ 	<!-- List -->
+	<widget name="path" position="220,155" size="880,50" font="Regular;30" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="0" zPosition="3" />
+ 	<!-- List -->
+	<widget name="list" position="220,211" size="880,681"  foregroundColor="#808080" itemHeight="50" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" 
+		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" transparent="1" zPosition="1" />
+	<eLabel position="220,900" size="880,5" backgroundColor="#202020" zPosition="1" />
+	<eLabel             			     position="220,880" size="880,40"  backgroundColor="#202020" zPosition="1" />
+   	<widget name="progress"                      position="220,880" size="880,40"  foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
+    	<widget source="progresstext" render="Label" position="220,880" size="880,40"  font="Regular;30" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
+	<!-- Buttons Colors -->
+	<eLabel  position="220,940"   size="880,5"  backgroundColor="#202020" zPosition="1" />
+   	<ePixmap position="220,965"   size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green"      position="270,960" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    	<ePixmap position="220,1015"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png"   alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red"        position="270,1011" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+ 	<ePixmap position="1070,965"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_blue"        position="850,960" size="200,40" font="Regular;30" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="1070,1015"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_yellow"     position="850,1010" size="200,40" font="Regular;30" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+   	<widget name="version" position="1636,1113" size="200,30" halign="left" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+</screen>

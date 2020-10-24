@@ -1,0 +1,32 @@
+<!-- ***** PLAYLIST FOLDER 1920x1080 ***** 15-05-2018 /-->
+<screen name="nStreamTasksScreen" position="0,0" size="1920,1080" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backc.png" zPosition="1" />
+	<ePixmap position="160,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="1" />
+	<eLabel position="160,120" size="1570,5" backgroundColor="#202020" zPosition="2" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="1335,30" size="400,80" font="Regular;34" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+	<eLabel text="MovieList" position="320,30" size="500,100" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<!-- Movie List -->
+	<widget source="movielist" render="Listbox" position="160,155" size="1570,800" scrollbarMode="showOnDemand" transparent="1" zPosition="2"  
+		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" >
+		<convert type="TemplatedMultiContent">
+			{"template": [
+				MultiContentEntryText(pos = (10, 5),       size = (920, 50), font=1, flags = RT_HALIGN_LEFT, text = 1),                  # index 1 is the name
+				MultiContentEntryText(pos = (960, 5),      size = (150, 50), font=1, color=0x3bd13d, flags = RT_HALIGN_RIGHT, text = 2), # index 2 is the state
+				MultiContentEntryProgress(pos = (1150, 10), size = (290, 20), percent = -3),                                              # index 3 should be progress
+				MultiContentEntryText(pos = (1440, 5),     size = (100, 50), font=1, color=0x3faaff, flags = RT_HALIGN_RIGHT, text = 4), # index 4 is the percentage
+				],
+				"fonts": [gFont("Regular", 26),gFont("Regular", 26)],
+				"itemHeight": 40
+			}
+		</convert>
+	</widget>
+	<!-- Buttons Colors -->
+	<eLabel  position="160,980" size="1570,5"    backgroundColor="#202020" zPosition="1" />
+    	<ePixmap position="160,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="210,1011" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+    	<ePixmap position="500,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green" position="550,1013" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+</screen>
