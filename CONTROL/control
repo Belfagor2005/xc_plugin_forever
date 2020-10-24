@@ -1,0 +1,11 @@
+Package: enigma2-plugin-extensions-xcplugin-forever
+Version: 1.3
+Section: base
+Priority: optional
+Architecture: all
+Maintainer: lululla
+Description: XCplugin-Forever Version by Lululla & MMark
+Source: /
+Homepage: linuxsat-support forum
+OE: 2.0 - 2.2 - 2.5 -2.6
+License: *
