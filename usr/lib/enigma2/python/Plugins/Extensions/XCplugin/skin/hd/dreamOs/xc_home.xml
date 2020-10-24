@@ -1,0 +1,27 @@
+<!-- ***** Home Menu 1920x1080 ***** OK 15-05-2020 /-->
+<screen name="xc_home" position="0,0" size="1280,720" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
+   	<!-- widget name="info" position="233,16" size="466,66"  font="Regular;46" halign="left" valign="center" foregroundColor="#c77e01" backgroundColor="#101010" transparent="1" zPosition="20" /-->		
+	<ePixmap position="0,0"     size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
+	<ePixmap position="146,23"  size="80,50"    pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
+    	<widget name="Text"    position="240,20"     size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<widget name="version" position="362,56"     size="133,20"  halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<eLabel  position="146,80" size="586,3"    backgroundColor="#202020" zPosition="1" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="533,23" size="200,53" font="Regular;20" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+	<widget name="text" position="146,103" size="586,400" itemHeight="40" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" 
+		enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
+	<!-- Buttons Colors -->
+	<eLabel  position="146,626"   size="586,3"  backgroundColor="#202020" zPosition="1" />
+   	<ePixmap position="146,643"   size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green"      position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    	<ePixmap position="146,676"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png"   alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red"        position="180,674" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+ 	<ePixmap position="713,643"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_blue"        position="566,640" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="713,676"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_yellow"     position="566,673" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    	<ePixmap position="766,633"  size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/info.png"   alphatest="blend" zPosition="3" transparent="1" />
+    	<ePixmap position="766,673" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/pvr.png"    alphatest="blend" zPosition="3" transparent="1" />
+</screen>

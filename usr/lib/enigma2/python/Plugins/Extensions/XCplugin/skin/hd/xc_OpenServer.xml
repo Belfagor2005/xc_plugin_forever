@@ -1,0 +1,26 @@
+<!-- ***** XC OpenTeam 1920x1080 ***** OK 15-05-2020 /-->
+<screen name="XC_OPENSERVER" position="0,0" size="1280,720" title="Xtream-Team" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0"     size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
+	<ePixmap position="146,23"  size="80,50"    pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
+	<eLabel text="Select Team :" position="240,20" size="266,66" font="Regular;32" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+   	<widget name="live" position="460,20" size="400,66" font="Regular;32" halign="left" valign="center" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="1" />        
+	<widget name="version" position="313,723"  size="133,20"  halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<eLabel  position="146,80" size="586,3"    backgroundColor="#202020" zPosition="1" />
+	<!-- List -->
+   	<widget name="list" position="146,103" size="586,457" font="Regular;16" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="#01388f" 
+   		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
+   	<widget name="playlist" position="146,1226" size="586,40" font="Regular;26" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="1" />        
+	<!-- Buttons Colors -->
+	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
+   	<ePixmap position="146,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green" position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    	<ePixmap position="146,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="180,674" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<!-- 	
+	<ePixmap position="713,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_blue" position="566,640" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	 -->
+	<ePixmap position="713,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_yellow" position="566,673" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    	<ePixmap position="766,671" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/help.png" alphatest="blend" zPosition="3" transparent="1" />
+</screen>
