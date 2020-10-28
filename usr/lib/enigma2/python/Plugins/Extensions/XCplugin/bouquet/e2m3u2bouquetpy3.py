@@ -1,4 +1,3 @@
-# Embedded file name: /usr/lib/enigma2/python/Plugins/Extensions/E2m3u2bouquet/e2m3u2bouquet.py
 """
 e2m3u2bouquet.e2m3u2bouquet -- Enigma2 IPTV m3u to bouquet parser
 
@@ -398,7 +397,14 @@ class Provider():
         service_title = get_service_title(channel)
         name = service_title
         name = checkStr(name)
-        name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
+        
+        if PY3:
+            name = unicodedata.normalize('NFKD', name)
+        else:
+            name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
+        
+        
+        # name = unicodedata.normalize('NFKD', unicode(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
         name = re.sub('[\\W]', '', name.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
         if not name:
             name = channel['serviceRef'].replace(':', '_').upper()

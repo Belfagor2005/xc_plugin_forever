@@ -133,6 +133,7 @@ except ImportError:
     import subprocess
 
 def checkStr(txt):
+    # convert variable to type str both in Python 2 and 3
     if PY3:
         # Python 3
         if type(txt) == type(bytes()):
@@ -3735,16 +3736,16 @@ class xc_home(Screen):
     def check_dependencies(self):
         dependencies = True
         if PY3:
-            if not os.path.isfile("/usr/lib/python3.8/imghdr.py") \
-                or not os.path.exists("/usr/lib/python3.8/site-packages/PIL") \
-                    or not os.path.exists("/usr/lib/python3.8/site-packages/requests") \
-                    or not os.path.exists("/usr/lib/python3.8/multiprocessing"):
+            if not os.path.exists("/usr/lib/python3.8/site-packages/requests"): #os.path.isfile("/usr/lib/python3.8/imghdr.py") \
+                # or not os.path.exists("/usr/lib/python3.8/site-packages/PIL") \
+                    # or not os.path.exists("/usr/lib/python3.8/site-packages/requests") \
+                    # or not os.path.exists("/usr/lib/python3.8/multiprocessing"):
                 dependencies = False
         else:
-            if not os.path.isfile("/usr/lib/python2.7/imghdr.pyo") \
-                or not os.path.exists("/usr/lib/python2.7/site-packages/PIL") \
-                    or not os.path.exists("/usr/lib/python2.7/site-packages/requests") \
-                    or not os.path.exists("/usr/lib/python2.7/multiprocessing"):
+            if not os.path.exists("/usr/lib/python2.7/site-packages/requests"):# os.path.isfile("/usr/lib/python2.7/imghdr.pyo") \
+                # or not os.path.exists("/usr/lib/python2.7/site-packages/PIL") \
+                    # or not os.path.exists("/usr/lib/python2.7/site-packages/requests") \
+                    # or not os.path.exists("/usr/lib/python2.7/multiprocessing"):
                 dependencies = False
 
         if dependencies is False:
@@ -4252,6 +4253,7 @@ def getJsonURL(url):
     else:
       data += checkStr(res_data)
   return json.loads(data)
+
 
 #===================Time is what we want most, but what we use worst===================
 #
