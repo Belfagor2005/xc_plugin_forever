@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 # from . import _
+from __future__ import print_function
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap, NumberActionMap
 from Components.Button import Button
@@ -95,8 +96,9 @@ urlinfo            = ""
 isDreamOS          = False
 e2m3upy            = plugin_path + '/bouquet/'
 
-PY3 = sys.version_info.major >= 3
-
+from sys import version_info
+# PY3 = sys.version_info.major >= 3
+PY3 = version_info[0] == 3
 if PY3:
     from urllib.request import urlopen, Request
     from urllib.error import URLError, HTTPError
@@ -108,6 +110,61 @@ else:
     from urllib2 import URLError, HTTPError
     from urlparse import urlparse
     from urllib import urlencode, quote, quote_plus
+    
+# PY3 = version_info[0] == 3
+# if PY3:
+	# # Python 3
+	# compat_str = str
+	# from urllib.parse import urlencode as compat_urlencode
+	# from urllib.parse import quote as compat_quote
+	# from urllib.parse import unquote_to_bytes as compat_unquote_to_bytes
+	# from urllib.request import urlopen as compat_urlopen
+	# from urllib.request import Request as compat_Request
+	# from urllib.error import URLError as compat_URLError
+	# from urllib.parse import urljoin as compat_urljoin
+	# from urllib.parse import urlparse as compat_urlparse
+# else:
+	# # Python 2
+	# compat_str = unicode
+	# from urllib import urlencode as compat_urlencode
+	# from urllib import quote as compat_quote
+	# from urllib import unquote as compat_unquote_to_bytes
+	# from urllib2 import urlopen as compat_urlopen
+	# from urllib2 import Request as compat_Request
+	# from urllib2 import URLError as compat_URLError
+	# from urlparse import urljoin as compat_urljoin
+	# from urlparse import urlparse as compat_urlparse
+
+# if version_info >= (2, 7, 9):
+	# try:
+		# import ssl
+		# sslContext = ssl._create_unverified_context()
+	# except:
+		# sslContext = None
+
+# def compat_ssl_urlopen(url):
+	# if sslContext:
+		# return compat_urlopen(url, context=sslContext)
+	# else:
+		# return compat_urlopen(url)
+        
+	# def get_response(self, url, count):
+		# if count:
+			# url = 'https://www.googleapis.com/youtube/v3/' + url
+		# status_code = 'Unknown'
+		# try:
+			# response = compat_ssl_urlopen(url)
+			# status_code = response.getcode()
+		# except:
+			# print ('[YouTubeApi] error in get response')
+		# if status_code == 200:
+			# return load(response)
+		# elif status_code == 401 and self.access_token and count:
+			# self.renew_access_token()
+			# self.get_response(url, False)
+		# else:
+			# print ('[YouTubeApi] error in get response, errorcode', status_code)
+		# return {}
 
 
 try:
@@ -961,6 +1018,7 @@ class xc_Main(Screen):
         self.banned_text = ""
         self.search = ''
         re_search = False
+        self.downloading = False
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1245,7 +1303,7 @@ class xc_Main(Screen):
         elif series == True and btnsearch == 1 :
             streamfile = '/tmp/streamfile.txt'
             if os.path.isfile(streamfile) and os.stat(streamfile).st_size > 0:
-                self.session.openWithCallback(self.download_series, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???\n%s?" %titleserie) , type=MessageBox.TYPE_YESNO, timeout = 15, default = False)
+                self.session.openWithCallback(self.download_series, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???\n%s?" %titleserie) , type=MessageBox.TYPE_YESNO, timeout = 5)#, default = False)
                 return
         else:
             self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
@@ -1279,6 +1337,7 @@ class xc_Main(Screen):
                         Path_Movies2    = Path_Movies2[:-1]
                     if not os.path.exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
+                    self.downloading = True
                     for name, url in match:
                         path = urlparse(url).path
                         ext = splitext(path)[1]
@@ -1293,6 +1352,7 @@ class xc_Main(Screen):
             except Exception as ex:
                 series = False
                 pmovies=False
+                self.downloading = False
                 print(ex)
 
     def createMetaFile2(self, name,url):
@@ -1321,7 +1381,7 @@ class xc_Main(Screen):
         if stream_vod != None and btnsearch == 1:
             self.vod_url = stream_vod
             if self.vod_url.split(".")[-1].lower() != "ts":
-                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.title) , type=MessageBox.TYPE_YESNO, timeout = 15, default = False)
+                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.title) , type=MessageBox.TYPE_YESNO, timeout = 5)#, default = False)
             else:
                 if config.plugins.XCplugin.LivePlayer.value == True :
                     self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
@@ -1334,7 +1394,7 @@ class xc_Main(Screen):
             try:
                 global selected, ext
                 ext = '.mkv'
-                selected = ''
+                # selected = ''
                 selected = stream_vod
                 filename = str(self.selected_channel[1])
                 filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
@@ -1346,13 +1406,16 @@ class xc_Main(Screen):
                 ext = splitext(path)[1]
                 filename = filename + ext
                 self["state"].setText("Download VOD")
+                os.system('sleep 3')
+                self.downloading = True
                 useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
                 cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, stream_vod, Path_Movies, filename)
                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
+                # MemClean()
                 self.LastJobView()
-                self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)
-                MemClean()
+                # self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)
             except Exception as ex:
+                self.downloading = False
                 print(ex)
 
     def eError(self, error):
@@ -1375,6 +1438,8 @@ class xc_Main(Screen):
                 currentjob = job
         if currentjob is not None:
                 self.session.open(JobView, currentjob)
+        else:
+            self.downloading = False
 
     def button_updater(self):
         self["Text"].setText(infoname)
@@ -3110,6 +3175,7 @@ class xc_M3uPlay(Screen):
             MemClean()
 
     def showError(self, error):
+        self.downloading = False
         print("download error =", error)
         self.session.open(MessageBox, _('Download Failed!!!'), MessageBox.TYPE_WARNING)
 
@@ -3406,10 +3472,7 @@ class downloadTask(Task):
                 tmpvalue = tmpvalue[tmpvalue.rfind(" "):].strip()
                 tmpvalue = tmpvalue[tmpvalue.rfind("(") + 1:].strip()
                 self.progress = int(float(tmpvalue))
-
                 MemClean()
-
-
             else:
                 Task.processOutput(self, data)
         except Exception as errormsg:
@@ -3420,6 +3483,7 @@ class downloadTask(Task):
         if self.getProgress() == 0 or self.getProgress() == 100:
             pmovies=False
             MemClean()
+            self.downloading = False
             message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
             web_info(message)
 
@@ -3730,24 +3794,17 @@ class xc_home(Screen):
          "blue": self.xcPlay,
          "ok": self.button_ok,
          "info": self.aboutxc}, -1)
-        self.onFirstExecBegin.append(self.check_dependencies)
+        # self.onFirstExecBegin.append(self.check_dependencies)
         self.onLayoutFinish.append(self.updateMenuList)
 
     def check_dependencies(self):
         dependencies = True
         if PY3:
-            if not os.path.exists("/usr/lib/python3.8/site-packages/requests"): #os.path.isfile("/usr/lib/python3.8/imghdr.py") \
-                # or not os.path.exists("/usr/lib/python3.8/site-packages/PIL") \
-                    # or not os.path.exists("/usr/lib/python3.8/site-packages/requests") \
-                    # or not os.path.exists("/usr/lib/python3.8/multiprocessing"):
+            if not os.path.exists("/usr/lib/python3.8/site-packages/requests"):
                 dependencies = False
         else:
-            if not os.path.exists("/usr/lib/python2.7/site-packages/requests"):# os.path.isfile("/usr/lib/python2.7/imghdr.pyo") \
-                # or not os.path.exists("/usr/lib/python2.7/site-packages/PIL") \
-                    # or not os.path.exists("/usr/lib/python2.7/site-packages/requests") \
-                    # or not os.path.exists("/usr/lib/python2.7/multiprocessing"):
+            if not os.path.exists("/usr/lib/python2.7/site-packages/requests"):
                 dependencies = False
-
         if dependencies is False:
             if not access("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", X_OK):
                 chmod("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", 0o0755)
@@ -4047,7 +4104,6 @@ def save_old():
 
         except Exception as ex:
             print(ex)
-        # in_bouquets = 0
         xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
     else:
         xc2 = '&type=m3u_plus&output=ts'
@@ -4067,7 +4123,6 @@ def save_old():
         name = namebouquet.replace('.m3u', '').replace(Path_Movies, '')
         xcname = 'userbouquet.%s%s_.tv' % (tag, name)
         # iConsole = iConsole()
-        # in_bouquets = 0
         if os.path.isfile('/etc/enigma2/%s' % xcname):
             os.remove('/etc/enigma2/%s' % xcname)
         with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
