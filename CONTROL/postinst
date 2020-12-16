@@ -1,6 +1,14 @@
 #!/bin/sh
 echo "****************************************"
-echo "*  Enjoy our plugin                    *"
+echo "*         Enjoy our plugin             *"
 echo "****************************************"
-echo "Restarting Enigma2 to load..."
+echo "****************************************"
+echo "*                                      *"
+echo "*                                      *"
+echo "*   Restarting Enigma2 is requided...  *"
+echo "*                                      *"
+echo "*                                      *"
+echo "****************************************"
+echo "****************************************"
+echo "****************************************"
 exit 0

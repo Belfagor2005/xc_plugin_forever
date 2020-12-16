@@ -7,6 +7,7 @@ e2m3u2bouquet.e2m3u2bouquet -- Enigma2 IPTV m3u to bouquet parser
 @license:    GNU GENERAL PUBLIC LICENSE version 3
 @deffield    updated: Updated
 """
+from __future__ import print_function
 import time
 import sys
 import os
@@ -17,6 +18,7 @@ import datetime
 # import urllib
 # import urlparse
 import imghdr
+# from . import imghdr
 import tempfile
 import glob
 import ssl
@@ -25,7 +27,9 @@ import socket
 from PIL import Image
 from collections import OrderedDict
 
-PY3 = sys.version_info.major >= 3
+from sys import version_info
+# PY3 = sys.version_info.major >= 3
+PY3 = version_info[0] == 3
 
 if PY3:
     from urllib.request import urlopen, Request
@@ -709,7 +713,7 @@ class Provider():
         source_filename = os.path.join(EPGIMPORTPATH, 'suls_iptv_{}.sources.xml'.format(get_safe_filename(source_name)))
         with open(os.path.join(EPGIMPORTPATH, source_filename), 'w+') as f:
             f.write('<sources>\n')
-            f.write('{}<sourcecat sourcecatname="XCLITE">\n'.format(indent))
+            f.write('{}<sourcecat sourcecatname="C Forever">\n'.format(indent))
             f.write('{}<source type="gen_xmltv" nocheck="1" channels="{}">\n'.format(2 * indent, channels_filename))
             f.write('{}<description>{}</description>\n'.format(3 * indent, xml_escape(checkStr(source_name))))
             for source in sources:

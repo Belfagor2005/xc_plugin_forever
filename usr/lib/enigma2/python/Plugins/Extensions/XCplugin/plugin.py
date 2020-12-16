@@ -1,4 +1,4 @@
-#23.10.2020
+#16.12.2020
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 # from . import _
@@ -60,6 +60,7 @@ import hashlib
 import json, random
 import os,glob
 from . import owibranding
+# from . import imghdr
 import re
 import socket
 import ssl
@@ -73,7 +74,7 @@ from os import environ as os_environ
 global isDreamOS, piclogo, pictmp, skin_path, Path_Tmp,Path_Picons, Path_Movies, Path_Movies2, Path_XML,  enigma_path, epgimport_path
 global isStream, btnsearch, eserv, infoname, tport, nochange, filtertmdb, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
 _session  = " "
-version   = "XC Forever V.1.3"
+version   = "XC Forever V.1.4"
 re_search = False
 pmovies   = False
 series    = False
@@ -110,61 +111,6 @@ else:
     from urllib2 import URLError, HTTPError
     from urlparse import urlparse
     from urllib import urlencode, quote, quote_plus
-    
-# PY3 = version_info[0] == 3
-# if PY3:
-	# # Python 3
-	# compat_str = str
-	# from urllib.parse import urlencode as compat_urlencode
-	# from urllib.parse import quote as compat_quote
-	# from urllib.parse import unquote_to_bytes as compat_unquote_to_bytes
-	# from urllib.request import urlopen as compat_urlopen
-	# from urllib.request import Request as compat_Request
-	# from urllib.error import URLError as compat_URLError
-	# from urllib.parse import urljoin as compat_urljoin
-	# from urllib.parse import urlparse as compat_urlparse
-# else:
-	# # Python 2
-	# compat_str = unicode
-	# from urllib import urlencode as compat_urlencode
-	# from urllib import quote as compat_quote
-	# from urllib import unquote as compat_unquote_to_bytes
-	# from urllib2 import urlopen as compat_urlopen
-	# from urllib2 import Request as compat_Request
-	# from urllib2 import URLError as compat_URLError
-	# from urlparse import urljoin as compat_urljoin
-	# from urlparse import urlparse as compat_urlparse
-
-# if version_info >= (2, 7, 9):
-	# try:
-		# import ssl
-		# sslContext = ssl._create_unverified_context()
-	# except:
-		# sslContext = None
-
-# def compat_ssl_urlopen(url):
-	# if sslContext:
-		# return compat_urlopen(url, context=sslContext)
-	# else:
-		# return compat_urlopen(url)
-        
-	# def get_response(self, url, count):
-		# if count:
-			# url = 'https://www.googleapis.com/youtube/v3/' + url
-		# status_code = 'Unknown'
-		# try:
-			# response = compat_ssl_urlopen(url)
-			# status_code = response.getcode()
-		# except:
-			# print ('[YouTubeApi] error in get response')
-		# if status_code == 200:
-			# return load(response)
-		# elif status_code == 401 and self.access_token and count:
-			# self.renew_access_token()
-			# self.get_response(url, False)
-		# else:
-			# print ('[YouTubeApi] error in get response, errorcode', status_code)
-		# return {}
 
 
 try:
@@ -250,7 +196,7 @@ else:
 config.plugins.XCplugin                           = ConfigSubsection()
 config.plugins.XCplugin.data                      = ConfigYesNo(default = False)
 config.plugins.XCplugin.hostaddress               = ConfigText(default = "exampleserver.com")
-config.plugins.XCplugin.port                      = ConfigNumber(default = 8888)
+config.plugins.XCplugin.port                      = ConfigNumber(default = 8080)
 config.plugins.XCplugin.user                      = ConfigText(default = "Enter_Username", visible_width = 50, fixed_size = False)
 config.plugins.XCplugin.passw                     = ConfigPassword(default = "******", fixed_size = False, censor = "*")
 config.plugins.XCplugin.panel                     = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
@@ -330,7 +276,7 @@ def check_port(tport):
     protocol = 'http://'
     domain = ''
     port = ''
-    if str(config.plugins.XCplugin.port.value) != '8888':
+    if str(config.plugins.XCplugin.port.value) != '8080':
         port = str(config.plugins.XCplugin.port.value)
     else:
         port = 8080
@@ -792,6 +738,8 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         if desc_image.startswith("https"):
                                 desc_image = desc_image.replace("https","http")
+                    if PY3 == 3:
+                                desc_image = desc_image.encode()
                     epgnowtitle = ''
                     if stream_url:
                         isStream = True
@@ -869,6 +817,48 @@ class iptv_streamse():
                                 vodGenre = 'GENRE - NO INFO'
                         epgnowtitle = str(vodTitle)
                         description = str(vodTitle) + '\n\n' + str(vodGenre)+ '\n\nDuration: ' + str(vodDuration)  + '\n\n' +  str(vodDescription)
+
+                        ####ONLY TEST -- NO WORK
+                    if stream_url and "/series/" in stream_url:
+                        stream_live = False
+                        vodTitle = ''
+                        vodDescription = ''
+                        vodVideoType = ''
+                        vodDuration = ''
+                        vodGenre = ''
+                        vodRating = ''
+                        vodCountry = ''
+                        vodReleaseDate = ''
+                        vodDirector = ''
+                        vodCast = ''
+                        vodLines = description.splitlines()
+                        vodItems = {}
+                        for line in vodLines:
+                                vodItems[checkStr(line.partition(": ")[0])] = checkStr(line.partition(": ")[-1])
+                        if "NAME" in vodItems:
+                                vodTitle = vodItems["NAME"]
+                        elif "O_NAME" in vodItems:
+                                vodTitle = vodItems["O_NAME"]
+                        else:
+                           vodTitle = str(name)
+                        if "DESCRIPTION" in vodItems:
+                                vodDescription = vodItems["DESCRIPTION"]
+                        elif "PLOT" in vodItems:
+                                vodDescription = vodItems["PLOT"]
+                        else:
+                                vodDescription = 'TRAMA '
+                        if "DURATION" in vodItems:
+                                vodDuration = vodItems["DURATION"]
+                        else:
+                                vodDuration = 'DURATION - NO INFO'
+                        if "GENRE" in vodItems:
+                                vodGenre = vodItems["GENRE"]
+                        else:
+                                vodGenre = 'GENRE - NO INFO'
+                        epgnowtitle = str(vodTitle)
+                        description = str(vodTitle) + '\n\n' + str(vodGenre)+ '\n\nDuration: ' + str(vodDuration)  + '\n\n' +  str(vodDescription)
+
+
                     chan_tulpe = (chan_counter,
                         str(name),
                         str(description),
@@ -894,7 +884,8 @@ class iptv_streamse():
 
     def _request(self, url):
         if not "exampleserver.com" in config.plugins.XCplugin.hostaddress.value :
-            global urlinfo , next_request
+            global urlinfo, next_request
+            # TYPE_PLAYER= '/player_api.php'
             TYPE_PLAYER= '/enigma2.php'
             url = url.strip(" \t\n\r")
             if next_request == 1:
@@ -910,11 +901,9 @@ class iptv_streamse():
                 next_request = 2
             urlinfo = url
             try:
-                # req = urllib2.Request(urlinfo, None, headers=headers)
                 req = Request(urlinfo, None, headers=headers)
                 if self.server_oki == True:
                     xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
-                    # xmlstream = urlopen(req, timeout=ntimeout).read()
                 res = fromstring(xmlstream)
             except Exception as ex:
                 print(ex)
@@ -951,8 +940,8 @@ class IPTVInfoBarShowHide():
 
     def serviceStarted(self):
         if self.execing:
-                if config.usage.show_infobar_on_zap.value:
-                        self.doShow()
+            if config.usage.show_infobar_on_zap.value:
+                    self.doShow()
 
     def __onShow(self):
         self.__state = self.STATE_SHOWN
@@ -1109,14 +1098,10 @@ class xc_Main(Screen):
                 re_search = True
                 global iptv_list_tmp
                 iptv_list_tmp = self.filter_search
-                # self.mlist.setList(map(channelEntryIPTVplaylist, iptv_list_tmp))
                 self.mlist.setList(list(map(channelEntryIPTVplaylist, iptv_list_tmp)))
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self.index = self.mlist.getSelectionIndex()
                 self["feedlist"] = self.mlist
-                #test
-                # self.search = ''
-                #test
             else:
                 self.resetSearch()
 
@@ -1317,17 +1302,8 @@ class xc_Main(Screen):
             try:
                 if series == True:
                     pmovies=True
-                    self["state"].setText("Download SERIES")
-                    streamfile = '/tmp/streamfile.txt'
-                    f = file(streamfile,"r")
-                    read_data = f.read()
-                    f.close()
-                    username = str(config.plugins.XCplugin.user.value)
-                    password = str(config.plugins.XCplugin.passw.value)
-                    regexcat = ".*?,'(.*?)'.*?'(.*?)'.*?\\n"
-                    match = re.compile(regexcat, re.DOTALL).findall(read_data)
                     title= titleserie.replace(' ','').replace('[','').replace(']','').lower()
-                    filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', title)
+                    filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', title)
                     filename = re.sub(r' ', '_', filename)
                     filename = re.sub(r'_+', '_', filename)
                     filename = filename.replace("(", "").replace(")", "").replace("#", "").replace("+", "_").replace("\'", "_").replace("'", "_")
@@ -1337,23 +1313,49 @@ class xc_Main(Screen):
                         Path_Movies2    = Path_Movies2[:-1]
                     if not os.path.exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
+                    self["state"].setText("Download SERIES")
+                    streamfile = '/tmp/streamfile.txt'
+                    f = file(streamfile,"r")
+                    read_data = f.read()
+                    f.close()
+                    username = str(config.plugins.XCplugin.user.value)
+                    password = str(config.plugins.XCplugin.passw.value)
+                    # regexcat = ".*?,'(.*?)'.*?'(.*?)'.*?\\n"
+                    regexcat = ".*?,'(.*?)',.*?','(.*?)'.*?\\n"
+                    match = re.compile(regexcat, re.DOTALL).findall(read_data)
                     self.downloading = True
+                    ext = '.mp4'
                     for name, url in match:
+                        if PY3 == 3:
+                            url = url.encode()
+                        if url[-3] != '.':
+                            url = url + ext
                         path = urlparse(url).path
                         ext = splitext(path)[1]
+                        if str(ext) != '.mp4' or str(ext) != '.mkv' or str(ext) != '.avi' or str(ext) != '.flv' :
+                            ext = '.mp4'
                         name = name + ext
+                        name = name.replace('..','.')
+                        print('name ======= ', name)
                         self.icount += 1
-                        JobManager.AddJob(downloadJob(self, "wget -c '%s' -O '%s%s'" % (url, Path_Movies2, name), Path_Movies2 + name, name))
-                    MemClean()
+                        useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                        # JobManager.AddJob(downloadJob(self, "wget -c '%s' -O '%s%s'" % (url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
+                        JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
+
                 else:
-                        pmovies=False
-                        self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+                    pmovies=False
+                    self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+                MemClean()
 
             except Exception as ex:
                 series = False
                 pmovies=False
                 self.downloading = False
                 print(ex)
+
+    def downloadStop(self):
+        if hasattr(self, 'icount'):
+            self.icount -= 1
 
     def createMetaFile2(self, name,url):
         try:
@@ -1378,6 +1380,8 @@ class xc_Main(Screen):
         stream_vod = str(selected_channel[4])
         playlist_url = str(selected_channel[5])
         self.title = str(selected_channel[1])
+        if PY3 == 3:
+            stream_vod = stream_vod.encode()
         if stream_vod != None and btnsearch == 1:
             self.vod_url = stream_vod
             if self.vod_url.split(".")[-1].lower() != "ts":
@@ -1404,19 +1408,58 @@ class xc_Main(Screen):
                 filename = checkStr(filename)
                 path = urlparse(selected).path
                 ext = splitext(path)[1]
+
+                if PY3 == 3:
+                    selected = selected.encode()
+                if selected[-3] != '.':
+                    selected = selected + ext
                 filename = filename + ext
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
-                useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, stream_vod, Path_Movies, filename)
-                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
-                # MemClean()
-                self.LastJobView()
-                # self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)
-            except Exception as ex:
+                # downloadPage(selected, Path_Movies  + filename).addErrback(self.eError)
+                from .downloader import imagedownloadScreen
+                self.session.open(imagedownloadScreen,filename,Path_Movies  + filename,selected)
+                # downloadPage(stream_vod, Path_Movies  + filename).addErrback(self.eError)
+                self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n'+ filename), MessageBox.TYPE_INFO)
+            except Exception as e:
+                print(("download vod error %s" % e))
                 self.downloading = False
-                print(ex)
+            except:
+                self.session.open(MessageBox, _('Download Failed\n\n' + title + "\n\n" + str(cfg.downloadlocation.getValue()) + str(fileTitle) + str(extension)), MessageBox.TYPE_WARNING)
+                self.downloading = False
+                
+    # def download_vod(self, result):
+        # if result:
+            # try:
+                #self.icount = 0
+                # global selected, ext
+                # ext = '.mkv'
+                # # selected = ''
+                # selected = stream_vod
+                # filename = str(self.selected_channel[1])
+                # filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
+                # filename = re.sub(r' ', '_', filename)
+                # filename = re.sub(r'_+', '_', filename)
+                # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+", "_").replace("\'", "_").replace("'", "_")
+                # filename = checkStr(filename)
+                # path = urlparse(selected).path
+                # ext = splitext(path)[1]
+                # filename = filename + ext
+                # self["state"].setText("Download VOD")
+                # os.system('sleep 3')
+                # self.downloading = True
+                # useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                # cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, stream_vod, Path_Movies, filename)
+                # # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
+                # self.icount += 1
+                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
+                # # MemClean()
+                # self.LastJobView()
+                # # self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)
+            # except Exception as ex:
+                # self.downloading = False
+                # print(ex)
 
     def eError(self, error):
         print("----------- %s" % error)
@@ -1531,6 +1574,9 @@ class xc_Main(Screen):
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                             if os.path.exists(desc_image) == False or STREAMS.img_loader == False:
                                 desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
+                                if PY3 == 3:
+                                    desc_image = desc_image.encode()
+
                                 downloadPage(selected_channel[7], desc_image, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                             else:
                                 self.decodeImage(desc_image)
@@ -1660,7 +1706,6 @@ class xc_Main(Screen):
             if playlist_url != None:
                 STREAMS.get_list(playlist_url)
                 self.update_channellist()
-
                 MemClean()
             elif stream_tmp != None:
                 self.set_tmp_list()
@@ -1827,6 +1872,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                         desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                         if os.path.exists(desc_image) == False or STREAMS.img_loader == False:
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
+                            if PY3 == 3:
+                                desc_image = desc_image.encode()
                             downloadPage(selected_channel[7], desc_image, timeout=3).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                         else:
                             self.decodeImage(desc_image)
@@ -2188,8 +2235,10 @@ class xc_StreamTasks(Screen):
         global filelist, filelist2, file1,file2
         file1 = False
         file2= False
-        filelist = listdir(Path_Movies)
-        filelist2 = listdir(Path_Movies2)
+        if os.path.isdir(Path_Movies):
+            filelist = listdir(Path_Movies)
+        if os.path.isdir(Path_Movies2):
+            filelist2 = listdir(Path_Movies2)
         if filelist is not None:
             file1 = True
             filelist.sort()
@@ -2652,6 +2701,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                         if os.path.exists(desc_image) == False or STREAMS.img_loader == False:
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
+                            if PY3 == 3:
+                                desc_image = desc_image.encode()
                             downloadPage(selected_channel[3], desc_image, timeout=3).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                         else:
                             self.decodeImage(desc_image)
@@ -3137,7 +3188,6 @@ class xc_M3uPlay(Screen):
             else:
                 self.session.open(MessageBox, _("Only VOD Movie allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
 
-
     def download_m3u(self, result):
         if result:
             global in_tmp
@@ -3146,6 +3196,8 @@ class xc_M3uPlay(Screen):
                 idx = self["list"].getSelectionIndex()
                 namem3u = self.names[idx]
                 urlm3u = self.urls[idx]
+                if PY3 == 3:
+                    urlm3u = urlm3u.encode()
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
                 fileTitle = re.sub(r'_+', '_', fileTitle)
@@ -3294,7 +3346,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         return
 
     def showAfterSeek(self):
-        if isinstance(self, TvInfoBarShowHide):
+        if isinstance(self, IPTVInfoBarShowHide):
             self.doShow()
 
 def menu(menuid, **kwargs):
@@ -3432,15 +3484,15 @@ def Plugins(**kwargs):
             result.append(mainDescriptor)
     return result
 
-
+# JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + filetitle, filetitle, self.downloadStop))
 class downloadJob(Job):
 
-    def __init__(self, toolbox, cmdline, filename, filetitle):
+    def __init__(self, toolbox, cmdline, filename, filetitle, downloadStop):
         Job.__init__(self, "%s" % filetitle)
         self.filename = filename
         self.toolbox = toolbox
         self.retrycount = 0
-        downloadTask(self, cmdline, filename)
+        downloadTask(self, cmdline, filename, downloadStop)
 
     def retry(self):
         self.retrycount += 1
@@ -3453,11 +3505,14 @@ class downloadJob(Job):
 class downloadTask(Task):
     ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
 
-    def __init__(self, job, cmdline, filename):
+    def __init__(self, job, cmdline, filename, downloadStop):
         Task.__init__(self, job, _("Downloading ..."))
         self.setCmdline(cmdline)
         self.filename = filename
         self.toolbox = job.toolbox
+
+        self.downloadStop = downloadStop
+
         self.error = None
         self.lasterrormsg = None
 
@@ -3477,10 +3532,12 @@ class downloadTask(Task):
                 Task.processOutput(self, data)
         except Exception as errormsg:
             print("Error processOutput: " + str(errormsg))
+            self.downloadStop()
             Task.processOutput(self, data)
 
     def afterRun(self):
         if self.getProgress() == 0 or self.getProgress() == 100:
+            self.downloadStop()
             pmovies=False
             MemClean()
             self.downloading = False

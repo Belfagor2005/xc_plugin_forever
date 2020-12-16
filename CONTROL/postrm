@@ -1,6 +1,0 @@
-#!/bin/sh
-#rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/
-#opkg remove enigma2-plugin-extensions-xcplugin-lite
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin > /dev/null 2>&1
-echo "Plugin removed! You should restart enigma2 now!"
-exit 0

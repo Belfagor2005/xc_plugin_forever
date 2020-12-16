@@ -1,4 +1,4 @@
-Xc Forever v.1.3 by Lululla
+Xc Forever v.1.4 by Lululla
 
 <img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.png">
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xc-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-24 15:27+0200\n"
-"PO-Revision-Date: 2020-10-24 15:27+0200\n"
+"POT-Creation-Date: 2020-12-13 10:31+0100\n"
+"PO-Revision-Date: 2020-12-13 10:32+0100\n"
 "Last-Translator: \n"
 "Language-Team: @lululla\n"
 "Language: it_IT\n"
@@ -16,864 +16,842 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: plugin.py\n"
 
-#: plugin.py:176
+#: plugin.py:179
 msgid "Dvb(1)"
 msgstr ""
 
-#: plugin.py:177
+#: plugin.py:180
 msgid "IPTV(4097)"
 msgstr ""
 
-#: plugin.py:178
+#: plugin.py:181
 msgid "eServiceUri(8193)"
 msgstr ""
 
-#: plugin.py:182
+#: plugin.py:185
 msgid "Gstreamer(5001)"
 msgstr ""
 
-#: plugin.py:185
+#: plugin.py:188
 msgid "Exteplayer3(5002)"
 msgstr ""
 
-#: plugin.py:199
+#: plugin.py:202
 msgid "player_api"
 msgstr ""
 
-#: plugin.py:199
+#: plugin.py:202
 msgid "panel_api"
 msgstr ""
 
-#: plugin.py:216
+#: plugin.py:219
 msgid "interval"
 msgstr "interval"
 
-#: plugin.py:216
+#: plugin.py:219
 msgid "fixed time"
 msgstr "fixed time"
 
-#: plugin.py:300
+#: plugin.py:303
 msgid "XtreamCode-Config"
 msgstr "XtreamCode-Config"
 
-#: plugin.py:310 plugin.py:979 plugin.py:2214 plugin.py:2352 plugin.py:2374
-#: plugin.py:2745 plugin.py:2964 plugin.py:3869
+#: plugin.py:313 plugin.py:985 plugin.py:2350 plugin.py:2488 plugin.py:2510
+#: plugin.py:2883 plugin.py:3102 plugin.py:4004
 msgid "Back"
 msgstr "Torna"
 
-#: plugin.py:311
+#: plugin.py:314
 msgid "Save"
 msgstr "Salva"
 
-#: plugin.py:312 plugin.py:313
+#: plugin.py:315 plugin.py:316
 msgid "Import"
 msgstr "Importa"
 
-#: plugin.py:312
+#: plugin.py:315
 msgid " txt"
 msgstr ""
 
-#: plugin.py:313
+#: plugin.py:316
 msgid " sh"
 msgstr ""
 
-#: plugin.py:333
+#: plugin.py:336
 msgid "Import Server from /ect/enigma2/iptv.sh?"
 msgstr "Importare Server da /ect/enigma2/iptv.sh?"
 
-#: plugin.py:362
+#: plugin.py:365
 #, python-format
 msgid "Missing %s !"
 msgstr "Manca %s!"
 
-#: plugin.py:366
+#: plugin.py:369
 msgid "Import Server from /tmp/xc.tx?"
 msgstr "Importare Server da /tmp/xc.tx?"
 
-#: plugin.py:383
+#: plugin.py:386
 #, python-format
 msgid "File saved to %s !"
 msgstr "File Salvato in  %s !"
 
-#: plugin.py:390
+#: plugin.py:393
 #, python-format
 msgid "File not found %s"
 msgstr "File non trovato %s"
 
-#: plugin.py:394
+#: plugin.py:397
 #, python-format
 msgid "Last channel update: %s"
 msgstr "Ultimo aggiornamento canali: %s"
 
-#: plugin.py:406
+#: plugin.py:409
 msgid "Link in Main Menu  "
 msgstr "Link nel Menu Principale "
 
-#: plugin.py:406
+#: plugin.py:409
 msgid "Display XCplugin in Main Menu"
 msgstr "Mostra XCplugin nel menu principale"
 
-#: plugin.py:407
+#: plugin.py:410
 msgid "Data Server Configuration:"
 msgstr "Configurazione del server di dati:"
 
-#: plugin.py:407
+#: plugin.py:410
 msgid "Your Server Login and data input"
 msgstr "Accesso al server e immissione dei dati"
 
-#: plugin.py:409
+#: plugin.py:412
 msgid "Server URL"
 msgstr "Server URL"
 
-#: plugin.py:409
+#: plugin.py:412
 msgid "Enter Server Url without 'http://' your_domine"
 msgstr ""
 
-#: plugin.py:410
+#: plugin.py:413
 msgid "Server PORT"
 msgstr ""
 
-#: plugin.py:410
+#: plugin.py:413
 msgid "Enter Server Port '8080'"
 msgstr ""
 
-#: plugin.py:411
+#: plugin.py:414
 msgid "Server Username"
 msgstr "Server Username"
 
-#: plugin.py:411
+#: plugin.py:414
 msgid "Enter Username"
 msgstr "Inserire username"
 
-#: plugin.py:412
+#: plugin.py:415
 msgid "Server Password"
 msgstr "Server Password"
 
-#: plugin.py:412
+#: plugin.py:415
 msgid "Enter Password"
 msgstr "Inserire la password"
 
-#: plugin.py:413
+#: plugin.py:416
 msgid "Old/New panel"
 msgstr "Nuovo/Vecchio Panel"
 
-#: plugin.py:413
+#: plugin.py:416
 msgid "Panel used"
 msgstr "Tipo di pannello usato(experim.)"
 
-#: plugin.py:414
+#: plugin.py:417
 msgid "Server Timeout"
 msgstr "Timeout del Server"
 
-#: plugin.py:414
+#: plugin.py:417
 msgid "Timeout Server (sec)"
 msgstr "Timeot del server(in sec.)"
 
-#: plugin.py:415
+#: plugin.py:418
 msgid "Name Bouquet Export"
 msgstr "Nome Bouquet esportato"
 
-#: plugin.py:415
+#: plugin.py:418
 msgid "Configure name of bouqet exported. Default is myBouquet"
-msgstr "Configura il nome dell'esportazione del bouquet. L'impostazione predefinita è \"Il Mio Bouquet\""
+msgstr ""
+"Configura il nome dell'esportazione del bouquet. L'impostazione predefinita "
+"è \"Il Mio Bouquet\""
 
-#: plugin.py:416
+#: plugin.py:419
 msgid "Bouquet style "
 msgstr "Stile Bouquets"
 
-#: plugin.py:416
+#: plugin.py:419
 msgid "Configure the type of conversion in the favorite list"
 msgstr "Configura il tipo di conversione nell'elenco preferito"
 
-#: plugin.py:418
+#: plugin.py:421
 msgid "Conversion type Output "
 msgstr "Tipo di conversione Output"
 
-#: plugin.py:418
+#: plugin.py:421
 msgid "Configure type of stream to be downloaded by conversion"
 msgstr "Configura il tipo di flusso da scaricare per conversione"
 
-#: plugin.py:419
+#: plugin.py:422
 msgid "Place IPTV bouquets at "
 msgstr "Posizione Iptv Bouquet "
 
-#: plugin.py:419
+#: plugin.py:422
 msgid "Configure to place the bouquets of the converted lists"
 msgstr "Configura la posizione del Bouquet delle liste convertite"
 
-#: plugin.py:420
+#: plugin.py:423
 msgid "Automatic bouquet update (schedule):"
 msgstr "Update automatico bouquet (pianificazione):"
 
-#: plugin.py:420
+#: plugin.py:423
 msgid "Active Automatic Bouquet Update"
 msgstr "Aggiornamento automatico di bouquet programmato"
 
-#: plugin.py:422
+#: plugin.py:425
 msgid "Schedule type:"
 msgstr "Tipo di pianificazione:"
 
-#: plugin.py:422
+#: plugin.py:425
 msgid "At an interval of hours or at a fixed time"
 msgstr "Ad un intervallo di ore o ad un orario fisso"
 
-#: plugin.py:424
+#: plugin.py:427
 msgid "Update interval (hours):"
 msgstr "Intervallo aggiornamento (ore):"
 
-#: plugin.py:424
+#: plugin.py:427
 msgid "Configure every interval of hours from now"
 msgstr "Configura ogni intervallo di ore da adesso"
 
-#: plugin.py:426
+#: plugin.py:429
 msgid "Time to start update:"
 msgstr "Ora inizio aggiornamento:"
 
-#: plugin.py:426
+#: plugin.py:429
 msgid "Configure at a fixed time"
 msgstr "Configura ad un orario fisso"
 
-#: plugin.py:427
+#: plugin.py:430
 msgid "LivePlayer Active "
 msgstr "LivePlayer Attivo"
 
-#: plugin.py:427
+#: plugin.py:430
 msgid "Live Player for Stream .ts: set No for Record Live"
 msgstr "Live Player per Stream .ts: imposta No per Record Live"
 
-#: plugin.py:429
+#: plugin.py:432
 msgid "Live Services Type"
 msgstr "Tipo Live service r."
 
-#: plugin.py:429 plugin.py:430
+#: plugin.py:432 plugin.py:433
 msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
 msgstr "Configura servizio reference Dvb-Iptv-Gstreamer-Exteplayer3"
 
-#: plugin.py:430
+#: plugin.py:433
 msgid "Vod Services Type"
 msgstr "Tipo VOD service r."
 
-#: plugin.py:431
+#: plugin.py:434
 msgid "Folder user file .xml"
 msgstr "Cartella Utente  file .xml"
 
-#: plugin.py:431
-msgid "Configure folder containing .xml files\n"
+#: plugin.py:434
+msgid ""
+"Configure folder containing .xml files\n"
 "Press 'OK' to change location."
-msgstr "Configura la cartella contenente i file .xml\n"
+msgstr ""
+"Configura la cartella contenente i file .xml\n"
 "Premere \"OK\" per cambiare posizione."
 
-#: plugin.py:432
+#: plugin.py:435
 msgid "Media Folder "
 msgstr "Cartella Film"
 
-#: plugin.py:432
-msgid "Configure folder containing movie/media files\n"
+#: plugin.py:435
+msgid ""
+"Configure folder containing movie/media files\n"
 "Press 'OK' to change location."
-msgstr "Configura cartella contenente film/media\n"
+msgstr ""
+"Configura cartella contenente film/media\n"
 "Premere 'OK' per cambiare posizione."
 
-#: plugin.py:433
+#: plugin.py:436
 msgid "Picons IPTV "
 msgstr "Picons IPTV"
 
-#: plugin.py:433
+#: plugin.py:436
 msgid "Download Picons ?"
 msgstr "Scaricare Picons?"
 
-#: plugin.py:435
+#: plugin.py:438
 msgid "Picons IPTV bouquets to "
 msgstr "Picon Bouquets IPTV in"
 
-#: plugin.py:435
-msgid "Configure folder containing picons files\n"
+#: plugin.py:438
+msgid ""
+"Configure folder containing picons files\n"
 "Press 'OK' to change location."
-msgstr "Configura cartella contenente file picons\n"
+msgstr ""
+"Configura cartella contenente file picons\n"
 "Premere 'OK' per cambiare posizione."
 
-#: plugin.py:486
+#: plugin.py:489
 msgid "Choose Directory:"
 msgstr "Scegli la directory"
 
-#: plugin.py:487
+#: plugin.py:490
 msgid "Choose directory"
 msgstr "Scegli la directory"
 
-#: plugin.py:514
+#: plugin.py:517
 msgid "/media/hdd NOT DETECTED!"
 msgstr "/media/hdd NON RILEVATO!"
 
-#: plugin.py:518
+#: plugin.py:521
 msgid "/media/usb NOT DETECTED!"
 msgstr "/media/usb NON RILEVATO!"
 
-#: plugin.py:543
+#: plugin.py:546
 msgid "Settings saved successfully !"
 msgstr "Configurazione salvata con successo!"
 
-#: plugin.py:566
+#: plugin.py:569
 msgid "Really close without saving settings?"
 msgstr "Chiudere senza salvare ?"
 
-#: plugin.py:980
+#: plugin.py:986
 msgid "Record Movie"
 msgstr "Download Film"
 
-#: plugin.py:981
+#: plugin.py:987
 msgid "Record Series"
 msgstr "Download Series"
 
-#: plugin.py:982 plugin.py:2967
+#: plugin.py:988 plugin.py:3105
 msgid "Search"
 msgstr "Cerca"
 
-#: plugin.py:989
+#: plugin.py:995
 msgid "2"
 msgstr ""
 
-#: plugin.py:1040 plugin.py:2996
+#: plugin.py:1046 plugin.py:3134
 msgid "Filter this category..."
 msgstr "Cerca in questa categoria"
 
-#: plugin.py:1203
-msgid "The MediaPlayer plugin is not installed!\n"
+#: plugin.py:1209
+msgid ""
+"The MediaPlayer plugin is not installed!\n"
 "Please install it."
-msgstr "Il plugin MediaPlayer non è installato!\n"
+msgstr ""
+"Il plugin MediaPlayer non è installato!\n"
 "Si prega di installarlo."
 
-#: plugin.py:1240
+#: plugin.py:1246
 msgid "This is Category or Live Player is active!!!"
 msgstr ""
 
-#: plugin.py:1243
-msgid "But Only Series Episodes Allowed!!!\n"
+#: plugin.py:1249
+msgid ""
+"But Only Series Episodes Allowed!!!\n"
 "This Stream is Movie"
-msgstr "Ma sono ammessi solo episodi della serie !!!\n"
+msgstr ""
+"Ma sono ammessi solo episodi della serie !!!\n"
 "Questo stream è un Film"
 
-#: plugin.py:1248
+#: plugin.py:1254
 #, python-format
-msgid "ATTENTION!!!\n"
+msgid ""
+"ATTENTION!!!\n"
 "DOWNLOAD ALL EPISODES SERIES\n"
 "SURE???\n"
 "%s?"
-msgstr "ATTENZIONE!!!\n"
+msgstr ""
+"ATTENZIONE!!!\n"
 "SCARICA TUTTA LA SERIE DI EPISODI\n"
 "SICURO???\n"
 "%s?"
 
-#: plugin.py:1251 plugin.py:1291
+#: plugin.py:1257 plugin.py:1365
 msgid "Only Series Episodes Allowed!!!"
 msgstr "Sono ammessi solo episodi della serie !!!"
 
-#: plugin.py:1312
+#: plugin.py:1392
 msgid "This is Category or List Channel?"
 msgstr ""
 
-#: plugin.py:1324 plugin.py:3071
+#: plugin.py:1406 plugin.py:3209
 #, python-format
-msgid "DOWNLOAD VIDEO?\n"
+msgid ""
+"DOWNLOAD VIDEO?\n"
 "%s"
-msgstr "DOWNLOAD VIDEO?\n"
+msgstr ""
+"DOWNLOAD VIDEO?\n"
 "%s"
 
-#: plugin.py:1327
+#: plugin.py:1409
 msgid "Live Player Active in Setting: set No for Record Live"
 msgstr "Live Player Attivo in Setting: imposta No per Registrare i Live"
 
-#: plugin.py:1330
+#: plugin.py:1412
 msgid "No Video to Download\\Record!!"
 msgstr "Nessun Video Scaricato/Registrato!!"
 
-#: plugin.py:1353
-msgid "[DOWNLOAD] "
-msgstr "[DOWNLOAD] "
+#: plugin.py:1443
+msgid ""
+"Downloading \n"
+"\n"
+msgstr ""
 
-#: plugin.py:1537
+#: plugin.py:1448
+msgid ""
+"Download Failed\n"
+"\n"
+msgstr ""
+
+#: plugin.py:1669
 msgid "No data or playlist not compatible with XCplugin."
 msgstr "Nessun dato o playlist non compatibile con XCplugin."
 
-#: plugin.py:1576
+#: plugin.py:1708
 msgid "Please enter the parental control pin code"
 msgstr "Si prega di inserire il codice pin parental control"
 
-#: plugin.py:1576
+#: plugin.py:1708
 msgid "Enter pin code"
 msgstr "Inserire codice pin"
 
-#: plugin.py:1581
+#: plugin.py:1713
 msgid "The pin code you entered is wrong."
 msgstr "Il codice pin inserito è sbagliato."
 
-#: plugin.py:1935
+#: plugin.py:2069
 msgid "BLUE = START PLAY RECORDED VIDEO"
 msgstr "BLUE = AVVIA VIDEO IN REGISTRAZIONE"
 
-#: plugin.py:2077 plugin.py:2376 plugin.py:2746 plugin.py:3871
+#: plugin.py:2211 plugin.py:2512 plugin.py:2884 plugin.py:4006
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: plugin.py:2078
+#: plugin.py:2212
 msgid "Close"
 msgstr "Chiudi"
 
-#: plugin.py:2135 plugin.py:2142
+#: plugin.py:2271 plugin.py:2278
 msgid "Finished"
 msgstr "Finito"
 
-#: plugin.py:2183 plugin.py:2185
+#: plugin.py:2319 plugin.py:2321
 #, python-format
 msgid "Do you want to remove %s ?"
 msgstr "Vuoi rimuovere %s ?"
 
-#: plugin.py:2215
+#: plugin.py:2351
 msgid "Config"
 msgstr "Configura"
 
-#: plugin.py:2216
+#: plugin.py:2352
 msgid "Main"
 msgstr "Menu"
 
-#: plugin.py:2217
+#: plugin.py:2353
 msgid "Player"
 msgstr ""
 
-#: plugin.py:2256
+#: plugin.py:2392
 #, python-format
-msgid "Current configuration for creating the bouquet\n"
+msgid ""
+"Current configuration for creating the bouquet\n"
 "    > %s Conversion %s\n"
 "\n"
-""
-msgstr "Configurazione corrente per la creazione di Bouquet\n"
+msgstr ""
+"Configurazione corrente per la creazione di Bouquet\n"
 "    > %s Conversione %s\n"
 "\n"
-""
 
-#: plugin.py:2265
+#: plugin.py:2401
 msgid "    (TV BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2266
+#: plugin.py:2402
 msgid "            Reload Channels from Playlist\n"
-""
 msgstr ""
 
-#: plugin.py:2267
+#: plugin.py:2403
 msgid "    (MENU BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2268
+#: plugin.py:2404
 msgid "            Config Setup Options\n"
-""
 msgstr ""
 
-#: plugin.py:2269
+#: plugin.py:2405
 msgid "    (5 BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2270
+#: plugin.py:2406
 msgid "            MediaPlayer\n"
-""
 msgstr ""
 
-#: plugin.py:2271
+#: plugin.py:2407
 msgid "    (9/Help BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2272
+#: plugin.py:2408
 msgid "            Help\n"
-""
 msgstr ""
 
-#: plugin.py:2273
+#: plugin.py:2409
 msgid "    (PVR/FILELIST/2 BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2274
+#: plugin.py:2410
 msgid "            Open Movie Folder\n"
-""
 msgstr ""
 
-#: plugin.py:2275
+#: plugin.py:2411
 msgid "    (EPG/INFO/0 BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2276
+#: plugin.py:2412
 msgid "            Epg guide or imdb/tmdb\n"
-""
 msgstr ""
 
-#: plugin.py:2277
-msgid "    (GREEN BUTTON):\n"
+#: plugin.py:2413
+msgid ""
+"    (GREEN BUTTON):\n"
 " "
 msgstr ""
 
-#: plugin.py:2278
+#: plugin.py:2414
 msgid "            Start Download or Record Selected Channel:\n"
-""
 msgstr ""
 
-#: plugin.py:2279
+#: plugin.py:2415
 msgid "            Set 'Live Player Active' in Setting:\n"
-""
 msgstr ""
 
-#: plugin.py:2280
+#: plugin.py:2416
 msgid "            Set 'No' for Record Live\n"
-""
 msgstr ""
 
-#: plugin.py:2281 plugin.py:2296 plugin.py:2326
+#: plugin.py:2417 plugin.py:2432 plugin.py:2462
 msgid "    (YELLOW BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2282
+#: plugin.py:2418
 msgid "            Start Download All Episodes Series\n"
-""
 msgstr ""
 
-#: plugin.py:2283 plugin.py:2304 plugin.py:2328
+#: plugin.py:2419 plugin.py:2440 plugin.py:2464
 msgid "    (BLUE BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2284
+#: plugin.py:2420
 msgid "            Search !!!\n"
-""
 msgstr ""
 
-#: plugin.py:2297 plugin.py:2305
+#: plugin.py:2433 plugin.py:2441
 msgid "            If you have a file format:\n"
-""
 msgstr ""
 
-#: plugin.py:2298
+#: plugin.py:2434
 msgid "            /etc/enigma2/iptv.sh\n"
-""
 msgstr ""
 
-#: plugin.py:2299
+#: plugin.py:2435
 msgid "            USERNAME='xxxxxxxxxx'\n"
-""
 msgstr ""
 
-#: plugin.py:2300
+#: plugin.py:2436
 msgid "            PASSWORD='yyyyyyyyy'\n"
-""
 msgstr ""
 
-#: plugin.py:2301
+#: plugin.py:2437
 msgid "            url='http://server:port/xxyyzz'\n"
-""
 msgstr ""
 
-#: plugin.py:2302
+#: plugin.py:2438
 msgid "            Import with Yellow Button this file\n"
-""
 msgstr ""
 
-#: plugin.py:2306
+#: plugin.py:2442
 msgid "            /tmp/xc.txt\n"
-""
 msgstr ""
 
-#: plugin.py:2307
+#: plugin.py:2443
 msgid "            host\t(host without http:// )\n"
-""
 msgstr ""
 
-#: plugin.py:2308
+#: plugin.py:2444
 msgid "            port\n"
-""
 msgstr ""
 
-#: plugin.py:2309
+#: plugin.py:2445
 msgid "            user\n"
-""
 msgstr ""
 
-#: plugin.py:2310
+#: plugin.py:2446
 msgid "            password\n"
-""
 msgstr ""
 
-#: plugin.py:2311
+#: plugin.py:2447
 msgid "            Import with Blue Button this file"
 msgstr ""
 
-#: plugin.py:2322
+#: plugin.py:2458
 msgid "    (OK BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2323
+#: plugin.py:2459
 msgid "            Open file from list\n"
-""
 msgstr ""
 
-#: plugin.py:2324
+#: plugin.py:2460
 msgid "    (GREEN BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2325
+#: plugin.py:2461
 msgid "            Remove file from list\n"
-""
 msgstr ""
 
-#: plugin.py:2327
+#: plugin.py:2463
 msgid "            Export file m3u to Bouquet .tv\n"
-""
 msgstr ""
 
-#: plugin.py:2329
-msgid "            Download file m3u from current server\n"
+#: plugin.py:2465
+msgid ""
+"            Download file m3u from current server\n"
 "\n"
-""
 msgstr ""
 
-#: plugin.py:2330
+#: plugin.py:2466
 msgid "OPEN FILE M3U:\n"
-""
 msgstr ""
 
-#: plugin.py:2331
+#: plugin.py:2467
 msgid "    When opening an .m3u file instead:\n"
-""
 msgstr "    Quando invece apri un file m3u :\n"
-""
 
-#: plugin.py:2332
+#: plugin.py:2468
 msgid "   (GREEN BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2333
+#: plugin.py:2469
 msgid "           Reload List\n"
-""
 msgstr ""
 
-#: plugin.py:2334
+#: plugin.py:2470
 msgid "   (YELLOW BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2335
+#: plugin.py:2471
 msgid "           Download VOD selected channel\n"
-""
 msgstr ""
 
-#: plugin.py:2336
+#: plugin.py:2472
 msgid "   (BLUE BUTTON):\n"
-""
 msgstr ""
 
-#: plugin.py:2337
+#: plugin.py:2473
 msgid "           Search for a title in the list\n"
-""
 msgstr ""
 
-#: plugin.py:2375
+#: plugin.py:2511
 msgid "Rename"
 msgstr "Rinomina"
 
-#: plugin.py:2456 plugin.py:2816
+#: plugin.py:2592 plugin.py:2954
 #, python-format
 msgid "Do you want to remove: %s ?"
 msgstr "Vuoi rimuovere: %s ?"
 
-#: plugin.py:2495
+#: plugin.py:2631
 #, python-format
 msgid "XCplugin Console Rename: %s"
 msgstr "XCplugin Console Rename: %s"
 
-#: plugin.py:2739
+#: plugin.py:2877
 #, python-format
 msgid "Put .m3u Files in Folder %s"
 msgstr "Metti i file .m3u nella cartella %s"
 
-#: plugin.py:2747
+#: plugin.py:2885
 msgid "Export"
 msgstr "Esportare"
 
-#: plugin.py:2747
+#: plugin.py:2885
 msgid " Bouquet"
 msgstr ""
 
-#: plugin.py:2748 plugin.py:2966
+#: plugin.py:2886 plugin.py:3104
 msgid "Download"
 msgstr "Download"
 
-#: plugin.py:2748
+#: plugin.py:2886
 msgid " M3u"
 msgstr ""
 
-#: plugin.py:2836
+#: plugin.py:2974
 msgid "Download M3u File?"
 msgstr ""
 
-#: plugin.py:2860
+#: plugin.py:2998
 msgid "No Server Configured to Download!!!"
 msgstr "Nessun server configurato per il download !!!"
 
-#: plugin.py:2881 plugin.py:3094 plugin.py:3114
+#: plugin.py:3019 plugin.py:3232 plugin.py:3253
 msgid "Download Failed!!!"
 msgstr ""
 
-#: plugin.py:2894
+#: plugin.py:3032
 #, python-format
 msgid "Do you want to Convert %s to favorite .tv ?"
 msgstr "Vuoi Convertire %s in lista favorita .tv ?"
 
-#: plugin.py:2938
+#: plugin.py:3076
 msgid "Check on favorites lists..."
 msgstr "Controlla nella lista favoriti..."
 
-#: plugin.py:2949 plugin.py:3911
+#: plugin.py:3087 plugin.py:4046
 msgid "Reload Playlists in progress..."
 msgstr "Ricarica playlist in corso ..."
 
-#: plugin.py:2949 plugin.py:3911
+#: plugin.py:3087 plugin.py:4046
 msgid "wait please..."
 msgstr "attendere prego..."
 
-#: plugin.py:2965
+#: plugin.py:3103
 msgid "Reload"
 msgstr "Ricarica"
 
-#: plugin.py:3073 plugin.py:3187
+#: plugin.py:3211 plugin.py:3326
 msgid "Only VOD Movie allowed!!!"
 msgstr "È consentito solo il film VOD !!!"
 
-#: plugin.py:3391
+#: plugin.py:3530
 msgid "Downloading ..."
 msgstr "Downloading ..."
 
-#: plugin.py:3714
+#: plugin.py:3856
 msgid "Exit"
 msgstr "Uscire"
 
-#: plugin.py:3715
+#: plugin.py:3857
 msgid "Playlist"
 msgstr ""
 
-#: plugin.py:3716
+#: plugin.py:3858
 msgid "Movie"
 msgstr "Film"
 
-#: plugin.py:3717
+#: plugin.py:3859
 msgid "Loader M3U"
 msgstr "Carica M3U"
 
-#: plugin.py:3802
+#: plugin.py:3937
 msgid "First Select the list or enter it in Config"
 msgstr "Selezionare prima la lista o inserire i dati in Config"
 
-#: plugin.py:3831
+#: plugin.py:3966
 msgid "PY3 Not Supported!!!"
 msgstr ""
 
-#: plugin.py:3870
+#: plugin.py:4005
 msgid "Make"
 msgstr "Crea"
 
-#: plugin.py:3897 plugin.py:3900
+#: plugin.py:4032 plugin.py:4035
 #, python-format
 msgid "Convert Playlist to:      %s ?"
 msgstr ""
 
-#: plugin.py:3904
+#: plugin.py:4039
 #, python-format
 msgid "Convert Playlist to:  %s ?"
 msgstr "Convertire la playlist in:%s?"
 
-#: plugin.py:3919
+#: plugin.py:4054
 msgid "Remove all XC Plugin bouquets?"
 msgstr "Rimuovere tutti i Bouquets del plugin XC?"
 
-#: plugin.py:3927
-msgid "GREEN BUTTON:\n"
+#: plugin.py:4062
+msgid ""
+"GREEN BUTTON:\n"
 " "
 msgstr ""
 
-#: plugin.py:3928
+#: plugin.py:4063
 msgid "   Create XC Live/VOD Bouquets\n"
-""
 msgstr "   Creare Bouquet XC Live/VOD\n"
-""
 
-#: plugin.py:3929
+#: plugin.py:4064
 msgid "    You need to configure the type of output\n"
-""
 msgstr "    Configurare prima il tipo di output\n"
-""
 
-#: plugin.py:3930
-msgid "    in the config menu\n"
+#: plugin.py:4065
+msgid ""
+"    in the config menu\n"
 "\n"
-""
-msgstr "    nel menu Setup\n"
+msgstr ""
+"    nel menu Setup\n"
 "\n"
-""
 
-#: plugin.py:3931
+#: plugin.py:4066
 msgid "YELLOW BUTTON:\n"
-""
 msgstr ""
 
-#: plugin.py:3932
+#: plugin.py:4067
 msgid "    Removes all the bouquets that have been\n"
-""
 msgstr "    Rimuove tutti i Bouquet che sono stati\n"
-""
 
-#: plugin.py:3933
-msgid "    created with XCplugin\n"
+#: plugin.py:4068
+msgid ""
+"    created with XCplugin\n"
 "\n"
-""
-msgstr "    creati con XCplugin\n"
+msgstr ""
+"    creati con XCplugin\n"
 "\n"
-""
 
-#: plugin.py:3934
+#: plugin.py:4069
 msgid "HELP BUTTON:\n"
-""
 msgstr ""
 
-#: plugin.py:3935
-msgid "    Go to Help info plugin\n"
+#: plugin.py:4070
+msgid ""
+"    Go to Help info plugin\n"
 "\n"
-""
 msgstr "    Vai all' Help \n"
-""
 
-#: plugin.py:3936
+#: plugin.py:4071
 #, python-format
-msgid "Current configuration for creating the bouquet\n"
+msgid ""
+"Current configuration for creating the bouquet\n"
 ">>>>%s Conversion %s\n"
 "\n"
-""
-msgstr "Configurazione corrente per la creazione del bouquet\n"
+msgstr ""
+"Configurazione corrente per la creazione del bouquet\n"
 ">>>>%s Conversione %s\n"
-""
 
-#: plugin.py:4009
-msgid "Please enter correct parameters in Config\n"
+#: plugin.py:4144
+msgid ""
+"Please enter correct parameters in Config\n"
 " no valid list "
-msgstr "Prego Inserire i parametri corretti in Config\n"
+msgstr ""
+"Prego Inserire i parametri corretti in Config\n"
 " nessuna lista valida"
 
-#: plugin.py:4179
+#: plugin.py:4312
 #, python-format
 msgid "Conversion %s in progress: "
 msgstr "Conversione %s in corso:"
+
+#~ msgid "[DOWNLOAD] "
+#~ msgstr "[DOWNLOAD] "
 
 #~ msgid "Enter Server_Url:Port without 'http://' your_domine:8000"
 #~ msgstr "Immettere Server_Url: porta senza 'http: //' tuo_dominio: 8000"
