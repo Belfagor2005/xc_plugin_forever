@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <items>
-<plugin_version>1.3</plugin_version>                              
+<plugin_version>XC Forever V.1.4</plugin_version>                              
 <!--Use XcForever-Xml-Help Pc Software for compile this -->
 <xtream_e2portal_url><![CDATA[http://exampleserver.com]]></xtream_e2portal_url>
-<port>XXXX</port>
+<port>80</port>
 <username>XXXX</username>
-<password>XXXX</password>
-
+<password>YYYY</password>
 </items>
 
