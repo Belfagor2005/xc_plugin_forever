@@ -196,7 +196,7 @@ else:
 config.plugins.XCplugin                           = ConfigSubsection()
 config.plugins.XCplugin.data                      = ConfigYesNo(default = False)
 config.plugins.XCplugin.hostaddress               = ConfigText(default = "exampleserver.com")
-config.plugins.XCplugin.port                      = ConfigNumber(default = 8080)
+config.plugins.XCplugin.port                      = ConfigNumber(default = 80)
 config.plugins.XCplugin.user                      = ConfigText(default = "Enter_Username", visible_width = 50, fixed_size = False)
 config.plugins.XCplugin.passw                     = ConfigPassword(default = "******", fixed_size = False, censor = "*")
 config.plugins.XCplugin.panel                     = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
@@ -276,10 +276,10 @@ def check_port(tport):
     protocol = 'http://'
     domain = ''
     port = ''
-    if str(config.plugins.XCplugin.port.value) != '8080':
+    if str(config.plugins.XCplugin.port.value) != '80':
         port = str(config.plugins.XCplugin.port.value)
     else:
-        port = 8080
+        port = 80
     host = ''
     urlsplit1 = line.split("/")
     protocol = urlsplit1[0] + "//"
@@ -409,11 +409,11 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Link in Main Menu  "), config.plugins.XCplugin.strtmain, (_("Display XCplugin in Main Menu"))))
         self.list.append(getConfigListEntry(_("Data Server Configuration:"), config.plugins.XCplugin.data, (_("Your Server Login and data input"))))
         if config.plugins.XCplugin.data.getValue():
-            self.list.append(getConfigListEntry(_("Server URL"), config.plugins.XCplugin.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
-            self.list.append(getConfigListEntry(_("Server PORT"), config.plugins.XCplugin.port, (_("Enter Server Port '8080'"))))
+            self.list.append(getConfigListEntry(_("Server URL"), config.plugins.XCplugin.hostaddress, (_("Enter your_domine Server Url without 'http://'"))))
+            self.list.append(getConfigListEntry(_("Server PORT"), config.plugins.XCplugin.port, (_("Enter Server Port. Default is '80'"))))
             self.list.append(getConfigListEntry(_("Server Username"), config.plugins.XCplugin.user, (_("Enter Username"))))
             self.list.append(getConfigListEntry(_("Server Password"), config.plugins.XCplugin.passw, (_("Enter Password"))))
-        self.list.append(getConfigListEntry(_("Old/New panel"), config.plugins.XCplugin.panel, (_("Panel used"))))
+        self.list.append(getConfigListEntry(_("Old/New Panel"), config.plugins.XCplugin.panel, (_("Panel used"))))
         self.list.append(getConfigListEntry(_("Server Timeout"), config.plugins.XCplugin.timeout, (_("Timeout Server (sec)"))))
         self.list.append(getConfigListEntry(_("Name Bouquet Export"), config.plugins.XCplugin.infoname , (_("Configure name of bouqet exported. Default is myBouquet"))))
         self.list.append(getConfigListEntry(_("Bouquet style "), config.plugins.XCplugin.typelist, (_("Configure the type of conversion in the favorite list"))))
@@ -1408,25 +1408,31 @@ class xc_Main(Screen):
                 filename = checkStr(filename)
                 path = urlparse(selected).path
                 ext = splitext(path)[1]
-
-                if PY3 == 3:
-                    selected = selected.encode()
-                if selected[-3] != '.':
-                    selected = selected + ext
                 filename = filename + ext
+                if PY3 == 3:
+                    filename = filename.encode()
+                if filename[-3] != '.':
+                    filename = filename + ext
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
-                # downloadPage(selected, Path_Movies  + filename).addErrback(self.eError)
-                from .downloader import imagedownloadScreen
-                self.session.open(imagedownloadScreen,filename,Path_Movies  + filename,selected)
-                # downloadPage(stream_vod, Path_Movies  + filename).addErrback(self.eError)
+
+                #1
+                # from .downloader import imagedownloadScreen
+                # self.session.open(imagedownloadScreen,filename,Path_Movies  + filename, selected)
+                
+                #2
+                useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, stream_vod, Path_Movies, filename)
+                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
+                self.LastJobView()
+
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n'+ filename), MessageBox.TYPE_INFO)
             except Exception as e:
                 print(("download vod error %s" % e))
                 self.downloading = False
             except:
-                self.session.open(MessageBox, _('Download Failed\n\n' + title + "\n\n" + str(cfg.downloadlocation.getValue()) + str(fileTitle) + str(extension)), MessageBox.TYPE_WARNING)
+                self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n'+ filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
                 
     # def download_vod(self, result):
