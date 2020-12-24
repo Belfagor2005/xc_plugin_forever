@@ -218,7 +218,7 @@ config.plugins.XCplugin.updateinterval            = ConfigSelectionNumber(defaul
 config.plugins.XCplugin.last_update               = ConfigText(default = "none")
 config.plugins.XCplugin.timetype                  = ConfigSelection(default = "interval", choices = [("interval", _("interval")), ("fixed time", _("fixed time"))])
 config.plugins.XCplugin.fixedtime                 = ConfigClock(default = 0)
-# config.plugins.XCplugin.typedown                      = ConfigSelection(default = "jobmanager", choices = ["jobmanager","downloadpage"])
+# config.plugins.XCplugin.typedown                   = ConfigSelection(default = "jobmanager", choices = ["jobmanager","downloadpage"])
 
 
 piclogo = plugin_path + "/skin/fhd/iptvlogo.jpg"
@@ -263,12 +263,20 @@ socket.setdefaulttimeout(ntimeout)
 
 if Path_Movies.endswith("//") is True:
     Path_Movies = Path_Movies[:-1]
+if not os.path.exists(Path_Movies):
+    os.system("mkdir " + Path_Movies)    
+else:
+    message = (_("Please enter correct parameters in Config\n no valid Patch Movie "))
+    web_info(message)
+
 Path_XML                = str(config.plugins.XCplugin.pthxmlfile.value) + "/"
 if Path_XML.endswith("//") is True:
     Path_XML            = Path_XML[:-1]
 if not os.path.exists(Path_XML):
     os.system("mkdir " + Path_XML)
-
+else:
+    message = (_("Please enter correct parameters in Config\n no valid Patch XML "))
+    web_info(message)
 
 def check_port(tport):
     url  = tport
@@ -314,12 +322,13 @@ class xc_config(Screen, ConfigListScreen):
         self["key_green"] = Label(_("Save"))
         self["key_blue"] = Label(_("Import") + _(" txt"))
         self["key_yellow"] = Label(_("Import") + _(" sh"))
-        self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-            "home": self.extnok,
+        self["setupActions"] = ActionMap(['OkCancelActions', 'DirectionActions', 'ColorActions', 'VirtualKeyboardActions', 'ActiveCodeActions'],  {
+        # self["actions"] = HelpableActionMap(self, "XCpluginActions",  {
+            "red": self.extnok,
             "cancel": self.extnok,
             "left": self.keyLeft,
             "right": self.keyRight,
-            "help": self.help,
+            "info": self.help,
             "yellow": self.iptv_sh,
             "green": self.cfgok,
             "blue":self.ImportInfosServer,
@@ -3890,7 +3899,12 @@ class xc_home(Screen):
         self.close()
 
     def Team(self):
-        self.session.open(OpenServer)
+        if not os.path.exists(Path_XML):
+            message = (_("Please enter correct parameters in Config\n no valid Patch XML "))
+            web_info(message)
+            return
+        else:
+            self.session.open(OpenServer)
 
     def aboutxc(self):
         about = self.getabout()
@@ -3903,7 +3917,12 @@ class xc_home(Screen):
         self.session.open(xc_StreamTasks)
 
     def xcPlay(self):
-        self.session.open(xc_Play)
+        if not os.path.exists(Path_Movies):
+            message = (_("Please enter correct parameters in Config\n no valid Patch Movie "))
+            web_info(message)
+            return
+        else:
+            self.session.open(xc_Play)
 
     def showMovies(self):
         try:
