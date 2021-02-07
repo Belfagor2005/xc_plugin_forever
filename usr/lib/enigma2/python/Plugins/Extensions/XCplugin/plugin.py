@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 16.12.2020
+# 24.01.2020
 
 # for localized messages
 from . import _
@@ -57,7 +57,7 @@ global isDreamOS, piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies
 global isStream, btnsearch, eserv, infoname, tport, nochange, filtertmdb, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
 
 _session = " "
-version = "XC Forever V.1.4"
+version = "XC Forever V.1.5"
 re_search = False
 pmovies = False
 series = False
@@ -205,7 +205,7 @@ if HD.width() <= 1280:
     CHANNEL_NAME = [65, 5, 900, 40, 1]
     FONT_0 = ("Regular", 20)
     FONT_1 = ("Regular", 20)
-    BLOCK_H = 30
+    BLOCK_H = 40
     piclogo = plugin_path + "/skin/hd/iptvlogo.jpg"
     if isDreamOS:
         skin_path = plugin_path + "/skin/hd/dreamOs"
@@ -2769,7 +2769,7 @@ def xcm3ulistEntry(download):
     if HD.width() > 1280:
         res.append(MultiContentEntryText(pos=(0, 0), size=(1200, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
     else:
-        res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
+        res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 30), text=download, color=col, color_sel=white, backcolor_sel=blue))
     return res
 
 

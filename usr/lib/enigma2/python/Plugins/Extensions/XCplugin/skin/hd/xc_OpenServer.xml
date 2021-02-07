@@ -7,7 +7,7 @@
 	<widget name="version" position="313,723"  size="133,20"  halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel  position="146,80" size="586,3"    backgroundColor="#202020" zPosition="1" />
 	<!-- List -->
-   	<widget name="list" position="146,103" size="586,457" font="Regular;16" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="#01388f" 
+   	<widget name="list" position="146,103" size="586,457" font="Regular;20" itemHeight="30" foregroundColor="#a0a0a0" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="#01388f" 
    		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
    	<widget name="playlist" position="146,1226" size="586,40" font="Regular;26" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="1" />        
 	<!-- Buttons Colors -->

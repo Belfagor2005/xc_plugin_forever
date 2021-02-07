@@ -12,7 +12,7 @@
  	<!-- List -->
 	<widget name="path" position="146,103" size="586,33" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="0" zPosition="3" />
  	<!-- List -->
-	<widget name="list" position="146,140" size="586,454"  foregroundColor="#808080" itemHeight="50" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" 
+	<widget name="list" position="146,140" size="586,454"  foregroundColor="#808080" itemHeight="30" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" 
 		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
 	<eLabel position="146,600" size="586,3" backgroundColor="#202020" zPosition="1" />
 	<eLabel             			     position="146,586" size="586,26"  backgroundColor="#202020" zPosition="1" />
