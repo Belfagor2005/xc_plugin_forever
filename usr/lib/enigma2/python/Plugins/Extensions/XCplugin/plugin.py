@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 24.01.2020
+# 10.02.2020
 
 # for localized messages
 from . import _
@@ -112,17 +112,13 @@ except ImportError:
 
 
 def checkStr(txt):
-    # convert variable to type str both in Python 2 and 3
     if PY3:
-        # Python 3
         if isinstance(txt, bytes):
             txt = txt.decode('utf-8')
     else:
-        # Python 2
         if isinstance(txt, unicode):
             txt = txt.encode('utf-8')
     return txt
-
 
 try:
     from enigma import eDVBDB
@@ -252,6 +248,8 @@ if not os.path.exists(Path_XML):
     os.system("mkdir " + Path_XML)
 
 
+                    
+                    
 def check_port(tport):
     url = tport
     line = url.strip()
@@ -273,6 +271,15 @@ def check_port(tport):
 
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
+        
+        '''test ssl'''
+        if url.startswith("https") and sslverify:
+            parsed_uri = urlparse(url)
+            domain = parsed_uri.hostname
+            sniFactory = SNIFactory(domain)
+            if PY3 == 3:
+                url = url.encode()        
+        ''' end test ssl '''
     return url
 
 
@@ -4281,7 +4288,9 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
     def openTest(self):
         url = self.url
         pass
-        ref = '4097:0:1:0:0:0:0:0:0:0:' + url
+        eserv = int(config.plugins.XCplugin.live.value)
+        ref = eserv + ':0:1:0:0:0:0:0:0:0:' + url        
+        # ref = '4097:0:1:0:0:0:0:0:0:0:' + url
         sref = eServiceReference(ref)
         sref.setName(self.name)
         self.session.nav.stopService()
