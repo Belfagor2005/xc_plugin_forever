@@ -2834,28 +2834,38 @@ class xc_Play(Screen):
             "blue": self.message3,
             "cancel": self.cancel,
             "ok": self.runList}, -2)
-        self.onLayoutFinish.append(self.openList)
+
+        self.onFirstExecBegin.append(self.openList)
+        self.onLayoutFinish.append(self.layoutFinished)
 
     def openList(self):
         self.names = []
         self.Movies = []
         AA = [".m3u"]
-        if os.path.exists(Path_Movies):
-            for root, dirs, files in os.walk(Path_Movies):
-                for name in files:
-                    if '.meta' in name:
-                        continue
-                    for x in AA:
-                        if x not in name:
+        try:
+            if os.path.exists(Path_Movies):
+                for root, dirs, files in os.walk(Path_Movies):
+                    for name in files:
+                        if '.meta' in name:
                             continue
-                            pass
-                        self.names.append(name)
-                        self.Movies.append(root + "/" + name)
-            m3ulistxc(self.names, self["list"])
-        else:
+                        for x in AA:
+                            if x not in name:
+                                continue
+                                pass
+                            self.names.append(name)
+                            self.Movies.append(root + "/" + name)
+                m3ulistxc(self.names, self["list"])
+            # else:
+                # self.session.open(MessageBox, "The Movie path not configured or path not exist!!!", MessageBox.TYPE_INFO, timeout=5)
+                # self.close()
+        except Exception as e:
+            print (e)
             self.session.open(MessageBox, "The Movie path not configured or path not exist!!!", MessageBox.TYPE_INFO, timeout=5)
             self.close()
-
+            
+    def layoutFinished(self):
+        pass
+                
     def refreshmylist(self):
         self.names = []
         self.list = self.names
@@ -4287,11 +4297,12 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
 
     def openTest(self):
         url = self.url
-        pass
-        eserv = int(config.plugins.XCplugin.live.value)
-        ref = eserv + ':0:1:0:0:0:0:0:0:0:' + url        
+        # pass
+        # eserv = int(config.plugins.XCplugin.live.value)
+        # ref = eserv + ':0:1:0:0:0:0:0:0:0:' + url        
         # ref = '4097:0:1:0:0:0:0:0:0:0:' + url
-        sref = eServiceReference(ref)
+        # sref = eServiceReference(ref)
+        sref = eServiceReference(4097, 0, url)
         sref.setName(self.name)
         self.session.nav.stopService()
         self.session.nav.playService(sref)
