@@ -63,6 +63,9 @@ pmovies = False
 series = False
 isStream = False
 btnsearch = 0
+next_request = 0
+stream_url = ""
+iptv_list_tmp = []
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
 HD = getDesktop(0).size()
@@ -329,7 +332,7 @@ class xc_config(Screen, ConfigListScreen):
         if result:
             iptvsh = "/etc/enigma2/iptv.sh"
             if fileExists(iptvsh) and os.stat(iptvsh).st_size > 0:
-                with open(iptvsh, 'r+') as f:
+                with open(iptvsh, 'r') as f:
                     fpage = f.read()
                 regexcat = 'USERNAME="(.*?)".*?PASSWORD="(.*?)".*?url="http://(.*?):(.*?)/get.php.*?'
                 match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -1190,7 +1193,7 @@ class xc_Main(Screen):
         self["playlist"].setText(infoname)
 
     def exitY(self):
-        global btnsearch
+        global btnsearch, next_request
         del_jpg()
         MemClean()
         if next_request == 1 and btnsearch == 1:
@@ -2874,19 +2877,20 @@ class xc_Play(Screen):
 
     def runList(self):
         idx = self["list"].getSelectionIndex()
-        path = self.Movies[idx]
-        if idx == -1 or None:
-            return
-        else:
-            name = path
-            if ".m3u" in name:
-                self.session.open(xc_M3uPlay, name)
+        if self.Movies:
+            path = self.Movies[idx]
+            if idx == -1 or None:
                 return
             else:
-                name = self.names[idx]
-                sref = eServiceReference(4097, 0, path)
-                sref.setName(name)
-                self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
+                name = path
+                if ".m3u" in name:
+                    self.session.open(xc_M3uPlay, name)
+                    return
+                else:
+                    name = self.names[idx]
+                    sref = eServiceReference(4097, 0, path)
+                    sref.setName(name)
+                    self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
 
     def backToIntialService(self, ret=None):
         self.session.nav.stopService()
@@ -3087,7 +3091,7 @@ class xc_M3uPlay(Screen):
             search = result
             try:
                 if fileExists(self.name):
-                    f1 = open(self.name, "r+ ")
+                    f1 = open(self.name, "r")
                     fpage = f1.read()
                     regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -3117,7 +3121,7 @@ class xc_M3uPlay(Screen):
         self.urls = []
         try:
             if fileExists(self.name):
-                f1 = open(self.name, "r+ ")
+                f1 = open(self.name, "r")
                 fpage = f1.read()
                 regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
                 match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -3911,11 +3915,7 @@ class xc_home(Screen):
         elif sel == ('MOVIE'):
             self.taskManager()
         elif sel == ('M3U LOADER'):
-            if PY3:
-                message = (_("PY3 Not Supported!!!"))
-                web_info(message)
-            else:
-                self.session.open(xc_Play)
+            self.session.open(xc_Play)
         elif sel == ('XC HELP'):
             self.session.open(xc_help)
         elif sel == ('ABOUT'):
