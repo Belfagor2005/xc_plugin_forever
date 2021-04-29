@@ -56,7 +56,7 @@ global isDreamOS, piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies
 global isStream, btnsearch, eserv, infoname, tport, nochange, filtertmdb, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
 
 _session = " "
-version = "XC Forever V.1.5"
+version = "XC Forever V.1.6"
 re_search = False
 pmovies = False
 series = False
