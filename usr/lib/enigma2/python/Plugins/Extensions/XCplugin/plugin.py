@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # 28.04.2020
 # from __future__ import print_function
@@ -267,12 +267,8 @@ def check_port(tport):
         url = str(url.replace(protocol + domain, host))
         
     '''test ssl'''
-    # if url.startswith("https") and sslverify:
-        # parsed_uri = urlparse(url)
-        # domain = parsed_uri.hostname
-        # sniFactory = SNIFactory(domain)
-    if PY3 == 3:
-        url = url.encode()        
+    # if PY3 == 3:
+        # url = url.encode()        
     ''' end test ssl '''
     return url
 
@@ -755,7 +751,8 @@ class iptv_streamse():
                         if desc_image.startswith("https"):
                             desc_image = desc_image.replace("https", "http")
                     if PY3 == 3:
-                        desc_image = desc_image.encode()
+                        desc_image = desc_image.encode()#encode('utf-8')#
+                        
                     epgnowtitle = ''
                     if stream_url:
                         isStream = True
@@ -916,8 +913,8 @@ class iptv_streamse():
                     self.port = str(config.plugins.XCplugin.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
-                url = url
-                next_request = 1
+                # url = url
+                # next_request = 1
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
                 next_request = 2
@@ -1344,15 +1341,20 @@ class xc_Main(Screen):
                     for name, url in match:
                         if PY3 == 3:
                             url = url.encode()
-                        if url[-3] != '.':
-                            url = url + ext
-                        path = urlparse(url).path
-                        ext = splitext(path)[1]
-                        if str(ext) != '.mp4' or str(ext) != '.mkv' or str(ext) != '.avi' or str(ext) != '.flv':
+                        # if url[-3] != '.':
+                            # url = url + ext
+                        # path = urlparse(url).path
+                        # ext = splitext(path)[1]
+                        ext = str(os.path.splitext(url)[-1])
+
+                        if str(ext) != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv':
                             ext = '.mp4'
                         name = name + ext
                         name = name.replace('..', '.')
+                        name = checkStr(name)
+                        url = checkStr(url)
                         print('name ======= ', name)
+                        print('url ======= ', url)                        
                         self.icount += 1
                         useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
                         # JobManager.AddJob(downloadJob(self, "wget -c '%s' -O '%s%s'" % (url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
@@ -1421,15 +1423,16 @@ class xc_Main(Screen):
                 filename = re.sub(r' ', '_', filename)
                 filename = re.sub(r'_+', '_', filename)
                 filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                filename = checkStr(filename)
                 path = urlparse(selected).path
                 ext = splitext(path)[1]
 
                 if PY3 == 3:
                     selected = selected.encode()
-                if selected[-3] != '.':
-                    selected = selected + ext
+                # if selected[-3] != '.':
+                    # selected = selected + ext
                 filename = filename + ext
+                filename = checkStr(filename)                
+                
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
@@ -3660,13 +3663,13 @@ class downloadTask(Task):
         self.setCmdline(cmdline)
         self.filename = filename
         self.toolbox = job.toolbox
-
         self.downloadStop = downloadStop
-
         self.error = None
         self.lasterrormsg = None
-
+        
+            
     def processOutput(self, data):
+        data = six.ensure_str(data)
         try:
             if data.endswith("%)"):
                 startpos = data.rfind("sec (") + 5
