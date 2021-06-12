@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-# 31.05.2021
-# from __future__ import print_function
+# 11.06.2021
+# from __future__ import print_function, unicode_literals
 # for localized messages
 from . import _
 from Components.AVSwitch import AVSwitch
@@ -847,16 +847,28 @@ class iptv_streamse():
                         description = str(vodTitle) + '\n\n' + str(vodGenre) + '\n\nDuration: ' + str(vodDuration) + '\n\n' + str(vodDescription)
                     chan_tulpe = (
                         chan_counter,
-                        str(name),
-                        str(description),
+                        name,
+                        description,
                         piconname,
                         stream_url,
                         playlist_url,
-                        str(category_id),
+                        category_id,
                         desc_image,
-                        str(description4playlist_html),
+                        description4playlist_html,
                         ts_stream,
                         epgnowtitle)
+                        # chan_counter,
+                        # str(name),
+                        # str(description),
+                        # piconname,
+                        # stream_url,
+                        # playlist_url,
+                        # str(category_id),
+                        # desc_image,
+                        # str(description4playlist_html),
+                        # ts_stream,
+                        # epgnowtitle)                        
+                        
                     iptv_list_tmp.append(chan_tulpe)
                     btnsearch = next_request
         except Exception as ex:
@@ -1532,22 +1544,22 @@ class xc_Main(Screen):
                                     downloadPage(selected_channel[7], desc_image).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                             else:
                                 self.decodeImage(desc_image)                                  
-                                
+
                 if selected_channel[2] is not None:
                     if stream_live is True:
                         description = selected_channel[2]
                         description2 = selected_channel[8]
                         description3 = selected_channel[6]
                         description_2 = description3.split(" #-# ")
-                        descall = description + '\n\n' + description2
-
+                        descall = str(description) + '\n\n' + str(description2)
                         if description_2:
                             self["description"].setText(descall)
                             if len(description_2) > 1:
-                                self["info"].setText(description_2[1])
+                                self["info"].setText(str(description_2[1]))
                     else:
-                        description = selected_channel[2]
+                        description = str(selected_channel[2])
                         self["description"].setText(description)
+                        
             except Exception as ex:
                 print(ex)
 
