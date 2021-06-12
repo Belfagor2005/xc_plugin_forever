@@ -889,8 +889,6 @@ class iptv_streamse():
                     self.port = str(config.plugins.XCplugin.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
-                # url = url
-                # next_request = 1
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
                 next_request = 2
@@ -1455,6 +1453,31 @@ class xc_Main(Screen):
             self["green"].show()
             self["yellow"].show()
 
+    # def decodeImage(self, desc_image):
+        # if xcDreamOS:
+            # self['poster'].instance.setPixmap(gPixmapPtr())
+        # else:
+            # self['poster'].instance.setPixmap(None)
+        # self['poster'].hide()
+        # sc = AVSwitch().getFramebufferScale()
+        # self.picload = ePicLoad()
+        # size = self['poster'].instance.size()
+        # self.picload.setPara((size.width(), size.height(), sc[0], sc[1], False, 1, '#FF000000'))
+
+        # if not xcDreamOS:
+            # self.picload.startDecode(desc_image, 0, 0, False)
+        # else:
+            # self.picload.startDecode(desc_image, False)
+
+        # ptr = self.picload.getData()
+        # if ptr is not None:
+            # self["poster"].instance.setPixmap(ptr)
+            # self["poster"].show()
+                       
+        # else:
+            # del_jpg()
+            # self.decodeImage(piclogo)
+            
     def decodeImage(self, desc_image):
             self["poster"].show()
             pixmaps = desc_image
@@ -1487,10 +1510,14 @@ class xc_Main(Screen):
             return
             
     def image_downloaded(self, data, desc_image):
-        if fileExists(desc_image):
-            self.poster_resize(desc_image)
-        else:
-            print('logo not found')
+        if os.path.exists(desc_image):
+            try:
+                self.decodeImage(desc_image)
+            except Exception as ex:
+                print("* error ** %s" % ex)
+                pass
+            except:
+                pass
             
     def downloadError(self, desc_image):
         try:
@@ -1931,7 +1958,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             
     def image_downloaded(self, data, desc_image):
         if fileExists(desc_image):
-            self.poster_resize(desc_image)
+            self.decodeImage(desc_image)
         else:
             print('logo not found')
             
@@ -2172,7 +2199,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def play_vod(self):
         try:
-            if vod_url != "" and vod_url is not None:
+            if vod_url is not None:
+            # if vod_url != "" and vod_url is not None:            
                 print("------------------------ MOVIE ------------------")
                 print('--->' + vod_url + '<------')
                 self.session.nav.stopService()
@@ -2845,11 +2873,15 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         else:
             print('no cover.. error')
         return
-    def downloadPic(self, data, desc_image):
-        if fileExists(desc_image):
-            self.poster_resize(desc_image)
-        else:
-            print('logo not found')
+    def image_downloaded(self, data, desc_image):
+        if os.path.exists(desc_image):
+            try:
+                self.decodeImage(desc_image)
+            except Exception as ex:
+                print("* error ** %s" % ex)
+                pass
+            except:
+                pass
 
     def downloadError(self, desc_image):
         try:
