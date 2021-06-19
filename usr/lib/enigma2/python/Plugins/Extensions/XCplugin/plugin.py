@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # 11.06.2021
 # from __future__ import print_function
 # for localized messages
@@ -81,18 +80,40 @@ urlinfo = ""
 xcDreamOS = False
 e2m3upy = plugin_path + '/bouquet/'
 
+PY3 = sys.version_info.major >= 3
+# PY3 = version_info[0] == 3
+# if PY3:
+    # # from urllib.request import urlopen, Request
+    # # from urllib.parse import urlparse
+    # from urllib.parse import quote_plus
 
-# PY3 = sys.version_info.major >= 3
-PY3 = version_info[0] == 3
-if PY3:
-    from urllib.request import urlopen, Request
-    from urllib.parse import urlparse
-    from urllib.parse import quote_plus
+# else:
+    # # from urllib2 import urlopen, Request
+    # # from urlparse import urlparse
+    # from urllib import quote_plus
 
-else:
-    from urllib2 import urlopen, Request
-    from urlparse import urlparse
-    from urllib import quote_plus
+# try:
+    # from urllib.parse import quote_plus
+# except:
+    # from urllib import quote_plus
+
+# try:
+    # # For Python 3.0 and later
+    # from urllib.request import urlopen, Request
+# except ImportError:
+    # # Fall back to Python 2's urllib2
+    # from urllib2 import urlopen, Request
+
+# try:
+    # from urlparse import urlparse
+# except:
+    # from urllib.parse import urlparse
+    
+from six.moves.urllib.parse import quote_plus
+from six.moves.urllib.request import urlopen
+from six.moves.urllib.request import Request
+from six.moves.urllib.parse import urlparse
+
 
 
 try:
@@ -122,6 +143,8 @@ def checkStr(txt):
             txt = txt.encode('utf-8')
     return txt
 
+#six.ensure_text
+
 try:
     from enigma import eDVBDB
 except ImportError:
@@ -137,7 +160,6 @@ def MemClean():
     except:
         pass
 
-
 def del_jpg():
     for i in glob.glob(os.path.join(Path_Tmp, "*.jpg")):
         try:
@@ -145,7 +167,6 @@ def del_jpg():
             os.remove(i)
         except OSError:
             pass
-
 
 def isExtEplayer3Available():
     return os.path.isfile(eEnv.resolve("$bindir/exteplayer3"))
@@ -1328,6 +1349,7 @@ class xc_Main(Screen):
                         print('url ======= ', url)
                         self.icount += 1
                         useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                        
                         # JobManager.AddJob(downloadJob(self, "wget -c '%s' -O '%s%s'" % (url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                         JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                 else:
@@ -1385,36 +1407,104 @@ class xc_Main(Screen):
             try:
                 global ext
                 ext = '.mkv'
-                selected = stream_vod
+                selected = self.vod_url #str(stream_vod)
                 if PY3 == 3:
                     selected = selected.encode()                
+                # selected = stream_vod
                 filename = str(self.selected_channel[1])
-                # filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', filename)
-                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', filename)
-                # filename = re.sub(r' ', '_', filename)
-                # filename = re.sub(r'_+', '_', filename)
-                # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
+                filename = re.sub(r' ', '_', filename)
+                filename = re.sub(r'_+', '_', filename)
+                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+", "_").replace("\'", "_").replace("'", "_")
+                # filename = checkStr(filename)
                 path = urlparse(selected).path
-                # ext = splitext(path)[1]
-                ext = str(os.path.splitext(path)[-1])
-                print('extttttttttttttt', ext)
-                # title_translit = cyr2lat(filename)
-                # filename = ASCIItranslit.legacyEncode(title_translit)
-                filename = filename + ext
-                # if PY3:
-                    # #url = url.encode()         
-                    # filename = filename.encode('utf-8')
-                filename = checkStr(filename)                            
+                ext = splitext(path)[-1]
+                filename = str(filename) + str(ext)
+                print('filename3: ', str(filename))
+                print('extttttttttttttt', str(ext))
+                print('select: ', str(selected))
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
-                self.downloading = True
+                self.downloading = True   
+                
+                #test 1
                 from .downloader import imagedownloadScreen
-                self.session.open(imagedownloadScreen, filename, Path_Movies + filename, selected)
+                #name='', target='', url=''
+                self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_INFO)
+
+                
+                
+                # #test 2
+                # useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                # #useragentcmd = {'User-Agent': 'Enigma2 - XC Plugin'}               
+                # cmd = WGET + " %s -c '%s' -O '%s%s'" %(useragentcmd, selected, Path_Movies, filename)
+                # self.icount += 1
+                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
+                # self.LastJobView()
+                
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
+     
+        #version 1.3
+    # def download_vod(self, result):
+        # if result:
+            # try: 
+                # # self.vod_entry = iptv_list_tmp[self.index]                                                            
+                # self.title = str(self.vod_entry[1])
+                # self["state"].setText("Download VOD")
+                # filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
+                # filename = re.sub(r' ', '_', filename)
+                # filename = re.sub(r'_+', '_', filename)  
+                # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+", "_").replace("\'", "_").replace("'", "_")
+                # filename = filename.encode("utf-8")                 
+                # filename = filename + '.mkv'
+                # cmd = "wget -c '%s' -O '%s%s'" % (self.vod_url, Path_Movies, filename)
+                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
+                # self.timeshift_url = Path_Movies + filename 
+                # self.timeshift_title = "[REC] " + self.title                 
+                # self.createMetaFile(filename)                                               
+                # self.LastJobView()
+                # self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)                    
 
+            # except Exception as ex:
+                # print ex
+                # print "ERROR download_vod"               
+                
+    """
+    def download_vod(self, result):
+        if result:
+            try:
+                self.icount = 0
+                global selected, ext
+                ext = '.mkv'
+                selected = ''
+                selected = stream_vod
+                filename = str(self.selected_channel[1])
+                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
+                filename = re.sub(r' ', '_', filename)
+                filename = re.sub(r'_+', '_', filename)
+                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = checkStr(filename)
+                path = urlparse(selected).path
+                ext = splitext(path)[-1]
+                filename = filename + ext
+                self["state"].setText("Download VOD")
+                os.system('sleep 3')
+                self.downloading = True
+                useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, stream_vod, Path_Movies, filename)
+                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
+                self.icount += 1
+                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
+                # MemClean()
+                self.LastJobView()
+                # self.mbox = self.session.open(MessageBox, _("[DOWNLOAD] " + self.title), MessageBox.TYPE_INFO, timeout=5)
+            except Exception as ex:
+                self.downloading = False
+                print(ex)
+                """                
     def eError(self, error):
         print("----------- %s" % error)
         pass
@@ -3663,7 +3753,8 @@ class downloadTask(Task):
         self.lasterrormsg = None
 
     def processOutput(self, data):
-        data = six.ensure_str(data)
+        if PY3:
+            data = six.ensure_str(data)
         try:
             if data.endswith("%)"):
                 startpos = data.rfind("sec (") + 5
