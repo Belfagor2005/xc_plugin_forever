@@ -81,40 +81,10 @@ xcDreamOS = False
 e2m3upy = plugin_path + '/bouquet/'
 
 PY3 = sys.version_info.major >= 3
-# PY3 = version_info[0] == 3
-# if PY3:
-    # # from urllib.request import urlopen, Request
-    # # from urllib.parse import urlparse
-    # from urllib.parse import quote_plus
-
-# else:
-    # # from urllib2 import urlopen, Request
-    # # from urlparse import urlparse
-    # from urllib import quote_plus
-
-# try:
-    # from urllib.parse import quote_plus
-# except:
-    # from urllib import quote_plus
-
-# try:
-    # # For Python 3.0 and later
-    # from urllib.request import urlopen, Request
-# except ImportError:
-    # # Fall back to Python 2's urllib2
-    # from urllib2 import urlopen, Request
-
-# try:
-    # from urlparse import urlparse
-# except:
-    # from urllib.parse import urlparse
-    
 from six.moves.urllib.parse import quote_plus
 from six.moves.urllib.request import urlopen
 from six.moves.urllib.request import Request
 from six.moves.urllib.parse import urlparse
-
-
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -142,8 +112,6 @@ def checkStr(txt):
         if isinstance(txt, type(six.text_type())):
             txt = txt.encode('utf-8')
     return txt
-
-#six.ensure_text
 
 try:
     from enigma import eDVBDB
@@ -387,7 +355,6 @@ class xc_config(Screen, ConfigListScreen):
             if os.path.isfile(xc_list) and os.stat(xc_list).st_size > 0:
                 with open(xc_list, 'r') as f:
                     chaine = f.readlines()
-
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
                 port = chaine[1].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
                 user = chaine[2].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
@@ -754,8 +721,8 @@ class iptv_streamse():
                     playlist_url = checkStr(channel.findtext('playlist_url'))
                     desc_image = checkStr(channel.findtext('desc_image'))
                     if desc_image and desc_image != "n/A" and desc_image != "":
-                        if desc_image.startswith("https"):
-                            desc_image = desc_image.replace("https", "http")
+                        # if desc_image.startswith("https"):
+                            desc_image = desc_image #.replace("https", "http")
                     if PY3 == 3:
                         desc_image = desc_image.encode()
                     epgnowtitle = ''
@@ -1278,11 +1245,9 @@ class xc_Main(Screen):
         show_more_info_Title(truc)
 
     def check_download_ser(self):
-                         
         titleserie = str(STREAMS.playlistname)
         if self.temp_index > -1:
             self.index = self.temp_index
-
         if stream_url and "/live/" in stream_url:
             self.mbox = self.session.open(MessageBox, _("This is Category or Live Player is active!!!"), MessageBox.TYPE_INFO, timeout=5)
 
@@ -1349,7 +1314,6 @@ class xc_Main(Screen):
                         print('url ======= ', url)
                         self.icount += 1
                         useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-                        
                         # JobManager.AddJob(downloadJob(self, "wget -c '%s' -O '%s%s'" % (url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                         JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                 else:
@@ -1432,9 +1396,6 @@ class xc_Main(Screen):
                 #name='', target='', url=''
                 self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_INFO)
-
-                
-                
                 # #test 2
                 # useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
                 # #useragentcmd = {'User-Agent': 'Enigma2 - XC Plugin'}               
@@ -1639,8 +1600,8 @@ class xc_Main(Screen):
                     if selected_channel[7].find("http") == -1:
                         self.decodeImage(piclogo)
                     else:
-                        if selected_channel[7].startswith('https'):
-                            desc_image = selected_channel[7] = selected_channel[7].replace('https', 'http')
+                        if selected_channel[7].startswith('http'):
+                            desc_image = selected_channel[7] = selected_channel[7]#replace('https', 'http')
                             self.decodeImage(desc_image)
                         else:
                             m = hashlib.md5()
@@ -1651,7 +1612,7 @@ class xc_Main(Screen):
                                 desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                                 if PY3 == 3:
                                     desc_image = desc_image.encode()
-                                if selected_channel[7].startswith(b"https") and sslverify:
+                                if selected_channel[7].startswith(b"http") and sslverify:
                                     parsed_uri = urlparse(selected_channel[7])
                                     domain = parsed_uri.hostname
                                     sniFactory = SNIFactory(domain)
@@ -1886,13 +1847,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
-
         try:
             self.init_aspect = int(self.getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-
         self.service = None
         # service = None
         self["state"] = Label("")
@@ -1997,7 +1956,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                             if PY3 == 3:
                                 desc_image = desc_image.encode()
-                            if selected_channel[7].startswith(b"https") and sslverify:
+                            if selected_channel[7].startswith(b"http") and sslverify:
                                 parsed_uri = urlparse(selected_channel[7])
                                 domain = parsed_uri.hostname
                                 sniFactory = SNIFactory(domain)
@@ -2746,7 +2705,6 @@ class OpenServer(Screen):
     def help(self):
         self.session.open(xc_help)
 
-
 class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarSeek, InfoBarMoviePlayerSummarySupport):
 
     def __init__(self, session):
@@ -2876,7 +2834,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                             if PY3 == 3:
                                 desc_image = desc_image.encode()
-                            if selected_channel[3].startswith(b"https") and sslverify:
+                            if selected_channel[3].startswith(b"http") and sslverify:
                                 parsed_uri = urlparse(selected_channel[3])
                                 domain = parsed_uri.hostname
                                 sniFactory = SNIFactory(domain)
@@ -2997,7 +2955,6 @@ def xcm3ulistEntry(download):
         res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 30), text=download, color=col, color_sel=white, backcolor_sel=blue))
     return res
 
-
 def m3ulistxc(data, list):
     icount = 0
     mlist = []
@@ -3006,7 +2963,6 @@ def m3ulistxc(data, list):
         mlist.append(xcm3ulistEntry(name))
         icount = icount + 1
     list.setList(mlist)
-
 
 class xcM3UList(MenuList):
     def __init__(self, list):
@@ -3020,10 +2976,8 @@ class xcM3UList(MenuList):
             # textfont = int(18)
             self.l.setFont(0, gFont("Regular", 24))
 
-
 class xc_Play(Screen):
     def __init__(self, session):
-
         self.session = session
         skin = skin_path + "/xc_M3uLoader.xml"
         with open(skin, 'r') as f:
@@ -3052,7 +3006,6 @@ class xc_Play(Screen):
             "blue": self.message3,
             "cancel": self.cancel,
             "ok": self.runList}, -2)
-
         self.onFirstExecBegin.append(self.openList)
         self.onLayoutFinish.append(self.layoutFinished)
 
@@ -3430,14 +3383,12 @@ class xc_M3uPlay(Screen):
             self.session.nav.playService(srefInit)
             self.close()
 
-
 class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, InfoBarAudioSelection, IPTVInfoBarShowHide, InfoBarSubtitleSupport):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
     ENABLE_RESUME_SUPPORT = True
     ALLOW_SUSPEND = True
-
     def __init__(self, session, name, url):
         Screen.__init__(self, session)
         self.skinName = 'MoviePlayer'
@@ -3518,9 +3469,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.new_aspect = temp
         self.setAspect(temp)
 
-
     def showIMDB(self):
-                                                                                                
         if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.pyo"):
             from Plugins.Extensions.TMBD.plugin import TMBD
             text_clear = self.name
@@ -3611,7 +3560,6 @@ _session = None
 autoStartTimer = None
 
 class AutoStartTimer:
-
     def __init__(self, session):
         self.session = session
         self.timer = eTimer()
@@ -3699,7 +3647,6 @@ def check_configuring():
         autoStartTimer.update()
     return
 
-
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
     global _session
@@ -3724,7 +3671,6 @@ def Plugins(**kwargs):
 
 # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + filetitle, filetitle, self.downloadStop))
 class downloadJob(Job):
-
     def __init__(self, toolbox, cmdline, filename, filetitle, downloadStop):
         Job.__init__(self, "%s" % filetitle)
         self.filename = filename
@@ -3742,7 +3688,6 @@ class downloadJob(Job):
 
 class downloadTask(Task):
     ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
-
     def __init__(self, job, cmdline, filename, downloadStop):
         Task.__init__(self, job, _("Downloading ..."))
         self.setCmdline(cmdline)
@@ -3782,7 +3727,6 @@ class downloadTask(Task):
             message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
             web_info(message)
 
-
 VIDEO_ASPECT_RATIO_MAP = {
     0: "4:3 Letterbox",
     1: "4:3 PanScan",
@@ -3793,7 +3737,6 @@ VIDEO_ASPECT_RATIO_MAP = {
     6: "16:9 Letterbox"}
 
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
-
 
 def nextAR():
     try:
@@ -3806,7 +3749,6 @@ def nextAR():
     except Exception as ex:
         print(ex)
         return "nextAR ERROR %s" % ex
-
 
 def prevAR():
     try:
@@ -3827,7 +3769,6 @@ def channelEntryIPTVplaylist(entry):
         (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NAME[0], CHANNEL_NAME[1], CHANNEL_NAME[2], CHANNEL_NAME[3], CHANNEL_NAME[4], RT_HALIGN_LEFT, entry[1])]
     return menu_entry
 
-
 def web_info(message):
     try:
         message = quote_plus(str(message))
@@ -3840,7 +3781,6 @@ def web_info(message):
 
 def debug(obj, text=""):
     print("%s" % text + " %s\n" % obj)
-
 
 conversion = {
     str("\xd0\xb0"): "a",
@@ -3935,7 +3875,6 @@ def ReloadBouquet():
     except:
         os.system('wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &')
 
-
 def uninstaller():
     """Clean up routine to remove any previously made changes
     """
@@ -3961,11 +3900,9 @@ def uninstaller():
         print(ex)
         raise
 
-
 def OnclearMem():
     os.system("sync")
     os.system("echo 3 > /proc/sys/vm/drop_caches")
-
 
 def remove_line(filename, what):
     if os.path.isfile(filename):
@@ -3990,7 +3927,6 @@ if os.path.isfile(filterlist):
             filtertmdb = dict
     except:
         filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
-
 
 def charRemove(text):
     char = ["1080p",
@@ -4052,9 +3988,7 @@ def charRemove(text):
         myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("       ", " ").strip()
     return myreplace
 
-
 class xc_home(Screen):
-
     def __init__(self, session):
         self.session = session
         skin = skin_path + "/xc_home.xml"
@@ -4198,7 +4132,6 @@ class xc_home(Screen):
 
 
 class xc_maker(Screen):
-
     def __init__(self, session):
         self.session = session
         skin = skin_path + "/xc_maker.xml"
@@ -4284,7 +4217,6 @@ class xc_maker(Screen):
         conthelp += "    but what we use worst.(William Penn)"
         return conthelp
 
-
 Panel_list = [
     ('HOME'),
     ('PLAYLIST'),
@@ -4295,10 +4227,8 @@ Panel_list = [
     ('XC HELP'),
     ('ABOUT')
 ]
-
 pngl = plugin_path + '/skin/fhd/xcselh.png'
 png2 = plugin_path + '/skin/hd/xcsel.png'
-
 
 class xcList(MenuList):
     def __init__(self, list):
@@ -4318,9 +4248,7 @@ class xcList(MenuList):
         else:
             self.l.setItemHeight(60)
 
-
 def menuListEntry(name, idx):
-
     res = [name]
     if HD.width() > 1280:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(70, 40), png=loadPNG(pngl)))
@@ -4329,7 +4257,6 @@ def menuListEntry(name, idx):
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(png2)))
         res.append(MultiContentEntryText(pos=(100, 2), size=(1000, 50), font=5, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
-
 
 def show_more_info():
     text_clear = ""
@@ -4359,7 +4286,6 @@ def show_more_info():
         message = (_("Please enter correct parameters in Config\n no valid list "))
         web_info(message)
 
-
 def show_more_info_Title(truc):
     text_clear_1 = ""
     try:
@@ -4375,7 +4301,6 @@ def show_more_info_Title(truc):
         print(ex)
         text_clear_1 = "mkach"
     return text_clear_1
-
 
 def save_old():
     fldbouquet = "/etc/enigma2/bouquets.tv"
@@ -4462,7 +4387,6 @@ def save_old():
             os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
     ReloadBouquet()
 
-
 def createCfg_xml():
     # path = tempfile.gettempdir()
     global e2m3upy, n1
@@ -4481,7 +4405,6 @@ def createCfg_xml():
     os.system("cd /tmp")
     cmd2 = "chmod -R 777 " + n1
     os.system(cmd2)
-
     username = str(config.plugins.XCplugin.user.value)
     password = str(config.plugins.XCplugin.passw.value)
     all_bouquet = "0"
@@ -4504,7 +4427,6 @@ def createCfg_xml():
     epg_url = urlinfo.replace("enigma2.php", "xmltv.php")
     # indent = "      "
     with open(configfile, 'w') as f:
-
         configtext = '<config>\r\n'
         configtext += '\t<supplier>\r\n'
         configtext += '\t\t<name>' + infoname + '</name>\r\n'
@@ -4535,7 +4457,6 @@ def createCfg_xml():
 
 
 class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, IPTVInfoBarShowHide):
-
     def __init__(self, session, name, url):
         Screen.__init__(self, session)
         self.skinName = 'MoviePlayer'
@@ -4595,6 +4516,7 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
             temp = 0
         self.new_aspect = temp
         self.setAspect(temp)
+
     def openTest(self):
         url = self.url
         # pass
@@ -4623,7 +4545,6 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
     def keyNumberGlobal(self, number):
         self['text'].number(number)
 
-
 def getJsonURL(url):
     # request = urllib2.Request(url)
     request = Request(url)
@@ -4648,7 +4569,6 @@ def getJsonURL(url):
         else:
             data += checkStr(res_data)
     return json.loads(data)
-
 
 # ===================Time is what we want most, but what we use worst===================
 #
