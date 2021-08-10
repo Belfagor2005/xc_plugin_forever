@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 11.06.2021
+# 11.08.2021
 # from __future__ import print_function
 # for localized messages
 from . import _
@@ -34,7 +34,8 @@ from enigma import eTimer, eListboxPythonMultiContent, gFont, getDesktop, eEnv, 
 from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from twisted.web.client import downloadPage
-from xml.etree.cElementTree import fromstring, ElementTree
+# from xml.etree.cElementTree import fromstring, ElementTree
+from xml.etree.ElementTree import fromstring, ElementTree
 
 from sys import version_info
 import six
@@ -105,7 +106,7 @@ except ImportError:
 
 
 def checkStr(txt):
-    if PY3:
+    if six.PY3:
         if isinstance(txt, type(bytes())):
             txt = txt.decode('utf-8')
     else:
@@ -334,9 +335,6 @@ class xc_config(Screen, ConfigListScreen):
                     config.plugins.XCplugin.port.setValue(ports)
                     config.plugins.XCplugin.user.setValue(usernamesh)
                     config.plugins.XCplugin.passw.setValue(passwordsh)
-                # port = str(config.plugins.XCplugin.port.value)
-                # username = str(config.plugins.XCplugin.user.value)
-                # password = str(config.plugins.XCplugin.passw.value)
                 filesave = "xc_" + str(config.plugins.XCplugin.user.value) + ".xml"
                 filesave = filesave.replace(":", "_")
                 filesave = filesave.lower()
@@ -659,7 +657,7 @@ class iptv_streamse():
                 self.playlistname = 'no_name'
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
-                    """
+                    
                     self.playlistname = xml.findtext('playlist_name').encode('utf-8')
                 self.next_page_url = xml.findtext("next_page_url")
                 next_page_text_element = xml.findall("next_page_url")
@@ -669,16 +667,15 @@ class iptv_streamse():
                 prev_page_text_element = xml.findall("prev_page_url")
                 if prev_page_text_element:
                         self.prev_page_text = prev_page_text_element[0].attrib.get("text").encode("utf-8")
-                        """
-                    self.playlistname = checkStr(xml.findtext('playlist_name'))
-                self.next_page_url = checkStr(xml.findtext("next_page_url"))
-                next_page_text_element = xml.findall("next_page_url")
-                if next_page_text_element:
-                    self.next_page_text = checkStr(next_page_text_element[0].attrib.get("text"))
-                self.prev_page_url = checkStr(xml.findtext("prev_page_url"))
-                prev_page_text_element = xml.findall("prev_page_url")
-                if prev_page_text_element:
-                    self.prev_page_text = checkStr(prev_page_text_element[0].attrib.get("text"))
+                    # self.playlistname = checkStr(xml.findtext('playlist_name'))
+                # self.next_page_url = checkStr(xml.findtext("next_page_url"))
+                # next_page_text_element = xml.findall("next_page_url")
+                # if next_page_text_element:
+                    # self.next_page_text = checkStr(next_page_text_element[0].attrib.get("text"))
+                # self.prev_page_url = checkStr(xml.findtext("prev_page_url"))
+                # prev_page_text_element = xml.findall("prev_page_url")
+                # if prev_page_text_element:
+                    # self.prev_page_text = checkStr(prev_page_text_element[0].attrib.get("text"))
                 chan_counter = 0
                 for channel in xml.findall("channel"):
                     chan_counter = chan_counter + 1
@@ -723,7 +720,7 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         # if desc_image.startswith("https"):
                             desc_image = desc_image #.replace("https", "http")
-                    if PY3 == 3:
+                    if six.PY3 == 3:
                         desc_image = desc_image.encode()
                     epgnowtitle = ''
                     if stream_url:
@@ -1057,9 +1054,6 @@ class xc_Main(Screen):
         self.onLayoutFinish.append(self.checkinf)
 
     def search_text(self):
-        # if re_search is True:
-        # re_search = False
-        # text = ''
         self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.search)
 
     def filterChannels(self, result):
@@ -1078,6 +1072,7 @@ class xc_Main(Screen):
                 self["feedlist"] = self.mlist
             else:
                 self.resetSearch()
+                
 
     def resetSearch(self):
         global re_search
@@ -1199,8 +1194,6 @@ class xc_Main(Screen):
             self["key_yellow"].hide()
             self.mmark()
         else:
-            del_jpg()
-            MemClean()
             self.close()
 
     def go(self):
@@ -1353,7 +1346,7 @@ class xc_Main(Screen):
         selected_channel = iptv_list_tmp[self.index]
         stream_vod = str(selected_channel[4])
         self.title = str(selected_channel[1])
-        if PY3 == 3:
+        if six.PY3 == 3:
             stream_vod = stream_vod.encode()
         if stream_vod is not None and btnsearch == 1:
             self.vod_url = stream_vod
@@ -1372,7 +1365,7 @@ class xc_Main(Screen):
                 global ext
                 ext = '.mkv'
                 selected = self.vod_url #str(stream_vod)
-                if PY3 == 3:
+                if six.PY3 == 3:
                     selected = selected.encode()                
                 # selected = stream_vod
                 filename = str(self.selected_channel[1])
@@ -1504,35 +1497,11 @@ class xc_Main(Screen):
             self["green"].show()
             self["yellow"].show()
 
-    # def decodeImage(self, desc_image):
-        # if xcDreamOS:
-            # self['poster'].instance.setPixmap(gPixmapPtr())
-        # else:
-            # self['poster'].instance.setPixmap(None)
-        # self['poster'].hide()
-        # sc = AVSwitch().getFramebufferScale()
-        # self.picload = ePicLoad()
-        # size = self['poster'].instance.size()
-        # self.picload.setPara((size.width(), size.height(), sc[0], sc[1], False, 1, '#FF000000'))
 
-        # if not xcDreamOS:
-            # self.picload.startDecode(desc_image, 0, 0, False)
-        # else:
-            # self.picload.startDecode(desc_image, False)
-
-        # ptr = self.picload.getData()
-        # if ptr is not None:
-            # self["poster"].instance.setPixmap(ptr)
-            # self["poster"].show()
-                       
-        # else:
-            # del_jpg()
-            # self.decodeImage(piclogo)
-            
-    def decodeImage(self, desc_image):
+    def decodeImage(self, png):
             self["poster"].show()
-            pixmaps = desc_image
-            if xcDreamOS:
+            pixmaps = png
+            if os.path.exists('/var/lib/dpkg/status'):
                 self['poster'].instance.setPixmap(gPixmapPtr())
             else:
                 self['poster'].instance.setPixmap(None)
@@ -1547,7 +1516,7 @@ class xc_Main(Screen):
              1,
              '#FF000000'))
             ptr = self.picload.getData()
-            if xcDreamOS:
+            if os.path.exists('/var/lib/dpkg/status'):
                 if self.picload.startDecode(pixmaps, False) == 0:
                     ptr = self.picload.getData()
             else:
@@ -1595,36 +1564,38 @@ class xc_Main(Screen):
                 self["description"].setText("")
                 self['poster'].instance.setPixmapFromFile(piclogo)
                 selected_channel = self.channel_list[self.index]
-
-                if selected_channel[7] != "" and selected_channel[7] != "n/A" and selected_channel[7] is not None:
-                    if selected_channel[7].find("http") == -1:
+                pixmaps = str(selected_channel[7])
+                if pixmaps != "" and pixmaps != "n/A" and pixmaps is not None:
+                    if pixmaps.find("http") == -1:
                         self.decodeImage(piclogo)
+                        
+                    if six.PY3:
+                        pixmaps = six.ensure_binary(pixmaps)
+                    print("debug: pixmaps:",pixmaps)
+                    print("debug: pixmaps:",type(pixmaps))
+                    global tmp_image
+                    path = urlparse(pixmaps).path
+                    ext = splitext(path)[1]
+                    tmp_image = b'/tmp/posterx' + ext
+                    if fileExists(tmp_image):
+                        tmp_image = "b%s/%s.%s" % (Path_Tmp, cover_md5, ext)
                     else:
-                        if selected_channel[7].startswith('http'):
-                            desc_image = selected_channel[7] = selected_channel[7]#replace('https', 'http')
-                            self.decodeImage(desc_image)
+                        m = hashlib.md5()
+                        m.update(pixmaps)
+                        tmp_image = m.hexdigest()
+                    try:
+                        if pixmaps.startswith(b"https") and sslverify:
+                            parsed_uri = urlparse(pixmaps)
+                            domain = parsed_uri.hostname
+                            sniFactory = SNIFactory(domain)
+                            if six.PY3:
+                                pixmaps = pixmaps.encode()
+                            downloadPage(pixmaps, tmp_image, sniFactory, timeout=5).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
                         else:
-                            m = hashlib.md5()
-                            m.update(selected_channel[7])
-                            cover_md5 = m.hexdigest()
-                            desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                            if os.path.exists(desc_image) is False or STREAMS.img_loader is False:
-                                desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                                if PY3 == 3:
-                                    desc_image = desc_image.encode()
-                                if selected_channel[7].startswith(b"http") and sslverify:
-                                    parsed_uri = urlparse(selected_channel[7])
-                                    domain = parsed_uri.hostname
-                                    sniFactory = SNIFactory(domain)
-                                    if PY3 == 3:
-                                        selected_channel[7] = selected_channel[7].encode()
-                                    print('uurrll: ', selected_channel[7])
-                                    downloadPage(selected_channel[7], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
-                                else:
-                                    downloadPage(selected_channel[7], desc_image).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
-                            else:
-                                self.decodeImage(desc_image)                                  
-
+                            downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
+                    except Exception as ex:
+                        print(ex)
+                        print("Error: can't find file or read data")
                 if selected_channel[2] is not None:
                     if stream_live is True:
                         description = selected_channel[2]
@@ -1936,48 +1907,51 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             temp = 0
         self.new_aspect = temp
         self.setAspect(temp)
-       
+
+
+
     def setCover(self):
-        try:
-            global selected_channel
-            desc_image = ''
-            self.decodeImage(piclogo)
-            selected_channel = iptv_list_tmp[STREAMS.list_index]
-            if selected_channel[7] != "" and selected_channel[7] != "n/A" and selected_channel[7] is not None:
-                if selected_channel[7].find("http") == -1:
-                    self.decodeImage(piclogo)
+        global selected_channel
+        self['poster'].instance.setPixmapFromFile(piclogo)
+        selected_channel = iptv_list_tmp[STREAMS.list_index]
+        pixmaps = str(selected_channel[7])
+        if pixmaps != "" and pixmaps != "n/A" and pixmaps is not None:
+            if pixmaps.find("http") == -1:
+                self.decodeImage(piclogo)
+            if six.PY3:
+                pixmaps = six.ensure_binary(pixmaps)
+            print("debug: pixmaps:",pixmaps)
+            print("debug: pixmaps:",type(pixmaps))
+            global tmp_image
+            path = urlparse(pixmaps).path
+            ext = splitext(path)[1]
+            tmp_image = b'/tmp/posterx' + ext
+            if fileExists(tmp_image):
+                tmp_image = "b%s/%s.%s" % (Path_Tmp, cover_md5, ext)
+            else:
+                m = hashlib.md5()
+                m.update(pixmaps)
+                tmp_image = m.hexdigest()
+            try:
+                if pixmaps.startswith(b"https") and sslverify:
+                    parsed_uri = urlparse(pixmaps)
+                    domain = parsed_uri.hostname
+                    sniFactory = SNIFactory(domain)
+                    if six.PY3:
+                        pixmaps = pixmaps.encode()
+                    downloadPage(pixmaps, tmp_image, sniFactory, timeout=5).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
                 else:
-                    if STREAMS.img_loader is False:
-                        m = hashlib.md5()
-                        m.update(selected_channel[7])
-                        cover_md5 = m.hexdigest()
-                        desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                        if os.path.exists(desc_image) is False or STREAMS.img_loader is False:
-                            desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                            if PY3 == 3:
-                                desc_image = desc_image.encode()
-                            if selected_channel[7].startswith(b"http") and sslverify:
-                                parsed_uri = urlparse(selected_channel[7])
-                                domain = parsed_uri.hostname
-                                sniFactory = SNIFactory(domain)
-                                if PY3 == 3:
-                                    selected_channel[7] = selected_channel[7].encode()
-                                print('uurrll: ', selected_channel[7])
-                                downloadPage(selected_channel[7], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
-                            else:
-                                downloadPage(selected_channel[7], desc_image).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
-                        else:
-                            self.decodeImage(desc_image)                                
-                            
-        except Exception as ex:
-            print(ex)
+                    downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
+            except Exception as ex:
+                print(ex)
+                print("Error: can't find file or read data")
+        else:
             self.decodeImage(piclogo)
-            print("update COVER")
             
-    def decodeImage(self, desc_image):
+    def decodeImage(self, png):
             self["poster"].show()
-            pixmaps = desc_image
-            if xcDreamOS:
+            pixmaps = png
+            if os.path.exists('/var/lib/dpkg/status'):
                 self['poster'].instance.setPixmap(gPixmapPtr())
             else:
                 self['poster'].instance.setPixmap(None)
@@ -1992,7 +1966,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
              1,
              '#FF000000'))
             ptr = self.picload.getData()
-            if xcDreamOS:
+            if os.path.exists('/var/lib/dpkg/status'):
                 if self.picload.startDecode(pixmaps, False) == 0:
                     ptr = self.picload.getData()
             else:
@@ -2004,7 +1978,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             else:
                 print('no cover.. error')
             return
-            
+
     def image_downloaded(self, data, desc_image):
         if fileExists(desc_image):
             self.decodeImage(desc_image)
@@ -2832,13 +2806,13 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                         if os.path.exists(desc_image) is False or STREAMS.img_loader is False:
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                            if PY3 == 3:
+                            if six.PY3 == 3:
                                 desc_image = desc_image.encode()
                             if selected_channel[3].startswith(b"http") and sslverify:
                                 parsed_uri = urlparse(selected_channel[3])
                                 domain = parsed_uri.hostname
                                 sniFactory = SNIFactory(domain)
-                                if PY3 == 3:
+                                if six.PY3 == 3:
                                     selected_channel[3] = selected_channel[3].encode()
                                 print('uurrll: ', selected_channel[3])
                                 downloadPage(selected_channel[3], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
@@ -2900,27 +2874,37 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
     def show_more_info_Title(self, truc):
         show_more_info_Title(truc)
 
-    def decodeImage(self, desc_image):
-        if xcDreamOS:
-            self["poster"].instance.setPixmap(gPixmapPtr())
-        else:
-            self["poster"].instance.setPixmap(None)
-        self["poster"].hide()
-        sc = AVSwitch().getFramebufferScale()
-        self.picload = ePicLoad()
-        size = self["poster"].instance.size()
-        self.picload.setPara((size.width(), size.height(), sc[0], sc[1], False, 1, '#FF000000'))
-        if not xcDreamOS:
-            self.picload.startDecode(desc_image, 0, 0, False)
-        else:
-            self.picload.startDecode(desc_image, False)
-        ptr = self.picload.getData()
-        if ptr is not None:
-            self["poster"].instance.setPixmap(ptr)
+    def decodeImage(self, png):
             self["poster"].show()
-        else:
-            print('no cover.. error')
-        return
+            pixmaps = png
+            if os.path.exists('/var/lib/dpkg/status'):
+                self['poster'].instance.setPixmap(gPixmapPtr())
+            else:
+                self['poster'].instance.setPixmap(None)
+            sc = AVSwitch().getFramebufferScale()
+            self.picload = ePicLoad()
+            size = self['poster'].instance.size()
+            self.picload.setPara((size.width(),
+             size.height(),
+             sc[0],
+             sc[1],
+             False,
+             1,
+             '#FF000000'))
+            ptr = self.picload.getData()
+            if os.path.exists('/var/lib/dpkg/status'):
+                if self.picload.startDecode(pixmaps, False) == 0:
+                    ptr = self.picload.getData()
+            else:
+                if self.picload.startDecode(pixmaps, 0, 0, False) == 0:
+                    ptr = self.picload.getData()
+            if ptr != None:
+                self['poster'].instance.setPixmap(ptr)
+                self['poster'].show()
+            else:
+                print('no cover.. error')
+            return
+            
     def image_downloaded(self, data, desc_image):
         if os.path.exists(desc_image):
             try:
@@ -3342,7 +3326,7 @@ class xc_M3uPlay(Screen):
                 idx = self["list"].getSelectionIndex()
                 namem3u = self.names[idx]
                 urlm3u = self.urls[idx]
-                if PY3 == 3:
+                if six.PY3 == 3:
                     urlm3u = urlm3u.encode()
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
@@ -3698,7 +3682,7 @@ class downloadTask(Task):
         self.lasterrormsg = None
 
     def processOutput(self, data):
-        if PY3:
+        if six.PY3:
             data = six.ensure_str(data)
         try:
             if data.endswith("%)"):
@@ -4025,7 +4009,7 @@ class xc_home(Screen):
 
     def check_dependencies(self):
         dependencies = True
-        if PY3:
+        if six.PY3:
             if not os.path.exists("/usr/lib/python3.8/site-packages/requests"):
                 dependencies = False
         else:
@@ -4392,7 +4376,7 @@ def createCfg_xml():
     global e2m3upy, n1
     e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy2.py"
     n1 = 'e2m3u2bouquetpy2.py'
-    if PY3:
+    if six.PY3:
         e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy3.py"
         n1 = 'e2m3u2bouquetpy3.py'
     if not os.path.exists("/etc/enigma2/e2m3u2bouquet"):
