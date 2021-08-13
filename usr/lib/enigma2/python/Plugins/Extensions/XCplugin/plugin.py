@@ -1385,9 +1385,16 @@ class xc_Main(Screen):
                 self.downloading = True   
                 
                 #test 1
-                from .downloader import imagedownloadScreen
+                # from .downloader import imagedownloadScreen
                 #name='', target='', url=''
-                self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
+                self.timerDownload = eTimer()
+                try:
+                    self.timerDownload.callback.append(self.downloadx)
+                except:
+                    self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloadx)
+                self.timerDownload.start(300, True)
+                
+                # self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_INFO)
                 # #test 2
                 # useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
@@ -1400,6 +1407,14 @@ class xc_Main(Screen):
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
+
+    def downloadx(self):
+        if self.downloading == True:
+            from .downloader import imagedownloadScreen
+            self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
+        else:
+            return
+     
      
         #version 1.3
     # def download_vod(self, result):
@@ -2130,9 +2145,18 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 filename = checkStr(filename)
                 cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, vod_url, Path_Movies, filename)
                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, title))
+                
                 self.timeshift_url = Path_Movies + filename
                 self.timeshift_title = "[REC] " + title
-                self.LastJobView()
+                
+                self.timerDownload = eTimer()
+                try:
+                    self.timerDownload.callback.append(self.LastJobView)
+                except:
+                    self.timerDownload_conn = self.timerDownload.timeout.connect(self.LastJobView)
+                    
+                self.timerDownload.start(300, True)                
+                # self.LastJobView()
         except Exception as ex:
             print(ex)
 
@@ -2283,8 +2307,10 @@ class xc_StreamTasks(Screen):
     def rebuildMovieList(self):
         if os.path.exists(Path_Movies):
             self.movielist = []
+            idx = self["movielist"].getSelectionIndex()
+            del self.movielist[idx]
+            self.getMovieList()            
             self.getTaskList()
-            self.getMovieList()
             self["movielist"].setList(self.movielist)
             self["movielist"].updateList(self.movielist)
         else:
@@ -2367,7 +2393,7 @@ class xc_StreamTasks(Screen):
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom2, MessageBox.TYPE_YESNO, timeout=15, default=False)
         else:
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
-
+            
     def callMyMsg1(self, result):
         if result:
             current = self["movielist"].getCurrent()
@@ -3500,6 +3526,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.servicetype = int(next(nextStreamType))
         print('servicetype2: ', self.servicetype)
         self.openPlay(self.servicetype, url)
+        
     def cancel(self):
         self.session.nav.stopService()
         self.session.nav.playService(srefInit)
@@ -3694,7 +3721,7 @@ class downloadTask(Task):
                 tmpvalue = tmpvalue[tmpvalue.rfind(" "):].strip()
                 tmpvalue = tmpvalue[tmpvalue.rfind("(") + 1:].strip()
                 self.progress = int(float(tmpvalue))
-                MemClean()
+                # MemClean()
             else:
                 Task.processOutput(self, data)
         except Exception as errormsg:
