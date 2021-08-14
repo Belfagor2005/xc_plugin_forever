@@ -649,7 +649,7 @@ class iptv_streamse():
             elif "_get" in self.url:
                 next_request = 2
             xml = self._request(self.url)
-            if xml:
+            if xml is not None :
                 self.next_page_url = ""
                 self.next_page_text = ""
                 self.prev_page_url = ""
@@ -1153,6 +1153,10 @@ class xc_Main(Screen):
         except Exception as ex:
             print(ex)
 
+
+
+                
+                
     def mmark(self):
         global iptv_list_tmp
         self.temp_index = 0
@@ -1164,6 +1168,11 @@ class xc_Main(Screen):
         self.list_index = 0
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
+        
+        # self.load_from_tmp()
+        # self.channel_list = STREAMS.iptv_list        
+        
+        
         STREAMS.list_index = index2
         self.go()
         self.update_channellist()
@@ -1805,7 +1814,7 @@ class xc_Main(Screen):
                 self.video_back = False
                 self.load_from_tmp()
                 self.channel_list = STREAMS.iptv_list
-                self.session.open(xc_Player)
+                # self.session.open(xc_Player)
         except Exception as ex:
             print(ex)
 
@@ -2305,18 +2314,26 @@ class xc_StreamTasks(Screen):
         self.rebuildMovieList()
 
     def rebuildMovieList(self):
-        if os.path.exists(Path_Movies):
-            self.movielist = []
-            idx = self["movielist"].getSelectionIndex()
-            del self.movielist[idx]
-            self.getMovieList()            
-            self.getTaskList()
-            self["movielist"].setList(self.movielist)
-            self["movielist"].updateList(self.movielist)
-        else:
-            message = "The Movie path not configured or path not exist!!!"
-            web_info(message)
-            self.close()
+        self.movielist = []
+        self.getTaskList()
+        self.getMovieList()
+        self['movielist'].setList(self.movielist)
+        self['movielist'].updateList(self.movielist)
+        
+    # def rebuildMovieList(self):
+        # if os.path.exists(Path_Movies):
+            # all = self.movielist = [:]
+            # # idx = self["movielist"].getCurrent()
+            # # idx = self["movielist"].getSelectionIndex()
+            # del all
+            # self.getMovieList()            
+            # self.getTaskList()
+            # self["movielist"].setList(self.movielist)
+            # self["movielist"].updateList(self.movielist)
+        # else:
+            # message = "The Movie path not configured or path not exist!!!"
+            # web_info(message)
+            # self.close()
 
     def getTaskList(self):
         for job in JobManager.getPendingJobs():
@@ -2345,13 +2362,23 @@ class xc_StreamTasks(Screen):
                     if ".m3u" in filename:
                         continue
                     self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
-        if pmovies is True and filelist2 is not None:
+                   
+        if filelist2 is not None:
             file2 = True
-            for filename2 in filelist2:
-                if path.isfile(Path_Movies2 + filename2) and filename2.endswith(".meta") is False:
+            filelist2.sort()
+            for filename in filelist2:
+                if path.isfile(Path_Movies2 + filename) and filename.endswith(".meta") is False:
                     if ".m3u" in filename:
                         continue
-                    self.movielist.append(("movie", filename2, _("Finished"), 100, "100%"))
+                    self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))                   
+                   
+        # if pmovies is True and filelist2 is not None:
+            # file2 = True
+            # for filename2 in filelist2:
+                # if path.isfile(Path_Movies2 + filename2) and filename2.endswith(".meta") is False:
+                    # if ".m3u" in filename:
+                        # continue
+                    # self.movielist.append(("movie", filename2, _("Finished"), 100, "100%"))
 
     def keyOK(self):
         global file1, file2
