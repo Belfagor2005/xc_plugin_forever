@@ -13,7 +13,7 @@
 	<ePixmap              position="1410,155" size="308,423" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/grid.png" alphatest="blend" zPosition="3" />
 	<widget name="version" position="1545,587" size="200,30" halign="left" font="Regular;22" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="1010,615" size="708,5" backgroundColor="#202020" zPosition="1" />
-    	<widget source="description" render="xcRunningText" position="1000,635" size="730,325" font="Regular;28" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="2" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap" />
+    	<widget source="description" render="xcRunningText" position="1000,635" size="730,325" font="Regular;28" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="2" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 	<!-- Description -->
 	<widget position="780,1880" size="600,40" name="Text" font="Regular;36" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<widget position="1010,130" size="400,100" name="exp" font="Regular;28" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />

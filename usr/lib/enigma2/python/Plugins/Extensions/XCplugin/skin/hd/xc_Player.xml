@@ -52,8 +52,8 @@
 		<convert type="ConditionalShowHide" />
 	</widget>
     	<!-- Poster -->
-	<ePixmap position="1036,320" size="213,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/grid.png" alphatest="blend" zPosition="5" />
-    	<widget name="poster" position="1043,320" size="199,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvlogo.jpg" scale="1" zPosition="2" transparent="1" />
+	<ePixmap position="1037,320" size="213,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/grid.png" alphatest="blend" zPosition="5" />
+    <widget name="poster" position="1043,320" size="200,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvlogo.jpg" scale="1" zPosition="2" transparent="1" />
 	<!-- PlayerKeys  FW -->
 	<ePixmap position="710,566" size="28,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/ff.png" zPosition="-1" />
 	<eLabel text="  (+10s)" position="753,564" size="100,23" font="Regular;21" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1" /> 		
