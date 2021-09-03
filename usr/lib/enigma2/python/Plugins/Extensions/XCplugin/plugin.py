@@ -119,6 +119,24 @@ try:
 except ImportError:
     eDVBDB = None
 
+try:
+    from OpenSSL import SSL
+    from twisted.internet import ssl
+    from twisted.internet._sslverify import ClientTLSOptions
+    sslverify = True
+except:
+    sslverify = False
+
+if sslverify:
+    class SNIFactory(ssl.ClientContextFactory):
+        def __init__(self, hostname=None):
+            self.hostname = hostname
+
+        def getContext(self):
+            ctx = self._contextFactory(self.method)
+            if self.hostname:
+                ClientTLSOptions(self.hostname, ctx)
+            return ctx
 
 def MemClean():
     try:
@@ -162,7 +180,7 @@ else:
 config.plugins.XCplugin = ConfigSubsection()
 config.plugins.XCplugin.data = ConfigYesNo(default=False)
 config.plugins.XCplugin.hostaddress = ConfigText(default="exampleserver.com")
-config.plugins.XCplugin.port = ConfigNumber(default=8080)
+config.plugins.XCplugin.port = ConfigNumber(default=80)
 config.plugins.XCplugin.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 config.plugins.XCplugin.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
 config.plugins.XCplugin.panel = ConfigSelection(default="player_api", choices=[("player_api", _("player_api")), ("panel_api", _("panel_api"))])
@@ -176,6 +194,14 @@ config.plugins.XCplugin.bouquettop = ConfigSelection(default="Bottom", choices=[
 config.plugins.XCplugin.picons = ConfigYesNo(default=False)
 config.plugins.XCplugin.pthpicon = ConfigDirectory(default="/media/hdd/picon")
 config.plugins.XCplugin.pthmovie = ConfigDirectory(default="/media/hdd/movie")
+try:
+    from Components.UsageConfig import defaultMoviePath
+    downloadpath = defaultMoviePath()
+    config.plugins.XCplugin.pthmovie = ConfigDirectory(default=downloadpath)
+except:
+    if os.path.exists("/usr/bin/apt-get"):
+        config.plugins.XCplugin.pthmovie   = ConfigDirectory(default='/media/hdd/movie')
+
 config.plugins.XCplugin.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
 config.plugins.XCplugin.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
 config.plugins.XCplugin.strtmain = ConfigYesNo(default=True)
@@ -236,10 +262,10 @@ def check_port(tport):
     protocol = 'http://'
     domain = ''
     port = ''
-    if str(config.plugins.XCplugin.port.value) != '8080':
+    if str(config.plugins.XCplugin.port.value) != '80':
         port = str(config.plugins.XCplugin.port.value)
     else:
-        port = 8080
+        port = 80
     host = ''
     urlsplit1 = line.split("/")
     protocol = urlsplit1[0] + "//"
