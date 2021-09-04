@@ -30,4 +30,4 @@ else:
         else:
             # print ('[' + PluginLanguageDomain + '] fallback to default translation for ' + txt)
             return gettext.gettext(txt)
-    language.addCallback(localeInit())
+    language.addCallback(localeInit)
