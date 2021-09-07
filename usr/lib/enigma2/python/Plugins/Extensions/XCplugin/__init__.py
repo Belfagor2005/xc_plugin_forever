@@ -4,9 +4,9 @@ from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 import gettext
 from os import environ as os_environ
-plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/'
 PluginLanguageDomain = 'XCplugin'
-PluginLanguagePath = plugin_path + 'locale'
+PluginLanguagePath = 'Extensions/XCplugin/locale'
+
 try:
     from enigma import eMediaDatabase
     xcDreamOS = True
@@ -31,3 +31,5 @@ else:
             # print ('[' + PluginLanguageDomain + '] fallback to default translation for ' + txt)
             return gettext.gettext(txt)
     language.addCallback(localeInit)
+    
+ 
