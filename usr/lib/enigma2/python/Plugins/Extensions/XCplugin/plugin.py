@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 11.08.2021
+# 10.09.2021
 # from __future__ import print_function
 # for localized messages
 from . import _
@@ -34,7 +34,6 @@ from enigma import eTimer, eListboxPythonMultiContent, gFont, getDesktop, eEnv, 
 from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from twisted.web.client import downloadPage
-# from xml.etree.cElementTree import fromstring, ElementTree
 from xml.etree.ElementTree import fromstring, ElementTree
 
 from sys import version_info
@@ -50,10 +49,9 @@ import sys
 # import tempfile
 import time
 import zlib
-# from . import imghdr
 
-global xcDreamOS, piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path, epgimport_path
-global isStream, btnsearch, eserv, infoname, tport, nochange, filtertmdb, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
+global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path, epgimport_path #, nochange
+global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
 
 _session = " "
 version = "XC Forever V.1.6"
@@ -69,7 +67,7 @@ iptv_list_tmp = []
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
 HD = getDesktop(0).size()
 plugin_path = os.path.dirname(sys.modules[__name__].__file__)
-nochange = True
+# nochange = True
 skin_path = plugin_path
 iconpic = plugin_path + "/plugin.png"
 filterlist = plugin_path + "/cfg/filterlist.txt"
@@ -78,7 +76,6 @@ epgimport_path = '/etc/epgimport/'
 Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
 urlinfo = ""
-xcDreamOS = False
 e2m3upy = plugin_path + '/bouquet/'
 
 PY3 = sys.version_info.major >= 3
@@ -97,13 +94,6 @@ except ImportError:
     class SubsSupportStatus(object):
         def __init__(self, *args, **kwargs):
             pass
-
-try:
-    from enigma import eMediaDatabase
-    xcDreamOS = True
-except ImportError:
-    xcDreamOS = False
-
 
 def checkStr(txt):
     if six.PY3:
@@ -212,7 +202,6 @@ config.plugins.XCplugin.timetype = ConfigSelection(default="interval", choices=[
 config.plugins.XCplugin.fixedtime = ConfigClock(default=0)
 # config.plugins.XCplugin.typedown                      = ConfigSelection(default = "jobmanager", choices = ["jobmanager","downloadpage"])
 
-
 piclogo = plugin_path + "/skin/fhd/iptvlogo.jpg"
 if HD.width() <= 1280:
     CHANNEL_NUMBER = [3, 5, 50, 40, 0]
@@ -229,7 +218,7 @@ elif HD.width() <= 1920:
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
     skin_path = plugin_path + "/skin/fhd"
-if xcDreamOS:
+if os.path.exists('/var/lib/dpkg/status'):
     iconpic = "plugin.png"
     skin_path =  skin_path +  '/dreamOs'
 
@@ -313,7 +302,7 @@ class xc_config(Screen, ConfigListScreen):
         self.setup_title = _("XtreamCode-Config")
         self.onChangedEntry = []
         self.downloading = False
-        self["info2"] = Label("")
+        # self["info2"] = Label("")
         self["playlist"] = Label()
         self["playlist"].setText(infoname)
         self["version"] = Label(version)
@@ -538,8 +527,8 @@ class xc_config(Screen, ConfigListScreen):
             f.close()
 
     def save(self):
-        global nochange
-        nochange = True
+        # global nochange
+        # nochange = True
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
@@ -548,7 +537,7 @@ class xc_config(Screen, ConfigListScreen):
             config.plugins.XCplugin.pthmovie.save()
             configfile.save()
             self.xml_plugin()
-            nochange = False
+            # nochange = False
             self.mbox = self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
@@ -683,7 +672,6 @@ class iptv_streamse():
                 self.playlistname = 'no_name'
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
-
                     self.playlistname = xml.findtext('playlist_name').encode('utf-8')
                 self.next_page_url = xml.findtext("next_page_url")
                 next_page_text_element = xml.findall("next_page_url")
@@ -990,7 +978,6 @@ class IPTVInfoBarShowHide():
         print(text + " %s\n" % obj)
 
 class xc_Main(Screen):
-
     def __init__(self, session):
         global STREAMS
         global _session
@@ -1119,29 +1106,23 @@ class xc_Main(Screen):
             self["exp"].setText("Server Not Responding")
             url_info = 'http://' + host + ':' + ports + '/' + panel + '.php?username=' + user + '&password=' + password + '&action=user&sub=info'
             data = getJsonURL(url_info)
-            # message = ''
             user = ''
             status = ''
             create_date = ''
             exp_date = ''
             auth = 'Not Authorised'
-            # is_trial = ''
             active_cons = ''
             max_cons = ''
-            # formats = ''
             ui = data.get('user_info')
             ux = data.get('server_info')
             if ui:
-                # message = ui.get('message', '~')
                 user = ui.get('username', '~')
                 status = ui.get('status', '~')
                 auth = ui.get('auth', '~')
                 create_date = ui.get('created_at', None)
                 exp_date = ui.get('exp_date', None)
-                # is_trial = ui.get('is_trial', '~')
                 active_cons = ui.get('active_cons', '~')
                 max_cons = ui.get('max_connections', '~')
-                # formats = ui.get('allowed_output_formats', '~')
             else:
                 print("No info!")
             if create_date:
@@ -1289,7 +1270,6 @@ class xc_Main(Screen):
             try:
                 if series is True:
                     pmovies = True
-                    # title = titleserie.replace(' ', '').replace('[', '').replace(']', '').lower()
                     title = str(STREAMS.playlistname).replace(' ', '').replace('[', '').replace(']', '').lower()
                     filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', title)
                     filename = re.sub(r' ', '_', filename)
@@ -1315,17 +1295,9 @@ class xc_Main(Screen):
                         print('extttttttttttttt', ext)
                         if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv':
                             ext = '.mp4'
-                        # title_translit = cyr2lat(name)
-                        # name = ASCIItranslit.legacyEncode(title_translit)
                         name = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', name)
-                        # filename = filename + "." + ext
                         name = name + ext
                         name = name.replace('..', '.')
-                        # name = checkStr(name)
-                        # name = name + ext
-                        # if PY3 == 3:
-                            # # url = url.encode()
-                            # url = url.encode('utf-8')
                         name = checkStr(name)
                         url = checkStr(url)
                         print('name ======= ', name)
@@ -1392,13 +1364,11 @@ class xc_Main(Screen):
                 selected = self.vod_url #str(stream_vod)
                 if six.PY3 == 3:
                     selected = selected.encode()
-                # selected = stream_vod
                 filename = str(self.selected_channel[1])
                 filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
                 filename = re.sub(r' ', '_', filename)
                 filename = re.sub(r'_+', '_', filename)
                 filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+", "_").replace("\'", "_").replace("'", "_")
-                # filename = checkStr(filename)
                 path = urlparse(selected).path
                 ext = splitext(path)[-1]
                 filename = str(filename) + str(ext)
@@ -1408,9 +1378,6 @@ class xc_Main(Screen):
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
-                #test 1
-                # from .downloader import imagedownloadScreen
-                #name='', target='', url=''
                 self.timerDownload = eTimer()
                 try:
                     self.timerDownload.callback.append(self.downloadx)
@@ -1419,14 +1386,6 @@ class xc_Main(Screen):
                 self.timerDownload.start(300, True)
                 # self.session.open(imagedownloadScreen, filename, Path_Movies + filename, str(selected))
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_INFO)
-                # #test 2
-                # useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-                # #useragentcmd = {'User-Agent': 'Enigma2 - XC Plugin'}
-                # cmd = WGET + " %s -c '%s' -O '%s%s'" %(useragentcmd, selected, Path_Movies, filename)
-                # self.icount += 1
-                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
-                # self.LastJobView()
-
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
@@ -1487,29 +1446,25 @@ class xc_Main(Screen):
                 pass
 
     def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            size = self['poster'].instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
-                    self['poster'].instance.setPixmap(gPixmapPtr())
-                else:
-                    self.picload.startDecode(png, 0, 0, False)
-                    self['poster'].instance.setPixmap(None)
-            ptr = self.picload.getData()
-            if ptr is not None:
-                # self.instance.setPixmap(ptr)
-                # self.instance.show()
-                self['poster'].instance.setPixmap(ptr)
-                self['poster'].show()
+        size = self['poster'].instance.size()
+        self.picload = ePicLoad()
+        sc = AVSwitch().getFramebufferScale()
+        if self.picload:
+            self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+            if os.path.exists('/var/lib/dpkg/status'):
+                self.picload.startDecode(png, False)
+                self['poster'].instance.setPixmap(gPixmapPtr())
             else:
-                print('no cover.. error')
-                self.instance.hide()
-            return
+                self.picload.startDecode(png, 0, 0, False)
+                self['poster'].instance.setPixmap(None)
+        ptr = self.picload.getData()
+        if ptr is not None:
+            self['poster'].instance.setPixmap(ptr)
+            self['poster'].show()
+        else:
+            print('no cover.. error')
+            self.instance.hide()
+        return
 #work
     # def decodeImage(self, png):
             # self["poster"].show()
@@ -1875,7 +1830,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["poster"] = Pixmap()
         global vod_url, title, descr
         vod_url = None
-        if not xcDreamOS:
+        if not os.path.exists('/var/lib/dpkg/status'):
             self.picload = ePicLoad()
         self.picfile = ""
         if recorder_sref:
@@ -1951,8 +1906,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.new_aspect = temp
         self.setAspect(temp)
 
-
-
     def setCover(self):
         global selected_channel
         self['poster'].instance.setPixmapFromFile(piclogo)
@@ -1993,29 +1946,25 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
 
     def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            size = self['poster'].instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
-                    self['poster'].instance.setPixmap(gPixmapPtr())
-                else:
-                    self.picload.startDecode(png, 0, 0, False)
-                    self['poster'].instance.setPixmap(None)
-            ptr = self.picload.getData()
-            if ptr is not None:
-                # self.instance.setPixmap(ptr)
-                # self.instance.show()
-                self['poster'].instance.setPixmap(ptr)
-                self['poster'].show()
+        size = self['poster'].instance.size()
+        self.picload = ePicLoad()
+        sc = AVSwitch().getFramebufferScale()
+        if self.picload:
+            self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+            if os.path.exists('/var/lib/dpkg/status'):
+                self.picload.startDecode(png, False)
+                self['poster'].instance.setPixmap(gPixmapPtr())
             else:
-                print('no cover.. error')
-                self.instance.hide()
-            return
+                self.picload.startDecode(png, 0, 0, False)
+                self['poster'].instance.setPixmap(None)
+        ptr = self.picload.getData()
+        if ptr is not None:
+            self['poster'].instance.setPixmap(ptr)
+            self['poster'].show()
+        else:
+            print('no cover.. error')
+            self.instance.hide()
+        return
 
     # def decodeImage(self, png):
             # self["poster"].show()
@@ -2177,23 +2126,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 selected_channel = iptv_list_tmp[STREAMS.list_index]
                 vod_url = selected_channel[4]
                 vod_url = check_port(vod_url)
-                # if PY3:
-                    # #url = url.encode()
-                    # vod_url = vod_url.encode('utf-8')
                 title = selected_channel[1]
                 self.session.open(MessageBox, (_("BLUE = START PLAY RECORDED VIDEO")), type=MessageBox.TYPE_INFO, timeout=5)
                 self.session.nav.stopService()
                 self["state"].setText("RECORD")
                 useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
                 path = urlparse(vod_url).path
-                # ext = splitext(path)[1]
                 ext = str(os.path.splitext(path)[-1])
                 print('extttttttttttttt', ext)
-                # title_translit = cyr2lat(title)
-                # filename = ASCIItranslit.legacyEncode(title_translit)
-                # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
                 filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', filename)
-                # filename = filename + "." + ext
                 filename = filename + ext
                 vod_url = checkStr(vod_url)
                 filename = checkStr(filename)
@@ -2365,21 +2306,6 @@ class xc_StreamTasks(Screen):
         self['movielist'].setList(self.movielist)
         self['movielist'].updateList(self.movielist)
 
-    # def rebuildMovieList(self):
-        # if os.path.exists(Path_Movies):
-            # all = self.movielist = [:]
-            # # idx = self["movielist"].getCurrent()
-            # # idx = self["movielist"].getSelectionIndex()
-            # del all
-            # self.getMovieList()
-            # self.getTaskList()
-            # self["movielist"].setList(self.movielist)
-            # self["movielist"].updateList(self.movielist)
-        # else:
-            # message = "The Movie path not configured or path not exist!!!"
-            # web_info(message)
-            # self.close()
-
     def getTaskList(self):
         for job in JobManager.getPendingJobs():
             self.movielist.append((
@@ -2417,17 +2343,8 @@ class xc_StreamTasks(Screen):
                         continue
                     self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
 
-        # if pmovies is True and filelist2 is not None:
-            # file2 = True
-            # for filename2 in filelist2:
-                # if path.isfile(Path_Movies2 + filename2) and filename2.endswith(".meta") is False:
-                    # if ".m3u" in filename:
-                        # continue
-                    # self.movielist.append(("movie", filename2, _("Finished"), 100, "100%"))
-
     def keyOK(self):
         global file1, file2
-        #eserv = int(config.plugins.XCplugin.services.value)
         current = self["movielist"].getCurrent()
         ptch = Path_Movies
         if current:
@@ -2618,9 +2535,7 @@ class xc_help(Screen):
     def exit(self):
         self.close()
 
-
 class xc_Epg(Screen):
-
     def __init__(self, session, text_clear):
         self.session = session
         skin = skin_path + "/xc_epg.xml"
@@ -2778,7 +2693,6 @@ class OpenServer(Screen):
         self.session.open(xc_help)
 
 class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarSeek, InfoBarMoviePlayerSummarySupport):
-
     def __init__(self, session):
         self.session = session
         global _session
@@ -2804,7 +2718,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         # service = None
         self["channel_name"] = Label("")
         self["poster"] = Pixmap()
-        if not xcDreamOS:
+        if not os.path.exists('/var/lib/dpkg/status'):
             self.picload = ePicLoad()
         self.picfile = ""
         self["programm"] = Label("")
@@ -2974,29 +2888,25 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
 
     def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            size = self['poster'].instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
-                    self['poster'].instance.setPixmap(gPixmapPtr())
-                else:
-                    self.picload.startDecode(png, 0, 0, False)
-                    self['poster'].instance.setPixmap(None)
-            ptr = self.picload.getData()
-            if ptr is not None:
-                # self.instance.setPixmap(ptr)
-                # self.instance.show()
-                self['poster'].instance.setPixmap(ptr)
-                self['poster'].show()
+        size = self['poster'].instance.size()
+        self.picload = ePicLoad()
+        sc = AVSwitch().getFramebufferScale()
+        if self.picload:
+            self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+            if os.path.exists('/var/lib/dpkg/status'):
+                self.picload.startDecode(png, False)
+                self['poster'].instance.setPixmap(gPixmapPtr())
             else:
-                print('no cover.. error')
-                self.instance.hide()
-            return
+                self.picload.startDecode(png, 0, 0, False)
+                self['poster'].instance.setPixmap(None)
+        ptr = self.picload.getData()
+        if ptr is not None:
+            self['poster'].instance.setPixmap(ptr)
+            self['poster'].show()
+        else:
+            print('no cover.. error')
+            self.instance.hide()
+        return
 
     # def decodeImage(self, png):
             # self["poster"].show()
@@ -3407,10 +3317,9 @@ class xc_M3uPlay(Screen):
                     for name, url in match:
                             url = url.replace(' ', '')
                             url = url.replace('\\n', '')
-                            pic = pic
                             self.names.append(name)
                             self.urls.append(url)
-                            self.pics.append(pic)
+                            self.pics.append(pictmp)
                 m3ulistxc(self.names, self['list'])
                 self["live"].setText('N.' + str(len(self.names)) + " Stream")
             else:
@@ -4022,7 +3931,6 @@ def remove_line(filename, what):
                 file_write.write(line)
         file_write.close()
 
-
 if os.path.isfile(filterlist):
     global filtertmdb
     try:
@@ -4239,7 +4147,6 @@ class xc_home(Screen):
         conthelp += "and all those i forgot to mention."
         return conthelp
 
-
 class xc_maker(Screen):
     def __init__(self, session):
         self.session = session
@@ -4334,10 +4241,7 @@ Panel_list = [
     ('MOVIE'),
     ('M3U LOADER'),
     ('XC HELP'),
-    ('ABOUT')
-]
-pngl = plugin_path + '/skin/fhd/xcselh.png'
-png2 = plugin_path + '/skin/hd/xcsel.png'
+    ('ABOUT')]
 
 class xcList(MenuList):
     def __init__(self, list):
@@ -4358,6 +4262,8 @@ class xcList(MenuList):
             self.l.setItemHeight(60)
 
 def menuListEntry(name, idx):
+    pngl = plugin_path + '/skin/fhd/xcselh.png'
+    png2 = plugin_path + '/skin/hd/xcsel.png'
     res = [name]
     if HD.width() > 1280:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(70, 40), png=loadPNG(pngl)))
@@ -4417,7 +4323,6 @@ def save_old():
     tag = "suls_iptv_"
     xc12 = urlinfo.replace("enigma2.php", "get.php")
     in_bouquets = 0
-    # desk_tmp = hls_opt = ''
     desk_tmp = ''
     if config.plugins.XCplugin.typem3utv.value == 'MPEGTS to TV':
         xc2 = '&type=dreambox&output=mpegts'
@@ -4497,10 +4402,10 @@ def save_old():
     ReloadBouquet()
 
 def createCfg_xml():
-    # path = tempfile.gettempdir()
     global e2m3upy, n1
     e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy2.py"
     n1 = 'e2m3u2bouquetpy2.py'
+    
     if six.PY3:
         e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy3.py"
         n1 = 'e2m3u2bouquetpy3.py'
@@ -4514,27 +4419,26 @@ def createCfg_xml():
     os.system("cd /tmp")
     cmd2 = "chmod -R 777 " + n1
     os.system(cmd2)
-    username = str(config.plugins.XCplugin.user.value)
-    password = str(config.plugins.XCplugin.passw.value)
+
     all_bouquet = "0"
     iptv_types = "0"
+    multi_vod = "0"
+    bouquet_top = "0"
+    picons = "0"
+    username = str(config.plugins.XCplugin.user.value)
+    password = str(config.plugins.XCplugin.passw.value)    
+    streamtype_tv = config.plugins.XCplugin.live.value
+    streamtype_vod = config.plugins.XCplugin.services.value  
+    m3u_url = urlinfo.replace("enigma2.php", "get.php")
+    epg_url = urlinfo.replace("enigma2.php", "xmltv.php")    
     if config.plugins.XCplugin.typelist.value == "Multi Live & VOD":
         multi_vod = "1"
-    else:
-        multi_vod = "0"
     if config.plugins.XCplugin.bouquettop.value and config.plugins.XCplugin.bouquettop.value == "Top":
         bouquet_top = "1"
-    else:
-        bouquet_top = "0"
-    streamtype_tv = config.plugins.XCplugin.live.value
-    streamtype_vod = config.plugins.XCplugin.services.value
     if config.plugins.XCplugin.picons.value:
         picons = "1"
-    else:
-        picons = "0"
-    m3u_url = urlinfo.replace("enigma2.php", "get.php")
-    epg_url = urlinfo.replace("enigma2.php", "xmltv.php")
-    # indent = "      "
+
+
     with open(configfile, 'w') as f:
         configtext = '<config>\r\n'
         configtext += '\t<supplier>\r\n'
@@ -4557,7 +4461,6 @@ def createCfg_xml():
         configtext += '\t\t<bouquettop>' + bouquet_top + '</bouquettop>\r\n'
         configtext += '\t</supplier>\r\n'
         configtext += '</config>\r\n'
-
         f.write(configtext)
 
     dom = str(STREAMS.playlistname)

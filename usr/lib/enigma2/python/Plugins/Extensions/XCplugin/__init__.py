@@ -4,22 +4,17 @@ from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 import gettext
 from os import environ as os_environ
+import os
 PluginLanguageDomain = 'XCplugin'
 PluginLanguagePath = 'Extensions/XCplugin/locale'
 
-try:
-    from enigma import eMediaDatabase
-    xcDreamOS = True
-except:
-    xcDreamOS = False
-
 def localeInit():
-    if xcDreamOS:
+    if os.path.exists('/var/lib/dpkg/status'):
         lang = language.getLanguage()[:2]
         os_environ['LANGUAGE'] = lang
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
-if xcDreamOS:
+if os.path.exists('/var/lib/dpkg/status'):
     _ = lambda txt: (gettext.dgettext(PluginLanguageDomain, txt) if txt else '')
     localeInit()
     language.addCallback(localeInit)
