@@ -673,14 +673,17 @@ class iptv_streamse():
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
                     self.playlistname = xml.findtext('playlist_name').encode('utf-8')
+                    print('playlistname encode')
                 self.next_page_url = xml.findtext("next_page_url")
                 next_page_text_element = xml.findall("next_page_url")
                 if next_page_text_element:
                    self.next_page_text = next_page_text_element[0].attrib.get("text").encode("utf-8")
+                   print('next_page_text encode')
                 self.prev_page_url = xml.findtext("prev_page_url")
                 prev_page_text_element = xml.findall("prev_page_url")
                 if prev_page_text_element:
                         self.prev_page_text = prev_page_text_element[0].attrib.get("text").encode("utf-8")
+                        print('prev_page_text encode')
                     # self.playlistname = checkStr(xml.findtext('playlist_name'))
                 # self.next_page_url = checkStr(xml.findtext("next_page_url"))
                 # next_page_text_element = xml.findall("next_page_url")
@@ -734,8 +737,8 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         # if desc_image.startswith("https"):
                             desc_image = desc_image #.replace("https", "http")
-                    if six.PY3 == 3:
-                        desc_image = desc_image.encode()
+                    # if six.PY3 == 3:
+                        # desc_image = desc_image.encode()
                     epgnowtitle = ''
                     if stream_url:
                         isStream = True
@@ -851,7 +854,7 @@ class iptv_streamse():
                         else:
                             vodGenre = 'GENRE - NO INFO'
                         epgnowtitle = str(vodTitle)
-                        description = str(vodTitle) + '\n\n' + str(vodGenre) + '\n\nDuration: ' + str(vodDuration) + '\n\n' + str(vodDescription)
+                        description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                     chan_tulpe = (
                         chan_counter,
                         str(name),
@@ -893,10 +896,37 @@ class iptv_streamse():
                 next_request = 2
             urlinfo = url
             try:
-                req = Request(urlinfo, None, headers=headers)
-                if self.server_oki is True:
-                    xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
-                res = fromstring(xmlstream)
+                # req = Request(urlinfo, None, headers=headers)
+                # if self.server_oki is True:
+                    # xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
+                # res = fromstring(xmlstream)
+
+
+                res = []
+                url= checkStr(url)
+                try:
+                    print("Here in client1 getUrl url =", url)
+                    req = Request(url)
+                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                    response = urlopen(req)#.decode('utf-8')
+                    res=response.read()#.decode('utf-8')
+                    response.close()
+                    print("Here in client1 link =", res)
+                    res = fromstring(res)
+                    return res
+                except:
+                    print("Here in client2 getUrl url =", url)
+                    req = Request(url)
+                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                    response = urlopen(req, None, 3)
+                    res=response.read()#.decode('utf-8')
+                    response.close()
+                    print("Here in client2 link =", res)
+                    res = fromstring(res)
+                    return res
+                    
+        
+        
             except Exception as ex:
                 print(ex)
                 req.close()
@@ -906,6 +936,7 @@ class iptv_streamse():
         else:
             res = None
             return res
+
 
 class IPTVInfoBarShowHide():
     """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
@@ -1146,7 +1177,7 @@ class xc_Main(Screen):
                     try:
                         self["exp"].setText("Exp date:\n" + str(exp_date))
                     except:
-                        self["exp"].setText("Exp date:\n--------")
+                        self["exp"].setText("Exp date:\n")
                 self["max_connect"].setText("Max Connect: " + str(max_cons))
                 self["active_cons"].setText("User Active: " + str(active_cons))
             if ux:
@@ -1238,7 +1269,10 @@ class xc_Main(Screen):
         self.session.open(xc_StreamTasks)
 
     def show_more_info(self):
-        show_more_info()
+        name = self.channel_list[self.index]
+        name = str(name[1].lower())
+        print('nameee ', name)
+        show_more_info(name)
 
     def show_more_info_Title(self, truc):
         show_more_info_Title(truc)
@@ -1345,6 +1379,7 @@ class xc_Main(Screen):
         self.title = str(selected_channel[1])
         if six.PY3 == 3:
             stream_vod = stream_vod.encode()
+            print('stream_vod encode')
         if stream_vod is not None and btnsearch == 1:
             self.vod_url = stream_vod
             if self.vod_url.split(".")[-1].lower() != "ts":
@@ -1364,6 +1399,7 @@ class xc_Main(Screen):
                 selected = self.vod_url #str(stream_vod)
                 if six.PY3 == 3:
                     selected = selected.encode()
+                    print('selected encode')
                 filename = str(self.selected_channel[1])
                 filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.title)
                 filename = re.sub(r' ', '_', filename)
@@ -1524,8 +1560,8 @@ class xc_Main(Screen):
                 self.decodeImage(piclogo)
             if six.PY3:
                 pixmaps = six.ensure_binary(pixmaps)
-            print("debug: pixmaps:",pixmaps)
-            print("debug: pixmaps:",type(pixmaps))
+            # print("debug: pixmaps:",pixmaps)
+            # print("debug: pixmaps:",type(pixmaps))
             global tmp_image
             path = urlparse(pixmaps).path
             ext = splitext(path)[1]
@@ -1543,6 +1579,7 @@ class xc_Main(Screen):
                     sniFactory = SNIFactory(domain)
                     if six.PY3:
                         pixmaps = pixmaps.encode()
+                        print('pixmap encode 1')
                     downloadPage(pixmaps, tmp_image, sniFactory, timeout=5).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
                 else:
                     downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
@@ -1569,8 +1606,8 @@ class xc_Main(Screen):
                         self.decodeImage(piclogo)
                     if six.PY3:
                         pixmaps = six.ensure_binary(pixmaps)
-                    print("debug: pixmaps:",pixmaps)
-                    print("debug: pixmaps:",type(pixmaps))
+                    # print("debug: pixmaps:",pixmaps)
+                    # print("debug: pixmaps:",type(pixmaps))
                     global tmp_image
                     path = urlparse(pixmaps).path
                     ext = splitext(path)[1]
@@ -1588,6 +1625,7 @@ class xc_Main(Screen):
                             sniFactory = SNIFactory(domain)
                             if six.PY3:
                                 pixmaps = pixmaps.encode()
+                                print('pixmap encode 2')
                             downloadPage(pixmaps, tmp_image, sniFactory, timeout=5).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
                         else:
                             downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
@@ -1598,7 +1636,7 @@ class xc_Main(Screen):
                     self.decodeImage(piclogo)
 
                 if selected_channel[2] is not None:
-                    if stream_live is True:
+                    if stream_live == True:
                         description = selected_channel[2]
                         description2 = selected_channel[8]
                         description3 = selected_channel[6]
@@ -1668,8 +1706,8 @@ class xc_Main(Screen):
             selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
             STREAMS.list_index = self.mlist.getSelectionIndex()
             title = selected_channel[1]
-            # if selected_channel[0] != "[H]":
-                # title = ("[-]   ") + selected_channel[1]
+            if selected_channel[0] != "[H]":
+                title = ("[-]   ") + selected_channel[1]
             # selected_channel_history = (
                 # "[H]",
                 # title,
@@ -1732,7 +1770,7 @@ class xc_Main(Screen):
 
     def Entered(self):
         self.pin = True
-        if stream_tmp.find(".ts") > 0:
+        if len(stream_tmp) > 0: #.find(".ts") > 0:
             STREAMS.video_status = True
             STREAMS.play_vod = False
             print("------------------------ LIVE ------------------")
@@ -1916,8 +1954,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.decodeImage(piclogo)
             if six.PY3:
                 pixmaps = six.ensure_binary(pixmaps)
-            print("debug: pixmaps:",pixmaps)
-            print("debug: pixmaps:",type(pixmaps))
+            # print("debug: pixmaps:",pixmaps)
+            # print("debug: pixmaps:",type(pixmaps))
             global tmp_image
             path = urlparse(pixmaps).path
             ext = splitext(path)[1]
@@ -1935,6 +1973,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     sniFactory = SNIFactory(domain)
                     if six.PY3:
                         pixmaps = pixmaps.encode()
+                        print('pixmap encode 3')
                     downloadPage(pixmaps, tmp_image, sniFactory, timeout=5).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
                 else:
                     downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
@@ -2207,6 +2246,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.session.nav.stopService()
             STREAMS.play_vod = False
             self.session.nav.playService(self.oldService)
+        MemClean()
         self.close()
 
     def nextAR(self):
@@ -2218,7 +2258,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=3)
 
     def show_more_info(self):
-        show_more_info()
+        selected_channel = iptv_list_tmp[STREAMS.list_index]
+        if selected_channel:
+            selected_channel = iptv_list_tmp[STREAMS.list_index]
+            title = selected_channel[1]
+            title = str(title.lower())
+            print('nameee ', title)
+            show_more_info(title)
 
     def show_more_info_Title(self, truc):
         show_more_info_Title(truc)
@@ -2786,6 +2832,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
     def exit(self):
         self.session.nav.stopService()
         self.session.nav.playService(self.oldService)
+        MemClean()
         self.close()
 
     def power_off(self):
@@ -2820,12 +2867,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                             if six.PY3 == 3:
                                 desc_image = desc_image.encode()
+                                print('pixmap encode 4')
                             if selected_channel[3].startswith(b"http") and sslverify:
                                 parsed_uri = urlparse(selected_channel[3])
                                 domain = parsed_uri.hostname
                                 sniFactory = SNIFactory(domain)
                                 if six.PY3 == 3:
                                     selected_channel[3] = selected_channel[3].encode()
+                                    print('selected_channel[3] encode')
                                 print('uurrll: ', selected_channel[3])
                                 downloadPage(selected_channel[3], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                             else:
@@ -2881,7 +2930,10 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         self.session.open(xc_help)
 
     def show_more_info(self):
-        show_more_info()
+        name = self.channel_list[self.index]
+        name = str(name[1].lower())
+        print('nameee ', name)
+        show_more_info(name)
 
     def show_more_info_Title(self, truc):
         show_more_info_Title(truc)
@@ -3361,6 +3413,7 @@ class xc_M3uPlay(Screen):
                 urlm3u = self.urls[idx]
                 if six.PY3 == 3:
                     urlm3u = urlm3u.encode()
+                    print('urlm3u encode')
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
                 fileTitle = re.sub(r'_+', '_', fileTitle)
@@ -3487,12 +3540,12 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.setAspect(temp)
 
     def showIMDB(self):
-        if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.pyo"):
+        if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.py"):
             from Plugins.Extensions.TMBD.plugin import TMBD
             text_clear = self.name
             text = charRemove(text_clear)
             self.session.open(TMBD, text, False)
-        elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb/plugin.pyo"):
+        elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb/plugin.py"):
             from Plugins.Extensions.IMDb.plugin import IMDB
             text_clear = self.name
             text = charRemove(text_clear)
@@ -4273,27 +4326,41 @@ def menuListEntry(name, idx):
         res.append(MultiContentEntryText(pos=(100, 2), size=(1000, 50), font=5, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
-def show_more_info():
-    text_clear = ""
+
+# chan_counter,
+# str(name),
+# str(description),
+# piconname,
+# stream_url,
+# playlist_url,
+# str(category_id),
+# desc_image,
+# str(description4playlist_html),
+# ts_stream,
+# epgnowtitle)
+def show_more_info(name):
+    
+    text_clear = name
     if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
         text = re.compile("<[\\/\\!]*?[^<>]*?>")
-        if stream_live:
+        if stream_live == True:
             text2 = selected_channel[2]
             text3 = selected_channel[8]
             text_clear = str(text2) + '\n\n' + str(text3)
             _session.open(xc_Epg, text_clear)
         else:
-            if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.pyo"):
+            if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.py"):
                 from Plugins.Extensions.TMBD.plugin import TMBD
-                text_clear = str(selected_channel[10])
+                # text_clear = str(selected_channel[1]) #10 ?
+                # print('Tmdb ', text_clear)
                 text = charRemove(text_clear)
                 _session.open(TMBD, text, False)
-            elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb/plugin.pyo"):
+            elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb/plugin.py"):
                 from Plugins.Extensions.IMDb.plugin import IMDB
-                text_clear = str(selected_channel[10])
+                # text_clear = str(selected_channel[1]) #10 ?
+                # print('imdb ', text_clear)
                 text = charRemove(text_clear)
-                HHHHH = text
-                _session.open(IMDB, HHHHH)
+                _session.open(IMDB, text)
             else:
                 text_clear = str(selected_channel[2])
                 _session.open(xc_Epg, text_clear)
@@ -4405,7 +4472,7 @@ def createCfg_xml():
     global e2m3upy, n1
     e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy2.py"
     n1 = 'e2m3u2bouquetpy2.py'
-    
+
     if six.PY3:
         e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy3.py"
         n1 = 'e2m3u2bouquetpy3.py'
@@ -4426,11 +4493,11 @@ def createCfg_xml():
     bouquet_top = "0"
     picons = "0"
     username = str(config.plugins.XCplugin.user.value)
-    password = str(config.plugins.XCplugin.passw.value)    
+    password = str(config.plugins.XCplugin.passw.value)
     streamtype_tv = config.plugins.XCplugin.live.value
-    streamtype_vod = config.plugins.XCplugin.services.value  
+    streamtype_vod = config.plugins.XCplugin.services.value
     m3u_url = urlinfo.replace("enigma2.php", "get.php")
-    epg_url = urlinfo.replace("enigma2.php", "xmltv.php")    
+    epg_url = urlinfo.replace("enigma2.php", "xmltv.php")
     if config.plugins.XCplugin.typelist.value == "Multi Live & VOD":
         multi_vod = "1"
     if config.plugins.XCplugin.bouquettop.value and config.plugins.XCplugin.bouquettop.value == "Top":
