@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # 16.09.2021
 # from __future__ import print_function
 # for localized messages
@@ -36,7 +35,6 @@ from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from twisted.web.client import downloadPage
 from xml.etree.ElementTree import fromstring, ElementTree
-
 from sys import version_info
 import six
 import base64
@@ -1619,11 +1617,9 @@ class xc_Main(Screen):
         if re_search:
             self.channel_list = iptv_list_tmp
 
-
         # if re_search == False:
             # self.channel_list = iptv_list_tmp
         # re_search == False
-
 
         if 'season' or 'series' in stream_url.lower():
             if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in stream_url:
@@ -1795,7 +1791,6 @@ class xc_Main(Screen):
         except Exception as ex:
             print(ex)
 
-
 class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
     STATE_IDLE = 0
     STATE_PLAYING = 1
@@ -1819,13 +1814,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
-
         try:
             self.init_aspect = int(self.getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-
         self.service = None
         # service = None
         self["state"] = Label("")
@@ -1912,9 +1905,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.setAspect(temp)
 
     def setCover(self):
-
         global selected_channel
-
         self['poster'].instance.setPixmapFromFile(piclogo)
         selected_channel = iptv_list_tmp[STREAMS.list_index]
         pixmaps = str(selected_channel[7])
@@ -1947,7 +1938,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 else:
 
                     downloadPage(pixmaps, tmp_image).addCallback(self.image_downloaded, tmp_image).addErrback(self.downloadError)
-
             except Exception as ex:
                 print(ex)
                 print("Error: can't find file or read data")
@@ -2524,7 +2514,6 @@ class xc_help(Screen):
     def exit(self):
         self.close()
 
-
 class xc_Epg(Screen):
 
     def __init__(self, session, text_clear):
@@ -2680,9 +2669,7 @@ class OpenServer(Screen):
     def help(self):
         self.session.open(xc_help)
 
-
 class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarSeek, InfoBarMoviePlayerSummarySupport):
-
     def __init__(self, session):
         self.session = session
         global _session
@@ -2925,7 +2912,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             print(ex)
             print('exe downloadError')
 
-
 def xcm3ulistEntry(download):
     res = [download]
     white = 16777215
@@ -2938,7 +2924,6 @@ def xcm3ulistEntry(download):
         res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 30), text=download, color=col, color_sel=white, backcolor_sel=blue))
     return res
 
-
 def m3ulistxc(data, list):
     icount = 0
     mlist = []
@@ -2947,7 +2932,6 @@ def m3ulistxc(data, list):
         mlist.append(xcm3ulistEntry(name))
         icount = icount + 1
     list.setList(mlist)
-
 
 class xcM3UList(MenuList):
     def __init__(self, list):
@@ -2961,10 +2945,8 @@ class xcM3UList(MenuList):
             # textfont = int(18)
             self.l.setFont(0, gFont("Regular", 24))
 
-
 class xc_Play(Screen):
     def __init__(self, session):
-
         self.session = session
         skin = skin_path + "/xc_M3uLoader.xml"
         with open(skin, 'r') as f:
@@ -2993,7 +2975,6 @@ class xc_Play(Screen):
             "blue": self.message3,
             "cancel": self.cancel,
             "ok": self.runList}, -2)
-
         self.onFirstExecBegin.append(self.openList)
         self.onLayoutFinish.append(self.layoutFinished)
 
@@ -3371,7 +3352,6 @@ class xc_M3uPlay(Screen):
             self.session.nav.playService(srefInit)
             self.close()
 
-
 class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, InfoBarAudioSelection, IPTVInfoBarShowHide, InfoBarSubtitleSupport):
     STATE_IDLE = 0
     STATE_PLAYING = 1
@@ -3459,9 +3439,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.new_aspect = temp
         self.setAspect(temp)
 
-
     def showIMDB(self):
-
         if fileExists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD/plugin.py"):
             from Plugins.Extensions.TMBD.plugin import TMBD
             text_clear = self.name
@@ -3552,7 +3530,6 @@ _session = None
 autoStartTimer = None
 
 class AutoStartTimer:
-
     def __init__(self, session):
         self.session = session
         self.timer = eTimer()
@@ -3683,7 +3660,6 @@ class downloadJob(Job):
 
 class downloadTask(Task):
     ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
-
     def __init__(self, job, cmdline, filename, downloadStop):
         Task.__init__(self, job, _("Downloading ..."))
         self.setCmdline(cmdline)
@@ -3735,7 +3711,6 @@ VIDEO_ASPECT_RATIO_MAP = {
 
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
-
 def nextAR():
     try:
         STREAMS.ar_id_player += 3
@@ -3768,7 +3743,6 @@ def channelEntryIPTVplaylist(entry):
         (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NAME[0], CHANNEL_NAME[1], CHANNEL_NAME[2], CHANNEL_NAME[3], CHANNEL_NAME[4], RT_HALIGN_LEFT, entry[1])]
     return menu_entry
 
-
 def web_info(message):
     try:
         message = quote_plus(str(message))
@@ -3778,10 +3752,8 @@ def web_info(message):
     except:
         print("web_info ERROR")
 
-
 def debug(obj, text=""):
     print("%s" % text + " %s\n" % obj)
-
 
 conversion = {
     str("\xd0\xb0"): "a",
@@ -3868,14 +3840,12 @@ def cyr2lat(text):
         retval += bukva_translit
     return retval
 
-
 def ReloadBouquet():
     try:
         eDVBDB.getInstance().reloadServicelist()
         eDVBDB.getInstance().reloadBouquets()
     except:
         os.system('wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &')
-
 
 def uninstaller():
     """Clean up routine to remove any previously made changes
@@ -3902,11 +3872,9 @@ def uninstaller():
         print(ex)
         raise
 
-
 def OnclearMem():
     os.system("sync")
     os.system("echo 3 > /proc/sys/vm/drop_caches")
-
 
 def remove_line(filename, what):
     if os.path.isfile(filename):
@@ -3916,7 +3884,6 @@ def remove_line(filename, what):
             if what not in line:
                 file_write.write(line)
         file_write.close()
-
 
 if os.path.isfile(filterlist):
     global filtertmdb
@@ -3931,7 +3898,6 @@ if os.path.isfile(filterlist):
             filtertmdb = dict
     except:
         filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
-
 
 def charRemove(text):
     char = ["1080p",
@@ -3993,9 +3959,7 @@ def charRemove(text):
         myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("       ", " ").strip()
     return myreplace
 
-
 class xc_home(Screen):
-
     def __init__(self, session):
         self.session = session
         skin = skin_path + "/xc_home.xml"
@@ -4137,9 +4101,7 @@ class xc_home(Screen):
         conthelp += "and all those i forgot to mention."
         return conthelp
 
-
 class xc_maker(Screen):
-
     def __init__(self, session):
         self.session = session
         skin = skin_path + "/xc_maker.xml"
@@ -4225,7 +4187,6 @@ class xc_maker(Screen):
         conthelp += "    but what we use worst.(William Penn)"
         return conthelp
 
-
 Panel_list = [
     ('HOME'),
     ('PLAYLIST'),
@@ -4235,9 +4196,6 @@ Panel_list = [
     ('M3U LOADER'),
     ('XC HELP'),
     ('ABOUT')]
-
-
-
 
 class xcList(MenuList):
     def __init__(self, list):
@@ -4257,7 +4215,6 @@ class xcList(MenuList):
         else:
             self.l.setItemHeight(60)
 
-
 def menuListEntry(name, idx):
     pngl = plugin_path + '/skin/fhd/xcselh.png'
     png2 = plugin_path + '/skin/hd/xcsel.png'
@@ -4270,12 +4227,10 @@ def menuListEntry(name, idx):
         res.append(MultiContentEntryText(pos=(100, 2), size=(1000, 50), font=5, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
-
 def show_more_info(name, index):
     text_clear = name
     if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
         text = re.compile("<[\\/\\!]*?[^<>]*?>")
-
         index = index
         selected_channel = iptv_list_tmp[index]
         if selected_channel:
@@ -4307,7 +4262,6 @@ def show_more_info(name, index):
                     text_clear += str(text2) + '\n\n' + str(text3)
                     _session.open(xc_Epg, text_clear)
 
-
     else:
         message = (_("Please enter correct parameters in Config\n no valid list "))
         web_info(message)
@@ -4327,7 +4281,6 @@ def show_more_info_Title(truc):
         print(ex)
         text_clear_1 = "mkach"
     return text_clear_1
-
 
 def save_old():
     fldbouquet = "/etc/enigma2/bouquets.tv"
@@ -4413,13 +4366,11 @@ def save_old():
             os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
     ReloadBouquet()
 
-
 def createCfg_xml():
 
     global e2m3upy, n1
     e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy2.py"
     n1 = 'e2m3u2bouquetpy2.py'
-
     if six.PY3:
         e2m3u2bouquet = e2m3upy + "e2m3u2bouquetpy3.py"
         n1 = 'e2m3u2bouquetpy3.py'
@@ -4433,9 +4384,6 @@ def createCfg_xml():
     os.system("cd /tmp")
     cmd2 = "chmod -R 777 " + n1
     os.system(cmd2)
-
-
-
     all_bouquet = "0"
     iptv_types = "0"
     multi_vod = "0"
@@ -4484,7 +4432,6 @@ def createCfg_xml():
     com = ("python /tmp/%s") % n1
     _session.open(Console, _("Conversion %s in progress: ") % dom, ["%s" % com], closeOnSuccess=True)
 
-
 class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, IPTVInfoBarShowHide):
     def __init__(self, session, name, url):
         Screen.__init__(self, session)
@@ -4510,7 +4457,6 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
         self.name = name
         self.srefOld = self.session.nav.getCurrentlyPlayingServiceReference()
         self.onLayoutFinish.append(self.openTest)
-
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
