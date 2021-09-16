@@ -1431,21 +1431,21 @@ class xc_Main(Screen):
             try:
                 global ext
                 ext = '.mkv'
-                selected = stream_vod
+                self.vod_url = stream_vod
                 if six.PY3:
-                    selected = selected.encode()
+                    self.vod_url = self.vod_url.encode()
                 # self.filename = str(self.selected_channel[1])
                 # self.filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.filename)
                 self.filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
                 # self.filename = re.sub(r' ', '_', self.filename)
                 # self.filename = re.sub(r'_+', '_', self.filename)
                 # self.filename = self.filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                path = urlparse(selected).path
+                path = urlparse(self.vod_url).path
                 ext = splitext(path)[-1]
                 self.filename = str(self.filename) + str(ext)
                 print('self.filename3: ', str(self.filename))
                 print('extttttttttttttt', str(ext))
-                print('select: ', str(selected))
+                print('select: ', str(self.vod_url))
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
@@ -1455,7 +1455,7 @@ class xc_Main(Screen):
                 except:
                     self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloadx)
                 self.timerDownload.start(300, True)
-                # self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, selected)
+                # self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, self.vod_url)
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
@@ -1464,7 +1464,7 @@ class xc_Main(Screen):
     def downloadx(self):
         if self.downloading == True:
             from .downloader import imagedownloadScreen
-            self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, str(selected))
+            self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, str(self.vod_url))
         else:
             return
 
@@ -1474,11 +1474,11 @@ class xc_Main(Screen):
 
     def createMetaFile(self, filename):
         try:
-            selected = stream_vod
+            # self.vod_url = stream_vod
             text_clear = filename
             serviceref = eServiceReference(0x1001, 0, Path_Movies + text_clear)
             metafile = open("%s%s.meta" % (Path_Movies, text_clear), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), selected.replace("\n", ""), text_clear.replace("\n", ""), time()))
+            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), self.vod_url.replace("\n", ""), text_clear.replace("\n", ""), time()))
             metafile.close()
         except Exception as ex:
             print(ex)
