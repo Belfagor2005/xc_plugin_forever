@@ -3100,7 +3100,7 @@ class xc_Play(Screen):
             return
 
     def convert(self, result):
-       if result:
+        if result:
             self.convert_bouquet()
             return
         else:
