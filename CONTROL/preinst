@@ -1,17 +1,10 @@
 #!/bin/sh
-echo "Restart GUI after intallation..."
-echo "........................."
-echo "Checking for an older version in the system..."
-echo "........................."
-if [ -d /usr/lib/enigma2/python/Plugins/Extensions/XCplugin ]
-then
-#rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin > /dev/null 2>&1
-#opkg remove enigma2-plugin-extensions-xcplugin-lite
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin > /dev/null 2>&1
-echo "An older version was found and removed"
-echo "Proceeding to installation..."
-else
-echo "Proceeding to installation..."
-fi
-echo "Enjoy - Reboot system Necessary!..."
+echo
+echo "--- PreInst * IPK Scripting v1.0 - date 10.02.2021 ---"
+
+echo
+echo "Remove old folders..."
+rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/* &> /dev/null
+
+
 exit 0

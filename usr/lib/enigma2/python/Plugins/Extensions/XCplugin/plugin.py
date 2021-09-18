@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 17.09.2021
-# from __future__ import print_function
+# 18.09.2021
+from __future__ import print_function
 # for localized messages
 from . import _
 from Components.AVSwitch import AVSwitch
@@ -51,7 +51,7 @@ global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movi
 global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
 
 _session = " "
-version = "XC Forever V.1.6"
+version = "XC Forever V.1.7"
 re_search = False
 pmovies = False
 series = False
@@ -73,7 +73,6 @@ Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
 urlinfo = ""
 e2m3upy = plugin_path + '/bouquet/'
-
 
 PY3 = sys.version_info.major >= 3
 if six.PY3:
@@ -1097,8 +1096,8 @@ class xc_Main(Screen):
         self.onLayoutFinish.append(self.checkinf)
 
     def search_text(self):
-        # if re_search is True:
-        # re_search = False
+        if re_search is True:
+            re_search = False
         # text = ''
         self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.search)
 
@@ -1109,8 +1108,8 @@ class xc_Main(Screen):
             self.search = result  # search
             self.filter_search = [channel for channel in self.channel_list if str(result).lower() in channel[1].lower()]
             if len(self.filter_search):
-                # re_search = True
-                global iptv_list_tmp
+                global re_search, iptv_list_tmp
+                re_search = True
                 iptv_list_tmp = self.filter_search
                 self.mlist.setList(list(map(channelEntryIPTVplaylist, iptv_list_tmp)))
                 self.mlist.onSelectionChanged.append(self.update_description)
@@ -2771,8 +2770,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 text2 = str(selected_channel[2])
                 text_clear = text + '\n' + text2
             eserv = 4097
-            if config.plugins.XCplugin.LivePlayer.value is True:
-                eserv = int(config.plugins.XCplugin.live.value)
             self["programm"].setText(text_clear)
             try:
                 desc_image = ''
@@ -2806,12 +2803,16 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             except Exception as ex:
                 print(ex)
             try:
-                # eserv = 4097
-                # if config.plugins.XCplugin.LivePlayer.value is True:
-                    # eserv = int(config.plugins.XCplugin.live.value)
-                # print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
+
+                print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
                 url = selected_channel[4]
                 url = check_port(url)
+                if config.plugins.XCplugin.LivePlayer.value is True:
+                    eserv = int(config.plugins.XCplugin.live.value)
+                
+                if str(os.path.splitext(url)[-1]) == ".m3u8":
+                    if eserv == 1:
+                        eserv = 4097
                 self.session.nav.stopService()
                 if url != "" and url is not None:
                     sref = eServiceReference(eserv, 0, url)
@@ -3296,11 +3297,19 @@ class xc_M3uPlay(Screen):
                 if six.PY3:
                     self.urlm3u = self.urlm3u.encode()
                     print('self.urlm3u encode')
+                    
+                    
+                path = urlparse(self.urlm3u).path
+                ext = '.mp4'
+                ext = splitext(path)[1]
+                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != 'm3u8':
+                    ext = '.mp4'
+                    
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
                 fileTitle = re.sub(r'_+', '_', fileTitle)
                 fileTitle = fileTitle.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                fileTitle = fileTitle.lower() + '.mkv'
+                fileTitle = fileTitle.lower() + ext
                 self.in_tmp = Path_Movies + fileTitle
                 self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
                 self.download.addProgress(self.downloadProgress)
@@ -3308,7 +3317,9 @@ class xc_M3uPlay(Screen):
             else:
                 self.session.open(MessageBox, _('Download Failed!!!'), MessageBox.TYPE_WARNING)
                 pass
-
+        else:
+            self.downloading = False
+            
     def downloadProgress(self, recvbytes, totalbytes):
         self["progress"].show()
         self['progress'].value = int(100 * recvbytes / float(totalbytes))
