@@ -677,17 +677,18 @@ class iptv_streamse():
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
 
-                    self.playlistname = xml.findtext('playlist_name').encode('utf-8')
+                    self.playlistname = xml.findtext('playlist_name')#.encode('utf-8')
+                    # self.playlistname = checkStr(self.playlistname)
                     print('playlistname encode')
                 self.next_page_url = xml.findtext("next_page_url")
                 next_page_text_element = xml.findall("next_page_url")
                 if next_page_text_element:
-                   self.next_page_text = next_page_text_element[0].attrib.get("text").encode("utf-8")
+                   self.next_page_text = next_page_text_element[0].attrib.get("text")#.encode("utf-8")
                    print('next_page_text encode')
                 self.prev_page_url = xml.findtext("prev_page_url")
                 prev_page_text_element = xml.findall("prev_page_url")
                 if prev_page_text_element:
-                        self.prev_page_text = prev_page_text_element[0].attrib.get("text").encode("utf-8")
+                        self.prev_page_text = prev_page_text_element[0].attrib.get("text")#.encode("utf-8")
                         print('prev_page_text encode')
                     # self.playlistname = checkStr(xml.findtext('playlist_name'))
                 # self.next_page_url = checkStr(xml.findtext("next_page_url"))
@@ -708,7 +709,7 @@ class iptv_streamse():
                     category_id = ''
                     playlist_url = ''
                     desc_image = ''
-                    stream_url = ''
+                    # stream_url = ''
                     piconname = ''
                     ts_stream = ''
                     description4playlist_html = ''
@@ -744,9 +745,9 @@ class iptv_streamse():
                             desc_image = desc_image #.replace("https", "http")
                     # if six.PY3:
                         # desc_image = desc_image.encode()
-                    if stream_url:
+                    if stream_url and stream_url != "n/A" and stream_url != "":
                         isStream = True
-                    if stream_url and "/live/" in stream_url:
+                    if isStream and "/live/" in stream_url:
                         print("****** is live stream **** ")
                         stream_live = True
                         # time = ''
@@ -781,7 +782,7 @@ class iptv_streamse():
                                         epgnextdescription = descriptionmatch[1].strip()
                             description = epgnowtime + ' ' + name + '\n' + epgnowdescription
                             description4playlist_html = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
-                    if stream_url and "/movie/" in stream_url:
+                    if isStream and "/movie/" in stream_url:
                         stream_live = False
                         vodTitle = ''
                         vodDescription = ''
@@ -803,6 +804,12 @@ class iptv_streamse():
                             vodTitle = vodItems["O_NAME"]
                         else:
                             vodTitle = str(name)
+                            
+                        if "COVER_BIG" in vodItems:
+                            piconname = vodItems["COVER_BIG"]  
+                            if piconname:
+                                piconname = vodItems["COVER_BIG"]  
+                            
                         if "DESCRIPTION" in vodItems:
                             vodDescription = vodItems["DESCRIPTION"]
                         elif "PLOT" in vodItems:
@@ -820,7 +827,7 @@ class iptv_streamse():
                         name = str(vodTitle)
                         description = str(vodTitle) + '\n\n' + str(vodGenre) + '\n\nDuration: ' + str(vodDuration) + '\n\n' + str(vodDescription)
                         # ### ONLY TEST -- NO WORK
-                    if stream_url and "/series/" in stream_url:
+                    if isStream and "/series/" in stream_url:
                         stream_live = False
                         vodTitle = ''
                         vodDescription = ''
@@ -1243,13 +1250,13 @@ class xc_Main(Screen):
             self["key_green"].hide()
             self["key_yellow"].hide()
             self.mmark()
-        elif stream_url and "/live/" in stream_url and btnsearch == 1:
+        elif isStream and "/live/" in stream_url and btnsearch == 1:
             btnsearch = 0
             self["key_blue"].hide()
             self["key_green"].hide()
             self["key_yellow"].hide()
             self.mmark()
-        elif stream_url and "/movie/" in stream_url and btnsearch == 1:
+        elif isStream and "/movie/" in stream_url and btnsearch == 1:
             btnsearch = 0
             self["key_blue"].hide()
             self["key_green"].hide()
@@ -1314,10 +1321,10 @@ class xc_Main(Screen):
         if self.temp_index > -1:
             self.index = self.temp_index
 
-        if stream_url and "/live/" in stream_url:
+        if isStream and "/live/" in stream_url:
             self.mbox = self.session.open(MessageBox, _("This is Category or Live Player is active!!!"), MessageBox.TYPE_INFO, timeout=5)
 
-        elif stream_url and "/movie/" in stream_url:
+        elif isStream and "/movie/" in stream_url:
             self.mbox = self.session.open(MessageBox, _("But Only Series Episodes Allowed!!!\nThis Stream is Movie"), MessageBox.TYPE_INFO, timeout=5)
 
         elif series is True and btnsearch == 1:
@@ -1546,7 +1553,7 @@ class xc_Main(Screen):
 
 
     def update_description(self):
-        global selected_channel
+        # global selected_channel
         if not len(iptv_list_tmp):
             return
         if not self.resetSearch():
@@ -1561,34 +1568,35 @@ class xc_Main(Screen):
                 selected_channel = self.channel_list[self.index]
 
                 if selected_channel[7] != "" and selected_channel[7] != "n/A" and selected_channel[7] is not None:
+                    if six.PY3:
+                        selected_channel[7] = six.ensure_binary(selected_channel[7])  
+                                
                     if selected_channel[7].find("http") == -1:
                         self.decodeImage(piclogo)
                     else:
 
-                        if selected_channel[7].startswith('https'):
-                            desc_image = selected_channel[7] = selected_channel[7].replace('https', 'http')
-                            self.decodeImage(desc_image)
-                        else:
+                        if selected_channel[7].startswith('http'):
+                            # desc_image = selected_channel[7] = selected_channel[7] #.replace('https', 'http')
+                       
+                            # self.decodeImage(desc_image)
+                        # else:
                             m = hashlib.md5()
                             m.update(selected_channel[7])
                             cover_md5 = m.hexdigest()
                             desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
                             if os.path.exists(desc_image) is False or STREAMS.img_loader is False:
                                 desc_image = "%s/%s.jpg" % (Path_Tmp, cover_md5)
-                                if six.PY3:
-                                    desc_image = desc_image.encode()
-                                if selected_channel[7].startswith(b"https") and sslverify:
-                                    parsed_uri = urlparse(selected_channel[7])
-                                    domain = parsed_uri.hostname
-                                    sniFactory = SNIFactory(domain)
-                                    if six.PY3:
-                                        selected_channel[7] = selected_channel[7].encode()
-                                    print('uurrll: ', selected_channel[7])
-                                    downloadPage(selected_channel[7], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
-                                else:
-                                    downloadPage(selected_channel[7], desc_image).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
+
+                            if selected_channel[7].startswith(b"https") and sslverify:
+                                parsed_uri = urlparse(selected_channel[7])
+                                domain = parsed_uri.hostname
+                                sniFactory = SNIFactory(domain)
+                                print('uurrll: ', selected_channel[7])
+                                downloadPage(selected_channel[7], desc_image, sniFactory, timeout=5).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
                             else:
-                                self.decodeImage(desc_image)
+                                downloadPage(selected_channel[7], desc_image).addCallback(self.image_downloaded, desc_image).addErrback(self.downloadError)
+                            # else:
+                                # self.decodeImage(desc_image)
 
                 if selected_channel[2] is not None:
                     if stream_live == True:
@@ -1701,7 +1709,7 @@ class xc_Main(Screen):
     def ok_checked(self):
         if self.pin is False:
             return
-        global stream_tmp, selected_channel, title
+        global stream_tmp, title #, selected_channel
         try:
             if self.temp_index > -1:
                 self.index = self.temp_index
