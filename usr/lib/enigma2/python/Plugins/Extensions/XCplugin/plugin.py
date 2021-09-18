@@ -804,7 +804,6 @@ class iptv_streamse():
                             vodTitle = vodItems["O_NAME"]
                         else:
                             vodTitle = str(name)
-                            
                         if "COVER_BIG" in vodItems:
                             piconname = vodItems["COVER_BIG"]  
                             if piconname:
@@ -849,6 +848,10 @@ class iptv_streamse():
                             vodTitle = vodItems["O_NAME"]
                         else:
                             vodTitle = str(name)
+                        if "COVER_BIG" in vodItems:
+                            piconname = vodItems["COVER_BIG"]  
+                            if piconname:
+                                piconname = vodItems["COVER_BIG"]  
                         if "DESCRIPTION" in vodItems:
                             vodDescription = vodItems["DESCRIPTION"]
                         elif "PLOT" in vodItems:
