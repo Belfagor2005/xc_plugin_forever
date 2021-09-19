@@ -7,7 +7,6 @@ from . import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.ConfigList import ConfigListScreen
-from Components.config import config, ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigSubsection, ConfigYesNo, ConfigPassword, ConfigSelectionNumber, ConfigClock, configfile
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest
@@ -17,6 +16,7 @@ from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Task import Task, Job, job_manager as JobManager
+from Components.config import config, ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigSubsection, ConfigYesNo, ConfigPassword, ConfigSelectionNumber, ConfigClock, configfile
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 from Screens.InfoBarGenerics import InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarMoviePlayerSummarySupport, InfoBarMenu, InfoBarNotifications
@@ -24,25 +24,25 @@ from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
+from Screens.Standby import Standby
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Screens.Standby import Standby
 from Tools import ASCIItranslit
 from Tools.Directories import fileExists
 from Tools.Downloader import downloadWithProgress
 from enigma import eTimer, eListboxPythonMultiContent, gFont, getDesktop, eEnv, iPlayableService, ePicLoad, gPixmapPtr, eServiceReference, eAVSwitch, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, loadPNG
 from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
+from sys import version_info
 from twisted.web.client import downloadPage
 from xml.etree.ElementTree import fromstring, ElementTree
-from sys import version_info
-import six
 import base64
 import glob
 import hashlib
 import json
 import os
 import re
+import six
 import socket
 import sys
 import time
@@ -142,7 +142,6 @@ def MemClean():
     except:
         pass
 
-
 def del_jpg():
     for i in glob.glob(os.path.join(Path_Tmp, "*.jpg")):
         try:
@@ -150,7 +149,6 @@ def del_jpg():
             os.remove(i)
         except OSError:
             pass
-
 
 def isExtEplayer3Available():
     return os.path.isfile(eEnv.resolve("$bindir/exteplayer3"))
@@ -375,7 +373,6 @@ class xc_config(Screen, ConfigListScreen):
             if os.path.isfile(xc_list) and os.stat(xc_list).st_size > 0:
                 with open(xc_list, 'r') as f:
                     chaine = f.readlines()
-
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
                 port = chaine[1].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
                 user = chaine[2].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
@@ -515,6 +512,7 @@ class xc_config(Screen, ConfigListScreen):
         if config.plugins.XCplugin.picons.value and config.plugins.XCplugin.pthpicon.value == "/usr/share/enigma2/picon/":
             if not os.path.exists("/usr/share/enigma2/picon"):
                 os.system("mkdir /usr/share/enigma2/picon")
+
         if config.plugins.XCplugin.pthxmlfile.value == "/media/hdd/xc":
             if not os.path.exists("/media/hdd"):
                 self.mbox = self.session.open(MessageBox, _("/media/hdd NOT DETECTED!"), MessageBox.TYPE_INFO, timeout=4)
@@ -622,12 +620,13 @@ class iptv_streamse():
         return Path_Movies
 
     def getValue(self, definitions, default):
+
         Len = len(definitions)
         return Len > 0 and definitions[Len - 1].text or default
 
     def read_config(self):
         try:
-            hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)  # + ':' + str(config.plugins.XCplugin.port.value)  # + "/enigma2.php"  # panel_api.php" #"
+            hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
             self.port = str(config.plugins.XCplugin.port.value)
             self.xtream_e2portal_url = hosts + ':' + self.port
             username = str(config.plugins.XCplugin.user.value)
@@ -805,10 +804,10 @@ class iptv_streamse():
                         else:
                             vodTitle = str(name)
                         if "COVER_BIG" in vodItems:
-                            piconname = vodItems["COVER_BIG"]  
+                            piconname = vodItems["COVER_BIG"]
                             if piconname:
-                                piconname = vodItems["COVER_BIG"]  
-                            
+                                piconname = vodItems["COVER_BIG"]
+
                         if "DESCRIPTION" in vodItems:
                             vodDescription = vodItems["DESCRIPTION"]
                         elif "PLOT" in vodItems:
@@ -825,49 +824,49 @@ class iptv_streamse():
                             vodGenre = 'GENRE - NO INFO'
                         name = str(vodTitle)
                         description = str(vodTitle) + '\n\n' + str(vodGenre) + '\n\nDuration: ' + str(vodDuration) + '\n\n' + str(vodDescription)
-                        # ### ONLY TEST -- NO WORK
-                    if isStream and "/series/" in stream_url:
-                        stream_live = False
-                        vodTitle = ''
-                        vodDescription = ''
-                        vodDuration = ''
-                        vodGenre = ''
-                        # vodVideoType = ''
-                        # vodRating = ''
-                        # vodCountry = ''
-                        # vodReleaseDate = ''
-                        # vodDirector = ''
-                        # vodCast = ''
-                        vodLines = description.splitlines()
-                        vodItems = {}
-                        for line in vodLines:
-                            vodItems[checkStr(line.partition(": ")[0])] = checkStr(line.partition(": ")[-1])
-                        if "NAME" in vodItems:
-                            vodTitle = vodItems["NAME"]
-                        elif "O_NAME" in vodItems:
-                            vodTitle = vodItems["O_NAME"]
-                        else:
-                            vodTitle = str(name)
-                        if "COVER_BIG" in vodItems:
-                            piconname = vodItems["COVER_BIG"]  
-                            if piconname:
-                                piconname = vodItems["COVER_BIG"]  
-                        if "DESCRIPTION" in vodItems:
-                            vodDescription = vodItems["DESCRIPTION"]
-                        elif "PLOT" in vodItems:
-                            vodDescription = vodItems["PLOT"]
-                        else:
-                            vodDescription = 'TRAMA '
-                        if "DURATION" in vodItems:
-                            vodDuration = vodItems["DURATION"]
-                        else:
-                            vodDuration = 'DURATION - NO INFO'
-                        if "GENRE" in vodItems:
-                            vodGenre = vodItems["GENRE"]
-                        else:
-                            vodGenre = 'GENRE - NO INFO'
-                        name = str(vodTitle)
-                        description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
+                        # # ### ONLY TEST -- NO WORK
+                    # if isStream and "/series/" in stream_url:
+                        # stream_live = False
+                        # vodTitle = ''
+                        # vodDescription = ''
+                        # vodDuration = ''
+                        # vodGenre = ''
+                        # # vodVideoType = ''
+                        # # vodRating = ''
+                        # # vodCountry = ''
+                        # # vodReleaseDate = ''
+                        # # vodDirector = ''
+                        # # vodCast = ''
+                        # vodLines = description.splitlines()
+                        # vodItems = {}
+                        # for line in vodLines:
+                            # vodItems[checkStr(line.partition(": ")[0])] = checkStr(line.partition(": ")[-1])
+                        # if "NAME" in vodItems:
+                            # vodTitle = vodItems["NAME"]
+                        # elif "O_NAME" in vodItems:
+                            # vodTitle = vodItems["O_NAME"]
+                        # else:
+                            # vodTitle = str(name)
+                        # if "COVER_BIG" in vodItems:
+                            # piconname = vodItems["COVER_BIG"]
+                            # if piconname:
+                                # piconname = vodItems["COVER_BIG"]
+                        # if "DESCRIPTION" in vodItems:
+                            # vodDescription = vodItems["DESCRIPTION"]
+                        # elif "PLOT" in vodItems:
+                            # vodDescription = vodItems["PLOT"]
+                        # else:
+                            # vodDescription = 'TRAMA '
+                        # if "DURATION" in vodItems:
+                            # vodDuration = vodItems["DURATION"]
+                        # else:
+                            # vodDuration = 'DURATION - NO INFO'
+                        # if "GENRE" in vodItems:
+                            # vodGenre = vodItems["GENRE"]
+                        # else:
+                            # vodGenre = 'GENRE - NO INFO'
+                        # name = str(vodTitle)
+                        # description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                     chan_tulpe = (
                         chan_counter,
                         str(name),
@@ -903,6 +902,8 @@ class iptv_streamse():
                     self.port = str(config.plugins.XCplugin.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
+                url = url
+                next_request = 1
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
                 #next_request = 2
@@ -1028,13 +1029,13 @@ class xc_Main(Screen):
         Screen.__init__(self, session)
         self.channel_list = STREAMS.iptv_list
         self.index = STREAMS.list_index
-        global channel_list2, index2
+        global channel_list2, index2, re_search
         channel_list2 = self.channel_list
         index2 = self.index
         self.banned = False
         self.banned_text = ""
         self.search = ''
-        # re_search = False
+        re_search = False
         self.downloading = False
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
@@ -1106,9 +1107,9 @@ class xc_Main(Screen):
         self.onLayoutFinish.append(self.checkinf)
 
     def search_text(self):
+        global re_search
         if re_search is True:
             re_search = False
-        # text = ''
         self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.search)
 
     def filterChannels(self, result):
@@ -1206,7 +1207,7 @@ class xc_Main(Screen):
 
         except Exception as ex:
             print(ex)
-                        
+
     def mmark(self):
         global iptv_list_tmp
         self.temp_index = 0
@@ -1345,7 +1346,7 @@ class xc_Main(Screen):
             global pmovies
             self.icount = 0
             try:
-                if series is True:
+                if series == True:
                     pmovies = True
                     title = str(STREAMS.playlistname).replace(' ', '').replace('[', '').replace(']', '').lower()
                     filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', title)
@@ -1402,17 +1403,6 @@ class xc_Main(Screen):
     def downloadStop(self):
         if hasattr(self, 'icount'):
             self.icount -= 1
-
-    def createMetaFile2(self, name, url):
-        try:
-            text_clear = ""
-            text_clear = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', name)
-            serviceref = eServiceReference(0x1001, 0, Path_Movies2 + text_clear)
-            metafile = open("%s%s.meta" % (Path_Movies2, text_clear), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), url.replace("\n", ""), text_clear.replace("\n", ""), time()))
-            metafile.close()
-        except Exception as ex:
-            print(ex)
 
     def check_download_vod(self):
         if btnsearch == 0 or btnsearch == 2:
@@ -1483,16 +1473,6 @@ class xc_Main(Screen):
         print("----------- %s" % error)
         pass
 
-    def createMetaFile(self, filename):
-        try:
-            text_clear = filename
-            serviceref = eServiceReference(0x1001, 0, Path_Movies + text_clear)
-            metafile = open("%s%s.meta" % (Path_Movies, text_clear), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), self.vod_url.replace("\n", ""), text_clear.replace("\n", ""), time()))
-            metafile.close()
-        except Exception as ex:
-            print(ex)
-
     def LastJobView(self):
         currentjob = None
         for job in JobManager.getPendingJobs():
@@ -1535,7 +1515,7 @@ class xc_Main(Screen):
             print('no cover.. error')
             self.instance.hide()
         return
-        
+
     def image_downloaded(self, data, desc_image):
         if fileExists(desc_image):
 
@@ -1559,7 +1539,8 @@ class xc_Main(Screen):
         # global selected_channel
         if not len(iptv_list_tmp):
             return
-        if not self.resetSearch():
+        # if not self.resetSearch():
+        if re_search == False:
             self.channel_list = iptv_list_tmp
         self.index = self.mlist.getSelectionIndex()
         desc_image = ''
@@ -1572,15 +1553,15 @@ class xc_Main(Screen):
 
                 if selected_channel[7] != "" and selected_channel[7] != "n/A" and selected_channel[7] is not None:
                     if six.PY3:
-                        selected_channel[7] = six.ensure_binary(selected_channel[7])  
-                                
+                        selected_channel[7] = six.ensure_binary(selected_channel[7])
+
                     if selected_channel[7].find("http") == -1:
                         self.decodeImage(piclogo)
                     else:
 
                         if selected_channel[7].startswith('http'):
                             # desc_image = selected_channel[7] = selected_channel[7] #.replace('https', 'http')
-                       
+
                             # self.decodeImage(desc_image)
                         # else:
                             m = hashlib.md5()
@@ -1624,7 +1605,8 @@ class xc_Main(Screen):
         if STREAMS.xml_error != "":
             print(STREAMS.clear_url)
         self.channel_list = STREAMS.iptv_list
-        if re_search:
+        # if re_search:
+        if re_search == False:
             self.channel_list = iptv_list_tmp
         if 'season' or 'series' in stream_url.lower():
             if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in stream_url:
@@ -1643,14 +1625,15 @@ class xc_Main(Screen):
 
     def show_all(self):
         try:
-            if self.passwd_ok is False:
-                if re_search is True:
+            if self.passwd_ok == False:
+                if re_search == True:
                     self.channel_list = iptv_list_tmp
                     self.mlist.onSelectionChanged.append(self.update_description)
                     self["feedlist"] = self.mlist
                     self["feedlist"].moveToIndex(0)
                 else:
-                    self.channel_list = iptv_list_tmp
+                    # self.channel_list = iptv_list_tmp
+                    self.channel_list = STREAMS.iptv_list
                 self.mlist.moveToIndex(self.index)
                 self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
                 self.mlist.selectionEnabled(1)
@@ -1731,7 +1714,7 @@ class xc_Main(Screen):
                 self.Entered()
         except Exception as ex:
             print(ex)
-            
+
     def Entered(self):
         self.pin = True
         if stream_live == True:
@@ -1761,7 +1744,7 @@ class xc_Main(Screen):
         self.index = self.mlist.getSelectionIndex()
         STREAMS.list_index = self.index
         STREAMS.list_index_tmp = STREAMS.list_index
-        if re_search:
+        if re_search == False:
             STREAMS.iptv_list_tmp = iptv_list_tmp
         else:
             STREAMS.iptv_list_tmp = STREAMS.iptv_list
@@ -2024,6 +2007,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.cont_play = False
             self["cont_play"].setText("Auto Play OFF")
             self.session.open(MessageBox, "Auto Play OFF", type=MessageBox.TYPE_INFO, timeout=3)
+
         else:
             self.cont_play = True
             self["cont_play"].setText("Auto Play ON")
@@ -2076,8 +2060,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def player_helper(self):
         global title, vod_url, descr, selected_channel
-        self.show_info()        
-        
+        self.show_info()
+
         selected_channel = iptv_list_tmp[STREAMS.list_index]
         if selected_channel:
             selected_channel = iptv_list_tmp[STREAMS.list_index]
@@ -2124,16 +2108,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.timeshift_url = Path_Movies + filename
                 self.timeshift_title = "[REC] " + title
                 self.LastJobView()
-        except Exception as ex:
-            print(ex)
-
-    def createMetaFile(self, filename):
-        try:
-            text_clear = filename
-            serviceref = eServiceReference(0x1001, 0, Path_Movies + text_clear)
-            metafile = open("%s%s.meta" % (Path_Movies, text_clear), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), vod_url.replace("\n", ""), text_clear.replace("\n", ""), time()))
-            metafile.close()
         except Exception as ex:
             print(ex)
 
@@ -2359,7 +2333,7 @@ class xc_StreamTasks(Screen):
         sel2 = Path_Movies2 + current[1]
         dom = sel
         dom2 = sel2
-        if pmovies is True and filelist2 is not None:
+        if pmovies == True and filelist2 is not None:
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom2, MessageBox.TYPE_YESNO, timeout=15, default=False)
         else:
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
@@ -2373,7 +2347,7 @@ class xc_StreamTasks(Screen):
                 cmd = 'rm -f ' + sel
                 os.system(cmd)
                 self.session.open(MessageBox, sel + " Movie has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
-            elif pmovies is True and fileExists(sel2):
+            elif pmovies == True and fileExists(sel2):
                 cmd = 'rm -f ' + sel2
                 os.system(cmd)
                 self.session.open(MessageBox, sel2 + " Movie has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
@@ -2820,7 +2794,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 url = check_port(url)
                 if config.plugins.XCplugin.LivePlayer.value is True:
                     eserv = int(config.plugins.XCplugin.live.value)
-                
+
                 if str(os.path.splitext(url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
@@ -2879,6 +2853,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         sc = AVSwitch().getFramebufferScale()
         # if self.picload:
         self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+
         if os.path.exists('/var/lib/dpkg/status'):
             self.picload.startDecode(png, False)
             self['poster'].instance.setPixmap(gPixmapPtr())
@@ -2894,6 +2869,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             print('no cover.. error')
             self.instance.hide()
         return
+
     def image_downloaded(self, data, desc_image):
         if os.path.exists(desc_image):
             try:
@@ -2914,6 +2890,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         except Exception as ex:
             print(ex)
             print('exe downloadError')
+
 
 def xcm3ulistEntry(download):
     res = [download]
@@ -2936,11 +2913,13 @@ def m3ulistxc(data, list):
         icount = icount + 1
     list.setList(mlist)
 
+
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
         if HD.width() > 1280:
             self.l.setItemHeight(50)
+
             self.l.setFont(0, gFont("Regular", 32))
         else:
             self.l.setItemHeight(40)
@@ -2978,6 +2957,8 @@ class xc_Play(Screen):
             "ok": self.runList}, -2)
         self.onFirstExecBegin.append(self.openList)
         self.onLayoutFinish.append(self.layoutFinished)
+
+
 
     def openList(self):
         self.names = []
@@ -3162,7 +3143,6 @@ class xc_Play(Screen):
             self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
             ReloadBouquet()
 
-
 class xc_M3uPlay(Screen):
     def __init__(self, session, name):
         self.session = session
@@ -3308,14 +3288,14 @@ class xc_M3uPlay(Screen):
                 if six.PY3:
                     self.urlm3u = self.urlm3u.encode()
                     print('self.urlm3u encode')
-                    
-                    
+
+
                 path = urlparse(self.urlm3u).path
                 ext = '.mp4'
                 ext = splitext(path)[1]
                 if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != 'm3u8':
                     ext = '.mp4'
-                    
+
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
                 fileTitle = re.sub(r'_+', '_', fileTitle)
@@ -3330,7 +3310,7 @@ class xc_M3uPlay(Screen):
                 pass
         else:
             self.downloading = False
-            
+
     def downloadProgress(self, recvbytes, totalbytes):
         self["progress"].show()
         self['progress'].value = int(100 * recvbytes / float(totalbytes))
@@ -3621,7 +3601,6 @@ def check_configuring():
         autoStartTimer.update()
     return
 
-
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
     global _session
@@ -3703,7 +3682,6 @@ class downloadTask(Task):
             message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
             web_info(message)
 
-
 VIDEO_ASPECT_RATIO_MAP = {
     0: "4:3 Letterbox",
     1: "4:3 PanScan",
@@ -3726,7 +3704,6 @@ def nextAR():
     except Exception as ex:
         print(ex)
         return "nextAR ERROR %s" % ex
-
 
 def prevAR():
     try:
@@ -3870,15 +3847,12 @@ def uninstaller():
         for line in bakfile:
             if '.suls_iptv_' not in line:
                 tvfile.write(line)
+
         bakfile.close()
         tvfile.close()
     except Exception as ex:
         print(ex)
         raise
-
-def OnclearMem():
-    os.system("sync")
-    os.system("echo 3 > /proc/sys/vm/drop_caches")
 
 def remove_line(filename, what):
     if os.path.isfile(filename):
@@ -3897,6 +3871,7 @@ if os.path.isfile(filterlist):
             start = ('": ' + '"' + '",' + ' "')
             mylist = start.join(lines)
             end = ('{"' + mylist + '": ' + '"' + '"' + "}")
+
             dict = eval(filtertmdb)
             filtertmdb = "".join(end.splitlines())
             filtertmdb = dict
@@ -3904,64 +3879,102 @@ if os.path.isfile(filterlist):
         filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
 
 def charRemove(text):
-    char = ["1080p",
-            "2018",
-            "2019",
-            "2020",
-            "480p",
-            "4K",
-            "720p",
-            "ANIMAZIONE",
-            "APR",
-            "AVVENTURA",
-            "BIOGRAFICO",
-            "BDRip",
-            "BluRay",
-            "CINEMA",
-            "COMMEDIA",
-            "DOCUMENTARIO",
-            "DRAMMATICO",
-            "FANTASCIENZA",
-            "FANTASY",
-            "FEB",
-            "GEN",
-            "GIU",
-            "HDCAM",
-            "HDTC",
-            "HDTS",
-            "LD",
-            "MAFIA",
-            "MAG",
-            "MARVEL",
-            "MD",
-            "ORROR",
-            "NEW_AUDIO",
-            "POLIZ",
-            "R3",
-            "R6",
-            "SD",
-            "SENTIMENTALE",
-            "TC",
-            "TEEN",
-            "TELECINE",
-            "TELESYNC",
-            "THRILLER",
-            "Uncensored",
-            "V2",
-            "WEBDL",
-            "WEBRip",
-            "WEB",
-            "WESTERN",
-            "-",
-            "_",
-            ".",
-            "+",
-            "[",
-            "]"]
-    myreplace = text
-    for ch in char:
-        myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("       ", " ").strip()
-    return myreplace
+        char = ["1080p",
+                 "2018",
+                 "2019",
+                 "2020",
+                 "2021",
+                 "2022"
+                 "PF1",
+                 "PF2",
+                 "PF3",
+                 "PF4",
+                 "PF5",
+                 "PF6",
+                 "PF7",
+                 "PF8",
+                 "PF9",
+                 "PF10",
+                 "PF11",
+                 "PF12",
+                 "PF13",
+                 "PF14",
+                 "PF15",
+                 "PF16",
+                 "PF17",
+                 "PF18",
+                 "PF19",
+                 "PF20",
+                 "PF21",
+                 "PF22",
+                 "PF23",
+                 "PF24",
+                 "PF25",
+                 "PF26",
+                 "PF27",
+                 "PF28",
+                 "PF29",
+                 "PF30"
+                 "480p",
+                 "4K",
+                 "720p",
+                 "ANIMAZIONE",
+                 "APR",
+                 # "AVVENTURA",
+                 "BIOGRAFICO",
+                 "BDRip",
+                 "BluRay",
+                 "CINEMA",
+                 # "COMMEDIA",
+                 "DOCUMENTARIO",
+                 "DRAMMATICO",
+                 "FANTASCIENZA",
+                 "FANTASY",
+                 "FEB",
+                 "GEN",
+                 "GIU",
+                 "HDCAM",
+                 "HDTC",
+                 "HDTS",
+                 "LD",
+                 "MAFIA",
+                 "MAG",
+                 "MARVEL",
+                 "MD",
+                 "ORROR",
+                 "NEW_AUDIO",
+                 "POLIZ",
+                 "R3",
+                 "R6",
+                 "SD",
+                 "SENTIMENTALE",
+                 "TC",
+                 "TEEN",
+                 "TELECINE",
+                 "TELESYNC",
+                 "THRILLER",
+                 "Uncensored",
+                 "V2",
+                 "WEBDL",
+                 "WEBRip",
+                 "WEB",
+                 "WESTERN",
+                 "-",
+                 "_",
+                 ".",
+                 "+",
+                 "[",
+                 "]"
+                 ]
+
+        myreplace = text.lower()
+        for ch in char:
+            ch= ch.lower()
+
+            if myreplace == ch:
+
+                myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("   ", " ").strip()
+        return myreplace
 
 class xc_home(Screen):
     def __init__(self, session):
@@ -4006,7 +4019,7 @@ class xc_home(Screen):
         else:
             if not os.path.exists("/usr/lib/python2.7/site-packages/requests"):
                 dependencies = False
-        if dependencies is False:
+        if dependencies == False:
             if not access("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", X_OK):
                 chmod("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", 0o0755)
             cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh"
@@ -4015,7 +4028,7 @@ class xc_home(Screen):
             self.start()
 
     def start(self):
-        OnclearMem()
+        MemClean()
 
     def config(self):
         self.session.open(xc_config)
