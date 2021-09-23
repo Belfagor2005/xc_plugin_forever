@@ -17,19 +17,30 @@ import unicodedata
 import datetime
 # import urllib
 # import urlparse
-import imghdr
-# from . import imghdr
+try:
+    import imghdr
+except:
+    from . import imghdr
+
+plugin_path = os.path.dirname(sys.modules[__name__].__file__)
+img_path = "/bouquet/"
+ 
 import tempfile
 import glob
 import ssl
 import hashlib
 import socket
-from PIL import Image
+try:
+    from PIL import Image
+
+except:
+    import Image
+
 from collections import OrderedDict
 
 from sys import version_info
-# PY3 = sys.version_info.major >= 3
-PY3 = version_info[0] == 3
+PY3 = sys.version_info.major >= 3
+# PY3 = version_info[0] == 3
 
 if PY3:
     from urllib.request import urlopen, Request
