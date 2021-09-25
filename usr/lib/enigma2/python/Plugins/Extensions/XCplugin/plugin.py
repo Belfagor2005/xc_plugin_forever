@@ -1242,11 +1242,7 @@ class xc_Main(Screen):
         selected_channel = iptv_list_tmp[self.index]
         if selected_channel:
             name = str(selected_channel[1]).lower()
-            print('nameee ', name)
-            print('name1 ', str(selected_channel[1].lower()))
-            print('name2 ', str(selected_channel[2].lower()))
-            print('name3 ', str(selected_channel[8].lower()))
-            print('name4 ', str(selected_channel[6].lower()))
+            # print('nameee ', name)
             show_more_info(name, self.index)
 
     def show_more_info_Title(self, truc):
@@ -1502,11 +1498,14 @@ class xc_Main(Screen):
             return
 
     def image_downloaded(self, data, pictmp):
-        if fileExists(pictmp):
-            self.decodeImage(pictmp)
-        else:
-            print('logo not found')
-
+        if os.path.exists(pictmp):
+            try:
+                self.decodeImage(pictmp)
+            except Exception as ex:
+                print("* error ** %s" % ex)
+                pass
+            except:
+                pass
     def downloadError(self, pictmp):
         try:
             if fileExists(pictmp):
@@ -1523,45 +1522,47 @@ class xc_Main(Screen):
             self.channel_list = iptv_list_tmp
         self.index = self.mlist.getSelectionIndex()
         if self.update_desc:
-            self["info"].setText("")
-            self["description"].setText("")
-            self['poster'].instance.setPixmapFromFile(piclogo)
-            selected_channel = self.channel_list[self.index]
-            self.pixim = str(selected_channel[7])
-            if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
-                if self.pixim.find('http') == -1:
-                    self.decodeImage(piclogo)
-                    return
-                else:
-                    if six.PY3:
-                        self.pixim = six.ensure_binary(self.pixim)
-                    if self.pixim.startswith(b"https") and sslverify:
-                        parsed_uri = urlparse(self.pixim)
-                        domain = parsed_uri.hostname
-                        sniFactory = SNIFactory(domain)
-                        print('uurrll: ', self.pixim)
-                        downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+            try:
+                self["info"].setText("")
+                self["description"].setText("")
+                self['poster'].instance.setPixmapFromFile(piclogo)
+                selected_channel = self.channel_list[self.index]
+                self.pixim = str(selected_channel[7])
+                if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
+                    if self.pixim.find('http') == -1:
+                        self.decodeImage(piclogo)
+                        return
                     else:
-                        downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-            else:
-                self.decodeImage(piclogo)
-                print("update COVER")
-
-            if selected_channel[2] != None:
-                if stream_live == True:
-                    description = selected_channel[2]
-                    description2 = selected_channel[8]
-                    description3 = selected_channel[6]
-                    description_2 = description3.split(" #-# ")
-                    descall = str(description) + '\n\n' + str(description2)
-                    if description_2:
-                        self["description"].setText(descall)
-                        if len(description_2) > 1:
-                            self["info"].setText(str(description_2[1]))
+                        if six.PY3:
+                            self.pixim = six.ensure_binary(self.pixim)
+                        if self.pixim.startswith(b"https") and sslverify:
+                            parsed_uri = urlparse(self.pixim)
+                            domain = parsed_uri.hostname
+                            sniFactory = SNIFactory(domain)
+                            print('uurrll: ', self.pixim)
+                            downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        else:
+                            downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                 else:
-                    description = str(selected_channel[2])
-                    self["description"].setText(description)
+                    self.decodeImage(piclogo)
+                    print("update COVER")
 
+                if selected_channel[2] != None:
+                    if stream_live == True:
+                        description = selected_channel[2]
+                        description2 = selected_channel[8]
+                        description3 = selected_channel[6]
+                        description_2 = description3.split(" #-# ")
+                        descall = str(description) + '\n\n' + str(description2)
+                        if description_2:
+                            self["description"].setText(descall)
+                            if len(description_2) > 1:
+                                self["info"].setText(str(description_2[1]))
+                    else:
+                        description = str(selected_channel[2])
+                        self["description"].setText(description)
+            except Exception as ex:
+                print(ex)
 
     def update_channellist(self):
         if not len(iptv_list_tmp):
@@ -1660,7 +1661,7 @@ class xc_Main(Screen):
     def ok_checked(self):
         if self.pin is False:
             return
-        global stream_tmp, title 
+        global stream_tmp, title
         try:
             if self.temp_index > -1:
                 self.index = self.temp_index
@@ -1859,25 +1860,30 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.setAspect(temp)
 
     def setCover(self):
-        self.channelx = iptv_list_tmp[STREAMS.list_index]
-        self['poster'].instance.setPixmapFromFile(piclogo)
-        self.pixim = str(self.channelx[7])
-        if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
-            if self.pixim.find('http') == -1:
-                self.decodeImage(piclogo)
-                return
-            else:
-                if six.PY3:
-                    self.pixim = six.ensure_binary(self.pixim)
-                if self.pixim.startswith(b"https") and sslverify:
-                    parsed_uri = urlparse(self.pixim)
-                    domain = parsed_uri.hostname
-                    sniFactory = SNIFactory(domain)
-                    print('uurrll: ', self.pixim)
-                    downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+        try:
+            self.channelx = iptv_list_tmp[STREAMS.list_index]
+            self['poster'].instance.setPixmapFromFile(piclogo)
+            self.pixim = str(self.channelx[7])
+            if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
+                if self.pixim.find('http') == -1:
+                    self.decodeImage(piclogo)
+                    return
                 else:
-                    downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-        else:
+                    if six.PY3:
+                        self.pixim = six.ensure_binary(self.pixim)
+                    if self.pixim.startswith(b"https") and sslverify:
+                        parsed_uri = urlparse(self.pixim)
+                        domain = parsed_uri.hostname
+                        sniFactory = SNIFactory(domain)
+                        print('uurrll: ', self.pixim)
+                        downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                    else:
+                        downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+            else:
+                self.decodeImage(piclogo)
+                print("update COVER")
+        except Exception as ex:
+            print(ex)
             self.decodeImage(piclogo)
             print("update COVER")
 
@@ -1901,10 +1907,14 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             return
 
     def image_downloaded(self, data, pictmp):
-        if fileExists(pictmp):
-            self.decodeImage(pictmp)
-        else:
-            print('logo not found')
+        if os.path.exists(pictmp):
+            try:
+                self.decodeImage(pictmp)
+            except Exception as ex:
+                print("* error ** %s" % ex)
+                pass
+            except:
+                pass
 
     def downloadError(self, png):
         try:
@@ -2005,7 +2015,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.player_helper()
         except Exception as ex:
             print(ex)
-            
+
     def player_helper(self):
         self.show_info()
         STREAMS.play_vod = False
@@ -2726,7 +2736,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
     def play_channel(self):
         try:
-            self.channely = iptv_list_tmp[self.index]                                            
+            self.channely = iptv_list_tmp[self.index]
             self["channel_name"].setText(self.channely[1])
             self.titlex = self.channely[1]
             self.descr = self.channely[2]
@@ -2772,8 +2782,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             # self.descr = self.channely[2]
             # self.cover = self.channely[3]
             # self.pixim = self.channely[7]
-        
-        
+
+
             try:
                 print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
                 if config.plugins.XCplugin.LivePlayer.value is True:
@@ -2781,20 +2791,20 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 if str(os.path.splitext(self.live_url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
-                       
+
                 url = self.live_url #self.channely[4]
                 url = checkStr(url)
                 self.session.nav.stopService()
-                                                                 
+
                 if url != "" and url is not None:
                     sref = eServiceReference(eserv, 0, url)
                     sref.setName(str(self.titlex))
-                    # sref.setName(str(self.channely[1]))                    
+                    # sref.setName(str(self.channely[1]))
                     try:
                         print("playService: ", sref)
                         self.session.nav.playService(sref)
                     except Exception as ex:
-                        print(ex)                        
+                        print(ex)
             except Exception as ex:
                 print(ex)
         except Exception as ex:
@@ -2855,10 +2865,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             return
 
     def image_downloaded(self, data, pictmp):
-        if fileExists(pictmp):
-            self.decodeImage(pictmp)
-        else:
-            print('logo not found')
+        if os.path.exists(pictmp):
+            try:
+                self.decodeImage(pictmp)
+            except Exception as ex:
+                print("* error ** %s" % ex)
+                pass
+            except:
+                pass
 
     def downloadError(self, pictmp):
         try:
