@@ -1,24 +1,24 @@
 <!-- ***** IPTV Player 1920x1080 ***** OK 15-05-2020 /-->
 <screen name="xc_iptv_player" position="0,0" size="1280,720" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1280,186" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvbar.png" zPosition="-1" />
+	<ePixmap position="0,0" size="1280,178" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,533" size="1280,186" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/infobar.png" zPosition="-1" />
 	<ePixmap position="33,621" size="83,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="1" />
-	<eLabel position="133,626" size="1113,36" backgroundColor="#10202020" transparent="0" zPosition="1" />
+	<eLabel position="133,626" size="1113,43" backgroundColor="#10202020" transparent="0" zPosition="1" />
 	<eLabel position="0,0" size="1280,106" backgroundColor="#10000000" transparent="0" zPosition="1" />
-	<widget name="programm" position="33,13" size="1213,174" font="Regular;20" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" />  
+	<widget name="programm" position="11,13" size="1248,159" font="Regular;20" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" />  
    	<!-- <widget source="programm" render="xcRunningText" position="33,20" size="1213,166" font="Regular;20" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" -->
     		<!-- options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap"  /> -->
    	<widget name="poster" position="33,621" size="83,50" backgroundColor="#41000000" zPosition="3" scale="1" />
     	<!-- movie lenght Servicename -->
-	<widget source="session.CurrentService" render="Label" position="26,540" size="666,133" font="Regular;60" halign="left" foregroundColor="yellow" backgroundColor="#10000000" transparent="1" zPosition="3">
+	<widget source="session.CurrentService" render="Label" position="27,533" size="666,135" font="Regular;60" halign="left" foregroundColor="yellow" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServicePosition">Position</convert>
 	</widget>
 	<!-- Name.ts -->
-	<widget source="session.CurrentService" render="Label" position="138,625" size="232,36" font="Regular;21" valign="center" noWrap="1" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
+	<widget source="session.CurrentService" render="Label" position="137,739" size="232,59" font="Regular;21" valign="center" noWrap="1" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServiceName">Name</convert>
 	</widget>
 	<!-- Canale -->
-	<widget name="channel_name" position="374,631" size="718,26" font="Regular;22" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget name="channel_name" position="134,626" size="847,42" font="Regular;22" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1116,630" size="126,26" font="Regular;24" halign="right" foregroundColor="#808080" backgroundColor="#10000000" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format:%H:%M:%S</convert>
