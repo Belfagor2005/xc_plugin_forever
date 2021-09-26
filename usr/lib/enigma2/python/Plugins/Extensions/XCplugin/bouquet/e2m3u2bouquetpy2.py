@@ -17,10 +17,9 @@ import unicodedata
 import datetime
 # import urllib
 # import urlparse
-try:
-    import imghdr
-except:
-    from . import imghdr
+from os.path import splitext
+# import imghdr
+
 import tempfile
 import glob
 import ssl
@@ -365,7 +364,9 @@ class Provider():
         """
         ext = ''
         try:
-            ext = imghdr.what(picon_file_path)
+            # ext = imghdr.what(picon_file_path)
+            ext = str(os.path.splitext(picon_file_path))
+            
         except Exception as e:
             if DEBUG:
                 print(('Picon post processing - not an image or no file', e, picon_file_path))

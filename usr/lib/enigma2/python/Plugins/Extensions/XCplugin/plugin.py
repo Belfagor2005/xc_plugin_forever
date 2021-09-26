@@ -1304,7 +1304,7 @@ class xc_Main(Screen):
                         if url.startswith('http'):
                             ext = str(os.path.splitext(url)[-1])
                             print('extttttttttttttt', ext)
-                            if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != 'm3u8':
+                            if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                                 ext = '.mp4'
                             name = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', name)
                             name = name.replace('..', '.') + ext
@@ -1384,7 +1384,7 @@ class xc_Main(Screen):
                 self.filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
-                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != 'm3u8':
+                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                     ext = '.mp4'
                 self.filename = str(self.filename) + str(ext)
                 print('self.filename3: ', str(self.filename))
@@ -2245,6 +2245,7 @@ class xc_StreamTasks(Screen):
         file2 = False
         filelist2 = ''
         filelist = ''
+        self.pth = ''
         if os.path.isdir(Path_Movies):
             filelist = listdir(Path_Movies)
         path = Path_Movies
@@ -2414,8 +2415,7 @@ class xc_help(Screen):
         conthelp += _("            Set 'No' for Record Live\n")
         conthelp += _("    (YELLOW BUTTON):\n")
         conthelp += _("            Start Download All Episodes Series\n")
-        conthelp += _("    (BLUE BUTTON):\n")
-        conthelp += _("            Search !!!\n")
+        conthelp += _("    (BLUE BUTTON): Search LIve/Movie")
         return conthelp
 
     def green(self):
@@ -3006,15 +3006,18 @@ class xc_Play(Screen):
     def callMyMsg1(self, result):
         if result:
             idx = self["list"].getSelectionIndex()
-            dom = self.name + self.names[idx]
+            dom = self.Movies[idx]
+            # dom = self.name + self.names[idx]
             if fileExists(dom):
                 os.remove(dom)
                 self.session.open(MessageBox, dom + "   has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
-                m3ulistxc(self.names, self["list"])
+                self.refreshmylist()
+                # m3ulistxc(self.names, self["list"])
             else:
                 self.session.open(MessageBox, dom + "   not exist!", MessageBox.TYPE_INFO, timeout=5)
 
+            
     def message3(self):
         if self.downloading is True:
             self.session.open(MessageBox, "Wait... downloading in progress ...", MessageBox.TYPE_INFO, timeout=5)
@@ -3274,7 +3277,7 @@ class xc_M3uPlay(Screen):
                 pth = urlparse(self.urlm3u).path
                 ext = '.mp4'
                 ext = splitext(pth)[1]
-                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != 'm3u8':
+                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                     ext = '.mp4'
                 fileTitle = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.namem3u)
                 fileTitle = re.sub(r' ', '_', fileTitle)
