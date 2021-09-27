@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 25.09.2021
+# 27.09.2021
 from __future__ import print_function
 from . import _
 from Components.AVSwitch import AVSwitch
@@ -1307,7 +1307,8 @@ class xc_Main(Screen):
                             if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                                 ext = '.mp4'
                             name = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', name)
-                            name = name.replace('..', '.') + ext
+                            name = name.replace('..', '.')
+                            name = name.lower() + ext
                             name = checkStr(name)
                             url = checkStr(url)
                             print('name ======= ', name)
@@ -1381,12 +1382,15 @@ class xc_Main(Screen):
         if result:
             try:
                 ext = '.mp4'
-                self.filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+                filename = re.sub(r' ', '_', filename)
+                filename = re.sub(r'_+', '_', filename)
+                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
                 if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                     ext = '.mp4'
-                self.filename = str(self.filename) + str(ext)
+                self.filename = str(filename) + str(ext)
                 print('self.filename3: ', str(self.filename))
                 print('extttttttttttttt', str(ext))
                 print('select: ', str(self.vod_url))
@@ -1810,6 +1814,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             "channelUp": self.prevAR,
             "channelDown": self.nextAR,
             "instantRecord": self.record,  # rec
+            # "stop": self.downloadStop,
             "tv": self.stopnew,
             "blue": self.timeshift_autoplay,
             "2": self.restartVideo,
@@ -2032,13 +2037,18 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.session.nav.stopService()
                 self["state"].setText("RECORD")
                 useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-                pth = urlparse(self.vod_url).path
-                ext = str(os.path.splitext(pth)[-1])
+                ext = '.mp4'
+                ext = splitext(pth)[-1]
+                if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
+                    ext = '.mp4'
                 print('extttttttttttttt', ext)
                 filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.titlex)
-                filename = filename + ext
+                filename = re.sub(r' ', '_', filename)
+                filename = re.sub(r'_+', '_', filename)
+                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = filename.lower() + ext
+                filename = checkStr(filename)                
                 self.vod_url = checkStr(self.vod_url)
-                filename = checkStr(filename)
                 cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, self.vod_url, Path_Movies, filename)
                 print('cmd record: ',cmd)
                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex, self.downloadStop))
@@ -2067,12 +2077,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             print(ex)
             print("ERROR metaFile")
 
-    def downloadStop(self):
-        if hasattr(self, 'icount'):
-            self.icount -= 1
-        if self.recorder == True:
-            self.recorder = False
-
+       
     def LastJobView(self):
         currentjob = None
         for job in JobManager.getPendingJobs():
