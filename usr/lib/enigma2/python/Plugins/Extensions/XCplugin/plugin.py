@@ -15,10 +15,13 @@ from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Task import Task, Job, job_manager as JobManager
-from Components.config import config, ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigSubsection, ConfigYesNo, ConfigPassword, ConfigSelectionNumber, ConfigClock, configfile
+from Components.config import config, ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, \
+    ConfigNumber, ConfigSubsection, ConfigYesNo, ConfigPassword, ConfigSelectionNumber, ConfigClock, configfile
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
-from Screens.InfoBarGenerics import InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarMoviePlayerSummarySupport, InfoBarMenu, InfoBarNotifications
+from Screens.InfoBar import MoviePlayer, InfoBar
+from Screens.InfoBarGenerics import InfoBarMenu, InfoBarSeek, InfoBarAudioSelection, InfoBarMoviePlayerSummarySupport, \
+    InfoBarSubtitleSupport, InfoBarSummarySupport, InfoBarServiceErrorPopupSupport, InfoBarNotifications, InfoBarServiceNotifications
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
@@ -29,7 +32,8 @@ from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools import ASCIItranslit
 from Tools.Directories import fileExists
 from Tools.Downloader import downloadWithProgress
-from enigma import eTimer, eListboxPythonMultiContent, gFont, getDesktop, eEnv, iPlayableService, ePicLoad, gPixmapPtr, eServiceReference, eAVSwitch, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, loadPNG
+from enigma import eTimer, eListboxPythonMultiContent, gFont, getDesktop, eEnv, iPlayableService, ePicLoad, gPixmapPtr, \
+    eServiceReference, eAVSwitch, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, loadPNG
 from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from twisted.web.client import downloadPage
@@ -45,8 +49,10 @@ import socket
 import sys
 import time
 import zlib
-global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path, epgimport_path
-global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo, e2m3upy
+global piclogo, pictmp, skin_path, enigma_path, epgimport_path 
+global Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML
+global isStream, btnsearch, eserv, infoname, tport, STREAMS
+global re_search, pmovies, series, urlinfo, e2m3upy
 
 _session = " "
 version = "XC Forever V.1.8"
@@ -270,7 +276,6 @@ def check_port(tport):
         if len(urlsplit1[2].split(':')) > 1:
             port = urlsplit1[2].split(':')[1]
     host = "%s%s:%s" % (protocol, domain, port)
-
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
     return url
@@ -307,6 +312,7 @@ class xc_config(Screen, ConfigListScreen):
             self.skin = f.read()
         Screen.__init__(self, session)
         self.setup_title = _("XtreamCode-Config")
+        self.list = []          
         self.onChangedEntry = []
         self.downloading = False
         self["playlist"] = Label()
@@ -314,7 +320,6 @@ class xc_config(Screen, ConfigListScreen):
         self["version"] = Label(version)
         self['statusbar'] = Label()
         self["description"] = Label("")
-        self.update_status()
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Save"))
         self["key_blue"] = Label(_("Import") + _(" txt"))
@@ -331,7 +336,7 @@ class xc_config(Screen, ConfigListScreen):
             "showVirtualKeyboard": self.KeyText,
             "ok": self.ok
         }, -1)
-        self.list = []
+        self.update_status()
         ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
         self.createSetup()
         self.showhide()
@@ -357,8 +362,7 @@ class xc_config(Screen, ConfigListScreen):
                     config.plugins.XCplugin.user.setValue(usernamesh)
                     config.plugins.XCplugin.passw.setValue(passwordsh)
                 filesave = "xc_" + str(config.plugins.XCplugin.user.value) + ".xml"
-                filesave = filesave.replace(":", "_")
-                filesave = filesave.lower()
+                filesave = filesave.replace(":", "_").lower()
                 with open(Path_XML + filesave, "w") as t:
                     t.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + urlsh + ']]></xtream_e2portal_url>\n' + '<port>' + ports + '</port>\n' + '<username>' + usernamesh + '</username>\n' + '<password>' + passwordsh + '</password>\n' + '</items>'))
                     t.close()
@@ -578,36 +582,19 @@ class iptv_streamse():
     def __init__(self):
         global MODUL, iptv_list_tmp, tport
         self.iptv_list = []
-        self.plugin_version = ""
-        self.list_index = 0
         self.iptv_list_tmp = []
-        self.list_index_tmp = 0
-        self.playlistname_tmp = ""
-        self.video_status = False
-        self.server_oki = True
+        self.iptv_list_history = []
+        self.plugin_version = ""
+        self.xml_error = ""
         self.playlistname = ""
+        self.playlistname_tmp = ""
         self.next_page_url = ""
         self.next_page_text = ""
         self.prev_page_url = ""
         self.prev_page_text = ""
-        self.port = str(config.plugins.XCplugin.port.value)
-        self.xtream_e2portal_url = "http://" + str(config.plugins.XCplugin.hostaddress.value) + ':' + self.port
-        self.username = str(config.plugins.XCplugin.user.value)
-        self.password = str(config.plugins.XCplugin.passw.value)
-        self.esr_id = 4097
-        self.play_vod = False
-        self.play_iptv = False
-        self.xml_error = ""
-        self.ar_id_start = 3
-        self.ar_id_end = 3
-        self.ar_id_player = 3
-        self.iptv_list_history = []
-        self.ar_start = True
         self.clear_url = ""
-        self.img_loader = False
         self.trial = ""
         self.banned_text = ""
-        self.cont_play = False
         self.systems = ""
         self.playhack = ""
         self.url_tmp = ""
@@ -615,7 +602,24 @@ class iptv_streamse():
         self.next_page_text_tmp = ""
         self.prev_page_url_tmp = ""
         self.prev_page_text_tmp = ""
+        self.esr_id = 4097        
+        self.list_index_tmp = 0
+        self.list_index = 0
+        self.ar_id_start = 0
+        self.ar_id_end = 0
+        self.ar_id_player = 0
+        self.play_vod = False
+        self.play_iptv = False
+        self.video_status = False
+        self.server_oki = True
+        self.ar_start = True
+        self.img_loader = False
+        self.cont_play = False
         self.disable_audioselector = False
+        self.port = str(config.plugins.XCplugin.port.value)
+        self.xtream_e2portal_url = "http://" + str(config.plugins.XCplugin.hostaddress.value) + ':' + self.port
+        self.username = str(config.plugins.XCplugin.user.value)
+        self.password = str(config.plugins.XCplugin.passw.value)
 
     def MoviesFolde(self):
         return Path_Movies
@@ -1746,7 +1750,22 @@ class xc_Main(Screen):
         except Exception as ex:
             print(ex)
 
-class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
+# class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
+class xc_Player(
+    InfoBarBase,
+    InfoBarMenu,
+    InfoBarSeek,
+    InfoBarAudioSelection,
+    InfoBarMoviePlayerSummarySupport,
+    InfoBarSubtitleSupport,
+    InfoBarSummarySupport,
+    InfoBarServiceErrorPopupSupport,
+    InfoBarNotifications,
+    IPTVInfoBarShowHide,
+    # SubsSupportStatus,
+    # SubsSupport,
+    Screen
+):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
@@ -1762,19 +1781,31 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
-        InfoBarBase.__init__(self, steal_current_service=True)
-        IPTVInfoBarShowHide.__init__(self)
-        InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
-        InfoBarAudioSelection.__init__(self)
-        InfoBarSubtitleSupport.__init__(self)
-        SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
-        SubsSupportStatus.__init__(self)
+
+        for x in InfoBarBase, \
+                InfoBarMenu, \
+                InfoBarSeek, \
+                InfoBarAudioSelection, \
+                InfoBarMoviePlayerSummarySupport, \
+                InfoBarSubtitleSupport, \
+                InfoBarSummarySupport, \
+                InfoBarServiceErrorPopupSupport, \
+                InfoBarNotifications, \
+                IPTVInfoBarShowHide:
+            x.__init__(self)
+        # InfoBarBase.__init__(self, steal_current_service=True)
+        # IPTVInfoBarShowHide.__init__(self)
+        # InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
+        # InfoBarAudioSelection.__init__(self)
+        # InfoBarSubtitleSupport.__init__(self)
+        # # SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
+        # # SubsSupportStatus.__init__(self)
         try:
             self.init_aspect = int(self.getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-        self.service = None
+        # self.service = None
         self["state"] = Label("")
         self["cont_play"] = Label("")
         self["key_record"] = Label("Record")
@@ -1782,9 +1813,23 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["poster"] = Pixmap()
         self.recorder = False
         self.vod_url = None
-        if not os.path.exists('/var/lib/dpkg/status'):
-            self.picload = ePicLoad()
+        # if not os.path.exists('/var/lib/dpkg/status'):
+        self.picload = ePicLoad()
         self.picfile = ""
+        
+        self.PicLoad = ePicLoad()
+        self.sc = AVSwitch().getFramebufferScale()
+        try:
+            self.PicLoad.PictureData.get().append(self.setCover)
+        except:
+            self.PicLoad_conn = self.PicLoad.PictureData.connect(self.setCover)
+        
+        self.state = self.STATE_PLAYING
+        self.timeshift_url = None
+        self.timeshift_title = None
+        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
+
+        self.error_message = ""
         if recorder_sref:
             self.recorder_sref = recorder_sref
             self.session.nav.playService(recorder_sref)
@@ -1798,8 +1843,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.cover = self.channelx[3]
             self.pixim = self.channelx[7]
         # print('evEOF=%d' % iPlayableService.evEOF)
-        self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
-         iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
+        # self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
+         # iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "0": self.show_more_info,
@@ -1819,15 +1864,10 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             "2": self.restartVideo,
             "help": self.help,
             "power": self.power_off}, -1)
-        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
         self.onFirstExecBegin.append(self.play_vod)
         self.onShown.append(self.setCover)
+        self.onShown.append(self.show_info)        
         self.onPlayStateChanged.append(self.__playStateChanged)
-        self.state = self.STATE_PLAYING
-        self.timeshift_url = None
-        self.timeshift_title = None
-        self.onShown.append(self.show_info)
-        self.error_message = ""
         return
         
     def getAspect(self):
@@ -1897,8 +1937,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         if os.path.exists(png):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+            # sc = AVSwitch().getFramebufferScale()
+            self.picload.setPara([size.width(), size.height(), self.sc[0], self.sc[1], False, 1, '#00000000'])
             if os.path.exists('/var/lib/dpkg/status'):
                 self.picload.startDecode(png, False)
             else:
@@ -3205,7 +3245,7 @@ class xc_M3uPlay(Screen):
                         self["live"].setText(str(len(self.names)) + " Stream")
                     else:
                         search_ok = False
-                        self.playList()
+                        self.resetSearch()
             except:
                 pass
         else:
@@ -3223,7 +3263,6 @@ class xc_M3uPlay(Screen):
                 f1 = open(self.name, 'r+')
                 fpage = f1.read()
                 if "#EXTM3U" and 'tvg-logo' in fpage:
-                    # print('tvg-logo in fpage: True')
                     regexcat = 'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\\n(.*?)\\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for pic, name, url in match:
@@ -3316,44 +3355,71 @@ class xc_M3uPlay(Screen):
         print("download error =", error)
         self.session.open(MessageBox, _('Download Failed!!!'), MessageBox.TYPE_WARNING)
 
+    def resetSearch(self):
+        global re_search
+        re_search = False
+        if len(self.names):
+            for x in self.names:
+                del x
+        self.playList()
+
     def cancel(self):
-        if search_ok is True:
-            self.playList()
+        if search_ok == True:
+            self.resetSearch()
         else:
-            self.session.nav.stopService()
-            self.session.nav.playService(srefInit)
             self.close()
 
-class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, InfoBarAudioSelection, IPTVInfoBarShowHide, InfoBarSubtitleSupport):
+class M3uPlay2(
+    InfoBarBase,
+    InfoBarMenu,
+    InfoBarSeek,
+    InfoBarAudioSelection,
+    InfoBarMoviePlayerSummarySupport,
+    InfoBarSubtitleSupport,
+    InfoBarSummarySupport,
+    InfoBarServiceErrorPopupSupport,
+    InfoBarNotifications,
+    IPTVInfoBarShowHide,
+    Screen
+):
     STATE_IDLE = 0
     STATE_PLAYING = 1
     STATE_PAUSED = 2
     ENABLE_RESUME_SUPPORT = True
     ALLOW_SUSPEND = True
-
+    screen_timeout = 5000
     def __init__(self, session, name, url):
+        global SREF, streml
         Screen.__init__(self, session)
+        self.session = session
         self.skinName = 'MoviePlayer'
-        InfoBarMenu.__init__(self)
-        InfoBarNotifications.__init__(self)
-        InfoBarBase.__init__(self, steal_current_service=True)
-        IPTVInfoBarShowHide.__init__(self)
-        InfoBarSubtitleSupport.__init__(self)
-        InfoBarAudioSelection.__init__(self)
+        title = name
+        streaml = False
+        for x in InfoBarBase, \
+                InfoBarMenu, \
+                InfoBarSeek, \
+                InfoBarAudioSelection, \
+                InfoBarMoviePlayerSummarySupport, \
+                InfoBarSubtitleSupport, \
+                InfoBarSummarySupport, \
+                InfoBarServiceErrorPopupSupport, \
+                InfoBarNotifications, \
+                IPTVInfoBarShowHide:
+            x.__init__(self)
         try:
             self.init_aspect = int(self.getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
         self['actions'] = ActionMap([
-            'WizardActions',
+            # 'WizardActions',
             'MoviePlayerActions',
             'MovieSelectionActions',
             'MediaPlayerActions',
             'EPGSelectActions',
             'MediaPlayerSeekActions',
             'SetupActions',
-            'ColorActions',
+            # 'ColorActions',
             'InfobarShowHideActions',
             'InfobarActions',
             'InfobarSeekActions'],
@@ -3365,13 +3431,13 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                 'stop': self.leavePlayer,
                 'cancel': self.cancel,
                 'back': self.cancel}, -1)
-        self.allowPiP = False
-        InfoBarSeek.__init__(self, actionmap='InfobarSeekActions')
+        # InfoBarSeek.__init__(self, actionmap='InfobarSeekActions')
         url = url.replace(':', '%3a')
         self.url = url
         self.name = name
         self.state = self.STATE_PLAYING
-        self.onLayoutFinish.append(self.cicleStreamType)
+        # self.onLayoutFinish.append(self.cicleStreamType)
+        self.onFirstExecBegin.append(self.cicleStreamType)        
         self.onClose.append(self.cancel)
 
     def getAspect(self):
@@ -3424,10 +3490,9 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             text_clear = self.name
             self.session.open(xc_Epg, text_clear)
 
-    def openPlay(self,servicetype, url):
+    def openPlay(self, servicetype, url):
         url = url
         ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
-        # print('final reference :   ', ref)
         sref = eServiceReference(ref)
         sref.setName(self.name)
         self.session.nav.stopService()
@@ -3436,9 +3501,10 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def cicleStreamType(self):
         from itertools import cycle, islice
         self.servicetype = int(config.plugins.XCplugin.services.value) #'4097'
-        ###kiddac test
-        # print('servicetype1: ', self.servicetype)
         url = str(self.url)
+        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
+            if self.servicetype == "1":
+                self.servicetype = "4097"
         currentindex = 0
         streamtypelist = ["4097"]
         if os.path.exists("/usr/bin/gstplayer"):
@@ -3453,7 +3519,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                 break
         nextStreamType = islice(cycle(streamtypelist), currentindex + 1, None)
         self.servicetype = int(next(nextStreamType))
-        # print('servicetype2: ', self.servicetype)
         self.openPlay(self.servicetype, url)
 
     def cancel(self):
@@ -3467,9 +3532,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def keyRight(self):
         self["text"].right()
 
-    def leavePlayer(self):
-        self.close()
-
     def showVideoInfo(self):
         if self.shown:
             self.hideInfobar()
@@ -3480,6 +3542,22 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
             self.doShow()
+
+    def cancel(self):
+        if os.path.isfile('/tmp/hls.avi'):
+            os.remove('/tmp/hls.avi')
+        self.session.nav.stopService()
+        self.session.nav.playService(srefInit)
+        if not self.new_aspect == self.init_aspect:
+            try:
+                self.setAspect(self.init_aspect)
+            except:
+                pass
+        self.close()
+
+    def leavePlayer(self):
+        self.close()
+
 
 def menu(menuid, **kwargs):
     if menuid == "mainmenu":
@@ -3676,9 +3754,9 @@ VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def nextAR():
     try:
-        STREAMS.ar_id_player += 3
+        STREAMS.ar_id_player += 1
         if STREAMS.ar_id_player > 6:
-            STREAMS.ar_id_player = 3
+            STREAMS.ar_id_player = 0
         eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         # print("STREAMS.ar_id_player NEXT %s" % VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player])
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
@@ -3688,9 +3766,9 @@ def nextAR():
 
 def prevAR():
     try:
-        STREAMS.ar_id_player -= 3
+        STREAMS.ar_id_player -= 1
         if STREAMS.ar_id_player == -1:
-            STREAMS.ar_id_player = 3
+            STREAMS.ar_id_player = 6
         eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         # print("STREAMS.ar_id_player PREV %s" % VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player])
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
@@ -4431,31 +4509,62 @@ def make_bouquet():
     com = ("python %s") % e2m3u2bouquet
     _session.open(Console, _("Conversion %s in progress: ") % dom, ["%s" % com], closeOnSuccess=True)
 
-class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, IPTVInfoBarShowHide):
+# class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, IPTVInfoBarShowHide):
+class M3uPlayMovie(
+    InfoBarBase,
+    InfoBarMenu,
+    InfoBarSeek,
+    InfoBarAudioSelection,
+    InfoBarMoviePlayerSummarySupport,
+    InfoBarSubtitleSupport,
+    InfoBarSummarySupport,
+    InfoBarServiceErrorPopupSupport,
+    InfoBarNotifications,
+    IPTVInfoBarShowHide,
+    Screen
+):
+    STATE_IDLE = 0
+    STATE_PLAYING = 1
+    STATE_PAUSED = 2
+    ENABLE_RESUME_SUPPORT = True
+    ALLOW_SUSPEND = True
+    screen_timeout = 5000
     def __init__(self, session, name, url):
+        global SREF, streml
         Screen.__init__(self, session)
+        self.session = session
         self.skinName = 'MoviePlayer'
-        # title = 'Play'
-        self['list'] = MenuList([])
-        InfoBarMenu.__init__(self)
-        InfoBarNotifications.__init__(self)
-        InfoBarBase.__init__(self, steal_current_service=True)
-        IPTVInfoBarShowHide.__init__(self)
+        title = name
+        streaml = False
+        for x in InfoBarBase, \
+                InfoBarMenu, \
+                InfoBarSeek, \
+                InfoBarAudioSelection, \
+                InfoBarMoviePlayerSummarySupport, \
+                InfoBarSubtitleSupport, \
+                InfoBarSummarySupport, \
+                InfoBarServiceErrorPopupSupport, \
+                InfoBarNotifications, \
+                IPTVInfoBarShowHide:
+            x.__init__(self)
+
+        self['list'] = MenuList([])        
         try:
             self.init_aspect = int(self.getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-        self['actions'] = ActionMap(['WizardActions', 'MoviePlayerActions', 'EPGSelectActions', 'MediaPlayerSeekActions', 'ColorActions', 'InfobarShowHideActions', 'InfobarActions'], {
+        # InfoBarSeek.__init__(self, actionmap='MediaPlayerSeekActions')        
+        # self['actions'] = ActionMap(['WizardActions', 'MoviePlayerActions', 'EPGSelectActions', 'MediaPlayerSeekActions', 'ColorActions', 'InfobarShowHideActions', 'InfobarActions'], {
+        self['actions'] = ActionMap(['MoviePlayerActions', 'EPGSelectActions', 'MediaPlayerSeekActions', 'ColorActions', 'InfobarShowHideActions', 'InfobarActions'], {        
             'leavePlayer': self.cancel,
             'back': self.cancel
         }, -1)
-        self.allowPiP = False
-        InfoBarSeek.__init__(self, actionmap='MediaPlayerSeekActions')
         self.url = url
         self.name = name
         self.srefOld = self.session.nav.getCurrentlyPlayingServiceReference()
-        self.onLayoutFinish.append(self.openTest)
+        # self.onLayoutFinish.append(self.openTest)
+        self.onFirstExecBegin.append(self.openTest)
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
