@@ -373,7 +373,7 @@ class Provider():
             self._picon_create_empty(picon_file_path)
             return
 
-        if (ext != None and ext != 'png'):
+        if ext != None and ext != 'png':
             if DEBUG:
                 print('Converting Picon to png')
             try:
@@ -578,7 +578,7 @@ class Provider():
                         channels_list = self._dictchannels.get(category_override)
                     else:
                         channels_list = self._dictchannels.get(category)
-                    if (channels_list is not None and name != 'placeholder'):
+                    if channels_list is not None and name != 'placeholder':
                         for x in channels_list:
                             if x['stream-name'] == name:
                                 if override_channel.attrib.get('enabled') == 'false':
