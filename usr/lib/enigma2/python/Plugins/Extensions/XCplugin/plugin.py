@@ -65,7 +65,7 @@ iptv_list_tmp = []
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
 HD = getDesktop(0).size()
 # plugin_path = os.path.dirname(sys.modules[__name__].__file__)
-plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'             
+plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'
 skin_path = plugin_path
 iconpic = plugin_path + "/plugin.png"
 filterlist = plugin_path + "/cfg/filterlist.txt"
@@ -624,7 +624,7 @@ class iptv_streamse():
 
     def read_config(self):
         try:
-            print("-----------CONFIG NEW START----------")   
+            print("-----------CONFIG NEW START----------")
             hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
             self.port = str(config.plugins.XCplugin.port.value)
             self.xtream_e2portal_url = hosts + ':' + self.port
@@ -851,45 +851,41 @@ class iptv_streamse():
                 # res = fromstring(xmlstream)
                 res = []
                 url= checkStr(url)
-                
-                # print("Here in client1 getUrl url =", url)
-                req = Request(url)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')                
+                # # print("Here in client1 getUrl url =", url)
+                # req = Request(url)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                 try:
-                    # # print("Here in client1 getUrl url =", url)
-                    # req = Request(url)
-                    # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                    # print("Here in client1 getUrl url =", url)
+                    req = Request(url)
+                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                     response = urlopen(req)
-                    
-                    res=response.read()#.decode('utf-8')                    
+                    res=response.read()
                     if six.PY3:
                         res=response.read().decode('utf-8')
                     else:
-                        res=response.read()#.decode('utf-8')                        
-                    # response.close()
+                        res=response.read()#.decode('utf-8')
                     print("Here in client1 link =", res)
                     res = fromstring(res)
-                    req.close()
+                    # req.close()
+                    response.close()
                     return res
                 except:
-                    # # print("Here in client2 getUrl url =", url)
-                    # req = Request(url)
-                    # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                    # print("Here in client2 getUrl url =", url)
+                    req = Request(url)
+                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                     response = urlopen(req, None, 3)
-                    # res=response.read()#.decode('utf-8')
                     if six.PY3:
-                        res=response.read().decode('utf-8')                    
+                        res=response.read().decode('utf-8')
                     else:
                         res=response.read()#.decode('utf-8')
-                    # response.close()
                     print("Here in client2 link =", res)
                     res = fromstring(res)
-                    req.close()
+                    response.close()
                     return res
-                    
+
             except Exception as ex:
                 print(ex)
-                req.close()
+                # req.close()
                 res = None
                 self.xml_error = ex
             return res
