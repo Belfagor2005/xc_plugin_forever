@@ -65,7 +65,7 @@ iptv_list_tmp = []
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
 HD = getDesktop(0).size()
 # plugin_path = os.path.dirname(sys.modules[__name__].__file__)
-plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'
+plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'             
 skin_path = plugin_path
 iconpic = plugin_path + "/plugin.png"
 filterlist = plugin_path + "/cfg/filterlist.txt"
@@ -75,7 +75,20 @@ Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
 urlinfo = ""
 
-if six.PY3:
+
+PY3 = False 
+pythonVer = sys.version_info.major
+print("adnutils.py pythonVer = ", pythonVer)
+if pythonVer == 3:
+     PY3 = True
+else:
+     PY3 = False
+dreamos = False
+if os.path.exists('/var/lib/dpkg/status'):
+    dreamos = True
+    
+    
+if PY3:
     from urllib.request import urlopen, Request
     from urllib.parse import urlparse
     from urllib.parse import quote_plus
@@ -85,6 +98,26 @@ else:
     from urlparse import urlparse
     from urllib import quote_plus
 
+# if PY3:     
+    # import urllib
+    # import http.client
+    # from urllib.parse import urlparse
+    # import urllib.request
+    # from urllib.parse import parse_qs
+    # from urllib.error import URLError, HTTPError
+    # from urllib.request import urlopen, Request
+    # from urllib.parse import quote_plus, unquote_plus
+    # # PY3 = True and not dreamos; unicode = str; unichr = chr; long = int
+    # unicode = str; unichr = chr; long = int
+# else:
+    # import six
+    # import urllib, urllib2
+    # from htmlentitydefs import name2codepoint as n2cp
+    # import httplib
+    # import urlparse
+    # from urllib2 import Request, URLError, urlopen
+    # from urlparse import parse_qs
+    # from urllib import unquote_plus
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -98,7 +131,7 @@ except ImportError:
             pass
 
 def checkStr(txt):
-    if six.PY3:
+    if PY3:
         if isinstance(txt, type(bytes())):
             txt = txt.decode('utf-8')
     else:
@@ -107,18 +140,12 @@ def checkStr(txt):
     return txt
 
 try:
-    from enigma import eDVBDB
-except ImportError:
-    eDVBDB = None
-
-try:
     from OpenSSL import SSL
     from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
     sslverify = True
 except:
     sslverify = False
-
 if sslverify:
     class SNIFactory(ssl.ClientContextFactory):
         def __init__(self, hostname=None):
@@ -146,7 +173,11 @@ def del_jpg():
             os.remove(i)
         except OSError:
             pass
-
+try:
+    from enigma import eDVBDB
+except ImportError:
+    eDVBDB = None
+    
 def isExtEplayer3Available():
     return os.path.isfile(eEnv.resolve("$bindir/exteplayer3"))
 
@@ -610,8 +641,9 @@ class iptv_streamse():
         self.img_loader = False
         self.cont_play = False
         self.disable_audioselector = False
-        self.port = str(config.plugins.XCplugin.port.value)
-        self.xtream_e2portal_url = "http://" + str(config.plugins.XCplugin.hostaddress.value) + ':' + self.port
+        self.port = config.plugins.XCplugin.port.value
+        self.hostaddress = config.plugins.XCplugin.hostaddress.value
+        self.xtream_e2portal_url = "http://" + str(self.hostaddress) + ':' + str(self.port)
         self.username = str(config.plugins.XCplugin.user.value)
         self.password = str(config.plugins.XCplugin.passw.value)
 
@@ -624,7 +656,7 @@ class iptv_streamse():
 
     def read_config(self):
         try:
-            print("-----------CONFIG NEW START----------")
+            print("-----------CONFIG NEW START----------")   
             hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
             self.port = str(config.plugins.XCplugin.port.value)
             self.xtream_e2portal_url = hosts + ':' + self.port
@@ -635,10 +667,10 @@ class iptv_streamse():
             if password and password != "":
                 self.password = password
             plugin_version = version
-            # print('xtream_e2portal_url = ', self.xtream_e2portal_url)
-            # print('port = ', self.port)
-            # print('username = ', self.username)
-            # print('password = ', self.password)
+            print('xtream_e2portal_url = ', self.xtream_e2portal_url)
+            print('port = ', self.port)
+            print('username = ', self.username)
+            print('password = ', self.password)
             # print('plugin_version = ', plugin_version)
             # print("%s" % version)
             print("-----------CONFIG NEW END----------")
@@ -652,6 +684,7 @@ class iptv_streamse():
         stream_url = ""
         self.xml_error = ""
         self.url = check_port(url)
+        # self.url = url        
         self.clear_url = self.url
         self.list_index = 0
         iptv_list_tmp = []
@@ -724,7 +757,7 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         # if desc_image.startswith("https"):
                             desc_image = str(desc_image)
-                    # if six.PY3:
+                    # if PY3:
                         # desc_image = desc_image.encode()
                     if stream_url and stream_url != "n/A" and stream_url != "":
                         isStream = True
@@ -832,7 +865,9 @@ class iptv_streamse():
             TYPE_PLAYER = '/enigma2.php'
             url = url.strip(" \t\n\r")
             if next_request == 1:
+                
                 url = check_port(url)
+                
                 if not url.find(":"):
                     self.port = str(config.plugins.XCplugin.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
@@ -841,58 +876,105 @@ class iptv_streamse():
                 next_request = 1
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
+                print('my url final 1', url)
                 # next_request = 2
                 next_request = 3
-            urlinfo = url
+            urlinfo = self.checkRedirect(url)
+            urlinfo= checkStr(urlinfo)
+            print('urlinfo 1 ', urlinfo)
             try:
-                # req = Request(urlinfo, None, headers=headers)
-                # if self.server_oki is True:
-                    # xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
-                # res = fromstring(xmlstream)
+                # res = []
+                # if PY3:
+                    # # urlinfo = urlinfo.encode()
+                    # req = Request(urlinfo)
+                    # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                    # try:
+                           # response = urlopen(req)
+                           # res=response.read().decode('utf-8',errors='ignore')
+                           # # res = six.ensure_str(res)
+                           # print('+++++++++++++++++++++goooo1111111111', res)
+                           # response.close()
+                           # res = fromstring(res)
+                           # return res
+                    # except:
+                           # import ssl
+                           # gcontext = ssl._create_unverified_context()
+                           # response = urlopen(req, context=gcontext)
+                           # res=response.read().decode('utf-8',errors='ignore')
+                           # print('+++++++++++++++++++++goooo10101010101', res)
+                           # response.close()
+                           # res = fromstring(res)
+                           # return res
+                # else:
+               
+                    # req = Request(url)
+                    # req.add_header('User-Agent',RequestAgent())
+                    # try:
+                           # # response = urlopen(req)
+                           # response = urlopen(req, None, 3)
+                           # print("Here in getUrl response =", response)
+                           # res=response.read()
+                           # response.close()
+                           # res = fromstring(res)
+                           # return res
+                    # except:
+                           # import ssl
+                           # gcontext = ssl._create_unverified_context()
+                           # response = urlopen(req, context=gcontext)
+                           # print("Here in getUrl response 2=", response)
+                           # res=response.read()
+                           # response.close()
+                           # res = fromstring(res)
+                           # return res          
+            
                 res = []
                 url= checkStr(url)
-                # # print("Here in client1 getUrl url =", url)
-                # req = Request(url)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                 try:
-                    # print("Here in client1 getUrl url =", url)
                     req = Request(url)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                     response = urlopen(req)
                     res=response.read()
-                    if six.PY3:
+                    if PY3:
                         res=response.read().decode('utf-8')
                     else:
-                        res=response.read()#.decode('utf-8')
+                        res=response.read()#.decode('utf-8')                        
                     print("Here in client1 link =", res)
                     res = fromstring(res)
-                    # req.close()
                     response.close()
                     return res
                 except:
-                    # print("Here in client2 getUrl url =", url)
                     req = Request(url)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                     response = urlopen(req, None, 3)
-                    if six.PY3:
+                    if PY3:
                         res=response.read().decode('utf-8')
                     else:
-                        res=response.read()#.decode('utf-8')
+                        res=response.read()
                     print("Here in client2 link =", res)
                     res = fromstring(res)
                     response.close()
-                    return res
-
+                    return res                    
             except Exception as ex:
-                print(ex)
-                # req.close()
                 res = None
                 self.xml_error = ex
-            return res
+                print('erroooorrrrr ex ', ex)
         else:
             res = None
             return res
-
+            
+    #kiddac code        
+    def checkRedirect(self, url):
+        # print("*** check redirect ***")
+        try:
+            import requests
+            x = requests.get(url, timeout=20, verify=False, stream=True)
+            # print("**** redirect url 1 *** %s" % x.url)
+            return str(x.url)
+        except Exception as e:
+            print(e)
+            # print("**** redirect url 2 *** %s" % url)
+            return str(url)
+            
 class IPTVInfoBarShowHide():
     """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
     fancy animations. """
@@ -1396,7 +1478,7 @@ class xc_Main(Screen):
         self.vod_url = str(self.selected_channel[4])
         self.title = str(self.selected_channel[1])
         self.desc = str(self.selected_channel[2])
-        # if six.PY3:
+        # if PY3:
             # self.vod_url = self.vod_url.encode()
             # print('self.vod_url encode')
         if self.vod_url != None and btnsearch == 1:
@@ -1570,7 +1652,7 @@ class xc_Main(Screen):
                         self.decodeImage(piclogo)
                         return
                     else:
-                        if six.PY3:
+                        if PY3:
                             self.pixim = six.ensure_binary(self.pixim)
                         if self.pixim.startswith(b"https") and sslverify:
                             parsed_uri = urlparse(self.pixim)
@@ -1913,7 +1995,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.decodeImage(piclogo)
                     return
                 else:
-                    if six.PY3:
+                    if PY3:
                         self.pixim = six.ensure_binary(self.pixim)
                     if self.pixim.startswith(b"https") and sslverify:
                         parsed_uri = urlparse(self.pixim)
@@ -2801,7 +2883,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                         self.decodeImage(piclogo)
                         return
                     else:
-                        if six.PY3:
+                        if PY3:
                             self.cover = six.ensure_binary(self.cover)
 
                         if self.cover.startswith(b"https") and sslverify:
@@ -3529,7 +3611,8 @@ def main(session, **kwargs):
         STREAMS.get_list(STREAMS.xtream_e2portal_url)
         session.openWithCallback(check_configuring, xc_home)
     else:
-        session.openWithCallback(check_configuring, xc_home)
+        # session.openWithCallback(check_configuring, xc_home)
+        session.open(xc_home)
 
 _session = None
 autoStartTimer = None
@@ -3672,7 +3755,7 @@ class downloadTask(Task):
         self.lasterrormsg = None
 
     def processOutput(self, data):
-        if six.PY3:
+        if PY3:
             data = six.ensure_str(data)
         try:
             if data.endswith("%)"):
@@ -4028,7 +4111,7 @@ class xc_home(Screen):
 
     def check_dependencies(self):
         dependencies = True
-        if six.PY3:
+        if PY3:
             if not os.path.exists("/usr/lib/python3.8/site-packages/requests"):
                 dependencies = False
         else:
@@ -4398,7 +4481,7 @@ def save_old():
 def make_bouquet():
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy2.py'
     n1 = 'e2m3u2bouquetpy2.py'
-    if six.PY3:
+    if PY3:
         e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
         n1 = 'e2m3u2bouquetpy3.py'
     if not os.path.exists("/etc/enigma2/e2m3u2bouquet"):
