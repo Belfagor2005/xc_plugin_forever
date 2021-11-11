@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 26.09.2021
+# 10.11.2021
 from __future__ import print_function
 from . import _
 from Components.AVSwitch import AVSwitch
@@ -53,18 +53,22 @@ global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies,
 
 _session = " "
 version = "XC Forever V.1.8"
+
+iptv_list_tmp = []
 re_search = False
 pmovies = False
 series = False
 isStream = False
+PY3 = False
+xcDreamOS = False
+pmovies = False
 btnsearch = 0
 next_request = 0
 stream_url = ""
-iptv_list_tmp = []
-
+urlinfo = ""
+WGET = ''
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
 HD = getDesktop(0).size()
-# plugin_path = os.path.dirname(sys.modules[__name__].__file__)
 plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'             
 skin_path = plugin_path
 iconpic = plugin_path + "/plugin.png"
@@ -73,20 +77,20 @@ enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
-urlinfo = ""
-
-
-PY3 = False 
+piclogo = plugin_path + "/skin/fhd/iptvlogo.jpg"
+xc_list = Path_Tmp + "/xc.txt"
+iptvsh = enigma_path + "iptv.sh"
 pythonVer = sys.version_info.major
+
 print("adnutils.py pythonVer = ", pythonVer)
+
 if pythonVer == 3:
      PY3 = True
 else:
      PY3 = False
-dreamos = False
+
 if os.path.exists('/var/lib/dpkg/status'):
-    dreamos = True
-    
+    xcDreamOS = True
     
 if PY3:
     from urllib.request import urlopen, Request
@@ -97,27 +101,6 @@ else:
     from urllib2 import urlopen, Request
     from urlparse import urlparse
     from urllib import quote_plus
-
-# if PY3:     
-    # import urllib
-    # import http.client
-    # from urllib.parse import urlparse
-    # import urllib.request
-    # from urllib.parse import parse_qs
-    # from urllib.error import URLError, HTTPError
-    # from urllib.request import urlopen, Request
-    # from urllib.parse import quote_plus, unquote_plus
-    # # PY3 = True and not dreamos; unicode = str; unichr = chr; long = int
-    # unicode = str; unichr = chr; long = int
-# else:
-    # import six
-    # import urllib, urllib2
-    # from htmlentitydefs import name2codepoint as n2cp
-    # import httplib
-    # import urlparse
-    # from urllib2 import Request, URLError, urlopen
-    # from urlparse import parse_qs
-    # from urllib import unquote_plus
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -200,7 +183,6 @@ if os.path.exists("/usr/bin/exteplayer3"):
 if os.path.exists('/var/lib/dpkg/status'):
     modemovie.append(("8193", _("eServiceUri(8193)")))
 
-WGET = ''
 if os.path.exists("/var/lib/dpkg/status"):
     WGET = '/usr/bin/wget --no-check-certificate'
 else:
@@ -240,7 +222,6 @@ config.plugins.XCplugin.last_update = ConfigText(default="none")
 config.plugins.XCplugin.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 config.plugins.XCplugin.fixedtime = ConfigClock(default=0)
 
-piclogo = plugin_path + "/skin/fhd/iptvlogo.jpg"
 if HD.width() <= 1280:
     CHANNEL_NUMBER = [3, 5, 50, 40, 0]
     CHANNEL_NAME = [65, 5, 900, 40, 1]
@@ -264,14 +245,11 @@ def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 
 copy_poster()
-pmovies = False
 ntimeout = config.plugins.XCplugin.timeout.getValue()
 eserv = int(config.plugins.XCplugin.services.value)
 infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
 Path_Movies = config.plugins.XCplugin.pthmovie.getValue() + "/"
-xc_list = Path_Tmp + "/xc.txt"
-iptvsh = enigma_path + "iptv.sh"
 Path_Movies2 = Path_Movies
 socket.setdefaulttimeout(ntimeout)
 
@@ -907,7 +885,7 @@ class iptv_streamse():
                            # return res
                 # else:
                
-                    # req = Request(url)
+                    # req = Request(urlinfo)
                     # req.add_header('User-Agent',RequestAgent())
                     # try:
                            # # response = urlopen(req)
@@ -925,15 +903,21 @@ class iptv_streamse():
                            # res=response.read()
                            # response.close()
                            # res = fromstring(res)
-                           # return res          
-            
-                res = []
-                url= checkStr(url)
+                           # return res     
+
+                           
+                # req = Request(urlinfo, None, headers=headers)
+                # if self.server_oki is True:
+                    # xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
+                    
+                    
+                # res = []
+                # url= checkStr(url)
                 try:
-                    req = Request(url)
+                    req = Request(urlinfo)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                    response = urlopen(req)
-                    res=response.read()
+                    response = urlopen(req, timeout=ntimeout)#.read())
+                    # res=response.read()
                     if PY3:
                         res=response.read().decode('utf-8')
                     else:
@@ -943,7 +927,7 @@ class iptv_streamse():
                     response.close()
                     return res
                 except:
-                    req = Request(url)
+                    req = Request(urlinfo)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                     response = urlopen(req, None, 3)
                     if PY3:
