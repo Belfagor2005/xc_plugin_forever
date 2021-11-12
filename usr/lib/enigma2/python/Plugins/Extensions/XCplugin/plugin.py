@@ -82,7 +82,7 @@ xc_list = Path_Tmp + "/xc.txt"
 iptvsh = enigma_path + "iptv.sh"
 pythonVer = sys.version_info.major
 
-print("adnutils.py pythonVer = ", pythonVer)
+print("pythonVer = ", pythonVer)
 
 if pythonVer == 3:
      PY3 = True
@@ -260,7 +260,18 @@ if Path_XML.endswith("//") is True:
     Path_XML = Path_XML[:-1]
 if not os.path.exists(Path_XML):
     os.system("mkdir " + Path_XML)
+try:
+	from Plugins.Extensions.tmdb import tmdb
+	is_tmdb = True
+except Exception:
+	is_tmdb = False
 
+try:
+	from Plugins.Extensions.IMDb.plugin import main as imdb
+	is_imdb = True
+except Exception:
+	is_imdb = False
+    
 def check_port(tport):
     url = tport
     line = url.strip()
@@ -4332,28 +4343,25 @@ def show_more_infos(name, index):
         index = index
         selected_channel = iptv_list_tmp[index]
         if selected_channel:
-
             if stream_live == True:
                 text2 = selected_channel[2]
                 text3 = selected_channel[8]
                 text_clear += str(text2) + '\n\n' + str(text3)
                 _session.open(xc_Epg, text_clear)
             else:
-                if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD"):
-                    from Plugins.Extensions.TMBD.plugin import TMBD
-                    # text_clear = str(selected_channel[1]) #10 ?
-                    # print('Tmdb ', text_clear)
-                    text = charRemove(text_clear)
-                    _session.open(TMBD, text, False)
-                elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb"):
-                    from Plugins.Extensions.IMDb.plugin import IMDB
-                    # text_clear = str(selected_channel[1]) #10 ?
-                    # print('imdb ', text_clear)
-                    text = charRemove(text_clear)
-                    _session.open(IMDB, text)
+                if is_tmdb:
+                    try:
+                        text = charRemove(text_clear)
+                        _session.open(tmdb.tmdbScreen, text, 0)
+                    except Exception as e:
+                        print("[XCF] Tmdb: ", e)
+                elif is_imdb:
+                    try:
+                        text = charRemove(text_clear)
+                        imdb(_session, text)
+                    except Exception as e:
+                        print("[XCF] imdb: ", e)
                 else:
-                    # text_clear = str(selected_channel[2])
-                    # _session.open(xc_Epg, text_clear)
                     text2 = selected_channel[2]
                     text3 = selected_channel[8]
                     text_clear += str(text2) + '\n\n' + str(text3)
