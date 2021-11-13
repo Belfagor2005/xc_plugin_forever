@@ -244,7 +244,8 @@ def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 
 copy_poster()
-ntimeout = config.plugins.XCplugin.timeout.getValue()
+# ntimeout = config.plugins.XCplugin.timeout.getValue()
+ntimeout = int(config.plugins.XCplugin.timeout.value)
 eserv = int(config.plugins.XCplugin.services.value)
 infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
