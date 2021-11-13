@@ -22,5 +22,5 @@
 	 -->
 	<ePixmap position="1070,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_yellow" position="850,1010" size="200,40" font="Regular;30" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-    	<ePixmap position="1150,1007" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/help.png" alphatest="blend" zPosition="3" transparent="1" />
+	<ePixmap position="1150,1007" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/help.png" alphatest="blend" zPosition="3" transparent="1" />
 </screen>

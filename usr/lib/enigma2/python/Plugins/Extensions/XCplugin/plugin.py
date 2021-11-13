@@ -61,7 +61,6 @@ series = False
 isStream = False
 PY3 = False
 xcDreamOS = False
-pmovies = False
 btnsearch = 0
 next_request = 0
 stream_url = ""
@@ -249,7 +248,8 @@ ntimeout = config.plugins.XCplugin.timeout.getValue()
 eserv = int(config.plugins.XCplugin.services.value)
 infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
-Path_Movies = config.plugins.XCplugin.pthmovie.getValue() + "/"
+# Path_Movies = config.plugins.XCplugin.pthmovie.getValue() + "/"
+Path_Movies = str(config.plugins.XCplugin.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
 socket.setdefaulttimeout(ntimeout)
 

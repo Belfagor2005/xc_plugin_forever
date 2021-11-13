@@ -17,7 +17,7 @@
 	<eLabel  position="220,940"   size="880,5"  backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="220,965"   size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_green"      position="270,960" size="300,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-    	<ePixmap position="220,1015"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png"   alphatest="blend" zPosition="3" transparent="1" />
+	<ePixmap position="220,1015"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png"   alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_red"        position="270,1011" size="300,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
  	<ePixmap position="1070,965"  size="30,30"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_blue"       position="750,960" size="300,40" font="Regular;30" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />

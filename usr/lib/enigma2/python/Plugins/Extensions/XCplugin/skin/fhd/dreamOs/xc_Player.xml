@@ -30,7 +30,7 @@
 	</widget>
 	<widget name="state" position="375,865" size="500,60" font="Regular;60" halign="left" foregroundColor="#707070" backgroundColor="#10000000" transparent="1" zPosition="10" />
 	<!-- Buttons Colors -->
-    	<eLabel position="50,1020" size="25,25" backgroundColor="#0a337a" zPosition="3" />
+	<eLabel position="50,1020" size="25,25" backgroundColor="#0a337a" zPosition="3" />
 	<widget name="cont_play" position="90,1018" size="250,40" font="Regular;28" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="7" /> 		
 	<eLabel position="380,1020" size="25,25" backgroundColor="#830113" zPosition="3" />
 	<widget name="key_record" position="420,1018" size="250,40" font="Regular;28" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="6" /> 		
