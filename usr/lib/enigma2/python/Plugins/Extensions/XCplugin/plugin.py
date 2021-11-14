@@ -52,7 +52,7 @@ global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movi
 global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo
 
 _session = " "
-version = "XC Forever V.1.8"
+version = "XC Forever V.1.9"
 
 iptv_list_tmp = []
 re_search = False
@@ -120,6 +120,16 @@ def checkStr(txt):
         if isinstance(txt, type(six.text_type())):
             txt = txt.encode('utf-8')
     return txt
+    
+# def checkStr(text, encoding="utf8"):
+    # if PY3:
+          # return text
+    # else:        
+          # if isinstance(text, unicode):
+               # return text.encode(encoding)
+          # else:
+               # return text
+
 
 try:
     from OpenSSL import SSL
@@ -199,7 +209,7 @@ config.plugins.XCplugin.live = ConfigSelection(default='1', choices=modelive)
 config.plugins.XCplugin.services = ConfigSelection(default='4097', choices=modemovie)
 config.plugins.XCplugin.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
 config.plugins.XCplugin.infoname = NoSave(ConfigText(default="myBouquet"))
-config.plugins.XCplugin.timeout = ConfigNumber(default=10)
+config.plugins.XCplugin.timeout = ConfigNumber(default=15)
 config.plugins.XCplugin.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 config.plugins.XCplugin.picons = ConfigYesNo(default=False)
 config.plugins.XCplugin.pthpicon = ConfigDirectory(default="/media/hdd/picon")
@@ -246,12 +256,12 @@ def copy_poster():
 copy_poster()
 # ntimeout = config.plugins.XCplugin.timeout.getValue()
 ntimeout = int(config.plugins.XCplugin.timeout.value)
+socket.setdefaulttimeout(ntimeout)
 eserv = int(config.plugins.XCplugin.services.value)
 infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
 Path_Movies = str(config.plugins.XCplugin.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
-socket.setdefaulttimeout(ntimeout)
 
 if Path_Movies.endswith("//") is True:
     Path_Movies = Path_Movies[:-1]
@@ -260,6 +270,8 @@ if Path_XML.endswith("//") is True:
     Path_XML = Path_XML[:-1]
 if not os.path.exists(Path_XML):
     os.system("mkdir " + Path_XML)
+    
+    
 try:
 	from Plugins.Extensions.tmdb import tmdb
 	is_tmdb = True
@@ -927,12 +939,12 @@ class iptv_streamse():
                 try:
                     req = Request(urlinfo)
                     req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                    response = urlopen(req, timeout=ntimeout)#.read())
+                    response = urlopen(req, timeout=ntimeout)
                     # res=response.read()
                     if PY3:
                         res=response.read().decode('utf-8')
                     else:
-                        res=response.read()#.decode('utf-8')                        
+                        res=response.read()                        
                     print("Here in client1 link =", res)
                     res = fromstring(res)
                     response.close()
@@ -1200,6 +1212,7 @@ class xc_Main(Screen):
             self["active_cons"].setText("")
             self["exp"].setText("Server Not Responding")
             url_info = 'http://' + host + ':' + ports + '/' + panel + '.php?username=' + user + '&password=' + password + '&action=user&sub=info'
+            print('url_info: ', url_info)
             data = getJsonURL(url_info)
             user = ''
             status = ''
@@ -1599,6 +1612,8 @@ class xc_Main(Screen):
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            _l = self.picload.PictureData.get()
+            del _l[:]
             if os.path.exists('/var/lib/dpkg/status'):
                 self.picload.startDecode(png, False)
             else:
@@ -1620,12 +1635,15 @@ class xc_Main(Screen):
                 pass
             except:
                 pass
+                
     def downloadError(self, pictmp):
         try:
             if fileExists(pictmp):
                 self.decodeImage(piclogo)
+                
         except Exception as ex:
             self.decodeImage(piclogo)
+            #self["poster"].hide()
             print(ex)
             print('exe downloadError')
 
@@ -2015,6 +2033,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            _l = self.picload.PictureData.get()
+            del _l[:]
             if os.path.exists('/var/lib/dpkg/status'):
                 self.picload.startDecode(png, False)
             else:
@@ -2026,7 +2046,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             else:
                 print('no cover.. error')
             return
-
+            
     def image_downloaded(self, data, pictmp):
         if os.path.exists(pictmp):
             try:
@@ -2955,17 +2975,19 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
     def show_more_info_Title(self, truc):
         show_more_info_Titles(truc)
 
-    def decodeImage(self, pictmp):
-        self["poster"].show()
-        if os.path.exists(pictmp):
+    def decodeImage(self, png):
+        self["poster"].hide()
+        if os.path.exists(png):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            _l = self.picload.PictureData.get()
+            del _l[:]
             if os.path.exists('/var/lib/dpkg/status'):
-                self.picload.startDecode(pictmp, False)
+                self.picload.startDecode(png, False)
             else:
-                self.picload.startDecode(pictmp, 0, 0, False)
+                self.picload.startDecode(png, 0, 0, False)
             ptr = self.picload.getData()
             if ptr != None:
                 self['poster'].instance.setPixmap(ptr)
@@ -3528,8 +3550,11 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             self.session.open(xc_Epg, text_clear)
 
     def openPlay(self, servicetype, url):
-        url = url
+        # url = url
         ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
+        
+        # ref = "{0}:0:0:0:0:0:0:0:0:0:{0}:{1}".format(str(servicetype), url.replace(":", "%3A"), self.name.replace(":", "%3A"))
+        
         # print('final reference :   ', ref)
         sref = eServiceReference(ref)
         sref.setName(self.name)
