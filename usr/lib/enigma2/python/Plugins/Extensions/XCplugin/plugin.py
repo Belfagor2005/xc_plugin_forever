@@ -36,7 +36,12 @@ from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from sys import version_info
 from twisted.web.client import downloadPage
-from xml.etree.ElementTree import fromstring, ElementTree
+from xml.etree.ElementTree import fromstring
+try:
+    import xml.etree.cElementTree as ElementTree
+except ImportError:
+    import xml.etree.ElementTree as ElementTree
+
 import base64
 import glob
 import hashlib
