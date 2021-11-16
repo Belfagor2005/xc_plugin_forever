@@ -38,10 +38,12 @@ from sys import version_info
 from twisted.web.client import downloadPage
 from xml.etree.ElementTree import fromstring
 try:
-    import xml.etree.cElementTree as ElementTree
+    from xml.etree.cElementTree import ElementTree
+    # import xml.etree.cElementTree as ElementTree
 except ImportError:
-    import xml.etree.ElementTree as ElementTree
-
+    # import xml.etree.ElementTree as ElementTree
+    from xml.etree.ElementTree import ElementTree
+    
 import base64
 import glob
 import hashlib
@@ -2419,7 +2421,9 @@ class xc_StreamTasks(Screen):
             file1 = True
             filelist.sort()
             for filename in filelist:
-                if os.path.isfile(Path_Movies + filename) and filename.endswith(".meta") is False:
+                if os.path.isfile(path + filename):
+                    if filename.endswith(".meta"):
+                        continue
                     if ".m3u" in filename:
                         continue
                     if "autotimer" in filename:
@@ -2693,8 +2697,8 @@ class OpenServer(Screen):
             STREAMS.get_list(STREAMS.xtream_e2portal_url)
             self.session.openWithCallback(check_configuring, xc_Main)
         else:
-            self.session.openWithCallback(check_configuring, xc_Main)
-
+            # self.session.openWithCallback(check_configuring, xc_Main)
+            self.session.open(xc_Main)
     def selectlist(self):
         idx = self["list"].getSelectionIndex()
         if idx == -1 or idx ==None:
