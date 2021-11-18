@@ -3543,17 +3543,33 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.setAspect(temp)
 
     def showIMDB(self):
-        if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD"):
-            from Plugins.Extensions.TMBD.plugin import TMBD
-            text_clear = self.name
-            text = charRemove(text_clear)
-            self.session.open(TMBD, text, False)
-        elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb"):
-            from Plugins.Extensions.IMDb.plugin import IMDB
-            text_clear = self.name
-            text = charRemove(text_clear)
-            HHHHH = text
-            self.session.open(IMDB, HHHHH)
+        text_clear = self.name
+        # if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD"):
+            # from Plugins.Extensions.TMBD.plugin import TMBD
+            # text_clear = self.name
+            # text = charRemove(text_clear)
+            # self.session.open(TMBD, text, False)
+        # elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb"):
+            # from Plugins.Extensions.IMDb.plugin import IMDB
+            # text_clear = self.name
+            # text = charRemove(text_clear)
+            # HHHHH = text
+            # self.session.open(IMDB, HHHHH)
+        if is_tmdb:
+            try:
+                from Plugins.Extensions.TMBD.plugin import TMBD
+                text = charRemove(text_clear)
+                _session.open(tmdb.tmdbScreen, text, 0)
+            except Exception as e:
+                print("[XCF] Tmdb: ", e)
+        elif is_imdb:
+            try:
+                from Plugins.Extensions.IMDb.plugin import main as imdb
+                text = charRemove(text_clear)
+                imdb(_session, text)
+            except Exception as e:
+                print("[XCF] imdb: ", e)
+            
         else:
             text_clear = self.name
             self.session.open(xc_Epg, text_clear)
@@ -3561,9 +3577,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def openPlay(self, servicetype, url):
         # url = url
         ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
-        
         # ref = "{0}:0:0:0:0:0:0:0:0:0:{0}:{1}".format(str(servicetype), url.replace(":", "%3A"), self.name.replace(":", "%3A"))
-        
         # print('final reference :   ', ref)
         sref = eServiceReference(ref)
         sref.setName(self.name)
@@ -4385,12 +4399,14 @@ def show_more_infos(name, index):
             else:
                 if is_tmdb:
                     try:
+                        from Plugins.Extensions.TMBD.plugin import TMBD
                         text = charRemove(text_clear)
                         _session.open(tmdb.tmdbScreen, text, 0)
                     except Exception as e:
                         print("[XCF] Tmdb: ", e)
                 elif is_imdb:
                     try:
+                        from Plugins.Extensions.IMDb.plugin import main as imdb
                         text = charRemove(text_clear)
                         imdb(_session, text)
                     except Exception as e:
