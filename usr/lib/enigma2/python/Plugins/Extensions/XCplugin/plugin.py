@@ -1,10 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # 10.11.2021
+'''
+****************************************
+*        coded by Lululla & PCD        *
+*             skin by MMark            *
+*             15/12/2021               *
+*       Skin by MMark                  *
+****************************************
+#--------------------#
+'''          
 from __future__ import print_function
 from . import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
+from Components.config import ConfigSubsection, config, configfile,  ConfigYesNo, ConfigEnableDisable, ConfigSelectionNumber, ConfigClock
+from Components.config import ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigPassword                                    
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -15,11 +26,14 @@ from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Task import Task, Job, job_manager as JobManager
-from Components.config import config, ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigSubsection, ConfigYesNo, ConfigPassword, ConfigSelectionNumber, ConfigClock, configfile
+
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 from Screens.InfoBar import MoviePlayer, InfoBar
-from Screens.InfoBarGenerics import *
+from Screens.Standby import TryQuitMainloop, Standby
+from Screens.InfoBarGenerics import InfoBarShowHide, InfoBarSubtitleSupport, InfoBarSummarySupport, \
+	InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
+	InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
@@ -28,11 +42,27 @@ from Screens.Standby import Standby
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools import ASCIItranslit
+from Tools.Directories import SCOPE_PLUGINS
+from Tools.Directories import pathExists 
+from Tools.Directories import resolveFilename
 from Tools.Directories import fileExists
 from Tools.Downloader import downloadWithProgress
-from enigma import eTimer, ePicLoad, eEnv, iPlayableService, gPixmapPtr, eServiceReference, eAVSwitch, loadPNG
-from enigma import gFont, getDesktop, RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_VALIGN_CENTER, eListboxPythonMultiContent
-from os import listdir, path, access, X_OK, chmod
+
+from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
+from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT
+from enigma import eEnv, gPixmapPtr, eAVSwitch 
+from enigma import eListbox, eTimer
+from enigma import eListboxPythonMultiContent, eConsoleAppContainer
+from enigma import eServiceCenter
+from enigma import eServiceReference
+from enigma import eSize, ePicLoad
+from enigma import gFont
+# from enigma import getDesktop 
+from enigma import iPlayableService
+from enigma import iServiceInformation
+from enigma import loadPNG
+from enigma import quitMainloop  
+from os import listdir, path, access, X_OK, chmod                        
 from os.path import splitext
 from sys import version_info
 from twisted.web.client import downloadPage
@@ -43,7 +73,10 @@ try:
 except ImportError:
     # import xml.etree.ElementTree as ElementTree
     from xml.etree.ElementTree import ElementTree
-    
+try:
+    from Plugins.Extensions.XCplugin.Utils import *
+except:
+    from . import Utils
 import base64
 import glob
 import hashlib
@@ -67,37 +100,32 @@ pmovies = False
 series = False
 isStream = False
 PY3 = False
-xcDreamOS = False
 btnsearch = 0
 next_request = 0
 stream_url = ""
 urlinfo = ""
 WGET = ''
-headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'}
-HD = getDesktop(0).size()
-plugin_path = '/usr/lib/enigma2/python/Plugins/Extensions/XCplugin'             
+
+plugin_path = os.path.dirname(sys.modules[__name__].__file__)
 skin_path = plugin_path
-iconpic = plugin_path + "/plugin.png"
-filterlist = plugin_path + "/cfg/filterlist.txt"
+iconpic = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/plugin.png".format('XCplugin'))
+filterlist = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/cfg/filterlist.txt".format('XCplugin'))
+piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
 enigma_path = '/etc/enigma2/'
+iptvsh = enigma_path + "iptv.sh"
 epgimport_path = '/etc/epgimport/'
 Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
-piclogo = plugin_path + "/skin/fhd/iptvlogo.jpg"
 xc_list = Path_Tmp + "/xc.txt"
-iptvsh = enigma_path + "iptv.sh"
-pythonVer = sys.version_info.major
 
+pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
 
 if pythonVer == 3:
      PY3 = True
 else:
      PY3 = False
-
-if os.path.exists('/var/lib/dpkg/status'):
-    xcDreamOS = True
-    
+   
 if PY3:
     from urllib.request import urlopen, Request
     from urllib.parse import urlparse
@@ -114,30 +142,10 @@ except ImportError:
     class SubsSupport(object):
         def __init__(self, *args, **kwargs):
             pass
-
     class SubsSupportStatus(object):
         def __init__(self, *args, **kwargs):
             pass
-
-def checkStr(txt):
-    if PY3:
-        if isinstance(txt, type(bytes())):
-            txt = txt.decode('utf-8')
-    else:
-        if isinstance(txt, type(six.text_type())):
-            txt = txt.encode('utf-8')
-    return txt
-    
-# def checkStr(text, encoding="utf8"):
-    # if PY3:
-          # return text
-    # else:        
-          # if isinstance(text, unicode):
-               # return text.encode(encoding)
-          # else:
-               # return text
-
-
+   
 try:
     from OpenSSL import SSL
     from twisted.internet import ssl
@@ -149,24 +157,14 @@ if sslverify:
     class SNIFactory(ssl.ClientContextFactory):
         def __init__(self, hostname=None):
             self.hostname = hostname
-
         def getContext(self):
             ctx = self._contextFactory(self.method)
             if self.hostname:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-def MemClean():
-    try:
-        os.system("sync")
-        os.system("echo 1 > /proc/sys/vm/drop_caches")
-        os.system("echo 2 > /proc/sys/vm/drop_caches")
-        os.system("echo 3 > /proc/sys/vm/drop_caches")
-    except:
-        pass
-
 def del_jpg():
-    for i in glob.glob(os.path.join(Path_Tmp, "*.jpg")):
+    for i in glob.glob(os.path.join("/tmp", "*.jpg")):
         try:
             os.chmod(i, 0o777)
             os.remove(i)
@@ -176,19 +174,14 @@ try:
     from enigma import eDVBDB
 except ImportError:
     eDVBDB = None
-    
-def isExtEplayer3Available():
-    return os.path.isfile(eEnv.resolve("$bindir/exteplayer3"))
 
-def isGstPlayerAvailable():
-    return os.path.isfile(eEnv.resolve("$bindir/gst-launch-1.0"))
 
 modelive = [("1", _("Dvb(1)")), ("4097", _("IPTV(4097)"))]
 if os.path.exists("/usr/bin/gstplayer"):
     modelive.append(("5001", _("Gstreamer(5001)")))
 if os.path.exists("/usr/bin/exteplayer3"):
     modelive.append(("5002", _("Exteplayer3(5002)")))
-if os.path.exists('/var/lib/dpkg/status'):
+if DreamOS():
     modelive.append(("8193", _("eServiceUri(8193)")))
 
 modemovie = [("4097", _("IPTV(4097)"))]
@@ -196,10 +189,10 @@ if os.path.exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", _("Gstreamer(5001)")))
 if os.path.exists("/usr/bin/exteplayer3"):
     modemovie.append(("5002", _("Exteplayer3(5002)")))
-if os.path.exists('/var/lib/dpkg/status'):
+if DreamOS():
     modemovie.append(("8193", _("eServiceUri(8193)")))
 
-if os.path.exists("/var/lib/dpkg/status"):
+if DreamOS():
     WGET = '/usr/bin/wget --no-check-certificate'
 else:
     WGET = '/usr/bin/wget'
@@ -238,29 +231,29 @@ config.plugins.XCplugin.last_update = ConfigText(default="none")
 config.plugins.XCplugin.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 config.plugins.XCplugin.fixedtime = ConfigClock(default=0)
 
-if HD.width() <= 1280:
+if isHD():
     CHANNEL_NUMBER = [3, 5, 50, 40, 0]
     CHANNEL_NAME = [65, 5, 900, 40, 1]
     FONT_0 = ("Regular", 20)
     FONT_1 = ("Regular", 20)
     BLOCK_H = 40
-    piclogo = plugin_path + "/skin/hd/iptvlogo.jpg"
-    skin_path = plugin_path + "/skin/hd"
-elif HD.width() <= 1920:
+    piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
+    skin_path = piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
+elif isFHD():
     CHANNEL_NUMBER = [3, 7, 85, 50, 0]
     CHANNEL_NAME = [90, 7, 1500, 50, 1]
     FONT_0 = ("Regular", 32)
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
-    skin_path = plugin_path + "/skin/fhd"
-if os.path.exists('/var/lib/dpkg/status'):
+    skin_path = piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))    
+if DreamOS():
     iconpic = "plugin.png"
-    skin_path =  skin_path +  '/dreamOs'
+    skin_path =  skin_path + '/dreamOs'
 
 def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
-
 copy_poster()
+
 # ntimeout = config.plugins.XCplugin.timeout.getValue()
 ntimeout = int(config.plugins.XCplugin.timeout.value)
 socket.setdefaulttimeout(ntimeout)
@@ -269,7 +262,6 @@ infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
 Path_Movies = str(config.plugins.XCplugin.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
-
 if Path_Movies.endswith("//") is True:
     Path_Movies = Path_Movies[:-1]
 Path_XML = str(config.plugins.XCplugin.pthxmlfile.value) + "/"
@@ -277,19 +269,6 @@ if Path_XML.endswith("//") is True:
     Path_XML = Path_XML[:-1]
 if not os.path.exists(Path_XML):
     os.system("mkdir " + Path_XML)
-    
-    
-try:
-	from Plugins.Extensions.tmdb import tmdb
-	is_tmdb = True
-except Exception:
-	is_tmdb = False
-
-try:
-	from Plugins.Extensions.IMDb.plugin import main as imdb
-	is_imdb = True
-except Exception:
-	is_imdb = False
     
 def check_port(tport):
     url = tport
@@ -312,30 +291,6 @@ def check_port(tport):
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
     return url
-
-#from kiddac plugin
-def badcar(name):
-    name = name
-    bad_chars = ["sd", "hd", "fhd", "uhd", "4k", "1080p", "720p", "blueray", "x264", "aac", "ozlem", "hindi", "hdrip", "(cache)", "(kids)", "[3d-en]", "[iran-dubbed]", "imdb", "top250", "multi-audio",
-                 "multi-subs", "multi-sub", "[audio-pt]", "[nordic-subbed]", "[nordic-subbeb]",
-                 "SD", "HD", "FHD", "UHD", "4K", "1080P", "720P", "BLUERAY", "X264", "AAC", "OZLEM", "HINDI", "HDRIP", "(CACHE)", "(KIDS)", "[3D-EN]", "[IRAN-DUBBED]", "IMDB", "TOP250", "MULTI-AUDIO",
-                 "MULTI-SUBS", "MULTI-SUB", "[AUDIO-PT]", "[NORDIC-SUBBED]", "[NORDIC-SUBBEB]",
-                 "-ae-", "-al-", "-ar-", "-at-", "-ba-", "-be-", "-bg-", "-br-", "-cg-", "-ch-", "-cz-", "-da-", "-de-", "-dk-", "-ee-", "-en-", "-es-", "-ex-yu-", "-fi-", "-fr-", "-gr-", "-hr-", "-hu-", "-in-", "-ir-", "-it-", "-lt-", "-mk-",
-                 "-mx-", "-nl-", "-no-", "-pl-", "-pt-", "-ro-", "-rs-", "-ru-", "-se-", "-si-", "-sk-", "-tr-", "-uk-", "-us-", "-yu-",
-                 "-AE-", "-AL-", "-AR-", "-AT-", "-BA-", "-BE-", "-BG-", "-BR-", "-CG-", "-CH-", "-CZ-", "-DA-", "-DE-", "-DK-", "-EE-", "-EN-", "-ES-", "-EX-YU-", "-FI-", "-FR-", "-GR-", "-HR-", "-HU-", "-IN-", "-IR-", "-IT-", "-LT-", "-MK-",
-                 "-MX-", "-NL-", "-NO-", "-PL-", "-PT-", "-RO-", "-RS-", "-RU-", "-SE-", "-SI-", "-SK-", "-TR-", "-UK-", "-US-", "-YU-",
-                 "|ae|", "|al|", "|ar|", "|at|", "|ba|", "|be|", "|bg|", "|br|", "|cg|", "|ch|", "|cz|", "|da|", "|de|", "|dk|", "|ee|", "|en|", "|es|", "|ex-yu|", "|fi|", "|fr|", "|gr|", "|hr|", "|hu|", "|in|", "|ir|", "|it|", "|lt|", "|mk|",
-                 "|mx|", "|nl|", "|no|", "|pl|", "|pt|", "|ro|", "|rs|", "|ru|", "|se|", "|si|", "|sk|", "|tr|", "|uk|", "|us|", "|yu|",
-                 "|AE|", "|AL|", "|AR|", "|AT|", "|BA|", "|BE|", "|BG|", "|BR|", "|CG|", "|CH|", "|CZ|", "|DA|", "|DE|", "|DK|", "|EE|", "|EN|", "|ES|", "|EX-YU|", "|FI|", "|FR|", "|GR|", "|HR|", "|HU|", "|IN|", "|IR|", "|IT|", "|LT|", "|MK|",
-                 "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
-                 "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|", "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|",
-                 "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
-                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/"]
-    for j in range(1900, 2025):
-        bad_chars.append(str(j))
-    for i in bad_chars:
-        name = name.replace(i, '')
-    return name
 
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
@@ -890,88 +845,38 @@ class iptv_streamse():
             urlinfo = self.checkRedirect(url)
             urlinfo= checkStr(urlinfo)
             print('urlinfo 1 ', urlinfo)
-            try:
-                # res = []
-                # if PY3:
-                    # # urlinfo = urlinfo.encode()
-                    # req = Request(urlinfo)
-                    # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                    # try:
-                           # response = urlopen(req)
-                           # res=response.read().decode('utf-8',errors='ignore')
-                           # # res = six.ensure_str(res)
-                           # print('+++++++++++++++++++++goooo1111111111', res)
-                           # response.close()
-                           # res = fromstring(res)
-                           # return res
-                    # except:
-                           # import ssl
-                           # gcontext = ssl._create_unverified_context()
-                           # response = urlopen(req, context=gcontext)
-                           # res=response.read().decode('utf-8',errors='ignore')
-                           # print('+++++++++++++++++++++goooo10101010101', res)
-                           # response.close()
-                           # res = fromstring(res)
-                           # return res
-                # else:
-               
-                    # req = Request(urlinfo)
-                    # req.add_header('User-Agent',RequestAgent())
-                    # try:
-                           # # response = urlopen(req)
-                           # response = urlopen(req, None, 3)
-                           # print("Here in getUrl response =", response)
-                           # res=response.read()
-                           # response.close()
-                           # res = fromstring(res)
-                           # return res
-                    # except:
-                           # import ssl
-                           # gcontext = ssl._create_unverified_context()
-                           # response = urlopen(req, context=gcontext)
-                           # print("Here in getUrl response 2=", response)
-                           # res=response.read()
-                           # response.close()
-                           # res = fromstring(res)
-                           # return res     
+            # try:
 
-                           
-                # req = Request(urlinfo, None, headers=headers)
-                # if self.server_oki is True:
-                    # xmlstream = checkStr(urlopen(req, timeout=ntimeout).read())
-                    
-                    
-                # res = []
-                # url= checkStr(url)
-                try:
-                    req = Request(urlinfo)
-                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                    response = urlopen(req, timeout=ntimeout)
-                    # res=response.read()
-                    if PY3:
-                        res=response.read().decode('utf-8')
-                    else:
-                        res=response.read()                        
-                    print("Here in client1 link =", res)
-                    res = fromstring(res)
-                    response.close()
-                    return res
-                except:
-                    req = Request(urlinfo)
-                    req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                    response = urlopen(req, None, 3)
-                    if PY3:
-                        res=response.read().decode('utf-8')
-                    else:
-                        res=response.read()
-                    print("Here in client2 link =", res)
-                    res = fromstring(res)
-                    response.close()
-                    return res                    
-            except Exception as ex:
-                res = None
-                self.xml_error = ex
-                print('erroooorrrrr ex ', ex)
+
+            try:
+                req = Request(urlinfo)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                response = urlopen(req, timeout=ntimeout)
+                # res=response.read()
+                if PY3:
+                    res=response.read().decode('utf-8')
+                else:
+                    res=response.read()                        
+                print("Here in client1 link =", res)
+                res = fromstring(res)
+                response.close()
+                return res
+            except:
+                req = Request(urlinfo)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                response = urlopen(req, None, 3)
+                if PY3:
+                    res=response.read().decode('utf-8')
+                else:
+                    res=response.read()
+                print("Here in client2 link =", res)
+                res = fromstring(res)
+                response.close()
+                return res                    
+            # except Exception as ex:
+                # res = None
+                # self.xml_error = ex
+                # print('erroooorrrrr ex ', ex)
         else:
             res = None
             return res
@@ -981,7 +886,7 @@ class iptv_streamse():
         # print("*** check redirect ***")
         try:
             import requests
-            x = requests.get(url, timeout=20, verify=False, stream=True)
+            x = requests.get(url, timeout=15, verify=False, stream=True)
             # print("**** redirect url 1 *** %s" % x.url)
             return str(x.url)
         except Exception as e:
@@ -1454,14 +1359,14 @@ class xc_Main(Screen):
                                 JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name, self.downloadStop))
                             # # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                             pmovies = True
-                            self.createMetaFile(name)
+                            self.createMetaFile(name, name)
                         else:
                             pmovies = False
                             self.mbox = self.session.open(MessageBox, _("No Url Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
                 else:
                     pmovies = False
                     self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
-                MemClean()
+                OnclearMem()
 
             except Exception as ex:
                 series = False
@@ -1562,7 +1467,7 @@ class xc_Main(Screen):
             cmd = "wget %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
             JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.filename, self.downloadStop))
             pmovies = True
-            self.createMetaFile(self.filename)
+            self.createMetaFile(self.filename, self.filename)
             self.LastJobView()
 
     def eError(self, error):
@@ -1570,23 +1475,15 @@ class xc_Main(Screen):
         pmovies = False
         pass
 
-    def createMetaFile(self, filename):
+    def createMetaFile(self, filename, cleanName):
         try:
-            movie = Path_Movies
-            text = re.compile("<[\\/\\!]*?[^<>]*?>")
-            text_clear = ""
-            if self.vod_url != None:
-                text_clear = text.sub("", self.desc)
-            serviceref = eServiceReference(4097, 0, movie + self.filename)
-            metafile = open("%s%s.meta" % (movie, self.filename), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(),
-             self.title.replace("\n", ""),
-             text_clear.replace("\n", ""),
-             time()))
-            metafile.close()
-        except Exception as ex:
-            print(ex)
-            print("ERROR metaFile")
+            serviceref = eServiceReference(4097, 0, Path_Movies + filename)
+            with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
+                f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
+        except Exception as e:
+            print(e)
+            print('ERROR metaFile')
+        return
 
     def LastJobView(self):
         currentjob = None
@@ -1621,7 +1518,7 @@ class xc_Main(Screen):
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
             _l = self.picload.PictureData.get()
             del _l[:]
-            if os.path.exists('/var/lib/dpkg/status'):
+            if DreamOS():
                 self.picload.startDecode(png, False)
             else:
                 self.picload.startDecode(png, 0, 0, False)
@@ -2042,7 +1939,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
             _l = self.picload.PictureData.get()
             del _l[:]
-            if os.path.exists('/var/lib/dpkg/status'):
+            if DreamOS():
                 self.picload.startDecode(png, False)
             else:
                 self.picload.startDecode(png, 0, 0, False)
@@ -2197,28 +2094,20 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.timeshift_url = Path_Movies + filename
                 self.timeshift_title = "[REC] " + self.titlex
                 self.recorder = True
-                # self.createMetaFile(filename)
+                self.createMetaFile(filename, filename)
         except Exception as ex:
             print(ex)
 
-    def createMetaFile(self, filename):
+    def createMetaFile(self, filename, cleanName):
         try:
-            movie = str(config.plugins.XCplugin.pthmovie.value) + "/"
-            text = re.compile("<[\\/\\!]*?[^<>]*?>")
-            text_clear = ""
-            if self.vod_url != None:
-                text_clear = text.sub("", self.desc)
-            serviceref = eServiceReference(4097, 0, movie + filename)
-            metafile = open("%s%s.meta" % (movie, filename), "w")
-            metafile.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(),
-             self.title.replace("\n", ""),
-             text_clear.replace("\n", ""),
-             time()))
-            metafile.close()
-        except Exception as ex:
-            print(ex)
-            print("ERROR metaFile")
-
+            serviceref = eServiceReference(4097, 0, Path_Movies + filename)
+            with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
+                f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
+        except Exception as e:
+            print(e)
+            print('ERROR metaFile')
+        return
+        
     def downloadStop(self):
         if hasattr(self, 'icount'):
             self.icount -= 1
@@ -2993,7 +2882,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
             _l = self.picload.PictureData.get()
             del _l[:]
-            if os.path.exists('/var/lib/dpkg/status'):
+            if DreamOS():
                 self.picload.startDecode(png, False)
             else:
                 self.picload.startDecode(png, 0, 0, False)
@@ -3029,7 +2918,7 @@ def xcm3ulistEntry(download):
     white = 16777215
     blue = 79488
     col = 16777215
-    if HD.width() > 1280:
+    if isFHD():
         res.append(MultiContentEntryText(pos=(0, 0), size=(1200, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
     else:
         res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 30), text=download, color=col, color_sel=white, backcolor_sel=blue))
@@ -3047,9 +2936,8 @@ def m3ulistxc(data, list):
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        if HD.width() > 1280:
+        if isFHD():
             self.l.setItemHeight(50)
-
             self.l.setFont(0, gFont("Regular", 32))
         else:
             self.l.setItemHeight(40)
@@ -3268,7 +3156,7 @@ class xc_Play(Screen):
                             outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
                 outfile.close()
             self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
-            ReloadBouquet()
+            ReloadBouquets()
 
 class xc_M3uPlay(Screen):
     def __init__(self, session, name):
@@ -3544,17 +3432,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def showIMDB(self):
         text_clear = self.name
-        # if os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/TMBD"):
-            # from Plugins.Extensions.TMBD.plugin import TMBD
-            # text_clear = self.name
-            # text = charRemove(text_clear)
-            # self.session.open(TMBD, text, False)
-        # elif os.path.exists("/usr/lib/enigma2/python/Plugins/Extensions/IMDb"):
-            # from Plugins.Extensions.IMDb.plugin import IMDB
-            # text_clear = self.name
-            # text = charRemove(text_clear)
-            # HHHHH = text
-            # self.session.open(IMDB, HHHHH)
         if is_tmdb:
             try:
                 from Plugins.Extensions.TMBD.plugin import TMBD
@@ -3575,9 +3452,10 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             self.session.open(xc_Epg, text_clear)
 
     def openPlay(self, servicetype, url):
-        # url = url
-        ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
-        # ref = "{0}:0:0:0:0:0:0:0:0:0:{0}:{1}".format(str(servicetype), url.replace(":", "%3A"), self.name.replace(":", "%3A"))
+        name = self.name
+        ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
+        # ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
+        # ref = "{0}:0:0:0:0:0:0:0:0:0:{0}:{1}".format(str(servicetype), url.replace(":", "%3a"), self.name.replace(":", "%3a"))
         # print('final reference :   ', ref)
         sref = eServiceReference(ref)
         sref.setName(self.name)
@@ -3640,6 +3518,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def leavePlayer(self):
         self.close()
+
 
 def menu(menuid, **kwargs):
     if menuid == "mainmenu":
@@ -3762,7 +3641,6 @@ def get_next_wakeup():
     return -1
 
 mainDescriptor = PluginDescriptor(name="XCplugin Forever", description=version, where=PluginDescriptor.WHERE_MENU, fnc=menu)
-
 def Plugins(**kwargs):
     result = [PluginDescriptor(name="XCplugin Forever", description=version, where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
               PluginDescriptor(name="XCplugin", description=version, where=PluginDescriptor.WHERE_PLUGINMENU, icon=iconpic, fnc=main)]  # fnc=Start_iptv_player)]
@@ -3832,7 +3710,6 @@ VIDEO_ASPECT_RATIO_MAP = {
     4: "16:10 Letterbox",
     5: "16:10 PanScan",
     6: "16:9 Letterbox"}
-
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 def nextAR():
@@ -3866,110 +3743,10 @@ def channelEntryIPTVplaylist(entry):
         (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NAME[0], CHANNEL_NAME[1], CHANNEL_NAME[2], CHANNEL_NAME[3], CHANNEL_NAME[4], RT_HALIGN_LEFT, entry[1])]
     return menu_entry
 
-def web_info(message):
-    try:
-        message = quote_plus(str(message))
-        cmd = "wget -qO - 'http://127.0.0.1/web/message?type=2&timeout=10&text=%s' 2>/dev/null &" % message
-        debug(cmd, "CMD -> Console -> WEBIF")
-        os.popen(cmd)
-    except:
-        print("web_info ERROR")
-
 
 def debug(obj, text=""):
     print("%s" % text + " %s\n" % obj)
 
-conversion = {
-    str("\xd0\xb0"): "a",
-    str("\xd0\x90"): "A",
-    str("\xd0\xb1"): "b",
-    str("\xd0\x91"): "B",
-    str("\xd0\xb2"): "v",
-    str("\xd0\x92"): "V",
-    str("\xd0\xb3"): "g",
-    str("\xd0\x93"): "G",
-    str("\xd0\xb4"): "d",
-    str("\xd0\x94"): "D",
-    str("\xd0\xb5"): "e",
-    str("\xd0\x95"): "E",
-    str("\xd1\x91"): "jo",
-    str("\xd0\x81"): "jo",
-    str("\xd0\xb6"): "zh",
-    str("\xd0\x96"): "ZH",
-    str("\xd0\xb7"): "z",
-    str("\xd0\x97"): "Z",
-    str("\xd0\xb8"): "i",
-    str("\xd0\x98"): "I",
-    str("\xd0\xb9"): "j",
-    str("\xd0\x99"): "J",
-    str("\xd0\xba"): "k",
-    str("\xd0\x9a"): "K",
-    str("\xd0\xbb"): "l",
-    str("\xd0\x9b"): "L",
-    str("\xd0\xbc"): "m",
-    str("\xd0\x9c"): "M",
-    str("\xd0\xbd"): "n",
-    str("\xd0\x9d"): "N",
-    str("\xd0\xbe"): "o",
-    str("\xd0\x9e"): "O",
-    str("\xd0\xbf"): "p",
-    str("\xd0\x9f"): "P",
-    str("\xd1\x80"): "r",
-    str("\xd0\xa0"): "R",
-    str("\xd1\x81"): "s",
-    str("\xd0\xa1"): "S",
-    str("\xd1\x82"): "t",
-    str("\xd0\xa2"): "T",
-    str("\xd1\x83"): "u",
-    str("\xd0\xa3"): "U",
-    str("\xd1\x84"): "f",
-    str("\xd0\xa4"): "F",
-    str("\xd1\x85"): "h",
-    str("\xd0\xa5"): "H",
-    str("\xd1\x86"): "c",
-    str("\xd0\xa6"): "C",
-    str("\xd1\x87"): "ch",
-    str("\xd0\xa7"): "CH",
-    str("\xd1\x88"): "sh",
-    str("\xd0\xa8"): "SH",
-    str("\xd1\x89"): "sh",
-    str("\xd0\xa9"): "SH",
-    str("\xd1\x8a"): "",
-    str("\xd0\xaa"): "",
-    str("\xd1\x8b"): "y",
-    str("\xd0\xab"): "Y",
-    str("\xd1\x8c"): "j",
-    str("\xd0\xac"): "J",
-    str("\xd1\x8d"): "je",
-    str("\xd0\xad"): "JE",
-    str("\xd1\x8e"): "ju",
-    str("\xd0\xae"): "JU",
-    str("\xd1\x8f"): "ja",
-    str("\xd0\xaf"): "JA"}
-
-def cyr2lat(text):
-    i = 0
-    text = text.strip(" \t\n\r")
-    text = str(text)
-    retval = ""
-    bukva_translit = ""
-    bukva_original = ""
-    while i < len(text):
-        bukva_original = text[i]
-        try:
-            bukva_translit = conversion[bukva_original]
-        except:
-            bukva_translit = bukva_original
-        i = i + 1
-        retval += bukva_translit
-    return retval
-
-def ReloadBouquet():
-    try:
-        eDVBDB.getInstance().reloadServicelist()
-        eDVBDB.getInstance().reloadBouquets()
-    except:
-        os.system('wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &')
 
 def uninstaller():
     """Clean up routine to remove any previously made changes
@@ -3997,15 +3774,6 @@ def uninstaller():
         print(ex)
         raise
 
-def remove_line(filename, what):
-    if os.path.isfile(filename):
-        file_read = open(filename).readlines()
-        file_write = open(filename, "w")
-        for line in file_read:
-            if what not in line:
-                file_write.write(line)
-        file_write.close()
-
 if os.path.isfile(filterlist):
     global filtertmdb
     try:
@@ -4020,102 +3788,6 @@ if os.path.isfile(filterlist):
             filtertmdb = dict
     except:
         filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
-
-def charRemove(text):
-        char = ["1080p",
-                 "2018",
-                 "2019",
-                 "2020",
-                 "2021",
-                 "2022"
-                 "PF1",
-                 "PF2",
-                 "PF3",
-                 "PF4",
-                 "PF5",
-                 "PF6",
-                 "PF7",
-                 "PF8",
-                 "PF9",
-                 "PF10",
-                 "PF11",
-                 "PF12",
-                 "PF13",
-                 "PF14",
-                 "PF15",
-                 "PF16",
-                 "PF17",
-                 "PF18",
-                 "PF19",
-                 "PF20",
-                 "PF21",
-                 "PF22",
-                 "PF23",
-                 "PF24",
-                 "PF25",
-                 "PF26",
-                 "PF27",
-                 "PF28",
-                 "PF29",
-                 "PF30"
-                 "480p",
-                 "4K",
-                 "720p",
-                 "ANIMAZIONE",
-                 # "APR",
-                 # "AVVENTURA",
-                 "BIOGRAFICO",
-                 "BDRip",
-                 "BluRay",
-                 "CINEMA",
-                 # "COMMEDIA",
-                 "DOCUMENTARIO",
-                 "DRAMMATICO",
-                 "FANTASCIENZA",
-                 "FANTASY",
-                 # "FEB",
-                 # "GEN",
-                 # "GIU",
-                 "HDCAM",
-                 "HDTC",
-                 "HDTS",
-                 "LD",
-                 "MAFIA",
-                 # "MAG",
-                 "MARVEL",
-                 "MD",
-                 # "ORROR",
-                 "NEW_AUDIO",
-                 "POLIZ",
-                 "R3",
-                 "R6",
-                 "SD",
-                 "SENTIMENTALE",
-                 "TC",
-                 "TEEN",
-                 "TELECINE",
-                 "TELESYNC",
-                 "THRILLER",
-                 "Uncensored",
-                 "V2",
-                 "WEBDL",
-                 "WEBRip",
-                 "WEB",
-                 "WESTERN",
-                 "-",
-                 "_",
-                 ".",
-                 "+",
-                 "[",
-                 "]"
-                 ]
-
-        myreplace = text.lower()
-        for ch in char:
-            ch= ch.lower()
-            myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("   ", " ").strip()
-        return myreplace
-
 
 class xc_home(Screen):
     def __init__(self, session):
@@ -4169,7 +3841,7 @@ class xc_home(Screen):
             self.start()
 
     def start(self):
-        MemClean()
+        OnclearMem()
 
     def config(self):
         self.session.open(xc_config)
@@ -4178,7 +3850,7 @@ class xc_home(Screen):
         self.keyNumberGlobalCB(self['text'].getSelectedIndex())
 
     def exitY(self):
-        ReloadBouquet()
+        ReloadBouquets()
         self.close()
 
     def Team(self):
@@ -4319,7 +3991,7 @@ class xc_maker(Screen):
     def createCfgxml(self, result):
         if result:
             make_bouquet()
-            ReloadBouquet()
+            ReloadBouquets()
 
     def remove(self):
         self.session.openWithCallback(self.removelistok, MessageBox, _("Remove all XC Plugin bouquets?"), MessageBox.TYPE_YESNO, timeout=15)  # default = True)
@@ -4327,7 +3999,7 @@ class xc_maker(Screen):
     def removelistok(self, result):
         if result:
             uninstaller()
-            ReloadBouquet()
+            ReloadBouquets()
 
     def getabout(self):
         conthelp = _("GREEN BUTTON:\n ")
@@ -4367,7 +4039,7 @@ class xcList(MenuList):
         self.l.setFont(7, gFont('Regular', 34))
         self.l.setFont(8, gFont('Regular', 36))
         self.l.setFont(9, gFont('Regular', 50))
-        if HD.width() > 1280:
+        if isFHD():
             self.l.setItemHeight(60)
         else:
             self.l.setItemHeight(60)
@@ -4376,7 +4048,7 @@ def menuListEntry(name, idx):
     pngl = plugin_path + '/skin/fhd/xcselh.png'
     png2 = plugin_path + '/skin/hd/xcsel.png'
     res = [name]
-    if HD.width() > 1280:
+    if isFHD():
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(70, 40), png=loadPNG(pngl)))
         res.append(MultiContentEntryText(pos=(100, 4), size=(1200, 50), font=6, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     else:
@@ -4518,7 +4190,7 @@ def save_old():
                 new_bouquet.close()
             os.system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
-    ReloadBouquet()
+    ReloadBouquets()
 
 def make_bouquet():
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy2.py'
