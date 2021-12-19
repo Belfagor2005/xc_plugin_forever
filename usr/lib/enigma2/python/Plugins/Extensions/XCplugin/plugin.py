@@ -47,7 +47,6 @@ from Tools.Directories import pathExists
 from Tools.Directories import resolveFilename
 from Tools.Directories import fileExists
 from Tools.Downloader import downloadWithProgress
-
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT
 from enigma import eEnv, gPixmapPtr, eAVSwitch 
@@ -69,9 +68,7 @@ from twisted.web.client import downloadPage
 from xml.etree.ElementTree import fromstring
 try:
     from xml.etree.cElementTree import ElementTree
-    # import xml.etree.cElementTree as ElementTree
 except ImportError:
-    # import xml.etree.ElementTree as ElementTree
     from xml.etree.ElementTree import ElementTree
 try:
     from Plugins.Extensions.XCplugin.Utils import *
@@ -254,7 +251,6 @@ def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 copy_poster()
 
-# ntimeout = config.plugins.XCplugin.timeout.getValue()
 ntimeout = int(config.plugins.XCplugin.timeout.value)
 socket.setdefaulttimeout(ntimeout)
 eserv = int(config.plugins.XCplugin.services.value)
@@ -3379,7 +3375,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             'InfobarShowHideActions',
             'InfobarActions',
             'InfobarSeekActions'],
-            {'leavePlayer': self.cancel,
+            {'stop': self.cancel,
                 'epg': self.showIMDB,
                 # 'info': self.showIMDB,
                 'info': self.cicleStreamType,
