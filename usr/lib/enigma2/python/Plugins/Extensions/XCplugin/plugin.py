@@ -857,22 +857,23 @@ class iptv_streamse():
                 res = fromstring(res)
                 response.close()
                 return res
-            except:
-                req = Request(urlinfo)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                response = urlopen(req, None, 3)
-                if PY3:
-                    res=response.read().decode('utf-8')
-                else:
-                    res=response.read()
-                print("Here in client2 link =", res)
-                res = fromstring(res)
-                response.close()
-                return res                    
-            # except Exception as ex:
-                # res = None
-                # self.xml_error = ex
-                # print('erroooorrrrr ex ', ex)
+            # except:
+                # req = Request(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, None, 3)
+                # if PY3:
+                    # res=response.read().decode('utf-8')
+                # else:
+                    # res=response.read()
+                # print("Here in client2 link =", res)
+                # res = fromstring(res)
+                # response.close()
+                # return res                    
+            except Exception as ex:
+                res = None
+                self.xml_error = ex
+                print('erroooorrrrr ex ', ex)
+                return res
         else:
             res = None
             return res
