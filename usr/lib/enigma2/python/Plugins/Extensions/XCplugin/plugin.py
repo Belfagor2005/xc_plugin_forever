@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# 10.11.2021
+# 27.12.2021
 '''
 ****************************************
 *        coded by Lululla & PCD        *
@@ -26,7 +26,6 @@ from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Task import Task, Job, job_manager as JobManager
-
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 from Screens.InfoBar import MoviePlayer, InfoBar
@@ -45,7 +44,8 @@ from Tools import ASCIItranslit
 from Tools.Directories import SCOPE_PLUGINS
 from Tools.Directories import pathExists 
 from Tools.Directories import resolveFilename
-from Tools.Directories import fileExists
+# from Tools.Directories import fileExists
+from os.path import exists as file_exists
 from Tools.Downloader import downloadWithProgress
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT
@@ -65,11 +65,13 @@ from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from sys import version_info
 from twisted.web.client import downloadPage
-from xml.etree.ElementTree import fromstring
+# from xml.etree.ElementTree import fromstring
 try:
-    from xml.etree.cElementTree import ElementTree
+    from xml.etree.cElementTree import ElementTree, fromstring
+    # import xml.etree.cElementTree as ElementTree
 except ImportError:
-    from xml.etree.ElementTree import ElementTree
+    # import xml.etree.ElementTree as ElementTree
+    from xml.etree.ElementTree import ElementTree, fromstring
 try:
     from Plugins.Extensions.XCplugin.Utils import *
 except:
@@ -91,18 +93,8 @@ global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies,
 _session = " "
 version = "XC Forever V.1.9"
 
-iptv_list_tmp = []
-re_search = False
-pmovies = False
-series = False
-isStream = False
-PY3 = False
-btnsearch = 0
-next_request = 0
-stream_url = ""
-urlinfo = ""
-WGET = ''
 
+PY3 = False
 plugin_path = os.path.dirname(sys.modules[__name__].__file__)
 skin_path = plugin_path
 iconpic = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/plugin.png".format('XCplugin'))
@@ -114,6 +106,16 @@ epgimport_path = '/etc/epgimport/'
 Path_Tmp = "/tmp"
 pictmp = Path_Tmp + "/poster.jpg"
 xc_list = Path_Tmp + "/xc.txt"
+iptv_list_tmp = []
+re_search = False
+pmovies = False
+series = False
+isStream = False
+btnsearch = 0
+next_request = 0
+stream_url = ""
+urlinfo = ""
+WGET = ''
 
 pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
@@ -251,6 +253,7 @@ def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 copy_poster()
 
+# ntimeout = config.plugins.XCplugin.timeout.getValue()
 ntimeout = int(config.plugins.XCplugin.timeout.value)
 socket.setdefaulttimeout(ntimeout)
 eserv = int(config.plugins.XCplugin.services.value)
@@ -258,13 +261,14 @@ infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
 Path_Movies = str(config.plugins.XCplugin.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
-if Path_Movies.endswith("//") is True:
-    Path_Movies = Path_Movies[:-1]
+# if not Path_Movies.endswith("/"):
+    # Path_Movies = Path_Movies + '/' #[:-1]
+# # print('patch movies: ', Path_Movies)
 Path_XML = str(config.plugins.XCplugin.pthxmlfile.value) + "/"
-if Path_XML.endswith("//") is True:
-    Path_XML = Path_XML[:-1]
-if not os.path.exists(Path_XML):
-    os.system("mkdir " + Path_XML)
+# if not Path_XML.endswith("/"): # is True:
+    # Path_XML = Path_XML + '/' #[:-1]
+# if not os.path.exists(Path_XML):
+    # os.system("mkdir " + Path_XML)
     
 def check_port(tport):
     url = tport
@@ -332,7 +336,7 @@ class xc_config(Screen, ConfigListScreen):
     def importIptv_sh(self, result):
         if result:
             iptvsh = "/etc/enigma2/iptv.sh"
-            if fileExists(iptvsh) and os.stat(iptvsh).st_size > 0:
+            if file_exists(iptvsh) and os.stat(iptvsh).st_size > 0:
                 with open(iptvsh, 'r') as f:
                     fpage = f.read()
                 regexcat = 'USERNAME="(.*?)".*?PASSWORD="(.*?)".*?url="http://(.*?):(.*?)/get.php.*?'
@@ -857,23 +861,22 @@ class iptv_streamse():
                 res = fromstring(res)
                 response.close()
                 return res
-            # except:
-                # req = Request(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, None, 3)
-                # if PY3:
-                    # res=response.read().decode('utf-8')
-                # else:
-                    # res=response.read()
-                # print("Here in client2 link =", res)
-                # res = fromstring(res)
-                # response.close()
-                # return res                    
-            except Exception as ex:
-                res = None
-                self.xml_error = ex
-                print('erroooorrrrr ex ', ex)
-                return res
+            except:
+                req = Request(urlinfo)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                response = urlopen(req, None, 3)
+                if PY3:
+                    res=response.read().decode('utf-8')
+                else:
+                    res=response.read()
+                print("Here in client2 link =", res)
+                res = fromstring(res)
+                response.close()
+                return res                    
+            # except Exception as ex:
+                # res = None
+                # self.xml_error = ex
+                # print('erroooorrrrr ex ', ex)
         else:
             res = None
             return res
@@ -1539,7 +1542,7 @@ class xc_Main(Screen):
                 
     def downloadError(self, pictmp):
         try:
-            if fileExists(pictmp):
+            if file_exists(pictmp):
                 self.decodeImage(piclogo)
                 
         except Exception as ex:
@@ -1960,7 +1963,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def downloadError(self, png):
         try:
-            if fileExists(png):
+            if file_exists(png):
                 self.decodeImage(piclogo)
         except Exception as ex:
             self.decodeImage(piclogo)
@@ -2364,13 +2367,13 @@ class xc_StreamTasks(Screen):
             current = self["movielist"].getCurrent()
             sel = Path_Movies + current[1]
             sel2 = self.pth + current[1]
-            if fileExists(sel):
+            if file_exists(sel):
                 if self.Timer:
                     self.Timer.stop()
                 cmd = 'rm -f ' + sel
                 os.system(cmd)
                 self.session.open(MessageBox, sel + " Movie has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
-            elif pmovies == True and fileExists(sel2):
+            elif pmovies == True and file_exists(sel2):
                 if self.Timer:
                     self.Timer.stop()
 
@@ -2632,7 +2635,7 @@ class OpenServer(Screen):
             idx = self["list"].getSelectionIndex()
             dom = Path_XML + self.names[idx]
             dom = dom + '.xml'
-            if fileExists(dom):
+            if file_exists(dom):
                 os.remove(dom)
                 self.session.open(MessageBox, dom + "   has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
@@ -2903,7 +2906,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
     def downloadError(self, pictmp):
         try:
-            if fileExists(pictmp):
+            if file_exists(pictmp):
                 self.decodeImage(piclogo)
         except Exception as ex:
             self.decodeImage(piclogo)
@@ -3033,7 +3036,7 @@ class xc_Play(Screen):
         if result:
             idx = self["list"].getSelectionIndex()
             dom = self.Movies[idx]
-            if fileExists(dom):
+            if file_exists(dom):
                 os.remove(dom)
                 self.session.open(MessageBox, dom + "   has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
@@ -3205,7 +3208,7 @@ class xc_M3uPlay(Screen):
             self.urls = []
             search = result
             try:
-                if fileExists(self.name):
+                if file_exists(self.name):
                     f1 = open(self.name, "r")
                     fpage = f1.read()
                     regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
@@ -3237,7 +3240,7 @@ class xc_M3uPlay(Screen):
         self.pics = []
         pic = pictmp
         try:
-            if fileExists(self.name):
+            if file_exists(self.name):
                 f1 = open(self.name, 'r+')
                 fpage = f1.read()
                 if "#EXTM3U" and 'tvg-logo' in fpage:
@@ -3376,7 +3379,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             'InfobarShowHideActions',
             'InfobarActions',
             'InfobarSeekActions'],
-            {'stop': self.cancel,
+            {'leavePlayer': self.cancel,
                 'epg': self.showIMDB,
                 # 'info': self.showIMDB,
                 'info': self.cicleStreamType,
@@ -3516,7 +3519,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def leavePlayer(self):
         self.close()
 
-
+    
 def menu(menuid, **kwargs):
     if menuid == "mainmenu":
         return [("XCplugin", main, "XCplugin", 4)]
@@ -3616,6 +3619,7 @@ class AutoStartTimer:
         else:
             make_bouquet()
 
+
 def check_configuring():
     """Check for new config values for auto start
     """
@@ -3633,10 +3637,10 @@ def autostart(reason, session=None, **kwargs):
             if autoStartTimer is None:
                 autoStartTimer = AutoStartTimer(session)
     return
-
+    
 def get_next_wakeup():
     return -1
-
+    
 mainDescriptor = PluginDescriptor(name="XCplugin Forever", description=version, where=PluginDescriptor.WHERE_MENU, fnc=menu)
 def Plugins(**kwargs):
     result = [PluginDescriptor(name="XCplugin Forever", description=version, where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=autostart, wakeupfnc=get_next_wakeup),
@@ -4026,6 +4030,7 @@ Panel_list = [
 class xcList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
+        
         self.l.setFont(0, gFont('Regular', 20))
         self.l.setFont(1, gFont('Regular', 22))
         self.l.setFont(2, gFont('Regular', 24))
@@ -4036,21 +4041,26 @@ class xcList(MenuList):
         self.l.setFont(7, gFont('Regular', 34))
         self.l.setFont(8, gFont('Regular', 36))
         self.l.setFont(9, gFont('Regular', 50))
+        
         if isFHD():
             self.l.setItemHeight(60)
+            textfont = int(32)
+            self.l.setFont(0, gFont('Regular', textfont))
         else:
             self.l.setItemHeight(60)
-
+            textfont = int(20)            
+            self.l.setFont(0, gFont('Regular', textfont))
+            
 def menuListEntry(name, idx):
     pngl = plugin_path + '/skin/fhd/xcselh.png'
     png2 = plugin_path + '/skin/hd/xcsel.png'
     res = [name]
     if isFHD():
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 10), size=(70, 40), png=loadPNG(pngl)))
-        res.append(MultiContentEntryText(pos=(100, 4), size=(1200, 50), font=6, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        res.append(MultiContentEntryText(pos=(100, 0), size=(1200, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     else:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(png2)))
-        res.append(MultiContentEntryText(pos=(100, 2), size=(1000, 50), font=5, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        res.append(MultiContentEntryText(pos=(100, 0), size=(1000, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
 def show_more_infos(name, index):

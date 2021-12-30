@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#25.11.2021
+#30.12.2021
 #a common tips used from Lululla
 #
 import sys
@@ -59,6 +59,12 @@ def DreamOS():
 def mySkin():
     currentSkin = config.skin.primary_skin.value.replace('/skin.xml', '')
     return currentSkin
+
+if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPlayer'):
+    from Plugins.Extensions.MediaPlayer import *
+    MediaPlayerInstalled = True
+else:
+    MediaPlayerInstalled = False
 
 def listDir(what):
     f = None
@@ -369,6 +375,18 @@ def trace_error():
     except:
         pass
 
+def log(label,data):
+    data=str(data)
+    open("/tmp/my__debug.log","a").write("\n"+label+":>"+data)
+
+def del_jpg():
+    for i in glob.glob(os.path.join("/tmp", "*.jpg")):
+        try:
+            os.chmod(i, 0o777)
+            os.remove(i)
+        except OSError:
+            pass
+            
 def ConverDate(data):
     year = data[:2]
     month = data[-4:][:2]
@@ -440,8 +458,34 @@ def isStreamlinkAvailable():
         # return urlopen(url, context=sslContext)
     # else:
         # return urlopen(url)
-
+def AdultUrl(url):
+        if sys.version_info.major == 3:
+             import urllib.request as urllib2
+        elif sys.version_info.major == 2:
+             import urllib2
+        req = urllib2.Request(url)
+        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14')
+        r = urllib2.urlopen(req, None, 15)
+        link = r.read()
+        r.close()
+        tlink = link
+        if str(type(tlink)).find('bytes') != -1:
+            try:
+                tlink = tlink.decode("utf-8")
+            except Exception as e:
+                   print("Error: %s." % e)
+        return tlink
+        
+        
 from random import choice
+
+std_headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.6) Gecko/20100627 Firefox/3.6.6',
+        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-us,en;q=0.5',
+}
+
 ListAgent = [
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
           'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36',
@@ -619,6 +663,17 @@ if PY3:
 			   response.close()
 			   return link
 
+    def getUrlresp(url):
+        req = Request(url)
+        req.add_header('User-Agent',RequestAgent())
+        try:
+               response = urlopen(req)
+               return response
+        except:
+               import ssl
+               gcontext = ssl._create_unverified_context()
+               response = urlopen(req, context=gcontext)
+               return response
 else:
 	def getUrl(url):
 		req = Request(url)
@@ -653,6 +708,19 @@ else:
 			   link=response.read()
 			   response.close()
 			   return link
+
+    def getUrlresp(url):
+        pass#print "Here in getUrl url =", url
+        req = Request(url)
+        req.add_header('User-Agent',RequestAgent())
+        try:
+               response = urlopen(req)
+               return response
+        except:
+               import ssl
+               gcontext = ssl._create_unverified_context()
+               response = urlopen(req, context=gcontext)
+               return response
 
 #======================================end getUrl
 def decodeUrl(text):
