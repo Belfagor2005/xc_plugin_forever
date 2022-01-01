@@ -1,29 +1,23 @@
 <!-- ***** CONFIG MENU 1920x1080 ***** OK 15-05-2020 /-->
 <screen name="xml_config" position="0,0" size="1280,720" title="Xtream-Config" backgroundColor="#FF000000" flags="wfNoBorder">
-   	<!-- widget name="info" position="233,16" size="466,66"  font="Regular;46" halign="left" valign="center" foregroundColor="#c77e01" backgroundColor="#101010" transparent="1" zPosition="20" /-->		
-	<ePixmap position="0,0"     size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
-	<ePixmap position="146,23"  size="80,50"    pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
-    	<widget name="playlist"  position="240,20"     size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
-	<eLabel  position="146,80" size="586,3"    backgroundColor="#202020" zPosition="1" />
-	<widget name="playlist" position="233,16"  size="666,66" font="Regular;33" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="20" />
-	<widget name="version"  position="554,543" size="166,26" halign="right" font="Regular;17" foregroundColor="#b0b0b0" backgroundColor="#000000" transparent="1" zPosition="6" />
-        <!-- Config -->
-	<widget name="config" position="146,103" size="586,433" font="Regular;21" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" 
-		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
+	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
+	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
+	<widget name="playlist" position="240,20" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<eLabel position="146,80" size="586,3" backgroundColor="#202020" zPosition="1" />
+	<widget name="version" position="362,56" size="133,20" halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<!-- Config -->
+	<widget name="config" position="146,103" size="586,433" font="Regular;21" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
 	<widget name="description" position="287,736" size="538,34" font="Regular;24" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<widget name="statusbar" position="146,593" size="633,40" font="Regular;21" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->
-	<eLabel  position="146,626"   size="586,3"  backgroundColor="#202020" zPosition="1" />
-   	<ePixmap position="146,643"   size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_green"      position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-    	<ePixmap position="146,676"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png"   alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_red"        position="180,674" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
- 	
-	<ePixmap position="713,643"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_blue"        position="566,640" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	
-	<ePixmap position="713,676"  size="20,20"   pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_yellow"     position="566,673" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-        <ePixmap position="766,673" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/help.png" alphatest="blend" zPosition="3" transparent="1" />
+	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
+   	<ePixmap position="146,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green" position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    <ePixmap position="146,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="180,674" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="713,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_blue" position="566,640" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="713,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_yellow" position="566,673" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+    <ePixmap position="766,673" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/help.png" alphatest="blend" zPosition="3" transparent="1" />
 </screen>
-

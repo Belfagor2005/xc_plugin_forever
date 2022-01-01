@@ -3454,9 +3454,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def openPlay(self, servicetype, url):
         name = self.name
         ref = "{0}:0:0:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
-        # ref = str(servicetype) +':0:1:0:0:0:0:0:0:0:' + str(url)
-        # ref = "{0}:0:0:0:0:0:0:0:0:0:{0}:{1}".format(str(servicetype), url.replace(":", "%3a"), self.name.replace(":", "%3a"))
-        # print('final reference :   ', ref)
         sref = eServiceReference(ref)
         sref.setName(self.name)
         self.session.nav.stopService()
@@ -3747,7 +3744,6 @@ def channelEntryIPTVplaylist(entry):
 
 def debug(obj, text=""):
     print("%s" % text + " %s\n" % obj)
-
 
 def uninstaller():
     """Clean up routine to remove any previously made changes

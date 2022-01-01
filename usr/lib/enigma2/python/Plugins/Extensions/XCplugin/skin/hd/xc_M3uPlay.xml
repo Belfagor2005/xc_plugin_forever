@@ -2,20 +2,19 @@
 <screen name="xc_M3uPlay" position="0,0" size="1280,720" title="Playlist" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/backc.png" zPosition="1" />
 	<ePixmap position="106,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="1" />
-	<widget name="live" position="220,20" size="1046,66" font="Regular;33" halign="left" valign="center" foregroundColor="#FFFF00" backgroundColor="#202020" transparent="1" zPosition="3" />
+	<widget name="live" position="240,20" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<eLabel position="106,80" size="1046,3" backgroundColor="#202020" zPosition="2" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="890,20" size="266,53" font="Regular;22" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
  	<!-- List -->
-	<widget name="list" position="106,103" size="1046,480" itemHeight="40" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" 
-		foregroundColor="#808080" backgroundColor="#000000" scrollbarMode="showOnDemand" transparent="1" zPosition="5" />
+	<widget name="list" position="106,103" size="1046,480" itemHeight="40" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" foregroundColor="#808080" backgroundColor="#000000" scrollbarMode="showOnDemand" transparent="1" zPosition="5" />
 		
-	<eLabel position="106,620" size="1046,26"  backgroundColor="#202020" zPosition="1" />
+	<eLabel position="106,620" size="1046,26" backgroundColor="#202020" zPosition="1" />
 	<eLabel position="106,600" size="1046,3" backgroundColor="#202020" zPosition="1" />
-    	<widget name="progress" position="106,620" size="1046,26"  foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
-    	<widget source="progresstext" render="Label" position="106,620" size="1046,26"  font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
+    	<widget name="progress" position="106,620" size="1046,26" foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
+    	<widget source="progresstext" render="Label" position="106,620" size="1046,26" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
    	<widget name="version" position="1090,742" size="133,20" halign="left" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<!-- Buttons Colors -->
 	<eLabel position="106,660" size="1046,3" backgroundColor="#202020" zPosition="1" />
