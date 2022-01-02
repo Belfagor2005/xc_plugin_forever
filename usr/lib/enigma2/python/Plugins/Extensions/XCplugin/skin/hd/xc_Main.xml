@@ -22,7 +22,7 @@
 	<widget position="673,273" size="266,64" name="timezone" font="Regular;21" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="738,338" size="200,26" name="state" font="Regular;18" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="856,727" size="226,26" name="key_text" font="Regular;21" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
-    	<ePixmap position="673,376" size="74,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/epg.png" alphatest="blend" zPosition="10" />
+	<ePixmap position="673,376" size="74,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
 	<eLabel position="100,660" size="1046,3" backgroundColor="#202020" zPosition="1" />
    

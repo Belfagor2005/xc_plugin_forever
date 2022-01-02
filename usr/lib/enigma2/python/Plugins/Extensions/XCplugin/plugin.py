@@ -299,7 +299,7 @@ class xc_config(Screen, ConfigListScreen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
-        self.setup_title = _("XtreamCode-Config")
+        self.setup_title = ('XCplugin Forever')
         self.list = []
         self.onChangedEntry = []
         self.downloading = False
@@ -1005,6 +1005,7 @@ class xc_Main(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self.channel_list = STREAMS.iptv_list
         self.index = STREAMS.list_index
         global channel_list2, index2, re_search
@@ -1049,6 +1050,7 @@ class xc_Main(Screen):
         self.picload = ePicLoad()
         self.scale = AVSwitch().getFramebufferScale()
         self["Text"] = Label("")
+        self["Text"].setText(infoname)
         self.update_desc = True
         self.pass_ok = False
         self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -1076,7 +1078,6 @@ class xc_Main(Screen):
         self.url_tmp = None
         self.video_back = False
         self.passwd_ok = False
-        self["Text"].setText(infoname)
         global srefInit
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         srefInit = self.initialservice
@@ -2224,6 +2225,7 @@ class xc_StreamTasks(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions"], {
             "ok": self.keyOK,
             "esc": self.keyClose,
@@ -2391,6 +2393,7 @@ class xc_help(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Config"))
@@ -2525,6 +2528,7 @@ class xc_Epg(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         text = text_clear
         self["key_red"] = Label(_("Back"))
         self["text_clear"] = StaticText()
@@ -2544,15 +2548,18 @@ class OpenServer(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self.list = []
         self["list"] = xcM3UList([])
+        self["Text"] = Label("")
+        self["Text"].setText(infoname)
         self["version"] = Label(version)
         self["playlist"] = Label("")
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Rename"))
         self["key_yellow"] = Label(_("Remove"))
         self["live"] = Label("")
-        self["live"].setText("")
+        # self["live"].setText("")
         self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "ok": self.selectlist,
@@ -2940,7 +2947,7 @@ class xcM3UList(MenuList):
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
         else:
-            self.l.setItemHeight(40)
+            self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 24))
 
 class xc_Play(Screen):
@@ -2950,6 +2957,7 @@ class xc_Play(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self.list = []
         self["list"] = xcM3UList([])
         global srefInit
@@ -3165,6 +3173,7 @@ class xc_M3uPlay(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         Screen.__init__(self, session)
+        self.setup_title = ('XCplugin Forever')
         self.list = []
         self["list"] = xcM3UList([])
         self["version"] = Label(version)
@@ -3796,7 +3805,7 @@ class xc_home(Screen):
         self.setup_title = ('MAIN MENU')
         Screen.__init__(self, session)
         self.list = []
-        self["Text"] = Label("XCplugin Forever")
+        self["Text"] = Label("")
         self["version"] = Label(version)
         self['text'] = xcList([])
         self["key_red"] = Label(_("Exit"))
@@ -3894,6 +3903,7 @@ class xc_home(Screen):
             self.menu_list.append(x)
             idx += 1
         self['text'].setList(list)
+        self["Text"].setText(infoname)
 
     def keyNumberGlobalCB(self, idx):
         sel = self.menu_list[idx]
@@ -3938,7 +3948,7 @@ class xc_maker(Screen):
         self.setup_title = ('XCplugin Forever')
         Screen.__init__(self, session)
         self.list = []
-        self["Text"] = Label("XCplugin Forever")
+        self["Text"] = Label("")
         self["version"] = Label(version)
         self["description"] = Label('')
         self["key_red"] = Label(_("Back"))
@@ -3965,6 +3975,7 @@ class xc_maker(Screen):
 
     def updateMenuList(self):
         self["description"].setText(self.getabout())
+        self["Text"].setText(infoname)
 
     def maker(self):
         if str(config.plugins.XCplugin.typelist.value) == "Multi Live & VOD":
@@ -4026,18 +4037,6 @@ Panel_list = [
 class xcList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        
-        self.l.setFont(0, gFont('Regular', 20))
-        self.l.setFont(1, gFont('Regular', 22))
-        self.l.setFont(2, gFont('Regular', 24))
-        self.l.setFont(3, gFont('Regular', 26))
-        self.l.setFont(4, gFont('Regular', 28))
-        self.l.setFont(5, gFont('Regular', 30))
-        self.l.setFont(6, gFont('Regular', 32))
-        self.l.setFont(7, gFont('Regular', 34))
-        self.l.setFont(8, gFont('Regular', 36))
-        self.l.setFont(9, gFont('Regular', 50))
-        
         if isFHD():
             self.l.setItemHeight(60)
             textfont = int(32)
