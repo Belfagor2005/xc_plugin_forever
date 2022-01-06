@@ -27,4 +27,20 @@ else:
             return gettext.gettext(txt)
     language.addCallback(localeInit)
     
- 
+def checks():
+    try:
+        from Plugins.Extensions.XCplugin.Utils import *
+    except:
+        from . import Utils
+    checkInternet()
+    chek_in= False
+    if checkInternet():
+        chek_in = True
+    return chek_in
+
+if checks:
+    try:
+        from Plugins.Extensions.XCplugin.Update import upd_done
+        upd_done()
+    except:
+        pass

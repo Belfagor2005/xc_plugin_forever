@@ -86,7 +86,7 @@ import six
 import socket
 import sys
 import time
-import zlib
+
 global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path, epgimport_path
 global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo
 
@@ -162,17 +162,17 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-def del_jpg():
-    for i in glob.glob(os.path.join("/tmp", "*.jpg")):
-        try:
-            os.chmod(i, 0o777)
-            os.remove(i)
-        except OSError:
-            pass
-try:
-    from enigma import eDVBDB
-except ImportError:
-    eDVBDB = None
+# def del_jpg():
+    # for i in glob.glob(os.path.join("/tmp", "*.jpg")):
+        # try:
+            # os.chmod(i, 0o777)
+            # os.remove(i)
+        # except OSError:
+            # pass
+# try:
+    # from enigma import eDVBDB
+# except ImportError:
+    # eDVBDB = None
 
 
 modelive = [("1", _("Dvb(1)")), ("4097", _("IPTV(4097)"))]
@@ -231,16 +231,17 @@ config.plugins.XCplugin.timetype = ConfigSelection(default="interval", choices=[
 config.plugins.XCplugin.fixedtime = ConfigClock(default=0)
 
 if isHD():
-    CHANNEL_NUMBER = [3, 5, 50, 40, 0]
-    CHANNEL_NAME = [65, 5, 900, 40, 1]
+    CHANNEL_NUMBER = [3, 5, 50, 50, 0]
+    CHANNEL_NAME = [75, 5, 900, 50, 1]
     FONT_0 = ("Regular", 20)
     FONT_1 = ("Regular", 20)
-    BLOCK_H = 40
+    BLOCK_H = 50
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
     skin_path = piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
 elif isFHD():
-    CHANNEL_NUMBER = [3, 7, 85, 50, 0]
-    CHANNEL_NAME = [90, 7, 1500, 50, 1]
+    CHANNEL_NUMBER = [3, 7, 100, 50, 0]
+    # CHANNEL_NUMBER = [3, 7, 85, 50, 0]    
+    CHANNEL_NAME = [110, 7, 1500, 50, 1]
     FONT_0 = ("Regular", 32)
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
@@ -253,7 +254,6 @@ def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 copy_poster()
 
-# ntimeout = config.plugins.XCplugin.timeout.getValue()
 ntimeout = int(config.plugins.XCplugin.timeout.value)
 socket.setdefaulttimeout(ntimeout)
 eserv = int(config.plugins.XCplugin.services.value)
@@ -261,14 +261,7 @@ infoname = str(config.plugins.XCplugin.infoname.value)
 Path_Picons = str(config.plugins.XCplugin.pthpicon.value) + "/"
 Path_Movies = str(config.plugins.XCplugin.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
-# if not Path_Movies.endswith("/"):
-    # Path_Movies = Path_Movies + '/' #[:-1]
-# # print('patch movies: ', Path_Movies)
 Path_XML = str(config.plugins.XCplugin.pthxmlfile.value) + "/"
-# if not Path_XML.endswith("/"): # is True:
-    # Path_XML = Path_XML + '/' #[:-1]
-# if not os.path.exists(Path_XML):
-    # os.system("mkdir " + Path_XML)
     
 def check_port(tport):
     url = tport
@@ -291,6 +284,41 @@ def check_port(tport):
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
     return url
+
+def getJsonURL(url):
+    try:
+        from StringIO import StringIO ## for Python 2
+    except ImportError:
+        from io import StringIO
+    import gzip
+    request= Request(url)
+    request.add_header('Accept-encoding', 'gzip,deflate')
+    response= opener.open(request)
+    if response.info().get('Content-Encoding') == 'gzip':
+        buffer = StringIO(response.read())
+        deflatedContent = gzip.GzipFile(fileobj=buffer)
+        return deflatedContent.read()
+    else:
+        return response.read()
+
+# def getJsonURL(url):
+    # import zlib
+    # request = Request(url)
+    # request.add_header('User-Agent', 'XC Forever')
+    # request.add_header('Accept-Encoding', 'gzip')
+    # response = urlopen(request, timeout=ntimeout)
+    # gzipped = response.info().get('Content-Encoding') == 'gzip'
+    # data = ''
+    # dec_obj = zlib.decompressobj(16 + zlib.MAX_WBITS)
+    # while True:
+        # res_data = response.read()
+        # if not res_data:
+            # break
+        # if gzipped:
+            # data += checkStr(dec_obj.decompress(res_data))
+        # else:
+            # data += checkStr(res_data)
+    # return json.loads(data)
 
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
@@ -519,12 +547,16 @@ class xc_config(Screen, ConfigListScreen):
 
     def xml_plugin(self):
         filesave = "xc_" + str(config.plugins.XCplugin.user.value) + ".xml"
-        filesave = filesave.replace(":", "_")
-        filesave = filesave.lower()
-        port = str(config.plugins.XCplugin.port.value)
-        with open(Path_XML + filesave, "w") as f:
-            f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(config.plugins.XCplugin.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(config.plugins.XCplugin.user.value) + '</username>\n' + '<password>' + str(config.plugins.XCplugin.passw.value) + '</password>\n' + '</items>'))
-            f.close()
+        if 'Enter' in filesave:
+            self.mbox = self.session.open(MessageBox, _("No Valid data Username Default !"), MessageBox.TYPE_INFO, timeout=5)
+            
+        else:    
+            filesave = filesave.replace(":", "_")
+            filesave = filesave.lower()
+            port = str(config.plugins.XCplugin.port.value)
+            with open(Path_XML + filesave, "w") as f:
+                f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(config.plugins.XCplugin.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(config.plugins.XCplugin.user.value) + '</username>\n' + '<password>' + str(config.plugins.XCplugin.passw.value) + '</password>\n' + '</items>'))
+                f.close()
 
     def save(self):
         if self["config"].isChanged():
@@ -604,9 +636,10 @@ class iptv_streamse():
         self.img_loader = False
         self.cont_play = False
         self.disable_audioselector = False
-        self.port = config.plugins.XCplugin.port.value
+        self.port = str(config.plugins.XCplugin.port.value)
         self.hostaddress = config.plugins.XCplugin.hostaddress.value
-        self.xtream_e2portal_url = "http://" + str(self.hostaddress) + ':' + str(self.port)
+        self.hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
+        self.xtream_e2portal_url = self.hosts + ':' + self.port
         self.username = str(config.plugins.XCplugin.user.value)
         self.password = str(config.plugins.XCplugin.passw.value)
 
@@ -620,22 +653,31 @@ class iptv_streamse():
     def read_config(self):
         try:
             print("-----------CONFIG NEW START----------")   
-            hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
-            self.port = str(config.plugins.XCplugin.port.value)
-            self.xtream_e2portal_url = hosts + ':' + self.port
-            username = str(config.plugins.XCplugin.user.value)
-            if username and username != "":
-                self.username = username
+            # self.hosts = "http://" + str(config.plugins.XCplugin.hostaddress.value)
+            # self.port = str(config.plugins.XCplugin.port.value)
+            # self.xtream_e2portal_url = self.hosts + ':' + self.port
+            username = self.username
+            if username and username != "" and 'Enter' not in username:
+                self.username = username 
+                print('ok user #ok pass')
             password = str(config.plugins.XCplugin.passw.value)
-            if password and password != "":
+            if password and password != "" and 'Enter' not in password:
                 self.password = password
+                print('ok password #ok pass')
             plugin_version = version
             print('xtream_e2portal_url = ', self.xtream_e2portal_url)
             print('port = ', self.port)
             print('username = ', self.username)
             print('password = ', self.password)
-            # print('plugin_version = ', plugin_version)
-            # print("%s" % version)
+            print('plugin_version = ', plugin_version)
+            print('stream_live = ', stream_live)
+            print('stream_url = ', stream_url)
+            print('iptv_list_tmp = ', iptv_list_tmp)
+            print('xml = ', xml)
+            print('btnsearch = ', btnsearch)
+            print('next_request = ', next_request )
+            print('isStream = ', isStream )
+            
             print("-----------CONFIG NEW END----------")
         except Exception as ex:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
@@ -662,7 +704,9 @@ class iptv_streamse():
             elif "_get" in self.url:
                 next_request = 2
             xml = self._request(self.url)
-            if xml :
+            print('res xml: ', xml)
+            if xml and xml != None:
+                
                 self.next_page_url = ""
                 self.next_page_text = ""
                 self.prev_page_url = ""
@@ -825,12 +869,11 @@ class iptv_streamse():
         if "exampleserver.com" not in config.plugins.XCplugin.hostaddress.value:
             global urlinfo, next_request
             # TYPE_PLAYER= '/player_api.php'
-            TYPE_PLAYER = '/enigma2.php'
+            res = None
+            # TYPE_PLAYER = '/enigma2.php'
+            TYPE_PLAYER= '/player_api.php'
             url = url.strip(" \t\n\r")
             if next_request == 1:
-                
-                url = check_port(url)
-                
                 if not url.find(":"):
                     self.port = str(config.plugins.XCplugin.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
@@ -842,57 +885,69 @@ class iptv_streamse():
                 print('my url final 1', url)
                 # next_request = 2
                 next_request = 3
+            
             urlinfo = self.checkRedirect(url)
-            urlinfo= checkStr(urlinfo)
             print('urlinfo 1 ', urlinfo)
+            urlinfo= checkStr(urlinfo)
+            print('urlinfo 2 ', urlinfo)
             # try:
-
-
+                # req = Request(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, timeout=ntimeout)
+                # # res=response.read()
+                # if PY3:
+                    # res=response.read().decode('utf-8')
+                # else:
+                    # res=response.read()                        
+                # print("Here in client1 link =", res)
+                # res = fromstring(res)
+                # response.close()
+                # return res
+            # except:
+                # req = Request(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, None, 3)
+                # if PY3:
+                    # res=response.read().decode('utf-8')
+                # else:
+                    # res=response.read()
+                # print("Here in client2 link =", res)
+                # res = fromstring(res)
+                # response.close()
+                # return res        
             try:
-                req = Request(urlinfo)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                response = urlopen(req, timeout=ntimeout)
-                # res=response.read()
-                if PY3:
-                    res=response.read().decode('utf-8')
-                else:
-                    res=response.read()                        
+                # req = Request(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, timeout=ntimeout)
+                # # res=response.read()
+                # if PY3:
+                    # res=response.read().decode('utf-8')
+                # else:
+                    # res=response.read()       
+                res = getJsonURL(urlinfo)
+                # res = getUrlresp(urlinfo)                
                 print("Here in client1 link =", res)
                 res = fromstring(res)
                 response.close()
                 return res
-            except:
-                req = Request(urlinfo)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                response = urlopen(req, None, 3)
-                if PY3:
-                    res=response.read().decode('utf-8')
-                else:
-                    res=response.read()
-                print("Here in client2 link =", res)
-                res = fromstring(res)
-                response.close()
-                return res                    
-            # except Exception as ex:
-                # res = None
-                # self.xml_error = ex
-                # print('erroooorrrrr ex ', ex)
+            except Exception as e:
+                print('error request as ', e)
         else:
             res = None
             return res
-            
-    #kiddac code        
-    def checkRedirect(self, url):
-        # print("*** check redirect ***")
-        try:
-            import requests
-            x = requests.get(url, timeout=15, verify=False, stream=True)
+
+    # #kiddac code        
+    # def checkRedirect(self, url):
+        # # print("*** check redirect ***")
+        # try:
+            # import requests
+            # x = requests.get(url, timeout=15, verify=False, stream=True)
             # print("**** redirect url 1 *** %s" % x.url)
-            return str(x.url)
-        except Exception as e:
-            print(e)
+            # return str(x.url)
+        # except Exception as e:
+            # print(e)
             # print("**** redirect url 2 *** %s" % url)
-            return str(url)
+            # return str(url)
             
 class IPTVInfoBarShowHide():
     """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
@@ -1077,7 +1132,7 @@ class xc_Main(Screen):
         self.temp_playlistname = None
         self.url_tmp = None
         self.video_back = False
-        self.passwd_ok = False
+        # self.passwd_ok = False
         global srefInit
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         srefInit = self.initialservice
@@ -1120,17 +1175,19 @@ class xc_Main(Screen):
             panel = str(config.plugins.XCplugin.panel.value)
             user = str(config.plugins.XCplugin.user.value)
             password = str(config.plugins.XCplugin.passw.value)
-            self["exp"].setText("")
-            self["max_connect"].setText("")
-            self["active_cons"].setText("")
-            self["exp"].setText("Server Not Responding")
+            self["max_connect"].setText("Max Connect: 0")
+            self["active_cons"].setText("User Active: 0")
+            self["exp"].setText("??????")
+            self["server_protocol"].setText("Protocol: No Info ")
+            self["timezone"].setText("Timezone: No Info ")
+                
             url_info = 'http://' + host + ':' + ports + '/' + panel + '.php?username=' + user + '&password=' + password + '&action=user&sub=info'
             print('url_info: ', url_info)
             data = getJsonURL(url_info)
             user = ''
             status = ''
-            create_date = ''
-            exp_date = ''
+            create_date = '~'
+            exp_date = '~'
             auth = 'Not Authorised'
             active_cons = ''
             max_cons = ''
@@ -1144,42 +1201,37 @@ class xc_Main(Screen):
                 exp_date = ui.get('exp_date', None)
                 active_cons = ui.get('active_cons', '~')
                 max_cons = ui.get('max_connections', '~')
+
+                if create_date:
+                    create_date = time.strftime(TIME_GMT, time.gmtime(int(create_date)))
+                if exp_date:
+                    exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+                if str(auth) == "1":
+                    if str(status) == "Active":
+                        self["exp"].setText("Active")
+                    elif str(status) == "Banned":
+                        self["exp"].setText("Banned")
+                    elif str(status) == "Disabled":
+                        self["exp"].setText("Disabled")
+                    elif str(status) == "Expired":
+                        self["exp"].setText("Expired")
+                    if str(status) == "Active":
+                        try:
+                            self["exp"].setText("Exp date:\n" + str(exp_date))
+                        except:
+                            self["exp"].setText("Exp date:\n")
+                    self["max_connect"].setText("Max Connect: " + str(max_cons))
+                    self["active_cons"].setText("User Active: " + str(active_cons))
+                if ux:
+                    server_protocol = ux.get('server_protocol', '~')
+                    timezone = ux.get('timezone', '~')
+                    self["server_protocol"].setText("Protocol: " + str(server_protocol))
+                    self["timezone"].setText("Timezone: " + str(timezone))
             else:
-                print("No info!")
-            if create_date:
-                create_date = time.strftime(TIME_GMT, time.gmtime(int(create_date)))
-            else:
-                create_date = '~'
-            if exp_date:
-                exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-            else:
-                exp_date = '~'
-            if str(auth) == "1":
-                if str(status) == "Active":
-                    self["exp"].setText("Active")
-                elif str(status) == "Banned":
-                    self["exp"].setText("Banned")
-                elif str(status) == "Disabled":
-                    self["exp"].setText("Disabled")
-                elif str(status) == "Expired":
-                    self["exp"].setText("Expired")
-                if str(status) == "Active":
-                    try:
-                        self["exp"].setText("Exp date:\n" + str(exp_date))
-                    except:
-                        self["exp"].setText("Exp date:\n")
-                self["max_connect"].setText("Max Connect: " + str(max_cons))
-                self["active_cons"].setText("User Active: " + str(active_cons))
-            if ux:
-                server_protocol = ux.get('server_protocol', '~')
-                timezone = ux.get('timezone', '~')
-                self["server_protocol"].setText("Protocol: " + str(server_protocol))
-                self["timezone"].setText("Timezone: " + str(timezone))
-            else:
-                print("No info!")
+                print('error getJsonURL: ')
 
         except Exception as ex:
-            print(ex)
+            print('getJsonURL: ', ex)
 
     def mmark(self):
         global iptv_list_tmp
@@ -1190,7 +1242,7 @@ class xc_Main(Screen):
         self.temp_playlistname = None
         self.url_tmp = None
         self.video_back = False
-        self.passwd_ok = False
+        # self.passwd_ok = False
         self.list_index = 0
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
@@ -1629,7 +1681,7 @@ class xc_Main(Screen):
 
     def show_all(self):
         try:
-            if self.passwd_ok == False:
+            # if self.passwd_ok == False:
                 if re_search == True:
                     self.channel_list = iptv_list_tmp
                     self.mlist.onSelectionChanged.append(self.update_description)
@@ -2595,6 +2647,7 @@ class OpenServer(Screen):
         else:
             # self.session.openWithCallback(check_configuring, xc_Main)
             self.session.open(xc_Main)
+
     def selectlist(self):
         idx = self["list"].getSelectionIndex()
         if idx == -1 or idx ==None:
@@ -3746,8 +3799,8 @@ def prevAR():
 def channelEntryIPTVplaylist(entry):
     menu_entry = [
         entry,
-        (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NUMBER[0], CHANNEL_NUMBER[1], CHANNEL_NUMBER[2], CHANNEL_NUMBER[3], CHANNEL_NUMBER[4], RT_HALIGN_CENTER, "%s" % entry[0]),
-        (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NAME[0], CHANNEL_NAME[1], CHANNEL_NAME[2], CHANNEL_NAME[3], CHANNEL_NAME[4], RT_HALIGN_LEFT, entry[1])]
+        (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NUMBER[0], CHANNEL_NUMBER[1], CHANNEL_NUMBER[2], CHANNEL_NUMBER[3], CHANNEL_NUMBER[4], RT_HALIGN_CENTER | RT_VALIGN_CENTER, "%s" % entry[0]),
+        (eListboxPythonMultiContent.TYPE_TEXT, CHANNEL_NAME[0], CHANNEL_NAME[1], CHANNEL_NAME[2], CHANNEL_NAME[3], CHANNEL_NAME[4], RT_HALIGN_LEFT | RT_VALIGN_CENTER, entry[1])]
     return menu_entry
 
 
@@ -3780,20 +3833,20 @@ def uninstaller():
         print(ex)
         raise
 
-if os.path.isfile(filterlist):
-    global filtertmdb
-    try:
-        with open(filterlist) as f:
-            lines = [line.rstrip("\n") for line in open(tmdblist)]
-            start = ('": ' + '"' + '",' + ' "')
-            mylist = start.join(lines)
-            end = ('{"' + mylist + '": ' + '"' + '"' + "}")
+# if os.path.isfile(filterlist):
+    # global filtertmdb
+    # try:
+        # with open(filterlist) as f:
+            # lines = [line.rstrip("\n") for line in open(tmdblist)]
+            # start = ('": ' + '"' + '",' + ' "')
+            # mylist = start.join(lines)
+            # end = ('{"' + mylist + '": ' + '"' + '"' + "}")
 
-            dict = eval(filtertmdb)
-            filtertmdb = "".join(end.splitlines())
-            filtertmdb = dict
-    except:
-        filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
+            # dict = eval(filtertmdb)
+            # filtertmdb = "".join(end.splitlines())
+            # filtertmdb = dict
+    # except:
+        # filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
 
 class xc_home(Screen):
     def __init__(self, session):
@@ -4326,24 +4379,8 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
         self.session.nav.playService(self.srefOld)
         self.close()
 
-def getJsonURL(url):
-    request = Request(url)
-    request.add_header('User-Agent', 'XC Forever')
-    request.add_header('Accept-Encoding', 'gzip')
-    response = urlopen(request, timeout=ntimeout)
-    gzipped = response.info().get('Content-Encoding') == 'gzip'
-    data = ''
-    dec_obj = zlib.decompressobj(16 + zlib.MAX_WBITS)
-    while True:
-        res_data = response.read()
-        if not res_data:
-            break
-        if gzipped:
-            data += checkStr(dec_obj.decompress(res_data))
-        else:
-            data += checkStr(res_data)
-    return json.loads(data)
 
+    
 
 # ===================Time is what we want most, but what we use worst===================
 #
