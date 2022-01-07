@@ -125,14 +125,14 @@ else:
      PY3 = False
    
 if PY3:
-    from urllib.request import urlopen, Request
+    from urllib.request import urlopen, Request, FancyURLopener
     from urllib.parse import urlparse
     from urllib.parse import quote_plus
 
 else:
     from urllib2 import urlopen, Request
     from urlparse import urlparse
-    from urllib import quote_plus
+    from urllib import quote_plus, FancyURLopener
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -161,17 +161,17 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-# def del_jpg():
-    # for i in glob.glob(os.path.join("/tmp", "*.jpg")):
-        # try:
-            # os.chmod(i, 0o777)
-            # os.remove(i)
-        # except OSError:
-            # pass
-# try:
-    # from enigma import eDVBDB
-# except ImportError:
-    # eDVBDB = None
+def checkRedirect(url):
+    # print("*** check redirect ***")
+    try:
+        import requests
+        x = requests.get(url, timeout=15, verify=False, stream=True)
+        print("**** redirect url 1 *** %s" % x.url)
+        return str(x.url)
+    except Exception as e:
+        print(e)
+        print("**** redirect url 2 *** %s" % url)
+        return str(url)
 
 
 modelive = [("1", _("Dvb(1)")), ("4097", _("IPTV(4097)"))]
@@ -236,7 +236,7 @@ if isHD():
     FONT_1 = ("Regular", 20)
     BLOCK_H = 50
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
-    skin_path = piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
+    skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
 elif isFHD():
     CHANNEL_NUMBER = [3, 7, 100, 50, 0]
     # CHANNEL_NUMBER = [3, 7, 85, 50, 0]    
@@ -244,7 +244,8 @@ elif isFHD():
     FONT_0 = ("Regular", 32)
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
-    skin_path = piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))    
+    skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))    
+    piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))    
 if DreamOS():
     iconpic = "plugin.png"
     skin_path =  skin_path + '/dreamOs'
@@ -284,40 +285,52 @@ def check_port(tport):
         url = str(url.replace(protocol + domain, host))
     return url
 
-def getJsonURL(url):
-    try:
-        from StringIO import StringIO ## for Python 2
-    except ImportError:
-        from io import StringIO
-    import gzip
-    request= Request(url)
-    request.add_header('Accept-encoding', 'gzip,deflate')
-    response= opener.open(request)
-    if response.info().get('Content-Encoding') == 'gzip':
-        buffer = StringIO(response.read())
-        deflatedContent = gzip.GzipFile(fileobj=buffer)
-        return deflatedContent.read()
-    else:
-        return response.read()
+
+# class AppURLopener(urllib.request.FancyURLopener):
+class AppURLopener(FancyURLopener):
+    version = "Mozilla/5.0"
+
+opener = AppURLopener()
 
 # def getJsonURL(url):
-    # import zlib
-    # request = Request(url)
-    # request.add_header('User-Agent', 'XC Forever')
-    # request.add_header('Accept-Encoding', 'gzip')
-    # response = urlopen(request, timeout=ntimeout)
-    # gzipped = response.info().get('Content-Encoding') == 'gzip'
-    # data = ''
-    # dec_obj = zlib.decompressobj(16 + zlib.MAX_WBITS)
-    # while True:
-        # res_data = response.read()
-        # if not res_data:
-            # break
-        # if gzipped:
+    # try:
+        # from StringIO import StringIO ## for Python 2
+    # except ImportError:
+        # from io import StringIO
+    # import gzip
+    # request= Request(url)
+    # request.add_header('Accept-encoding', 'gzip,deflate')
+    # response= opener.open(request)
+    # if response.info().get('Content-Encoding') == 'gzip':
+        # buffer = StringIO(response.read())
+        # deflatedContent = gzip.GzipFile(fileobj=buffer)
+        # return deflatedContent.read()
+    # else:
+        # return response.read()
+
+def getJsonURL(url):
+    import zlib
+    request = Request(url)
+    request.add_header('User-Agent', 'XC Forever')
+    request.add_header('Accept-Encoding', 'gzip')
+    response = urlopen(request, timeout=ntimeout)
+    gzipped = response.info().get('Content-Encoding') == 'gzip'
+    data = ''
+    dec_obj = zlib.decompressobj(16 + zlib.MAX_WBITS)
+    while True:
+        res_data = response.read()
+        if not res_data:
+            break
+        if gzipped:
+            #
+            buffer = StringIO(response.read())
+            deflatedContent = gzip.GzipFile(fileobj=buffer)
+            return deflatedContent.read()   
+            #
             # data += checkStr(dec_obj.decompress(res_data))
-        # else:
-            # data += checkStr(res_data)
-    # return json.loads(data)
+        else:
+            data += checkStr(res_data)
+    return json.loads(data)
 
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
@@ -672,7 +685,6 @@ class iptv_streamse():
             print('stream_live = ', stream_live)
             print('stream_url = ', stream_url)
             print('iptv_list_tmp = ', iptv_list_tmp)
-            print('xml = ', xml)
             print('btnsearch = ', btnsearch)
             print('next_request = ', next_request )
             print('isStream = ', isStream )
@@ -704,8 +716,8 @@ class iptv_streamse():
                 next_request = 2
             xml = self._request(self.url)
             print('res xml: ', xml)
-            if xml and xml != None:
-                
+            # if xml or xml != None:
+            if xml:                
                 self.next_page_url = ""
                 self.next_page_text = ""
                 self.prev_page_url = ""
@@ -867,10 +879,9 @@ class iptv_streamse():
     def _request(self, url):
         if "exampleserver.com" not in config.plugins.XCplugin.hostaddress.value:
             global urlinfo, next_request
-            # TYPE_PLAYER= '/player_api.php'
             res = None
-            # TYPE_PLAYER = '/enigma2.php'
-            TYPE_PLAYER= '/player_api.php'
+            TYPE_PLAYER = '/enigma2.php'
+            # TYPE_PLAYER= '/player_api.php'
             url = url.strip(" \t\n\r")
             if next_request == 1:
                 if not url.find(":"):
@@ -878,76 +889,66 @@ class iptv_streamse():
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
                 url = url
-                next_request = 1
+                #next_request = 1
+                print('next_request 1: ', next_request)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
                 print('my url final 1', url)
                 # next_request = 2
                 next_request = 3
+                print('next_request 2 : ', next_request)
             
-            urlinfo = self.checkRedirect(url)
+            urlinfo = checkRedirect(url)
             print('urlinfo 1 ', urlinfo)
-            urlinfo= checkStr(urlinfo)
-            print('urlinfo 2 ', urlinfo)
-            # try:
-                # req = Request(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, timeout=ntimeout)
-                # # res=response.read()
-                # if PY3:
-                    # res=response.read().decode('utf-8')
-                # else:
-                    # res=response.read()                        
-                # print("Here in client1 link =", res)
-                # res = fromstring(res)
-                # response.close()
-                # return res
-            # except:
-                # req = Request(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, None, 3)
-                # if PY3:
-                    # res=response.read().decode('utf-8')
-                # else:
-                    # res=response.read()
-                # print("Here in client2 link =", res)
-                # res = fromstring(res)
-                # response.close()
-                # return res        
+            # urlinfo= checkStr(urlinfo)
+            # print('urlinfo 2 ', urlinfo)
             try:
-                # req = Request(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, timeout=ntimeout)
-                # # res=response.read()
-                # if PY3:
-                    # res=response.read().decode('utf-8')
-                # else:
-                    # res=response.read()       
-                res = getJsonURL(urlinfo)
-                # res = getUrlresp(urlinfo)                
+                req = Request(urlinfo)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                response = urlopen(req, timeout=ntimeout)
+                # res=response.read()
+                if PY3:
+                    res=response.read().decode('utf-8')
+                else:
+                    res=response.read()                        
                 print("Here in client1 link =", res)
                 res = fromstring(res)
                 response.close()
                 return res
-            except Exception as e:
-                print('error request as ', e)
+            except:
+                req = Request(urlinfo)
+                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                response = urlopen(req, None, 5)
+                if PY3:
+                    res=response.read().decode('utf-8')
+                else:
+                    res=response.read()
+                print("Here in client2 link =", res)
+                res = fromstring(res)
+                response.close()
+                return res        
+            # try:
+                # # req = Request(urlinfo)
+                # # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # # response = urlopen(req, timeout=ntimeout)
+                # # # res=response.read()
+                # # if PY3:
+                    # # res=response.read().decode('utf-8')
+                # # else:
+                    # # res=response.read()       
+                # res = getUrl(urlinfo)
+                # # res = getUrlresp(urlinfo)                
+                # print("Here in client1 link =", res)
+                # res = fromstring(res)
+                # response.close()
+                # return res
+            # except Exception as e:
+                # print('error request as ', e)
         else:
             res = None
             return res
 
-    # #kiddac code        
-    # def checkRedirect(self, url):
-        # # print("*** check redirect ***")
-        # try:
-            # import requests
-            # x = requests.get(url, timeout=15, verify=False, stream=True)
-            # print("**** redirect url 1 *** %s" % x.url)
-            # return str(x.url)
-        # except Exception as e:
-            # print(e)
-            # print("**** redirect url 2 *** %s" % url)
-            # return str(url)
-            
+           
 class IPTVInfoBarShowHide():
     """ InfoBar show/hide control, accepts toggleShow and hide actions, might start
     fancy animations. """
@@ -1568,8 +1569,8 @@ class xc_Main(Screen):
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            _l = self.picload.PictureData.get()
-            del _l[:]
+            # _l = self.picload.PictureData.get()
+            # del _l[:]
             if DreamOS():
                 self.picload.startDecode(png, False)
             else:
@@ -1989,8 +1990,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            _l = self.picload.PictureData.get()
-            del _l[:]
+            # _l = self.picload.PictureData.get()
+            # del self.picload 
             if DreamOS():
                 self.picload.startDecode(png, False)
             else:
@@ -2939,8 +2940,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             self.picload = ePicLoad()
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            _l = self.picload.PictureData.get()
-            del _l[:]
+            # _l = self.picload.PictureData.get()
+            # del _l[:]
             if DreamOS():
                 self.picload.startDecode(png, False)
             else:
