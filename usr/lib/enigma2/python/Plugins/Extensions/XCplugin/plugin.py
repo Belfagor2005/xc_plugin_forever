@@ -55,7 +55,6 @@ from enigma import eServiceCenter
 from enigma import eServiceReference
 from enigma import eSize, ePicLoad
 from enigma import gFont
-# from enigma import getDesktop 
 from enigma import iPlayableService
 from enigma import iServiceInformation
 from enigma import loadPNG
@@ -64,12 +63,9 @@ from os import listdir, path, access, X_OK, chmod
 from os.path import splitext
 from sys import version_info
 from twisted.web.client import downloadPage
-# from xml.etree.ElementTree import fromstring
 try:
     from xml.etree.cElementTree import ElementTree, fromstring
-    # import xml.etree.cElementTree as ElementTree
 except ImportError:
-    # import xml.etree.ElementTree as ElementTree
     from xml.etree.ElementTree import ElementTree, fromstring
 try:
     from Plugins.Extensions.XCplugin.Utils import *
@@ -161,17 +157,17 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
-def checkRedirect(url):
-    # print("*** check redirect ***")
-    try:
-        import requests
-        x = requests.get(url, timeout=15, verify=False, stream=True)
-        print("**** redirect url 1 *** %s" % x.url)
-        return str(x.url)
-    except Exception as e:
-        print(e)
-        print("**** redirect url 2 *** %s" % url)
-        return str(url)
+# def checkRedirect(url):
+    # # print("*** check redirect ***")
+    # try:
+        # import requests
+        # x = requests.get(url, timeout=15, verify=False, stream=True)
+        # print("**** redirect url 1 *** %s" % x.url)
+        # return str(x.url)
+    # except Exception as ex:
+        # print('checkRedirect get failed: ', str(ex))
+        # print("**** redirect url 2 *** %s" % url)
+        # return str(url)
 
 
 modelive = [("1", _("Dvb(1)")), ("4097", _("IPTV(4097)"))]
@@ -230,17 +226,16 @@ config.plugins.XCplugin.timetype = ConfigSelection(default="interval", choices=[
 config.plugins.XCplugin.fixedtime = ConfigClock(default=0)
 
 if isHD():
-    CHANNEL_NUMBER = [3, 5, 50, 50, 0]
-    CHANNEL_NAME = [75, 5, 900, 50, 1]
+    CHANNEL_NUMBER = [3, 0, 50, 50, 0]
+    CHANNEL_NAME = [75, 0, 900, 50, 1]
     FONT_0 = ("Regular", 20)
     FONT_1 = ("Regular", 20)
     BLOCK_H = 50
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
     skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
 elif isFHD():
-    CHANNEL_NUMBER = [3, 7, 100, 50, 0]
-    # CHANNEL_NUMBER = [3, 7, 85, 50, 0]    
-    CHANNEL_NAME = [110, 7, 1500, 50, 1]
+    CHANNEL_NUMBER = [3, 0, 100, 50, 0]
+    CHANNEL_NAME = [110, 0, 1500, 50, 1]
     FONT_0 = ("Regular", 32)
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
@@ -692,7 +687,7 @@ class iptv_streamse():
             print("-----------CONFIG NEW END----------")
         except Exception as ex:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
-            print(ex)
+            print(str(ex))
 
     def get_list(self, url=None):
         global stream_live, iptv_list_tmp, stream_url, btnsearch, isStream, next_request
@@ -866,9 +861,9 @@ class iptv_streamse():
                         ts_stream)
                     iptv_list_tmp.append(chan_tulpe)
                     btnsearch = next_request
-        except Exception as ex:
-            print(ex)
-            self.xml_error = ex
+        except Exception as e:
+            print('checkRedirect get failed: ', str(e))
+            self.xml_error = str(e)
         if len(iptv_list_tmp):
             self.iptv_list = iptv_list_tmp
             iptv_list_tmp = self.iptv_list
@@ -1231,7 +1226,7 @@ class xc_Main(Screen):
                 print('error getJsonURL: ')
 
         except Exception as ex:
-            print('getJsonURL: ', ex)
+            print('getJsonURL: ', str(ex))
 
     def mmark(self):
         global iptv_list_tmp
@@ -1422,10 +1417,11 @@ class xc_Main(Screen):
                 OnclearMem()
 
             except Exception as ex:
+                print(str(ex))            
                 series = False
                 pmovies = False
                 self.downloading = False
-                print(ex)
+
 
     def LastJobView(self):
         currentjob = None
@@ -1533,8 +1529,8 @@ class xc_Main(Screen):
             serviceref = eServiceReference(4097, 0, Path_Movies + filename)
             with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
                 f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
-        except Exception as e:
-            print(e)
+        except Exception as ex:
+            print(str(ex))
             print('ERROR metaFile')
         return
 
@@ -1588,7 +1584,7 @@ class xc_Main(Screen):
             try:
                 self.decodeImage(pictmp)
             except Exception as ex:
-                print("* error ** %s" % ex)
+                print("* error ** %s" % str(ex))
                 pass
             except:
                 pass
@@ -1601,7 +1597,7 @@ class xc_Main(Screen):
         except Exception as ex:
             self.decodeImage(piclogo)
             #self["poster"].hide()
-            print(ex)
+            print(str(ex))
             print('exe downloadError')
 
     def update_description(self):
@@ -1651,7 +1647,7 @@ class xc_Main(Screen):
                         description = str(selected_channel[2])
                         self["description"].setText(description)
             except Exception as ex:
-                print(ex)
+                print(str(ex))
 
     def update_channellist(self):
         if not len(iptv_list_tmp):
@@ -1695,7 +1691,7 @@ class xc_Main(Screen):
                 self.mlist.selectionEnabled(1)
                 self.button_updater()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def ok(self):
         if not len(iptv_list_tmp):
@@ -1766,7 +1762,7 @@ class xc_Main(Screen):
                 title = str(selected_channel[2])
                 self.Entered()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def Entered(self):
         self.pin = True
@@ -1828,7 +1824,7 @@ class xc_Main(Screen):
                 self.channel_list = STREAMS.iptv_list
                 self.session.open(xc_Player)
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
 class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
     STATE_IDLE = 0
@@ -1979,7 +1975,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.decodeImage(piclogo)
                 print("update COVER")
         except Exception as ex:
-            print(ex)
+            print(str(ex))
             self.decodeImage(piclogo)
             print("update COVER")
 
@@ -2020,7 +2016,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.decodeImage(piclogo)
         except Exception as ex:
             self.decodeImage(piclogo)
-            print(ex)
+            print(str(ex))
             print('exe downloadError')
 
     def showAfterSeek(self):
@@ -2036,7 +2032,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.reference.setName(self.timeshift_title)
                 self.session.nav.playService(self.reference)
             except Exception as ex:
-                print(ex)
+                print(str(ex))
         else:
             if self.cont_play:
                 self.cont_play = False
@@ -2055,7 +2051,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 # print("self.reference33: ", self.reference)
                 self.session.nav.playService(self.reference)
             except Exception as ex:
-                print(ex)
+                print(str(ex))
 
     def autoplay(self):
         if self.cont_play:
@@ -2091,7 +2087,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     STREAMS.list_index = index
                     self.player_helper()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def nextVideo(self):
         try:
@@ -2102,7 +2098,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     STREAMS.list_index = index
                     self.player_helper()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def prevVideo(self):
         try:
@@ -2112,7 +2108,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     STREAMS.list_index = index
                     self.player_helper()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def player_helper(self):
         self.show_info()
@@ -2149,15 +2145,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.recorder = True
                 self.createMetaFile(filename, filename)
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def createMetaFile(self, filename, cleanName):
         try:
             serviceref = eServiceReference(4097, 0, Path_Movies + filename)
             with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
                 f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
-        except Exception as e:
-            print(e)
+        except Exception as ex:
+            print(str(ex))
             print('ERROR metaFile')
         return
         
@@ -2268,7 +2264,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.session.open(MessageBox, "NO VIDEOSTREAM FOUND", type=MessageBox.TYPE_INFO, timeout=3)
                 self.close()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
 class xc_StreamTasks(Screen):
     def __init__(self, session):
@@ -2677,8 +2673,8 @@ class OpenServer(Screen):
                 config.plugins.XCplugin.user.setValue(self.username)
                 config.plugins.XCplugin.passw.setValue(self.password)
                 self.Start_iptv_player()
-            except IOError as e:
-                print(e)
+            except IOError as ex:
+                print(str(ex))
 
     def message1(self):
         idx = self["list"].getSelectionIndex()
@@ -2873,7 +2869,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                     print("update COVER LIVE")
 
             except Exception as ex:
-                print(ex)
+                print(str(ex))
 
             try:
                 print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
@@ -2893,11 +2889,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                     try:
                         self.session.nav.playService(sref)
                     except Exception as ex:
-                        print(ex)
+                        print(str(ex))
             except Exception as ex:
-                print(ex)
+                print(str(ex))
         except Exception as ex:
-            print(ex)
+            print(str(ex))
 
     def nextChannel(self):
         index = self.index
@@ -2959,7 +2955,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             try:
                 self.decodeImage(pictmp)
             except Exception as ex:
-                print("* error ** %s" % ex)
+                print("* error ** %s" % str(ex))
                 pass
             except:
                 pass
@@ -2969,8 +2965,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             if file_exists(pictmp):
                 self.decodeImage(piclogo)
         except Exception as ex:
+            print(str(ex))        
             self.decodeImage(piclogo)
-            print(ex)
             print('exe downloadError')
 
 def xcm3ulistEntry(download):
@@ -3132,7 +3128,7 @@ class xc_Play(Screen):
                     self.download.addProgress(self.downloadProgress)
                     self.download.start().addCallback(self.check).addErrback(self.showError)
                 except Exception as ex:
-                    print(ex)
+                    print(str(ex))
             else:
                 self.session.open(MessageBox, _('No Server Configured to Download!!!'), MessageBox.TYPE_WARNING)
                 pass
@@ -3330,7 +3326,7 @@ class xc_M3uPlay(Screen):
             else:
                 self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
         except Exception as ex:
-            print('error exception: ', ex)
+            print('error exception: ', str(ex))
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
@@ -3499,15 +3495,15 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                 from Plugins.Extensions.TMBD.plugin import TMBD
                 text = charRemove(text_clear)
                 _session.open(tmdb.tmdbScreen, text, 0)
-            except Exception as e:
-                print("[XCF] Tmdb: ", e)
+            except Exception as ex:
+                print("[XCF] Tmdb: ", str(ex))
         elif is_imdb:
             try:
                 from Plugins.Extensions.IMDb.plugin import main as imdb
                 text = charRemove(text_clear)
                 imdb(_session, text)
-            except Exception as e:
-                print("[XCF] imdb: ", e)
+            except Exception as ex:
+                print("[XCF] imdb: ", str(ex))
             
         else:
             text_clear = self.name
@@ -3664,7 +3660,7 @@ class AutoStartTimer:
                 config.plugins.XCplugin.last_update.value = localtime
                 config.plugins.XCplugin.last_update.save()
             except Exception as ex:
-                print(ex)
+                print(str(ex))
         self.update(constant)
 
     def startMain(self):
@@ -3750,8 +3746,8 @@ class downloadTask(Task):
                 self.progress = int(float(tmpvalue))
             else:
                 Task.processOutput(self, data)
-        except Exception as errormsg:
-            # print("Error processOutput: " + str(errormsg))
+        except Exception as ex:
+            print("Error processOutput: " + str(ex))
             self.downloadStop()
             Task.processOutput(self, data)
 
@@ -3781,8 +3777,8 @@ def nextAR():
         # print("STREAMS.ar_id_player NEXT %s" % VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player])
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
-        print(ex)
-        return "nextAR ERROR %s" % ex
+        print("nextAR ERROR", str(ex))
+        # return "nextAR ERROR %s" % str(ex)
 
 def prevAR():
     try:
@@ -3793,8 +3789,8 @@ def prevAR():
         # print("STREAMS.ar_id_player PREV %s" % VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player])
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
-        print(ex)
-        return "prevAR ERROR %s" % ex
+        print("prevAR ERROR", str(ex))
+        # return "prevAR ERROR %s" % ex
 
 def channelEntryIPTVplaylist(entry):
     menu_entry = [
@@ -3830,23 +3826,8 @@ def uninstaller():
         bakfile.close()
         tvfile.close()
     except Exception as ex:
-        print(ex)
+        print(str(ex))
         raise
-
-# if os.path.isfile(filterlist):
-    # global filtertmdb
-    # try:
-        # with open(filterlist) as f:
-            # lines = [line.rstrip("\n") for line in open(tmdblist)]
-            # start = ('": ' + '"' + '",' + ' "')
-            # mylist = start.join(lines)
-            # end = ('{"' + mylist + '": ' + '"' + '"' + "}")
-
-            # dict = eval(filtertmdb)
-            # filtertmdb = "".join(end.splitlines())
-            # filtertmdb = dict
-    # except:
-        # filtertmdb = {"x264": "", "1080p": "", "1080i": "", "720p": "", "VOD": "", "vod": "", "Ac3-evo": "", "Hdrip": "", "Xvid": ""}
 
 class xc_home(Screen):
     def __init__(self, session):
@@ -4129,15 +4110,15 @@ def show_more_infos(name, index):
                         from Plugins.Extensions.TMBD.plugin import TMBD
                         text = charRemove(text_clear)
                         _session.open(tmdb.tmdbScreen, text, 0)
-                    except Exception as e:
-                        print("[XCF] Tmdb: ", e)
+                    except Exception as ex:
+                        print("[XCF] Tmdb: ", str(ex))
                 elif is_imdb:
                     try:
                         from Plugins.Extensions.IMDb.plugin import main as imdb
                         text = charRemove(text_clear)
                         imdb(_session, text)
-                    except Exception as e:
-                        print("[XCF] imdb: ", e)
+                    except Exception as ex:
+                        print("[XCF] imdb: ", str(ex))
                 else:
                     text2 = selected_channel[2]
                     text3 = selected_channel[8]
@@ -4160,7 +4141,7 @@ def show_more_info_Titles(truc):
         else:
             text_clear_1 = "No Even"
     except Exception as ex:
-        print(ex)
+        print(str(ex))
         text_clear_1 = "mkach"
     return text_clear_1
 
@@ -4185,7 +4166,7 @@ def save_old():
             webFile.close()
 
         except Exception as ex:
-            print(ex)
+            print(str(ex))
         xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
     else:
         xc2 = '&type=m3u_plus&output=ts'
@@ -4200,7 +4181,7 @@ def save_old():
             localFile.close()
             webFile.close()
         except Exception as ex:
-            print(ex)
+            print(str(ex))
         namebouquet = Path_Movies + '%s.m3u' % namebouquet
         name = namebouquet.replace('.m3u', '').replace(Path_Movies, '')
         xcname = 'userbouquet.%s%s_.tv' % (tag, name)
