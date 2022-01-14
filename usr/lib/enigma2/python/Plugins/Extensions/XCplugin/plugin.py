@@ -612,14 +612,14 @@ class iptv_streamse():
         self.iptv_list_tmp = []
         self.iptv_list_history = []
         self.plugin_version = ""
-        self.xml_error = ""
+        # self.xml_error = ""
         self.playlistname = ""
         self.playlistname_tmp = ""
         self.next_page_url = ""
         self.next_page_text = ""
         self.prev_page_url = ""
         self.prev_page_text = ""
-        self.clear_url = ""
+        # self.clear_url = ""
         self.trial = ""
         self.banned_text = ""
         self.systems = ""
@@ -693,10 +693,10 @@ class iptv_streamse():
         global stream_live, iptv_list_tmp, stream_url, btnsearch, isStream, next_request
         stream_live = False
         stream_url = ""
-        self.xml_error = ""
+        # self.xml_error = ""
         self.url = check_port(url)
         # self.url = url        
-        self.clear_url = self.url
+        # self.clear_url = self.url
         self.list_index = 0
         iptv_list_tmp = []
         xml = None
@@ -863,7 +863,7 @@ class iptv_streamse():
                     btnsearch = next_request
         except Exception as e:
             print('checkRedirect get failed: ', str(e))
-            self.xml_error = str(e)
+            # self.xml_error = 'error'
         if len(iptv_list_tmp):
             self.iptv_list = iptv_list_tmp
             iptv_list_tmp = self.iptv_list
@@ -1653,8 +1653,8 @@ class xc_Main(Screen):
         if not len(iptv_list_tmp):
             return
 
-        if STREAMS.xml_error != "":
-            print(STREAMS.clear_url)
+        # if STREAMS.xml_error != "":
+            # print(STREAMS.clear_url)
         self.channel_list = STREAMS.iptv_list
         if re_search == False:
             self.channel_list = iptv_list_tmp
@@ -1697,42 +1697,42 @@ class xc_Main(Screen):
         if not len(iptv_list_tmp):
             self.session.open(MessageBox, _("No data or playlist not compatible with XCplugin."), type=MessageBox.TYPE_WARNING, timeout=5)
             return
-        if STREAMS.xml_error != "":
-            print('STREAMS.clear_url--------------------', STREAMS.clear_url)
-        else:
-            self.index = self.mlist.getSelectionIndex()
-            selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
-            STREAMS.list_index = self.mlist.getSelectionIndex()
-            title = selected_channel[1]
-            if selected_channel[0] != "[H]":
-                title = ("[-]   ") + selected_channel[1]
-            selected_channel_history = (
-                "[H]",
-                title,
-                selected_channel[2],
-                selected_channel[3],
-                selected_channel[4],
-                selected_channel[5],
-                selected_channel[6],
-                selected_channel[7],
-                selected_channel[8],
-                selected_channel[9])
-            STREAMS.iptv_list_history.append(selected_channel_history)
-            self.temp_index = -1
-            if selected_channel[9] != None:
-                self.temp_index = self.index
-            self.pin = True
-            if config.ParentalControl.configured.value:
-                # self.pin = True
-                a = '+18', 'adult', 'hot', 'porn', 'sex', 'xxx'
-                if any(s in str(selected_channel[1] or selected_channel[4] or selected_channel[5] or selected_channel[6]).lower() for s in a):
-                    self.allow2()
-                else:
-                    self.pin = True
-                    self.pinEntered2(True)
+        # if STREAMS.xml_error != "":
+            # print('STREAMS.clear_url--------------------', STREAMS.clear_url)
+        # else:
+        self.index = self.mlist.getSelectionIndex()
+        selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
+        STREAMS.list_index = self.mlist.getSelectionIndex()
+        title = selected_channel[1]
+        if selected_channel[0] != "[H]":
+            title = ("[-]   ") + selected_channel[1]
+        selected_channel_history = (
+            "[H]",
+            title,
+            selected_channel[2],
+            selected_channel[3],
+            selected_channel[4],
+            selected_channel[5],
+            selected_channel[6],
+            selected_channel[7],
+            selected_channel[8],
+            selected_channel[9])
+        STREAMS.iptv_list_history.append(selected_channel_history)
+        self.temp_index = -1
+        if selected_channel[9] != None:
+            self.temp_index = self.index
+        self.pin = True
+        if config.ParentalControl.configured.value:
+            # self.pin = True
+            a = '+18', 'adult', 'hot', 'porn', 'sex', 'xxx'
+            if any(s in str(selected_channel[1] or selected_channel[4] or selected_channel[5] or selected_channel[6]).lower() for s in a):
+                self.allow2()
             else:
                 self.pin = True
                 self.pinEntered2(True)
+        else:
+            self.pin = True
+            self.pinEntered2(True)
 
     def allow2(self):
         from Screens.InputBox import PinInput
