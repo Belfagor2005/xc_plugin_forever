@@ -1360,14 +1360,14 @@ class xc_Main(Screen):
                     read_data = f.read()
                     regexcat = ".*?'(.*?)','(.*?)'.*?\\n"
                     match = re.compile(regexcat, re.DOTALL).findall(read_data)
-                    ext = '.mp4'
                     useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"    
                     f.close()
                     for name, url in match:
                         # print('name: ', name)
                         # print('url : ', url)
                         if url.startswith('http'):
-                            ext = str(os.path.splitext(url)[-1])
+                            ext = '.mp4'
+                            ext = str(splitext(url)[-1])
                             # print('extttttttttttttt', ext)
                             if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                                 ext = '.mp4'
@@ -1387,16 +1387,11 @@ class xc_Main(Screen):
                                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name))
                             except:
                                 JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name))
-                            # try:
-                                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name, self.downloadStop))
-                            # except:
-                                # JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name, self.downloadStop))                                
-                            # # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragent, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                             pmovies = True
                             self.createMetaFile(name, name)
                         else:
                             pmovies = False
-                            self.mbox = self.session.open(MessageBox, _("No Url Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+                            # self.mbox = self.session.open(MessageBox, _("No Url Allowed!!!"), MessageBox.TYPE_INFO, timeout=3)
                 else:
                     pmovies = False
                     self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
@@ -1451,15 +1446,17 @@ class xc_Main(Screen):
     def download_vod(self, result):
         if result:
             try:
+            
                 ext = '.mp4'
-                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
-                filename = re.sub(r' ', '_', filename)
-                filename = re.sub(r'_+', '_', filename)
-                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
+                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+                filename = re.sub(r' ', '_', filename)
+                filename = re.sub(r'_+', '_', filename)
+                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = filename.lower() + ext
                 self.filename = str(filename) + str(ext)
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
@@ -1504,17 +1501,24 @@ class xc_Main(Screen):
             return
 
     def downloadx(self):
-        if self.downloading == True:
-            pmovies = True
-            filename = self.filename
-            # useragent = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-            useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"    
-            cmd = "wget %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
-            # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.filename, self.downloadStop))
-            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, filename))            
+        # if self.downloading == True:
+            pmovies = True        
+            useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"                
+            ext = '.mp4'
+            pth = urlparse(self.vod_url).path
+            ext = splitext(pth)[-1]
+            if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
+                ext = '.mp4'
+            filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+            filename = re.sub(r' ', '_', filename)
+            filename = re.sub(r'_+', '_', filename)
+            filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+            filename = filename.lower() + ext
+            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, filename)                
+            self.timeshift_url = Path_Movies + filename
+            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title)) 
             self.createMetaFile(filename, filename)
             self.LastJobView()
-               
                 
     def eError(self, error):
         print("----------- %s" % error)
