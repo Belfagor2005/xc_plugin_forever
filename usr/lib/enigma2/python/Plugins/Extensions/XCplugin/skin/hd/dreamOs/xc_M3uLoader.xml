@@ -9,6 +9,9 @@
 	<widget source="global.CurrentTime" render="Label" position="533,23" size="200,53" font="Regular;20" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
+	<widget name="list" position="146,140" size="586,454"  foregroundColor="#808080" itemHeight="30" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" 
+		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="5" zPosition="1" />
+	
 	<widget name="description" position="157,103" size="570,520" font="Regular;18" foregroundColor="#ffffff" backgroundColor="#101010" halign="left" transparent="1" zPosition="2" />	
 	<!-- Buttons Colors -->
 	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
