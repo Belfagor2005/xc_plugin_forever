@@ -26,12 +26,12 @@ else:
             # print ('[' + PluginLanguageDomain + '] fallback to default translation for ' + txt)
             return gettext.gettext(txt)
     language.addCallback(localeInit)
-    
+
 def checks():
     try:
-        from Plugins.Extensions.XCplugin.Utils import *
-    except:
         from . import Utils
+    except:
+        from Plugins.Extensions.XCplugin.Utils import checkInternet        
     checkInternet()
     chek_in= False
     if checkInternet():

@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             06/01/2022               *
+*             23/01/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -67,6 +67,7 @@ try:
     from xml.etree.cElementTree import ElementTree, fromstring
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
+
 try:
     from Plugins.Extensions.XCplugin.Utils import *
 except:
@@ -86,7 +87,7 @@ global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movi
 global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo
 
 _session = " "
-version = "XC Forever V.1.9"
+version = "XC Forever V.2.0"
 
 
 PY3 = False
@@ -169,7 +170,6 @@ if sslverify:
         # print("**** redirect url 2 *** %s" % url)
         # return str(url)
 
-
 modelive = [("1", _("Dvb(1)")), ("4097", _("IPTV(4097)"))]
 if os.path.exists("/usr/bin/gstplayer"):
     modelive.append(("5001", _("Gstreamer(5001)")))
@@ -215,7 +215,7 @@ try:
 except:
     if os.path.exists("/usr/bin/apt-get"):
         config.plugins.XCplugin.pthmovie   = ConfigDirectory(default='/media/hdd/movie')
-config.plugins.XCplugin.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct"])
+config.plugins.XCplugin.pdownmovie = ConfigSelection(default="Direct", choices=["JobManager", "Direct", "Requests"])
 config.plugins.XCplugin.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
 config.plugins.XCplugin.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
 config.plugins.XCplugin.strtmain = ConfigYesNo(default=True)
@@ -284,24 +284,7 @@ def check_port(tport):
 # class AppURLopener(urllib.request.FancyURLopener):
 class AppURLopener(FancyURLopener):
     version = "Mozilla/5.0"
-
 opener = AppURLopener()
-
-# def getJsonURL(url):
-    # try:
-        # from StringIO import StringIO ## for Python 2
-    # except ImportError:
-        # from io import StringIO
-    # import gzip
-    # request= Request(url)
-    # request.add_header('Accept-encoding', 'gzip,deflate')
-    # response= opener.open(request)
-    # if response.info().get('Content-Encoding') == 'gzip':
-        # buffer = StringIO(response.read())
-        # deflatedContent = gzip.GzipFile(fileobj=buffer)
-        # return deflatedContent.read()
-    # else:
-        # return response.read()
 
 def getJsonURL(url):
     import zlib
@@ -1346,7 +1329,6 @@ class xc_Main(Screen):
             streamfile = '/tmp/streamfile.txt'
             if os.path.isfile(streamfile) and os.stat(streamfile).st_size > 0:
                 self.session.openWithCallback(self.download_series, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???\n%s?" % titleserie), type=MessageBox.TYPE_YESNO, timeout=5)  # default=False)
-                # return
         else:
             self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
 
@@ -1379,7 +1361,7 @@ class xc_Main(Screen):
                     regexcat = ".*?'(.*?)','(.*?)'.*?\\n"
                     match = re.compile(regexcat, re.DOTALL).findall(read_data)
                     ext = '.mp4'
-                    useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                    useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"    
                     f.close()
                     for name, url in match:
                         # print('name: ', name)
@@ -1398,14 +1380,18 @@ class xc_Main(Screen):
                             # print('url  ======= ', url)
                             self.icount += 1
                             self.downloading = True
-                            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, url, str(Path_Movies2), name)
+                            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, url, str(Path_Movies2), name)
                             cmd2 = WGET + " -c '%s' -O '%s%s'" % (url, str(Path_Movies2), name)
                             # print('cmd movie: ',cmd)
                             try:
-                                JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name, self.downloadStop))
+                                JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name))
                             except:
-                                JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name, self.downloadStop))
-                            # # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
+                                JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name))
+                            # try:
+                                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name, self.downloadStop))
+                            # except:
+                                # JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name, self.downloadStop))                                
+                            # # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragent, url, Path_Movies2, name), Path_Movies2 + name, name, self.downloadStop))
                             pmovies = True
                             self.createMetaFile(name, name)
                         else:
@@ -1475,9 +1461,6 @@ class xc_Main(Screen):
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
                 self.filename = str(filename) + str(ext)
-                # print('self.filename3: ', str(self.filename))
-                # print('extttttttttttttt', str(ext))
-                # print('select: ', str(self.vod_url))
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
@@ -1487,6 +1470,17 @@ class xc_Main(Screen):
                         self.timerDownload.callback.append(self.downloadx)
                     except:
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloadx)
+                        
+                elif config.plugins.XCplugin.pdownmovie.value == "Requests":
+                    try:
+                        import requests
+                        file_down = Path_Movies + self.filename
+                        r = requests.get(self.vod_url)
+                        with open(file_down,'wb') as f:
+                          f.write(r.content)                
+                    except Exception as e:
+                        print('error requests: ', str(e))
+
                 else:
                     try:
                         self.timerDownload.callback.append(self.downloady)
@@ -1494,7 +1488,6 @@ class xc_Main(Screen):
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloady)
 
                 self.timerDownload.start(300, True)
-                # self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, self.vod_url)
                 self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
@@ -1505,20 +1498,24 @@ class xc_Main(Screen):
         if self.downloading == True:
             from .downloader import imagedownloadScreen
             pmovies = True
-            self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, str(self.vod_url))
+            self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, self.vod_url)
         else:
             pmovies = False
             return
 
     def downloadx(self):
         if self.downloading == True:
-            useragent = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
-            cmd = "wget %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
-            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.filename, self.downloadStop))
             pmovies = True
-            self.createMetaFile(self.filename, self.filename)
+            filename = self.filename
+            # useragent = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+            useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"    
+            cmd = "wget %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
+            # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.filename, self.downloadStop))
+            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, filename))            
+            self.createMetaFile(filename, filename)
             self.LastJobView()
-
+               
+                
     def eError(self, error):
         print("----------- %s" % error)
         pmovies = False
@@ -1652,7 +1649,6 @@ class xc_Main(Screen):
     def update_channellist(self):
         if not len(iptv_list_tmp):
             return
-
         # if STREAMS.xml_error != "":
             # print(STREAMS.clear_url)
         self.channel_list = STREAMS.iptv_list
@@ -1886,6 +1882,10 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.descr = self.channelx[2]
             self.cover = self.channelx[3]
             self.pixim = self.channelx[7]
+        print('evEOF=%d' % iPlayableService.evEOF)
+        self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
+         iPlayableService.evStart: self.__serviceStarted,
+         iPlayableService.evEOF: self.__evEOF})
         # print('evEOF=%d' % iPlayableService.evEOF)
         # self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
          # iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
@@ -2027,6 +2027,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         if self.timeshift_url:
             try:
                 eserv = int(config.plugins.XCplugin.services.value)
+                # eserv = str(config.plugins.XCplugin.services.value)                
                 self.reference = eServiceReference(eserv, 0, self.timeshift_url)
                 # print("self.reference22: ", self.reference)
                 self.reference.setName(self.timeshift_title)
@@ -2037,9 +2038,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             if self.cont_play:
                 self.cont_play = False
                 self["cont_play"].setText("Auto Play OFF")
+                self.session.open(MessageBox, 'Continue play OFF', type=MessageBox.TYPE_INFO, timeout=3)                                                                                        
             else:
                 self.cont_play = True
                 self["cont_play"].setText("Auto Play ON")
+                self.session.open(MessageBox, 'Continue play ON', type=MessageBox.TYPE_INFO, timeout=3)                                                                                       
             STREAMS.cont_play = self.cont_play
 
     def timeshift(self):
@@ -2066,7 +2069,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         STREAMS.cont_play = self.cont_play
 
     def show_info(self):
-        if STREAMS.play_vod is True:
+        if STREAMS.play_vod == True:
             self["state"].setText(" PLAY     >")
         self.hideTimer.start(5000, True)
         if self.cont_play:
@@ -2094,7 +2097,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             index = STREAMS.list_index + 1
             video_counter = len(iptv_list_tmp)
             if index < video_counter:
-                if iptv_list_tmp[index][4] is not None:
+                if iptv_list_tmp[index][4] != None:
                     STREAMS.list_index = index
                     self.player_helper()
         except Exception as ex:
@@ -2104,14 +2107,24 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         try:
             index = STREAMS.list_index - 1
             if index > -1:
-                if iptv_list_tmp[index][4] is not None:
+                if iptv_list_tmp[index][4] != None:
                     STREAMS.list_index = index
                     self.player_helper()
         except Exception as ex:
             print(str(ex))
 
+        
     def player_helper(self):
         self.show_info()
+        #self.session.nav.stopService()
+        index = STREAMS.list_index
+        self.channelx = iptv_list_tmp[STREAMS.list_index]
+        if self.channelx:
+            self.channelx = STREAMS.iptv_list[STREAMS.list_index]
+            self.vod_url = self.channelx[4]
+            self.title = self.channelx[1]
+            self.descr = self.channelx[2]
+            
         STREAMS.play_vod = False
         STREAMS.list_index_tmp = STREAMS.list_index
         self.setCover()
@@ -2119,14 +2132,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def record(self):
         try:
-            if STREAMS.trial != "":
-                self.session.open(MessageBox, "Trialversion dont support this function", type=MessageBox.TYPE_INFO, timeout=10)
+            if STREAMS.trial != '':
+                self.session.open(MessageBox, 'Trialversion dont support this function', type=MessageBox.TYPE_INFO, timeout=10)
             else:
-                self.session.open(MessageBox, (_("BLUE = START PLAY RECORDED VIDEO")), type=MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, 'BLUE = START PLAY RECORDED VIDEO', type=MessageBox.TYPE_INFO, timeout=5)
                 self.session.nav.stopService()
-                self["state"].setText("RECORD")
-                useragentcmd = "--header='User-Agent: QuickTime/7.6.2 (qtver=7.6.2;os=Windows NT 5.1Service Pack 3)'"
+                self['state'].setText('RECORD')
+                useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"                
                 ext = '.mp4'
+                pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
@@ -2135,18 +2149,18 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 filename = re.sub(r'_+', '_', filename)
                 filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
                 filename = filename.lower() + ext
-                filename = checkStr(filename)
-                self.vod_url = checkStr(self.vod_url)
-                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragentcmd, self.vod_url, Path_Movies, filename)
-                # print('cmd record: ',cmd)
-                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex, self.downloadStop))
+                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, filename)                
+                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
                 self.timeshift_url = Path_Movies + filename
-                self.timeshift_title = "[REC] " + self.titlex
-                self.recorder = True
+                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex)) 
                 self.createMetaFile(filename, filename)
+                self.LastJobView()
+                self.timeshift_title = '[REC] ' + self.titlex
+                self.recorder = True
+                
         except Exception as ex:
-            print(str(ex))
-
+            print ('error record : ', str(ex))
+            
     def createMetaFile(self, filename, cleanName):
         try:
             serviceref = eServiceReference(4097, 0, Path_Movies + filename)
@@ -2155,7 +2169,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         except Exception as ex:
             print(str(ex))
             print('ERROR metaFile')
-        return
+        # return
         
     def downloadStop(self):
         if hasattr(self, 'icount'):
@@ -2169,10 +2183,14 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             currentjob = job
         if currentjob != None:
             self.session.open(JobView, currentjob)
+        return
 
     def __evEOF(self):
         if self.cont_play:
             self.restartVideo()
+        else:
+            self.session.open(MessageBox, "NO cont_play", type=MessageBox.TYPE_INFO, timeout=3)
+            return
 
     def __seekableStatusChanged(self):
         print("seekable status changed!")
@@ -2218,7 +2236,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def show_more_info(self):
         index = STREAMS.list_index
-        if self.vod_url:
+        if self.vod_url != None:
             name = str(self.channelx[1]).lower()
             # print('nameee ', name)
             show_more_infos(name, index)
@@ -3706,12 +3724,14 @@ def Plugins(**kwargs):
 
 # JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + filetitle, filetitle, self.downloadStop))
 class downloadJob(Job):
-    def __init__(self, toolbox, cmdline, filename, filetitle, downloadStop):
+    # def __init__(self, toolbox, cmdline, filename, filetitle, downloadStop):
+    def __init__(self, toolbox, cmdline, filename, filetitle):    
         Job.__init__(self, "%s" % filetitle)
         self.filename = filename
         self.toolbox = toolbox
         self.retrycount = 0
-        downloadTask(self, cmdline, filename, downloadStop)
+        # downloadTask(self, cmdline, filename, downloadStop)
+        downloadTask(self, cmdline, filename)        
 
     def retry(self):
         self.retrycount += 1
@@ -3722,18 +3742,22 @@ class downloadJob(Job):
 
 class downloadTask(Task):
     ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
-    def __init__(self, job, cmdline, filename, downloadStop):
+    # def __init__(self, job, cmdline, filename, downloadStop):
+    def __init__(self, job, cmdline, filename ):    
         Task.__init__(self, job, _("Downloading ..."))
         self.setCmdline(cmdline)
         self.filename = filename
         self.toolbox = job.toolbox
-        self.downloadStop = downloadStop
+        # self.downloadStop = downloadStop
         self.error = None
         self.lasterrormsg = None
 
     def processOutput(self, data):
+        # if PY3:
+            # data = six.ensure_str(data)
         if PY3:
-            data = six.ensure_str(data)
+            data = checkStr(data)            
+            
         try:
             if data.endswith("%)"):
                 startpos = data.rfind("sec (") + 5
@@ -3748,12 +3772,12 @@ class downloadTask(Task):
                 Task.processOutput(self, data)
         except Exception as ex:
             print("Error processOutput: " + str(ex))
-            self.downloadStop()
+            # self.downloadStop()
             Task.processOutput(self, data)
 
     def afterRun(self):
         if self.getProgress() == 0 or self.getProgress() == 100:
-            self.downloadStop()
+            # self.downloadStop()
             self.downloading = False
             message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
             web_info(message)
@@ -3861,22 +3885,28 @@ class xc_home(Screen):
             "blue": self.xcPlay,
             "ok": self.button_ok,
             "info": self.aboutxc}, -1)
-        # self.onFirstExecBegin.append(self.check_dependencies)
+        self.onFirstExecBegin.append(self.check_dependencies)
         self.onLayoutFinish.append(self.updateMenuList)
 
     def check_dependencies(self):
         dependencies = True
-        if PY3:
-            if not os.path.exists("/usr/lib/python3.8/site-packages/requests"):
-                dependencies = False
-        else:
-            if not os.path.exists("/usr/lib/python2.7/site-packages/requests"):
-                dependencies = False
-        if dependencies == False:
-            if not access("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", X_OK):
-                chmod("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", 0o0755)
-            cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh"
-            self.session.openWithCallback(self.start, Console, title="Checking Python 2 Dependencies", cmdlist=[cmd1], closeOnSuccess=False)
+        try:
+            import requests
+            from PIL import Image
+            pythonFull = float(str(sys.version_info.major) + "." + str(sys.version_info.minor))
+            print("***** python version *** %s" % pythonFull)
+            if pythonFull < 3.9:
+                print("*** checking multiprocessing ***")
+                from multiprocessing.pool import ThreadPool
+        except Exception as e:
+            print("**** missing dependencies ***")
+            print(e)
+            dependencies = False
+
+        if dependencies is False:
+            os.chmod("/usr/lib/enigma2/python/Plugins/Extensions/XStreamity/dependencies.sh", 0o0755)
+            cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XStreamity/dependencies.sh"
+            self.session.openWithCallback(self.start, Console, title="Checking Dependencies", cmdlist=[cmd1], closeOnSuccess=False)
         else:
             self.start()
 
@@ -4359,8 +4389,6 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
         self.session.nav.stopService()
         self.session.nav.playService(self.srefOld)
         self.close()
-
-
     
 
 # ===================Time is what we want most, but what we use worst===================

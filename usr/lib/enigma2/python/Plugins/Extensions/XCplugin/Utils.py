@@ -322,7 +322,7 @@ def ReloadBouquets():
         from enigma import eDVBDB
         eDVBDB.getInstance().reloadBouquets()
         print('bouquets reloaded...')
-    except ImportError:
+    except:
         eDVBDB = None
         os.system('wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &')
         print('bouquets reloaded...')
@@ -382,7 +382,7 @@ def web_info(message):
     try:
         try:
             from urllib import quote_plus
-        except importError:
+        except :
             from urllib.parse import quote_plus
         message = quote_plus(message)
         cmd = "wget -qO - 'http://127.0.0.1/web/message?type=2&timeout=10&text=%s' > /dev/null 2>&1 &" % message

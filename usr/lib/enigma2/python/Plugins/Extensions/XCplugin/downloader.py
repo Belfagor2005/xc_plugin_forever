@@ -1,10 +1,7 @@
 #!/usr/bin/python
 # Code by mfaraj57 and RAED (c) 2018
 #thank's
-
-# python3
 from __future__ import print_function
-
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
@@ -19,31 +16,30 @@ import os
 import time
 import sys
 import ssl
-import six
-PY3 = sys.version_info[0] == 3
+# import six
 
-# try:
-    # from urllib.request import Request, urlopen  # Python 3
-# except ImportError:
-    # from urllib2 import Request, urlopen  # Python 2
+PY3 = sys.version_info.major >= 3
+if PY3:
+    # Python 3
+    PY3 = True
+    unicode = str; unichr = chr; long = int; xrange = range
+    from urllib.parse import quote
+    from urllib.request import urlopen
+    from urllib.request import Request
+    from urllib.error import HTTPError, URLError
     
-# if PY3:
-    # from urllib.request import urlopen, Request
-    # from urllib.error import URLError
-    # from urllib.request import urlretrieve
-# else:
-    # from urllib2 import urlopen, Request
-    # from urllib2 import URLError
-    # from urllib import urlretrieve
+else:
+    # # Python 2
+    # _str = str
+    # str = unicode
+    # range = xrange
+    # unicode = unicode
+    # basestring = basestring
+    from urllib import quote
+    from urllib2 import urlopen
+    from urllib2 import Request
+    from urllib2 import HTTPError, URLError
     
-# if six.PY3:
-    # ....
-# elif six.PY2:        
-    # ....
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.request import Request
-from six.moves.urllib.error import HTTPError, URLError
-from six.moves.urllib.parse import urlparse
 
 try:
     from OpenSSL import SSL
@@ -142,7 +138,7 @@ class imagedownloadScreen(Screen):
         self.count_success = 0
         self.count_failed = 0
         self.downloading = True
-        if six.PY3:
+        if PY3:
             self.url = self.url.encode()
         self.downloadfile2(self.url,self.target)
 
