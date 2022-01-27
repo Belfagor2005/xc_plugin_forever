@@ -1,21 +1,30 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 import gettext
-from os import environ as os_environ
 import os
+from os import environ as os_environ
+
 PluginLanguageDomain = 'XCplugin'
 PluginLanguagePath = 'Extensions/XCplugin/locale'
 
+try:
+    from enigma import eMediaDatabase
+    isDreamOS = True
+except:
+    isDreamOS = False
+
 def localeInit():
-    if os.path.exists('/var/lib/dpkg/status'):
-        lang = language.getLanguage()[:2]
-        os_environ['LANGUAGE'] = lang
+    if isDreamOS: 
+        lang = language.getLanguage()[:2] 
+        os_environ["LANGUAGE"] = lang 
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
-if os.path.exists('/var/lib/dpkg/status'):
-    _ = lambda txt: (gettext.dgettext(PluginLanguageDomain, txt) if txt else '')
+
+if isDreamOS:  # check if DreamOS image
+    _ = lambda txt: gettext.dgettext(PluginLanguageDomain, txt) if txt else ""
     localeInit()
     language.addCallback(localeInit)
 else:
@@ -23,9 +32,9 @@ else:
         if gettext.dgettext(PluginLanguageDomain, txt):
             return gettext.dgettext(PluginLanguageDomain, txt)
         else:
-            # print ('[' + PluginLanguageDomain + '] fallback to default translation for ' + txt)
+            print(("[%s] fallback to default translation for %s" % (PluginLanguageDomain, txt)))
             return gettext.gettext(txt)
-    language.addCallback(localeInit)
+    language.addCallback(localeInit())
 
 def checks():
     try:
