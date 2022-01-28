@@ -5,9 +5,13 @@
 	<widget name="playlist" position="240,20" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
 	<eLabel position="146,80" size="586,3" backgroundColor="#202020" zPosition="1" />
 	<widget name="version" position="362,56" size="133,20" halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="533,23" size="200,53" font="Regular;20" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>	
 	<!-- Config -->
-	<widget name="config" position="146,103" size="586,433" font="Regular;21" itemHeight="50" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
-	<widget name="description" position="287,736" size="538,34" font="Regular;24" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="config" position="146,103" size="586,433" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
+	<widget name="description" position="142,540" size="589,49" font="Regular; 22" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<widget name="statusbar" position="146,593" size="633,40" font="Regular;21" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->
 	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />

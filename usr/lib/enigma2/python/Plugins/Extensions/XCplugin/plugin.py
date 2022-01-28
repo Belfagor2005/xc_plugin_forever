@@ -197,12 +197,12 @@ config.plugins.XCplugin.hostaddress = ConfigText(default="exampleserver.com")
 config.plugins.XCplugin.port = ConfigNumber(default=80)
 config.plugins.XCplugin.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 config.plugins.XCplugin.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
-config.plugins.XCplugin.panel = ConfigSelection(default="player_api", choices=[("player_api", "player_api"), ("panel_api", "panel_api")])
+# config.plugins.XCplugin.panel = ConfigSelection(default="player_api", choices=[("player_api", "player_api"), ("panel_api", "panel_api")])
+config.plugins.XCplugin.infoname = NoSave(ConfigText(default="myBouquet"))
 config.plugins.XCplugin.LivePlayer = ConfigYesNo(default=False)
 config.plugins.XCplugin.live = ConfigSelection(default='1', choices=modelive)
 config.plugins.XCplugin.services = ConfigSelection(default='4097', choices=modemovie)
 config.plugins.XCplugin.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-config.plugins.XCplugin.infoname = NoSave(ConfigText(default="myBouquet"))
 config.plugins.XCplugin.timeout = ConfigNumber(default=15)
 config.plugins.XCplugin.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 config.plugins.XCplugin.badcar = ConfigYesNo(default=False)                                                           
@@ -323,7 +323,7 @@ class xc_config(Screen, ConfigListScreen):
         self.onChangedEntry = []
         self.downloading = False
         self["playlist"] = Label()
-        self["playlist"].setText(infoname)
+        self["playlist"].setText("Xstream Code Setup")
         self["version"] = Label(version)
         self['statusbar'] = Label()
         self["description"] = Label("")
@@ -425,7 +425,7 @@ class xc_config(Screen, ConfigListScreen):
             self.list.append(getConfigListEntry(_("Server PORT"), config.plugins.XCplugin.port, (_("Enter Server Port '8080'"))))
             self.list.append(getConfigListEntry(_("Server Username"), config.plugins.XCplugin.user, (_("Enter Username"))))
             self.list.append(getConfigListEntry(_("Server Password"), config.plugins.XCplugin.passw, (_("Enter Password"))))
-        self.list.append(getConfigListEntry(_("Old/New panel"), config.plugins.XCplugin.panel, (_("Panel used"))))
+        # self.list.append(getConfigListEntry(_("Old/New panel"), config.plugins.XCplugin.panel, (_("Panel used"))))
         self.list.append(getConfigListEntry(_("Server Timeout"), config.plugins.XCplugin.timeout, (_("Timeout Server (sec)"))))
         self.list.append(getConfigListEntry(_("Filter Bad Tag"), config.plugins.XCplugin.badcar, (_("Filter Bad Tag"))))
         self.list.append(getConfigListEntry(_("Name Bouquet Export"), config.plugins.XCplugin.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))
@@ -554,7 +554,7 @@ class xc_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
-            config.plugins.XCplugin.panel.save()
+            # config.plugins.XCplugin.panel.save()
             config.plugins.XCplugin.typem3utv.save()
             config.plugins.XCplugin.pthmovie.save()
             configfile.save()
@@ -675,7 +675,7 @@ class iptv_streamse():
             print(str(ex))
 
     def get_list(self, url=None):
-        global stream_live, iptv_list_tmp, stream_url, btnsearch, isStream, next_request
+        global stream_live, iptv_list_tmp, stream_url, btnsearch, isStream, next_request#, infoname
         stream_live = False
         stream_url = ""
         # self.xml_error = ""
@@ -702,11 +702,10 @@ class iptv_streamse():
                 self.next_page_text = ""
                 self.prev_page_url = ""
                 self.prev_page_text = ""
-                self.playlistname = 'no_name'
+                self.playlistname = ""
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
                     self.playlistname = xml.findtext('playlist_name')#.encode('utf-8')
-                    # print('playlistname encode')
                 self.next_page_url = xml.findtext("next_page_url")
                 next_page_text_element = xml.findall("next_page_url")
                 if next_page_text_element:
@@ -898,7 +897,7 @@ class iptv_streamse():
                 print('my url final 1', url)
                 # next_request = 2
                 next_request = 3
-                print('next_request 2 : ', next_request)
+                print('next_request 3 : ', next_request)
 
             urlinfo = checkRedirect(url)
             print('urlinfo 1 ', urlinfo)
@@ -1073,7 +1072,7 @@ class xc_Main(Screen):
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
             host = str(config.plugins.XCplugin.hostaddress.value)
             ports = str(config.plugins.XCplugin.port.value)
-            panel = str(config.plugins.XCplugin.panel.value)
+            # panel = str(config.plugins.XCplugin.panel.value)
             user = str(config.plugins.XCplugin.user.value)
             password = str(config.plugins.XCplugin.passw.value)
             self["max_connect"].setText("Max Connect: 0")
@@ -1082,7 +1081,7 @@ class xc_Main(Screen):
             self["server_protocol"].setText("Protocol: No Info ")
             self["timezone"].setText("Timezone: No Info ")
 
-            url_info = 'http://' + host + ':' + ports + '/' + panel + '.php?username=' + user + '&password=' + password + '&action=user&sub=info'
+            url_info = 'http://' + host + ':' + ports + '/player_api.php?username=' + user + '&password=' + password + '&action=user&sub=info'
             print('url_info: ', url_info)
             data = getJsonURL(url_info)
             user = ''
@@ -2522,8 +2521,8 @@ class xc_help(Screen):
         return conthelp
 
     def homecontext2(self):
-        conthelp = "\n\n\n\nCURRENT CONFIGURATION\n"
-        conthelp += "Current Service Type: %s\n" % config.plugins.XCplugin.services.value
+        # conthelp = "\n\n\n\nCURRENT CONFIGURATION\n"
+        conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value
         conthelp += "LivePlayer Active %s\n" % config.plugins.XCplugin.LivePlayer.value
         conthelp += "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
         conthelp += "Config Media Folder %smovie/\n" % config.plugins.XCplugin.pthmovie.value
@@ -2536,8 +2535,8 @@ class xc_help(Screen):
 
     def yellowcontext(self):
         conthelp = "HOME - MAIN\n"
-        conthelp += _("    (TV BUTTON):\n")
-        conthelp += _("            Reload Channels from Playlist\n")
+        # conthelp += _("    (TV BUTTON):\n")
+        # conthelp += _("            Reload Channels from Playlist\n")
         conthelp += _("    (MENU BUTTON):\n")
         conthelp += _("            Config Setup Options\n")
         conthelp += _("    (5 BUTTON):\n")
@@ -2643,7 +2642,7 @@ class OpenServer(Screen):
         self.list = []
         self["list"] = xcM3UList([])
         self["Text"] = Label("")
-        self["Text"].setText(infoname)
+        self["Text"].setText("Select Server")
         self["version"] = Label(version)
         self["playlist"] = Label("")
         self["key_red"] = Label(_("Back"))
@@ -2675,6 +2674,7 @@ class OpenServer(Screen):
         m3ulistxc(self.names, self["list"])
         self["live"].setText(str(len(self.names)) + " Team")
         self["playlist"].setText(infoname)
+        # self["Text"].setText(infoname)
 
     def Start_iptv_player(self):
         global STREAMS
@@ -3016,9 +3016,9 @@ def xcm3ulistEntry(download):
     white = 16777215
     blue = 79488
     col = 16777215
-    res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 30), text=download, color=col, color_sel=white, backcolor_sel=blue))
+    res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
     if isFHD():
-        res.append(MultiContentEntryText(pos=(0, 0), size=(1200, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
+        res.append(MultiContentEntryText(pos=(0, 0), size=(1200, 50), text=download, color=col, color_sel=white, backcolor_sel=blue))
     return res
 
 def m3ulistxc(data, list):
@@ -3033,7 +3033,7 @@ def m3ulistxc(data, list):
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        self.l.setItemHeight(50)
+        self.l.setItemHeight(40)
         self.l.setFont(0, gFont("Regular", 24))
         if isFHD():
             self.l.setItemHeight(50)
@@ -3056,6 +3056,8 @@ class xc_Play(Screen):
         self.name = Path_Movies
         self["path"] = Label(_("Put .m3u Files in Folder %s") % Path_Movies)
         self["version"] = Label(version)
+        self["Text"] = Label("")
+        self["Text"].setText("Select File")        
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
