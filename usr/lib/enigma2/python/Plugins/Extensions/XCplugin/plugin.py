@@ -1864,7 +1864,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         Screen.__init__(self, session)
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
-        # InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
+        InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
         InfoBarAudioSelection.__init__(self)
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
@@ -1913,7 +1913,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         # print('evEOF=%d' % iPlayableService.evEOF)
         # self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
          # iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
-        InfoBarSeek.__init__(self, actionmap = "MediaPlayerSeekActions")
+         
+        # InfoBarSeek.__init__(self, actionmap = "MediaPlayerSeekActions")
 
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
