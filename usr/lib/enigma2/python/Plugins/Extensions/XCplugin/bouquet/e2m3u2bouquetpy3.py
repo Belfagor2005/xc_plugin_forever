@@ -42,9 +42,9 @@ import six
 import requests
 
 if six.PY3:
-     from urllib.parse import urlparse, quote, parse_qs, quote_plus
+     from urllib.parse import quote, quote_plus, urlparse, parse_qs
 else:
-     from urlparse import urlparse, quote, parse_qs, quote_plus
+     from urllib import quote, quote_plus, urlparse, parse_qs
 
 __all__ = []
 __version__ = '0.8.5'

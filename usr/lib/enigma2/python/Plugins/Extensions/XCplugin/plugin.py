@@ -197,7 +197,6 @@ config.plugins.XCplugin.hostaddress = ConfigText(default="exampleserver.com")
 config.plugins.XCplugin.port = ConfigNumber(default=80)
 config.plugins.XCplugin.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 config.plugins.XCplugin.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
-# config.plugins.XCplugin.panel = ConfigSelection(default="player_api", choices=[("player_api", "player_api"), ("panel_api", "panel_api")])
 config.plugins.XCplugin.infoname = NoSave(ConfigText(default="myBouquet"))
 config.plugins.XCplugin.LivePlayer = ConfigYesNo(default=False)
 config.plugins.XCplugin.live = ConfigSelection(default='1', choices=modelive)
@@ -281,11 +280,6 @@ def check_port(tport):
         url = str(url.replace(protocol + domain, host))
     return url
 
-
-# class AppURLopener(urllib.request.FancyURLopener):
-class AppURLopener(FancyURLopener):
-    version = "Mozilla/5.0"
-opener = AppURLopener()
 
 def getJsonURL(url):
     import zlib
@@ -418,38 +412,45 @@ class xc_config(Screen, ConfigListScreen):
         self.editListEntry = None
         self.list = []
         indent = "- "
-        self.list.append(getConfigListEntry(_("Link in Main Menu  "), config.plugins.XCplugin.strtmain, (_("Display XCplugin in Main Menu"))))
+        
         self.list.append(getConfigListEntry(_("Data Server Configuration:"), config.plugins.XCplugin.data, (_("Your Server Login and data input"))))
         if config.plugins.XCplugin.data.getValue():
             self.list.append(getConfigListEntry(_("Server URL"), config.plugins.XCplugin.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
             self.list.append(getConfigListEntry(_("Server PORT"), config.plugins.XCplugin.port, (_("Enter Server Port '8080'"))))
             self.list.append(getConfigListEntry(_("Server Username"), config.plugins.XCplugin.user, (_("Enter Username"))))
             self.list.append(getConfigListEntry(_("Server Password"), config.plugins.XCplugin.passw, (_("Enter Password"))))
-        # self.list.append(getConfigListEntry(_("Old/New panel"), config.plugins.XCplugin.panel, (_("Panel used"))))
         self.list.append(getConfigListEntry(_("Server Timeout"), config.plugins.XCplugin.timeout, (_("Timeout Server (sec)"))))
+        
+        self.list.append(getConfigListEntry(_("Folder user file .xml"), config.plugins.XCplugin.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
+        self.list.append(getConfigListEntry(_("Media Folder "), config.plugins.XCplugin.pthmovie, (_("Configure folder containing movie/media files\nPress 'OK' to change location."))))     
+        self.list.append(getConfigListEntry(_("Download Type "), config.plugins.XCplugin.pdownmovie, (_("Configure type of download movie: JobManager/Direct.")))) 
+
         self.list.append(getConfigListEntry(_("Filter Bad Tag"), config.plugins.XCplugin.badcar, (_("Filter Bad Tag"))))
-        self.list.append(getConfigListEntry(_("Name Bouquet Export"), config.plugins.XCplugin.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))
+
         self.list.append(getConfigListEntry(_("Bouquet style "), config.plugins.XCplugin.typelist, (_("Configure the type of conversion in the favorite list"))))
         if config.plugins.XCplugin.typelist.value == "Combined Live/VOD":
             self.list.append(getConfigListEntry(_("Conversion type Output "), config.plugins.XCplugin.typem3utv, (_("Configure type of stream to be downloaded by conversion"))))
-        self.list.append(getConfigListEntry(_("Place IPTV bouquets at "), config.plugins.XCplugin.bouquettop, (_("Configure to place the bouquets of the converted lists"))))
+
+        self.list.append(getConfigListEntry(_("LivePlayer Active "), config.plugins.XCplugin.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
+        if config.plugins.XCplugin.LivePlayer.value is True:
+            self.list.append(getConfigListEntry(_("Live Services Type"), config.plugins.XCplugin.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
+        self.list.append(getConfigListEntry(_("Vod Services Type"), config.plugins.XCplugin.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
+
+        self.list.append(getConfigListEntry(_("Name Bouquet Export"), config.plugins.XCplugin.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))  
+        self.list.append(getConfigListEntry(_("Place IPTV bouquets at "), config.plugins.XCplugin.bouquettop, (_("Configure to place the bouquets of the converted lists"))))    
+        
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), config.plugins.XCplugin.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
         if config.plugins.XCplugin.autobouquetupdate.getValue():
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), config.plugins.XCplugin.timetype, (_("At an interval of hours or at a fixed time"))))
             if config.plugins.XCplugin.timetype.value == "interval":
                 self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), config.plugins.XCplugin.updateinterval, (_("Configure every interval of hours from now"))))
             if config.plugins.XCplugin.timetype.value == "fixed time":
-                self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), config.plugins.XCplugin.fixedtime, (_("Configure at a fixed time"))))
-        self.list.append(getConfigListEntry(_("LivePlayer Active "), config.plugins.XCplugin.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
-        if config.plugins.XCplugin.LivePlayer.value is True:
-            self.list.append(getConfigListEntry(_("Live Services Type"), config.plugins.XCplugin.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
-        self.list.append(getConfigListEntry(_("Vod Services Type"), config.plugins.XCplugin.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
-        self.list.append(getConfigListEntry(_("Folder user file .xml"), config.plugins.XCplugin.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
-        self.list.append(getConfigListEntry(_("Media Folder "), config.plugins.XCplugin.pthmovie, (_("Configure folder containing movie/media files\nPress 'OK' to change location."))))
-        self.list.append(getConfigListEntry(_("Download Type "), config.plugins.XCplugin.pdownmovie, (_("Configure type of download movie: JobManager/Direct."))))
+                self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), config.plugins.XCplugin.fixedtime, (_("Configure at a fixed time"))))        
         self.list.append(getConfigListEntry(_("Picons IPTV "), config.plugins.XCplugin.picons, (_("Download Picons ?"))))
         if config.plugins.XCplugin.picons.value:
             self.list.append(getConfigListEntry(_("Picons IPTV bouquets to "), config.plugins.XCplugin.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
+        self.list.append(getConfigListEntry(_("Link in Main Menu  "), config.plugins.XCplugin.strtmain, (_("Display XCplugin in Main Menu"))))            
+            
         self["config"].list = self.list
         self["config"].setList(self.list)
 
@@ -554,7 +555,6 @@ class xc_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
-            # config.plugins.XCplugin.panel.save()
             config.plugins.XCplugin.typem3utv.save()
             config.plugins.XCplugin.pthmovie.save()
             configfile.save()
@@ -668,7 +668,6 @@ class iptv_streamse():
             print('btnsearch = ', btnsearch)
             print('next_request = ', next_request )
             print('isStream = ', isStream )
-
             print("-----------CONFIG NEW END----------")
         except Exception as ex:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
@@ -729,6 +728,7 @@ class iptv_streamse():
                     # stream_url = ''
                     piconname = ''
                     ts_stream = ''
+                    nameepg = ''
                     description4playlist_html = ''
                     title64 = channel.findtext('title')
                     name = base64.b64decode(title64).decode('utf-8')
@@ -793,6 +793,7 @@ class iptv_streamse():
                         if description != '':
                             timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
                             titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
+                            print('=============titlematch: ', titlematch)
                             descriptionmatch = re.findall(r'\n(?s)\((.*?)\)', description)
                             if timematch:
                                 if len(timematch) > 0:
@@ -802,6 +803,8 @@ class iptv_streamse():
                             if titlematch:
                                 # if len(titlematch) > 0:
                                     # name = titlematch[0].strip()
+                                if len(titlematch) > 0:
+                                    nameepg = titlematch[0].strip()                                    
                                 if len(titlematch) > 1:
                                     epgnexttitle = titlematch[1].strip()
                             if descriptionmatch:
@@ -864,7 +867,8 @@ class iptv_streamse():
                         str(category_id),
                         desc_image,
                         str(description4playlist_html),
-                        ts_stream)
+                        # ts_stream, 
+                        nameepg)
                     iptv_list_tmp.append(chan_tulpe)
                     btnsearch = next_request
         except Exception as e:
@@ -877,6 +881,8 @@ class iptv_streamse():
             print("ERROR IPTV_LIST_LEN = %s" % len(iptv_list_tmp))
         return
 
+
+#control next_request ???
     def _request(self, url):
         if "exampleserver.com" not in str(config.plugins.XCplugin.hostaddress.value):
             global urlinfo, next_request
@@ -1230,7 +1236,9 @@ class xc_Main(Screen):
         self.index = self.mlist.getSelectionIndex()
         selected_channel = iptv_list_tmp[self.index]
         if selected_channel:
-            name = str(selected_channel[1]).lower()
+            name = str(selected_channel[1])
+            # name = name.lower()
+            print('nameee ', name)
             show_more_infos(name, self.index)
 
     def show_more_info_Title(self, truc):
@@ -1877,6 +1885,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["state"] = Label("")
         self["cont_play"] = Label("")
         self["key_record"] = Label("Record")
+        self["programm"] = Label("")
         self.cont_play = STREAMS.cont_play
         self["poster"] = Pixmap()
         self.recorder = False
@@ -1917,6 +1926,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
+            "epg": self.show_more_info,
             "0": self.show_more_info,
             "back": self.exit,
             "home": self.exit,
@@ -2261,8 +2271,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
     def show_more_info(self):
         index = STREAMS.list_index
         if self.vod_url != None:
-            name = str(self.channelx[1]).lower()
-            # print('nameee ', name)
+            name = str(self.channelx[1])
+            # name = name.lower()
+            print('nameee ', name)
             show_more_infos(name, index)
 
     def show_more_info_Title(self, truc):
@@ -2289,6 +2300,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.channelx = iptv_list_tmp[STREAMS.list_index]
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
+        
+        ####################
+        self.descr = self.channelx[2]
+        if self.descr != '' or self.descr != None:
+            text_clear = str(self.descr)
+        self["programm"].setText(text_clear)        
+        ##########################
         try:
             if self.vod_url != None:
                 print("------------------------ MOVIE ------------------")
@@ -2965,7 +2983,9 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
     def show_more_info(self):
         self.channely = iptv_list_tmp[self.index]
         if self.channely:
-            name = str(self.titlex).lower()
+            name = str(self.titlex)
+            # name = name.lower()
+            print('nameee ', name)
             show_more_infos(name, self.index)
 
     def show_more_info_Title(self, truc):
@@ -3387,10 +3407,12 @@ class xc_M3uPlay(Screen):
         idx = self["list"].getSelectionIndex()
         self.namem3u = self.names[idx]
         self.urlm3u = self.urls[idx]
+        print('select file name: ', self.namem3u)        
+        print('select file url: ', self.urlm3u)
         if idx == -1 or idx ==None:
             return
         else:
-            if ('.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8') in self.urlm3u:
+            if ('.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' or 'relinker') in self.urlm3u:
                 self.downloading = True
                 self.session.openWithCallback(self.download_m3u, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.namem3u), type=MessageBox.TYPE_YESNO, timeout=10, default=False)
             else:
@@ -3540,14 +3562,14 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         if is_tmdb:
             try:
                 from Plugins.Extensions.TMBD.plugin import TMBD
-                text = charRemove(text_clear)
+                text = badcar(text_clear)
                 _session.open(tmdb.tmdbScreen, text, 0)
             except Exception as ex:
                 print("[XCF] Tmdb: ", str(ex))
         elif is_imdb:
             try:
                 from Plugins.Extensions.IMDb.plugin import main as imdb
-                text = charRemove(text_clear)
+                text = badcar(text_clear)
                 imdb(_session, text)
             except Exception as ex:
                 print("[XCF] imdb: ", str(ex))
@@ -3901,7 +3923,7 @@ class xc_home(Screen):
         self["version"] = Label(version)
         self['text'] = xcList([])
         self["key_red"] = Label(_("Exit"))
-        self["key_green"] = Label(_("Playlist"))
+        self["key_green"] = Label(_("Select"))
         self["key_yellow"] = Label(_("Movie"))
         self["key_blue"] = Label(_("Loader M3U"))
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
@@ -4155,41 +4177,55 @@ def menuListEntry(name, idx):
         res.append(MultiContentEntryText(pos=(100, 0), size=(1200, 50), font=0, text=name, color=0xa6d1fe, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
+
+# chan_counter,
+# str(name),
+# str(description),
+# piconname,
+# stream_url,
+# playlist_url,
+# str(category_id),
+# desc_image,
+# str(description4playlist_html),
+# nameepg)
+                        
 def show_more_infos(name, index):
     text_clear = name
     if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
-        text = re.compile("<[\\/\\!]*?[^<>]*?>")
-        index = index
+        # text_clear = re.compile("<[\\/\\!]*?[^<>]*?>")
+        # index = index
         selected_channel = iptv_list_tmp[index]
         if selected_channel:
             if stream_live == True:
+                # # text2 = selected_channel[2]
+                # # text3 = selected_channel[8]
+                # # text_clear += str(text2) + '\n\n' + str(text3)
+                text_clear = selected_channel[9]
+                print('text_clear: ', str(text_clear))
+                # _session.open(xc_Epg, str(text_clear))
+            # else:
+            if is_tmdb:
+                try:
+                    from Plugins.Extensions.TMBD.plugin import TMBD
+                    text = badcar(text_clear)
+                    _session.open(tmdb.tmdbScreen, text, 0)
+                except Exception as ex:
+                    print("[XCF] Tmdb: ", str(ex))
+            elif is_imdb:
+                try:
+                    from Plugins.Extensions.IMDb.plugin import main as imdb
+                    text = badcar(text_clear)
+                    imdb(_session, text)
+                except Exception as ex:
+                    print("[XCF] imdb: ", str(ex))
+            else:
                 text2 = selected_channel[2]
                 text3 = selected_channel[8]
                 text_clear += str(text2) + '\n\n' + str(text3)
                 _session.open(xc_Epg, text_clear)
-            else:
-                if is_tmdb:
-                    try:
-                        from Plugins.Extensions.TMBD.plugin import TMBD
-                        text = charRemove(text_clear)
-                        _session.open(tmdb.tmdbScreen, text, 0)
-                    except Exception as ex:
-                        print("[XCF] Tmdb: ", str(ex))
-                elif is_imdb:
-                    try:
-                        from Plugins.Extensions.IMDb.plugin import main as imdb
-                        text = charRemove(text_clear)
-                        imdb(_session, text)
-                    except Exception as ex:
-                        print("[XCF] imdb: ", str(ex))
-                else:
-                    text2 = selected_channel[2]
-                    text3 = selected_channel[8]
-                    text_clear += str(text2) + '\n\n' + str(text3)
-                    _session.open(xc_Epg, text_clear)
 
     else:
-        message = (_("Please enter correct parameters in Config\n no valid list "))
+        message = (_("Please enter correct server parameters in Config\n no valid list "))
         web_info(message)
 
 def show_more_info_Titles(truc):

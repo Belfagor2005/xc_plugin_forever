@@ -38,6 +38,9 @@
 	<widget name="key_yellow" position="410,678" size="166,26" font="Regular;18" foregroundColor="#808080" backgroundColor="#000000" transparent="1" />
 	<eLabel position="500,680" size="16,16" backgroundColor="#005a00" zPosition="3" />
 	<widget name="key_green" position="526,678" size="166,26" font="Regular;18" foregroundColor="#808080" backgroundColor="#000000" transparent="1" /-->
+	
+	<widget name="programm" position="11,13" size="1248,159" font="Regular;20" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" /> 	
+	
 	<!-- Audio icon -->
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/ico_dolby_off.png" position="1036,280" size="95,33" alphatest="blend" zPosition="1" />
 	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/ico_dolby_on.png" position="1036,280" size="95,33" alphatest="blend" zPosition="2" >

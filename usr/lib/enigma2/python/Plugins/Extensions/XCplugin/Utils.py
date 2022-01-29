@@ -101,7 +101,12 @@ def badcar(name):
                  "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
                  "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|", "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|",
                  "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
-                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/"]
+                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/",
+                 "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11", "PF12", "PF13", "PF14", "PF15", "PF16", "PF17", "PF18", "PF19", "PF20", "PF21", "PF22", "PF23", "PF24", "PF25", "PF26", "PF27", "PF28", "PF29", "PF30",
+                 "480p", "4K", "720p", "ANIMAZIONE",  "AVVENTURA", "BIOGRAFICO",  "BDRip",  "BluRay",  "CINEMA", "COMMEDIA", "DOCUMENTARIO", "DRAMMATICO", "FANTASCIENZA", "FANTASY", "HDCAM", "HDTC", "HDTS", "LD", "MARVEL", "MD", "NEW_AUDIO", 
+                 "R3", "R6", "SD", "SENTIMENTALE", "TC", "TELECINE", "TELESYNC", "THRILLER", "Uncensored", "V2", "WEBDL", "WEBRip", "WEB", "WESTERN", "-", "_", ".", "+", "[", "]"                
+                 ]
+                 
     for j in range(1900, 2025):
         bad_chars.append(str(j))
     for i in bad_chars:
@@ -1037,11 +1042,12 @@ def charRemove(text):
              "]"
              ]
 
-    myreplace = text.lower()
-    for ch in char:
-        ch= ch.lower()
-        # if myreplace == ch:
-        myreplace = myreplace.replace(ch, "").replace("  ", " ").replace("   ", " ").strip()
+    myreplace = text#.lower()
+    for ch in char:  #.lower():
+        # ch= ch #.lower()
+        if text == ch:
+            myreplace = text.replace(ch, "").replace("  ", " ").replace("   ", " ").strip()
+    print('myreplace: ',myreplace)
     return myreplace
 
 def clean_html(html):

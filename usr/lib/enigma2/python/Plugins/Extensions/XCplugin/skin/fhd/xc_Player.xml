@@ -40,6 +40,9 @@
 	<widget name="key_green" position="790,1018" size="250,40" font="Regular;28" foregroundColor="#808080" backgroundColor="#000000" transparent="1" /-->
 	<eLabel position="40,40" size="120,60" backgroundColor="#30000000" zPosition="3" />
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" position="50,50" size="100,40" alphatest="blend" zPosition="5" />
+	
+	<widget name="programm" position="50,20" size="1820,261" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" /> 	
+	
 	<!-- Audio icon -->
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_dolby_off.png" position="1555,420" size="143,50" alphatest="blend" zPosition="1" />
 	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_dolby_on.png" position="1555,420" size="143,50" alphatest="blend" zPosition="2" >
