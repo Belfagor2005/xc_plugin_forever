@@ -662,7 +662,7 @@ class iptv_streamse():
             print('username = ', self.username)
             print('password = ', self.password)
             print('plugin_version = ', plugin_version)
-            print('stream_live = ', stream_live)
+            # print('stream_live = ', stream_live)
             print('stream_url = ', stream_url)
             print('iptv_list_tmp = ', iptv_list_tmp)
             print('btnsearch = ', btnsearch)
@@ -1921,9 +1921,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         # print('evEOF=%d' % iPlayableService.evEOF)
         # self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
          # iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
-         
         # InfoBarSeek.__init__(self, actionmap = "MediaPlayerSeekActions")
-
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "epg": self.show_more_info,
@@ -4246,64 +4244,66 @@ def show_more_info_Titles(truc):
 
 def save_old():
     fldbouquet = "/etc/enigma2/bouquets.tv"
-    namebouquet = checkStr(STREAMS.playlistname).lower()
+    namebouquet = STREAMS.playlistname.lower()
     tag = "suls_iptv_"
     xc12 = urlinfo.replace("enigma2.php", "get.php")
+    print('xc12 url final', xc12)
     in_bouquets = 0
     desk_tmp = ''
-    if config.plugins.XCplugin.typem3utv.value == 'MPEGTS to TV':
-        xc2 = '&type=dreambox&output=mpegts'
-        if os.path.isfile('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)):
-            os.remove('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet))
-        try:
-            urlX = xc12 + xc2
-            webFile = urlopen(urlX, timeout=ntimeout)
-            localFile = open(('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)), 'w')
-            localFile.write(checkStr(webFile.read()))
-            os.system('sleep 5')
-            localFile.close()
-            webFile.close()
+    xcname=''
+    try:
+        if config.plugins.XCplugin.typem3utv.value == 'MPEGTS to TV':
+            xc2 = '&type=dreambox&output=mpegts'
+            if os.path.isfile('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)):
+                os.remove('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet))
+            try:
+                print('MPEGTS to TV: process file ')
+                urlX = xc12 + xc2
+                localFile = '%suserbouquet.%s%s_.tv'% (enigma_path, tag, namebouquet) #' #resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tvaddon'))
+                print('localFile ', localFile)
+                r = getUrl(urlX)
+                with open(localFile,'w') as f:
+                  f.write(r)
+            except Exception as ex:
+                print('touch one: ', str(ex))
+            xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
+            
+        else:
+            xc2 = '&type=m3u_plus&output=ts'
+            if os.path.isfile(Path_Movies + namebouquet + ".m3u"):
+                os.remove(Path_Movies + namebouquet + ".m3u")
+            try:
+                urlY = xc12 + xc2
+                localFile = '%s%s.m3u' % (Path_Movies, namebouquet)
+                r = getUrl(urlY)
+                with open(localFile,'w') as f:
+                  f.write(r)
+            except Exception as ex:
+                print('touch two: ', str(ex))
 
-        except Exception as ex:
-            print(str(ex))
-        xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
-    else:
-        xc2 = '&type=m3u_plus&output=ts'
-        if os.path.isfile(Path_Movies + namebouquet + ".m3u"):
-            os.remove(Path_Movies + namebouquet + ".m3u")
-        try:
-            urlX = xc12 + xc2
-            webFile = urlopen(urlX, timeout=ntimeout)
-            localFile = open(('%s%s.m3u' % (Path_Movies, namebouquet)), 'w')
-            localFile.write(checkStr(webFile.read()))
-            os.system('sleep 5')
-            localFile.close()
-            webFile.close()
-        except Exception as ex:
-            print(str(ex))
-        namebouquet = Path_Movies + '%s.m3u' % namebouquet
-        name = namebouquet.replace('.m3u', '').replace(Path_Movies, '')
-        xcname = 'userbouquet.%s%s_.tv' % (tag, name)
-        if os.path.isfile('/etc/enigma2/%s' % xcname):
-            os.remove('/etc/enigma2/%s' % xcname)
-        with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
-            outfile.write('#NAME %s\r\n' % name.capitalize())
-            for line in open(Path_Movies + '%s.m3u' % name):
-                if line.startswith('http://') or line.startswith('https://'):
-                    outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s' % line.replace(':', '%3a'))
-                    outfile.write('#DESCRIPTION %s' % desk_tmp)
-                elif line.startswith('#EXTINF'):
-                    desk_tmp = '%s' % line.split(',')[-1]
-                elif '<stream_url><![CDATA' in line:
-                    outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.split('[')[-1].split(']')[0].replace(':', '%3a'))
-                    outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                elif '<title>' in line:
-                    if '<![CDATA[' in line:
-                        desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                    else:
-                        desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
-            outfile.close()
-    if os.path.isfile(fldbouquet):
+            name = namebouquet.replace('.m3u', '')            
+            xcname = 'userbouquet.%s%s_.tv' % (tag, name)
+            if os.path.isfile('/etc/enigma2/%s' % xcname):
+                os.remove('/etc/enigma2/%s' % xcname)
+            with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
+                outfile.write('#NAME %s\r\n' % name.capitalize())
+                for line in open(Path_Movies + '%s.m3u' % name):
+                    if line.startswith('http://') or line.startswith('https://'):
+                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s' % line.replace(':', '%3a'))
+                        outfile.write('#DESCRIPTION %s' % desk_tmp)
+                    elif line.startswith('#EXTINF'):
+                        desk_tmp = '%s' % line.split(',')[-1]
+                    elif '<stream_url><![CDATA' in line:
+                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.split('[')[-1].split(']')[0].replace(':', '%3a'))
+                        outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                    elif '<title>' in line:
+                        if '<![CDATA[' in line:
+                            desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
+                        else:
+                            desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
+                outfile.close()
+
+        print('-----check in bouquet.tv')
         for line in open(fldbouquet):
             if xcname in line:
                 in_bouquets = 1
@@ -4325,14 +4325,12 @@ def save_old():
                 new_bouquet.close()
             os.system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
-    ReloadBouquets()
+        ReloadBouquets()
+    except Exception as ex:
+        print(str(ex))    
 
 def make_bouquet():
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
-    # n1 = 'e2m3u2bouquetpy3.py'
-    # if PY3:
-        # e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
-        # n1 = 'e2m3u2bouquetpy3.py'
     if not os.path.exists("/etc/enigma2/e2m3u2bouquet"):
         os.system("mkdir /etc/enigma2/e2m3u2bouquet")
     configfile = ("/etc/enigma2/e2m3u2bouquet/config.xml")
@@ -4341,22 +4339,21 @@ def make_bouquet():
     all_bouquet = "0"
     iptv_types = "0"
     multi_vod = "0"
+    if config.plugins.XCplugin.typelist.value == "Multi Live & VOD":
+        multi_vod = "1"    
     bouquet_top = "0"
+    if config.plugins.XCplugin.bouquettop.value and config.plugins.XCplugin.bouquettop.value == "Top":
+        bouquet_top = "1"    
     picons = "0"
+    if config.plugins.XCplugin.picons.value:
+        picons = "1"    
     username = str(config.plugins.XCplugin.user.value)
     password = str(config.plugins.XCplugin.passw.value)
     streamtype_tv = str(config.plugins.XCplugin.live.value)
     streamtype_vod = str(config.plugins.XCplugin.services.value)
     m3u_url = urlinfo.replace("enigma2.php", "get.php")
     epg_url = urlinfo.replace("enigma2.php", "xmltv.php")
-    if config.plugins.XCplugin.typelist.value == "Multi Live & VOD":
-        multi_vod = "1"
 
-    if config.plugins.XCplugin.bouquettop.value and config.plugins.XCplugin.bouquettop.value == "Top":
-        bouquet_top = "1"
-
-    if config.plugins.XCplugin.picons.value:
-        picons = "1"
 
     with open(configfile, 'w') as f:
         configtext = '<config>\r\n'

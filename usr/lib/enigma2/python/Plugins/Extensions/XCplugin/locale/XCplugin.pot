@@ -729,7 +729,7 @@ msgid "Exit"
 msgstr ""
 
 #: plugin.py:3901
-msgid "Playlist"
+msgid "Select"
 msgstr ""
 
 #: plugin.py:3902
