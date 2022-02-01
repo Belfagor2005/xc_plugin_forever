@@ -1043,8 +1043,10 @@ class xc_Main(Screen):
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         srefInit = self.initialservice
         self["playlist"].setText(STREAMS.playlistname)
+        self.onFirstExecBegin.append(self.checkinf)        
         self.onShown.append(self.show_all)
-        self.onLayoutFinish.append(self.checkinf)
+        # self.onLayoutFinish.append(self.checkinf)
+
 
     def search_text(self):
         global re_search
@@ -1128,11 +1130,11 @@ class xc_Main(Screen):
                             self["exp"].setText("Exp date:\n")
                     self["max_connect"].setText("Max Connect: " + str(max_cons))
                     self["active_cons"].setText("User Active: " + str(active_cons))
-                if ux:
-                    server_protocol = ux.get('server_protocol', '~')
-                    timezone = ux.get('timezone', '~')
-                    self["server_protocol"].setText("Protocol: " + str(server_protocol))
-                    self["timezone"].setText("Timezone: " + str(timezone))
+            if ux:
+                server_protocol = ux.get('server_protocol', '~')
+                timezone = ux.get('timezone', '~')
+                self["server_protocol"].setText("Protocol: " + str(server_protocol))
+                self["timezone"].setText("Timezone: " + str(timezone))
             else:
                 print('error getJsonURL: ')
 
@@ -1227,7 +1229,6 @@ class xc_Main(Screen):
         if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
             STREAMS.get_list(STREAMS.xtream_e2portal_url)
             self.update_channellist()
-        self.checkinf()
 
     def taskManager(self):
         self.session.open(xc_StreamTasks)
@@ -1391,6 +1392,7 @@ class xc_Main(Screen):
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
+                # pmovies = True
                 self.timerDownload = eTimer()
                 if config.plugins.XCplugin.pdownmovie.value == "JobManager":
                     try:
@@ -2442,7 +2444,11 @@ class xc_StreamTasks(Screen):
                 name = current[1]
                 file1 = False
                 file2 = False
-                self.session.open(M3uPlayMovie, name, url)
+                isFile = os.path.isfile(url)
+                if isFile:
+                    self.session.open(M3uPlayMovie, name, url)
+                else:
+                    self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
             else:
                 job = current[0]
                 self.session.openWithCallback(self.JobViewCB, JobView, job)
@@ -2465,7 +2471,7 @@ class xc_StreamTasks(Screen):
         sel2 = self.pth + current[1]
         dom = sel
         dom2 = sel2
-        if pmovies == True and filelist2 != None:
+        if pmovies == True and filelist2 != '':
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom2, MessageBox.TYPE_YESNO, timeout=15, default=False)
         else:
             self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
@@ -2480,16 +2486,16 @@ class xc_StreamTasks(Screen):
                     self.Timer.stop()
                 cmd = 'rm -f ' + sel
                 os.system(cmd)
-                self.session.open(MessageBox, sel + " Movie has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, sel + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             elif pmovies == True and file_exists(sel2):
                 if self.Timer:
                     self.Timer.stop()
 
                 cmd = 'rm -f ' + sel2
                 os.system(cmd)
-                self.session.open(MessageBox, sel2 + " Movie has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, sel2 + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             else:
-                self.session.open(MessageBox, "The movie not exist!\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("The movie not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             self.onShown.append(self.rebuildMovieList)
 
 class xc_help(Screen):
@@ -2752,10 +2758,10 @@ class OpenServer(Screen):
             dom = dom + '.xml'
             if file_exists(dom):
                 os.remove(dom)
-                self.session.open(MessageBox, dom + "   has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
             else:
-                self.session.open(MessageBox, dom + "   not exist!\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, dom + _("   not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             m3ulistxc(self.names, self["list"])
 
     def rename(self):
@@ -3156,15 +3162,15 @@ class xc_Play(Screen):
             dom = self.Movies[idx]
             if file_exists(dom):
                 os.remove(dom)
-                self.session.open(MessageBox, dom + "   has been successfully deleted\nwait time to refresh the list...", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
                 self.refreshmylist()
             else:
-                self.session.open(MessageBox, dom + "   not exist!", MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, dom + _("   not exist!"), MessageBox.TYPE_INFO, timeout=5)
 
     def message3(self):
         if self.downloading is True:
-            self.session.open(MessageBox, "Wait... downloading in progress ...", MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(MessageBox, _("Wait... downloading in progress ..."), MessageBox.TYPE_INFO, timeout=5)
             return
         elif "exampleserver.com" not in STREAMS.xtream_e2portal_url:
             self.session.openWithCallback(self.dowM3u1, MessageBox, _("Download M3u File?"), MessageBox.TYPE_YESNO, timeout=15, default=False)
