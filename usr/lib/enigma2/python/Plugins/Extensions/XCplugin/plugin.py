@@ -1117,7 +1117,7 @@ class xc_Main(Screen):
             host = str(config.plugins.XCplugin.hostaddress.value)
             ports = str(config.plugins.XCplugin.port.value)
             # panel = str(config.plugins.XCplugin.panel.value)
-            user = str(config.plugins.XCplugin.user.value)
+            username = str(config.plugins.XCplugin.user.value)
             password = str(config.plugins.XCplugin.passw.value)
             self["max_connect"].setText("Max Connect: 0")
             self["active_cons"].setText("User Active: 0")
@@ -1125,9 +1125,15 @@ class xc_Main(Screen):
             self["server_protocol"].setText("Protocol: No Info ")
             self["timezone"].setText("Timezone: No Info ")
 
-            url_info = 'http://' + host + ':' + ports + '/player_api.php?username=' + user + '&password=' + password + '&action=user&sub=info'
+            url_info = 'http://' + host + ':' + ports + '/player_api.php?username=' + username + '&password=' + password + '&action=user&sub=info'
+            url_info2 = 'http://' + host + ':' + ports + '/player_api.php?username=' + username + '&password=' + password            
+            
             print('url_info: ', url_info)
-            data = getJsonURL(url_info)
+            print('url_info: ', url_info2) 
+            try:
+                data = getJsonURL(url_info)
+            except:
+                data = getJsonURL(url_info2)
             user = ''
             status = ''
             create_date = '~'
@@ -1376,11 +1382,6 @@ class xc_Main(Screen):
             self.session.open(JobView, currentjob)
         else:
             self.downloading = False
-
-    def downloadStop(self):
-        if hasattr(self, 'icount'):
-            self.icount -= 1
-            pmovies = False
 
     def check_download_vod(self):
         if btnsearch == 0 or btnsearch == 2:
@@ -2201,7 +2202,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
                 filename = filename.lower() + ext
                 cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, filename)
-                # JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title, self.downloadStop))
                 self.timeshift_url = Path_Movies + filename
                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex))
                 self.createMetaFile(filename, filename)
@@ -2220,13 +2220,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         except Exception as ex:
             print(str(ex))
             print('ERROR metaFile')
-        # return
-
-    def downloadStop(self):
-        if hasattr(self, 'icount'):
-            self.icount -= 1
-        if self.recorder == True:
-            self.recorder = False
 
     def LastJobView(self):
         currentjob = None
