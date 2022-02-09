@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             27/01/2022               *
+*             09/02/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -24,7 +24,7 @@ from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.Task import Task, Job, job_manager as JobManager
+from Components.Task import Task, Job, job_manager as JobManager, Condition
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 from Screens.InfoBar import MoviePlayer, InfoBar
@@ -43,7 +43,6 @@ from Tools import ASCIItranslit
 from Tools.Directories import SCOPE_PLUGINS
 from Tools.Directories import pathExists
 from Tools.Directories import resolveFilename
-# from Tools.Directories import fileExists
 from os.path import exists as file_exists
 from Tools.Downloader import downloadWithProgress
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
@@ -83,12 +82,11 @@ import socket
 import sys
 import time
 
-global piclogo, pictmp, skin_path, Path_Tmp, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path, epgimport_path
-global isStream, btnsearch, eserv, infoname, tport, STREAMS, re_search, pmovies, series, urlinfo
+global STREAMS, piclogo, pictmp, skin_path, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path
+global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo, epgimport_path
 
 _session = " "
 version = "XC Forever V.2.1"
-
 
 PY3 = False
 plugin_path = os.path.dirname(sys.modules[__name__].__file__)
@@ -97,11 +95,9 @@ iconpic = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/plugin.png".format('XCpl
 filterlist = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/cfg/filterlist.txt".format('XCplugin'))
 piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
 enigma_path = '/etc/enigma2/'
-iptvsh = enigma_path + "iptv.sh"
 epgimport_path = '/etc/epgimport/'
-Path_Tmp = "/tmp"
-pictmp = Path_Tmp + "/poster.jpg"
-xc_list = Path_Tmp + "/xc.txt"
+pictmp = "/tmp/poster.jpg"
+xc_list =  "/tmp/xc.txt"
 iptv_list_tmp = []
 re_search = False
 pmovies = False
@@ -246,7 +242,7 @@ elif isFHD():
     skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
 if DreamOS():
-    iconpic = "plugin.png"
+    # iconpic = "plugin.png"
     skin_path =  skin_path + '/dreamOs'
 
 def copy_poster():
@@ -435,7 +431,6 @@ class xc_config(Screen, ConfigListScreen):
         if config.plugins.XCplugin.LivePlayer.value is True:
             self.list.append(getConfigListEntry(_("Live Services Type"), config.plugins.XCplugin.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
 
-
         self.list.append(getConfigListEntry(_("Download Type "), config.plugins.XCplugin.pdownmovie, (_("Configure type of download movie: JobManager/Direct."))))
 
         self.list.append(getConfigListEntry(_("Filter Bad Tag"), config.plugins.XCplugin.badcar, (_("Filter Bad Tag"))))
@@ -443,7 +438,6 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Bouquet style "), config.plugins.XCplugin.typelist, (_("Configure the type of conversion in the favorite list"))))
         if config.plugins.XCplugin.typelist.value == "Combined Live/VOD":
             self.list.append(getConfigListEntry(_("Conversion type Output "), config.plugins.XCplugin.typem3utv, (_("Configure type of stream to be downloaded by conversion"))))
-
 
         self.list.append(getConfigListEntry(_("Vod Services Type"), config.plugins.XCplugin.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
 
@@ -771,7 +765,7 @@ class iptv_streamse():
                     # if isStream and "/live/"or "/series/"  in stream_url : #and category_id =='0' or category_id == '2':
                     if stream_url and stream_url != "n/A" and stream_url != "": #stream_url = None ????
                         isStream = True 
-                    # if "/live/" or "/series/" in stream_url:                        
+                    # if isStream and ("/live/" or "/series/") in stream_url:                        
                     # if isStream and "/live/"or "/series/" in stream_url :
                     if isStream and "/live/" in stream_url:
                         print("****** is live stream **** ")
@@ -971,11 +965,12 @@ class iptv_streamse():
             res = None
             return res
 
-
 class xc_Main(Screen):
     def __init__(self, session):
         global STREAMS
         global _session
+        global channel_list2
+        global re_search        
         _session = session
         self.session = session
         skin = skin_path + "/xc_Main.xml"
@@ -985,14 +980,23 @@ class xc_Main(Screen):
         self.setup_title = ('XCplugin Forever')
         self.channel_list = STREAMS.iptv_list
         self.index = STREAMS.list_index
-        global channel_list2, index2, re_search
         channel_list2 = self.channel_list
-        index2 = self.index
+        self.index2 = self.index
         self.banned = False
         self.banned_text = ""
         self.search = ''
         re_search = False
         self.downloading = False
+        self.pin = False
+        self.icount = 0
+        self.errcount = 0
+        self.update_desc = True
+        self.pass_ok = False
+        self.temp_index = 0
+        self.temp_channel_list = None
+        self.temp_playlistname = None
+        self.url_tmp = None
+        self.video_back = False        
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1019,18 +1023,13 @@ class xc_Main(Screen):
         self["key_yellow"].hide()
         self["key_blue"].hide()
         self["key_text"] = Label("2")
-        self.go()
-        self.pin = False
-        self.icount = 0
-        self.errcount = 0
         self["poster"] = Pixmap()
+        self["Text"] = Label("")
+        self["Text"].setText(infoname)  
+        self["playlist"].setText(STREAMS.playlistname)        
+        self.go()        
         self.picload = ePicLoad()
         self.scale = AVSwitch().getFramebufferScale()
-        self["Text"] = Label("")
-        self["Text"].setText(infoname)
-        self.update_desc = True
-        self.pass_ok = False
-        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1049,20 +1048,11 @@ class xc_Main(Screen):
             "movielist": self.taskManager,
             "help": self.help,
             "power": self.power}, -1)
-        self.temp_index = 0
-        self.temp_channel_list = None
-        self.temp_playlistname = None
-        self.url_tmp = None
-        self.video_back = False
         # self.passwd_ok = False
-        global srefInit
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-        srefInit = self.initialservice
-        self["playlist"].setText(STREAMS.playlistname)
         self.onFirstExecBegin.append(self.checkinf)
         self.onShown.append(self.show_all)
         # self.onLayoutFinish.append(self.checkinf)
-
 
     def search_text(self):
         global re_search
@@ -1155,7 +1145,6 @@ class xc_Main(Screen):
                 exp_date = ui.get('exp_date', None)
                 active_cons = ui.get('active_cons', '~')
                 max_cons = ui.get('max_connections', '~')
-
                 if create_date:
                     create_date = time.strftime(TIME_GMT, time.gmtime(int(create_date)))
                 if exp_date:
@@ -1200,7 +1189,7 @@ class xc_Main(Screen):
         self.list_index = 0
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
-        STREAMS.list_index = index2
+        STREAMS.list_index = self.index2
         # self.go()
         self.update_channellist()
         self.decodeImage(piclogo)
@@ -1379,7 +1368,6 @@ class xc_Main(Screen):
                 pmovies = False
                 self.downloading = False
 
-
     def LastJobView(self):
         currentjob = None
         for job in JobManager.getPendingJobs():
@@ -1421,7 +1409,6 @@ class xc_Main(Screen):
     def download_vod(self, result):
         if result:
             try:
-
                 ext = '.mp4'
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
@@ -1566,17 +1553,11 @@ class xc_Main(Screen):
             except:
                 pass
 
-#.setPixmap(loadJPG(NoImage))
-    def downloadError(self, pictmp):
-        try:
-            if file_exists(pictmp):
-                self.decodeImage(piclogo)
-
-        except Exception as ex:
-            self.decodeImage(piclogo)
-            #self["poster"].hide()
-            print(str(ex))
-            print('exe downloadError')
+    def downloadError(self, data=None):
+        if data:
+            print(data)
+        if self["poster"].instance:
+            self["poster"].instance.setPixmapFromFile(piclogo)
 
     def update_description(self):
         if not len(iptv_list_tmp):
@@ -1593,7 +1574,7 @@ class xc_Main(Screen):
                 self.pixim = str(selected_channel[7])
                 if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
                     if self.pixim.find('http') == -1:
-                        self.decodeImage(piclogo)
+                        self.downloadError(piclogo)
                         return
                     else:
                         if PY3:
@@ -1607,7 +1588,7 @@ class xc_Main(Screen):
                         else:
                             downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                 else:
-                    self.decodeImage(piclogo)
+                    self.downloadError(piclogo)
                     print("update COVER")
 
                 if selected_channel[2] != None:
@@ -1928,15 +1909,12 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-        self.service = None
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()        
         self["state"] = Label("")
         self["cont_play"] = Label("")
         self["key_record"] = Label("Record")
         self["programm"] = Label("")
-        self.cont_play = STREAMS.cont_play
-        self["poster"] = Pixmap()
-        self.recorder = False
-        self.vod_url = None
+        self["poster"] = Pixmap()        
         # if not os.path.exists('/var/lib/dpkg/status'):
         self.picload = ePicLoad()
         self.scale = AVSwitch().getFramebufferScale()
@@ -1945,9 +1923,12 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         except:
             self.PicLoad_conn = self.picload.PictureData.connect(self.setCover)
         self.state = self.STATE_PLAYING
+        self.cont_play = STREAMS.cont_play
+        self.service = None
+        self.recorder = False
+        self.vod_url = None        
         self.timeshift_url = None
         self.timeshift_title = None
-        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
         self.error_message = ""
         if recorder_sref:
             self.recorder_sref = recorder_sref
@@ -1965,10 +1946,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
          iPlayableService.evStart: self.__serviceStarted,
          iPlayableService.evEOF: self.__evEOF})
-        # print('evEOF=%d' % iPlayableService.evEOF)
-        # self.__event_tracker = ServiceEventTracker(screen=self, eventmap={iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
-         # iPlayableService.evStart: self.__serviceStarted, iPlayableService.evEOF: self.__evEOF})
-        # InfoBarSeek.__init__(self, actionmap = "MediaPlayerSeekActions")
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "epg": self.show_more_info,
@@ -1989,7 +1966,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             "2": self.restartVideo,
             "help": self.help,
             "power": self.power_off}, -1)
-
         self.onFirstExecBegin.append(self.play_vod)
         self.onShown.append(self.setCover)
         self.onShown.append(self.show_info)
@@ -2037,7 +2013,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.pixim = str(self.channelx[7])
             if (self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null") :
                 if self.pixim.find('http') == -1:
-                    self.decodeImage(piclogo)
+                    self.downloadError(piclogo)
                     return
                 else:
                     if PY3:
@@ -2051,11 +2027,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     else:
                         downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
             else:
-                self.decodeImage(piclogo)
+                self.downloadError(piclogo)
                 print("update COVER")
         except Exception as ex:
             print(str(ex))
-            self.decodeImage(piclogo)
+            self.downloadError(piclogo)
             print("update COVER")
 
     def decodeImage(self, png):
@@ -2089,14 +2065,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             except:
                 pass
 
-    def downloadError(self, png):
-        try:
-            if file_exists(png):
-                self.decodeImage(piclogo)
-        except Exception as ex:
-            self.decodeImage(piclogo)
-            print(str(ex))
-            print('exe downloadError')
+    def downloadError(self, data=None):
+        if data:
+            print(data)
+        if self["poster"].instance:
+            self["poster"].instance.setPixmapFromFile(piclogo)
 
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
@@ -2158,7 +2131,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def help(self):
         self.session.open(xc_help)
-
 
     def restartVideo(self):
         try:
@@ -2302,7 +2274,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         if STREAMS.playhack == "":
             self.session.nav.stopService()
             STREAMS.play_vod = False
-            self.session.nav.playService(self.oldService)
+            self.session.nav.playService(self.initialservice)
         self.close()
 
     def nextAR(self):
@@ -2379,6 +2351,9 @@ class xc_StreamTasks(Screen):
             self.skin = f.read()
         Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
+        self["movielist"] = List([])
+        self["key_green"] = Label(_("Remove"))
+        self["key_red"] = Label(_("Close"))   
         self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions"], {
             "ok": self.keyOK,
             "esc": self.keyClose,
@@ -2387,12 +2362,8 @@ class xc_StreamTasks(Screen):
             "red": self.keyClose,
             "blue": self.keyBlue,
             "cancel": self.keyClose}, -1)
-        self["movielist"] = List([])
-        self["key_green"] = Label(_("Remove"))
-        self["key_red"] = Label(_("Close"))
-        global srefInit
+
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-        srefInit = self.initialservice
         self.Timer = eTimer()
         try:
             self.Timer_conn = self.Timer.timeout.connect(self.TimerFire)
@@ -2507,7 +2478,7 @@ class xc_StreamTasks(Screen):
     def keyClose(self):
         if STREAMS.playhack == "":
             self.session.nav.stopService()
-            self.session.nav.playService(srefInit)
+            self.session.nav.playService(self.initialservice)
         self.close()
 
     def message1(self):
@@ -2707,6 +2678,7 @@ class OpenServer(Screen):
         Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.list = []
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()        
         self["list"] = xcM3UList([])
         self["Text"] = Label("")
         self["Text"].setText("Select Server")
@@ -2717,7 +2689,6 @@ class OpenServer(Screen):
         self["key_yellow"] = Label(_("Remove"))
         self["live"] = Label("")
         # self["live"].setText("")
-        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "ok": self.selectlist,
             "yellow": self.message1,
@@ -2860,12 +2831,12 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-        self.service = None
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()        
         self["channel_name"] = Label("")
+        self["programm"] = Label("")        
         self["poster"] = Pixmap()
         self.picload = ePicLoad()
         self.scale = AVSwitch().getFramebufferScale()
-        self["programm"] = Label("")
         STREAMS.play_vod = False
         self.channel_list = iptv_list_tmp
         self.index = STREAMS.list_index
@@ -2875,8 +2846,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         self.descr = self.channely[2]
         self.cover = self.channely[3]
         self.pixim = self.channely[7]
-        self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
-        self.onFirstExecBegin.append(self.play_channel)
+        self.service = None
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "0": self.show_more_info,
@@ -2890,7 +2860,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             "channelUp": self.nextAR,
             "channelDown": self.prevAR,
             "power": self.power_off}, -1)
-
+        self.onFirstExecBegin.append(self.play_channel)
+        
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
 
@@ -2935,7 +2906,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
     def exit(self):
         self.session.nav.stopService()
-        self.session.nav.playService(self.oldService)
+        self.session.nav.playService(self.initialservice)
         self.close()
 
     def power_off(self):
@@ -2958,7 +2929,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             try:
                 if self.cover!= "" or self.cover!= "n/A" or self.cover!= None:
                     if self.cover.find("http") == -1:
-                        self.decodeImage(piclogo)
+                        self.downloadError(piclogo)
                         return
                     else:
                         if PY3:
@@ -2974,7 +2945,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             downloadPage(self.cover, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
 
                 else:
-                    self.decodeImage(piclogo)
+                    self.downloadError(piclogo)
                     print("update COVER LIVE")
 
             except Exception as ex:
@@ -3071,14 +3042,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             except:
                 pass
 
-    def downloadError(self, pictmp):
-        try:
-            if file_exists(pictmp):
-                self.decodeImage(piclogo)
-        except Exception as ex:
-            print(str(ex))
-            self.decodeImage(piclogo)
-            print('exe downloadError')
+    def downloadError(self, data=None):
+        if data:
+            print(data)
+        if self["poster"].instance:
+            self["poster"].instance.setPixmapFromFile(piclogo)
 
 def xcm3ulistEntry(download):
     res = [download]
@@ -3118,10 +3086,9 @@ class xc_Play(Screen):
         Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.list = []
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()        
         self["list"] = xcM3UList([])
-        global srefInit
-        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-        srefInit = self.initialservice
+        self.downloading = False
         self.name = Path_Movies
         self["path"] = Label(_("Put .m3u Files in Folder %s") % Path_Movies)
         self["version"] = Label(version)
@@ -3130,7 +3097,6 @@ class xc_Play(Screen):
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
-        self.downloading = False
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Remove"))
         self["key_yellow"] = Label(_("Export") + _(" Bouquet"))
@@ -3338,6 +3304,11 @@ class xc_M3uPlay(Screen):
         f.close()
         self.setup_title = ('XCplugin Forever')
         self.list = []
+        self.name = name          
+        self.downloading = False
+        global search_ok
+        self.search = ''
+        search_ok = False        
         self["list"] = xcM3UList([])
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
@@ -3347,10 +3318,6 @@ class xc_M3uPlay(Screen):
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
-        self.downloading = False
-        global search_ok
-        self.search = ''
-        search_ok = False
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "home": self.cancel,
             "ok": self.runChannel,
@@ -3363,7 +3330,6 @@ class xc_M3uPlay(Screen):
             "cancel": self.cancel}, -2)
         self["live"] = Label("")
         self["live"].setText("")
-        self.name = name
         self.onLayoutFinish.append(self.playList)
 
     def search_m3u(self):
@@ -3533,7 +3499,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def __init__(self, session, name, url):
         Screen.__init__(self, session)
         self.skinName = 'MoviePlayer'
-
         InfoBarMenu.__init__(self)
         InfoBarNotifications.__init__(self)
         InfoBarBase.__init__(self, steal_current_service=True)
@@ -3545,6 +3510,11 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+        url = url.replace(':', '%3a')
+        self.url = url
+        self.name = name
+        self.state = self.STATE_PLAYING        
         self['actions'] = ActionMap(['MoviePlayerActions',
             'MovieSelectionActions',
             'MediaPlayerActions',
@@ -3564,10 +3534,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                 'cancel': self.cancel,
                 'back': self.cancel}, -1)
         InfoBarSeek.__init__(self, actionmap='InfobarSeekActions')
-        url = url.replace(':', '%3a')
-        self.url = url
-        self.name = name
-        self.state = self.STATE_PLAYING
         # self.onLayoutFinish.append(self.cicleStreamType)
         self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
@@ -3660,17 +3626,12 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         print('servicetype2: ', self.servicetype)
         self.openPlay(self.servicetype, url)
 
-    def cancel(self):
-        self.session.nav.stopService()
-        self.session.nav.playService(srefInit)
-        self.close()
-
-
     def doEofInternal(self, playing):
         self.close()
 
     def __evEOF(self):
         self.end = True
+
     def showVideoInfo(self):
         if self.shown:
             self.hideInfobar()
@@ -3686,7 +3647,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         if os.path.isfile('/tmp/hls.avi'):
             os.remove('/tmp/hls.avi')
         self.session.nav.stopService()
-        self.session.nav.playService(srefInit)
+        self.session.nav.playService(self.initialservice)
         if not self.new_aspect == self.init_aspect:
             try:
                 self.setAspect(self.init_aspect)
@@ -3827,15 +3788,13 @@ def Plugins(**kwargs):
         result.append(mainDescriptor)
     return result
 
-# JobManager.AddJob(downloadJob(self, "wget %s -c '%s' -O '%s%s'" % (useragentcmd, url, Path_Movies2, name), Path_Movies2 + filetitle, filetitle, self.downloadStop))
 class downloadJob(Job):
-    # def __init__(self, toolbox, cmdline, filename, filetitle, downloadStop):
     def __init__(self, toolbox, cmdline, filename, filetitle):
-        Job.__init__(self, "%s" % filetitle)
+        # print("**** downloadJob init ***")
+        Job.__init__(self, 'Download:' + ' %s' % filetitle)
         self.filename = filename
         self.toolbox = toolbox
         self.retrycount = 0
-        # downloadTask(self, cmdline, filename, downloadStop)
         downloadTask(self, cmdline, filename)
 
     def retry(self):
@@ -3845,48 +3804,95 @@ class downloadJob(Job):
     def cancel(self):
         self.abort()
 
+            
 class downloadTask(Task):
-    ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
-    # def __init__(self, job, cmdline, filename, downloadStop):
-    def __init__(self, job, cmdline, filename ):
-        Task.__init__(self, job, _("Downloading ..."))
+    if PY3:
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
+    else:
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
+
+    def __init__(self, job, cmdline, filename):
+        Task.__init__(self, job, "Downloading ...")
+        self.postconditions.append(downloadTaskPostcondition())
         self.setCmdline(cmdline)
         self.filename = filename
         self.toolbox = job.toolbox
-        # self.downloadStop = downloadStop
         self.error = None
         self.lasterrormsg = None
-
+        return
+        
     def processOutput(self, data):
-        # if PY3:
-            # data = six.ensure_str(data)
         if PY3:
-            data = checkStr(data)
-
+            data = str(data)
         try:
-            if data.endswith("%)"):
-                startpos = data.rfind("sec (") + 5
+            if data.endswith('%)'):
+                startpos = data.rfind('sec (') + 5
                 if startpos and startpos != -1:
                     self.progress = int(float(data[startpos:-4]))
-            elif data.find("%") != -1:
-                tmpvalue = data[:data.find("%")]
-                tmpvalue = tmpvalue[tmpvalue.rfind(" "):].strip()
-                tmpvalue = tmpvalue[tmpvalue.rfind("(") + 1:].strip()
+            elif data.find('%') != -1:
+                tmpvalue = data[:data.find('%')]
+                tmpvalue = tmpvalue[tmpvalue.rfind(' '):].strip()
+                tmpvalue = tmpvalue[tmpvalue.rfind('(') + 1:].strip()
+                if PY3:
+                    tmpvalue = int(tmpvalue)
                 self.progress = int(float(tmpvalue))
             else:
                 Task.processOutput(self, data)
-        except Exception as ex:
-            print("Error processOutput: " + str(ex))
-            # self.downloadStop()
+        except Exception as errormsg:
+            print('Error processOutput: ' + str(errormsg))
             Task.processOutput(self, data)
 
+    def processOutputLine(self, line):
+        line = line[:-1]
+        self.lasterrormsg = line
+        if line.startswith('ERROR:'):
+            if line.find('RTMP_ReadPacket') != -1:
+                self.error = self.ERROR_RTMP_ReadPacket
+            elif line.find('corrupt file!') != -1:
+                self.error = self.ERROR_CORRUPT_FILE
+                os.system('rm -f %s' % self.filename)
+            else:
+                self.error = self.ERROR_UNKNOWN
+        elif line.startswith('wget:'):
+            if line.find('server returned error') != -1:
+                self.error = self.ERROR_SERVER
+        elif line.find('Segmentation fault') != -1:
+            self.error = self.ERROR_SEGFAULT
+            
     def afterRun(self):
-        if self.getProgress() == 0 or self.getProgress() == 100:
-            # self.downloadStop()
-            self.downloading = False
-            message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
-            web_info(message)
+        if self.getProgress() == 0:
+            try:
+                self.toolbox.download_failed()
+            except:
+                pass
+        elif self.getProgress() == 100:
+            try:
+                self.toolbox.download_finished()
+                self.downloading = False
+                message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
+                web_info(message)                
+            except:
+                pass
+        pass
 
+class downloadTaskPostcondition(Condition):
+    RECOVERABLE = True
+    def check(self, task):
+        if task.returncode == 0 or task.error is None:
+            return True
+        else:
+            return False
+            return
+
+    def getErrorMessage(self, task):
+        return {
+            task.ERROR_CORRUPT_FILE: _("MOVIE DOWNLOAD FAILED!") + '\n\n' + _("DOWNLOADED FILE CORRUPTED:") + '\n%s' % task.lasterrormsg,
+            task.ERROR_RTMP_ReadPacket: _("MOVIE DOWNLOAD FAILED!") + '\n\n' + _("COULD NOT READ RTMP PACKET:") + '\n%s' % task.lasterrormsg,
+            task.ERROR_SEGFAULT: _("MOVIE DOWNLOAD FAILED!") + '\n\n' + _("SEGMENTATION FAULT:") + '\n%s' % task.lasterrormsg,
+            task.ERROR_SERVER: _("MOVIE DOWNLOAD FAILED!") + '\n\n' + _("SERVER RETURNED ERROR:") + '\n%s' % task.lasterrormsg,
+            task.ERROR_UNKNOWN: _("MOVIE DOWNLOAD FAILED!") + '\n\n' + _("UNKNOWN ERROR:") + '\n%s' % task.lasterrormsg
+        }[task.error]
+        
 VIDEO_ASPECT_RATIO_MAP = {
     0: "4:3 Letterbox",
     1: "4:3 PanScan",
@@ -4448,15 +4454,14 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
+        self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()  
+        self.url = url
+        self.name = name        
         self['actions'] = ActionMap(['WizardActions', 'MoviePlayerActions', 'EPGSelectActions', 'MediaPlayerSeekActions', 'ColorActions', 'InfobarShowHideActions', 'InfobarActions'], {
             'leavePlayer': self.cancel,
             'back': self.cancel
         }, -1)
-
         InfoBarSeek.__init__(self, actionmap='MediaPlayerSeekActions')
-        self.url = url
-        self.name = name
-        self.srefOld = self.session.nav.getCurrentlyPlayingServiceReference()
         self.onLayoutFinish.append(self.openTest)
 
     def getAspect(self):
@@ -4504,7 +4509,7 @@ class M3uPlayMovie(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotific
         if os.path.exists('/tmp/hls.avi'):
             os.remove('/tmp/hls.avi')
         self.session.nav.stopService()
-        self.session.nav.playService(self.srefOld)
+        self.session.nav.playService(self.initialservice)
         self.close()
 
 

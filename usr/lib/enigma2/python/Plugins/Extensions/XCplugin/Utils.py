@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#14.01.2021
+#08.02.2021
 #a common tips used from Lululla
 #
 import sys
@@ -74,7 +74,21 @@ def listDir(what):
         pass
 
     return f
-    
+
+def get_safe_filename(filename, fallback=''):
+    """Convert filename to safe filename
+    """
+    import unicodedata
+    import six
+    name = filename.replace(" ", "_").replace("/", "_")
+    if isinstance(name, six.text_type):
+        name = name.encode('utf-8')
+    name = unicodedata.normalize('NFKD', six.text_type(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
+    name = re.sub(b'[^a-z0-9-_]', b'', name.lower())
+    if not name:
+        name = fallback
+    return six.ensure_str(name)
+
 def remove_line(filename, what):
     if os.path.isfile(filename):
         file_read = open(filename).readlines()
