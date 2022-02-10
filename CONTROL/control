@@ -1,11 +1,10 @@
 Package: enigma2-plugin-extensions-xcplugin-forever
-Version: 2.1
+Version: 2.2
 Section: extra
 Priority: optional
 Maintainer: Lululla <ekekaz@gmail.com>
 Architecture: all
 OE: OE2.0
 Homepage: 
-Depends:
 Description: plugin, for the free streaming.
 Source: none
