@@ -41,39 +41,20 @@ from xml.sax.saxutils import escape
 import six
 import requests
 
-# if six.PY3:
-     # from urllib.parse import quote, quote_plus, urlparse, parse_qs
-# else:
-     # from urllib import quote, quote_plus, urlparse, parse_qs
-
 PY3 = False
 PY3 = sys.version_info.major >= 3
 print('Py3: ',PY3)
 
-try:
-    from urllib import quote
-    from urllib import quote_plus
-    from urlparse import urlparse
-    from urlparse import parse_qs
-
-except ImportError:
+if PY3:
     from urllib.parse import quote
     from urllib.parse import quote_plus
     from urllib.parse import urlparse
     from urllib.parse import parse_qs
     PY3 = True; unicode = str; unichr = chr; long = int; xrange = range
-
-
-# if PY3:
-    # from urllib.parse import quote
-    # from urllib.parse import quote_plus
-    # from urllib.parse import urlparse
-    # from urllib.parse import parse_qs
-    # PY3 = True; unicode = str; unichr = chr; long = int; xrange = range
-# else:
-    # from urllib import quote, quote_plus
-    # from urlparse import urlparse
-    # from urlparse import parse_qs
+else:
+    from urllib import quote, quote_plus
+    from urlparse import urlparse
+    from urlparse import parse_qs
 
 
 

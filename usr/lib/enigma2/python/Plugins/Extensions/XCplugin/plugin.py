@@ -122,14 +122,14 @@ else:
      PY3 = False
 
 if PY3:
-    from urllib.request import urlopen, Request, FancyURLopener
+    from urllib.request import urlopen, Request#, FancyURLopener
     from urllib.parse import urlparse
-    from urllib.parse import quote_plus
+    # from urllib.parse import quote_plus
 
 else:
     from urllib2 import urlopen, Request
     from urlparse import urlparse
-    from urllib import quote_plus, FancyURLopener
+    # from urllib import quote_plus#, FancyURLopener
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
