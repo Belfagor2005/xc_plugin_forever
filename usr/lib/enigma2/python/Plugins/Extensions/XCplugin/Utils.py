@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#08.02.2021
+#12.02.2021
 #a common tips used from Lululla
 #
 import sys
@@ -126,7 +126,27 @@ def badcar(name):
     for i in bad_chars:
         name = name.replace(i, '')
     return name
-    
+
+def cleanTitle(x):
+	x = x.replace('~','')
+	x = x.replace('#','')
+	x = x.replace('%','')
+	x = x.replace('&','')
+	x = x.replace('*','')
+	x = x.replace('{','')
+	x = x.replace('}','')
+	x = x.replace(':','')
+	x = x.replace('<','')
+	x = x.replace('>','')
+	x = x.replace('?','')
+	x = x.replace('/','')
+	x = x.replace('+','')
+	x = x.replace('|','')
+	x = x.replace('"','')
+	x = x.replace('\\','')
+	x = x.replace('--','-')
+	return x 
+
 def getLanguage():
     try:
         from Components.config import config

@@ -1241,8 +1241,6 @@ class xc_Main(Screen):
         selected_channel = iptv_list_tmp[self.index]
         if selected_channel:
             name = str(selected_channel[1])
-            # name = name.lower()
-            print('nameee ', name)
             show_more_infos(name, self.index)
 
     def show_more_info_Title(self, truc):
@@ -1308,6 +1306,8 @@ class xc_Main(Screen):
                             name = name.replace('..', '.')
                             name = name.lower() + ext
                             name = name.replace(".mp4.mp4", ".mp4")
+                            
+                            
                             name = checkStr(name)
                             url = checkStr(url)
                             # print('name ======= ', name)
@@ -1355,6 +1355,7 @@ class xc_Main(Screen):
         self.vod_url = str(self.selected_channel[4])
         self.title = str(self.selected_channel[1])
         self.desc = str(self.selected_channel[2])
+        print('titleeeeeeeeeee: ', self.title)
         # if PY3:
             # self.vod_url = self.vod_url.encode()
             # print('self.vod_url encode')
@@ -1362,17 +1363,8 @@ class xc_Main(Screen):
             pth = urlparse(self.vod_url).path
             ext = splitext(pth)[-1]
             if ext != '.ts':
-                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.title), type=MessageBox.TYPE_YESNO, timeout=5)  # default=False)
-            else:
-                if config.plugins.XCplugin.LivePlayer.value is True:
-                    self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
-                    return
-        else:
-            self.mbox = self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
-
-    def download_vod(self, result):
-        if result:
-            try:
+            
+            
                 ext = '.mp4'
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
@@ -1385,6 +1377,30 @@ class xc_Main(Screen):
                 filename = filename.lower() + ext
                 filename = filename.replace(".mp4.mp4", ".mp4")
                 self.filename = str(filename) + str(ext)
+                
+                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % filename), type=MessageBox.TYPE_YESNO, timeout=5)  # default=False)
+            else:
+                if config.plugins.XCplugin.LivePlayer.value is True:
+                    self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
+                    return
+        else:
+            self.mbox = self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
+
+    def download_vod(self, result):
+        if result:
+            try:
+                # ext = '.mp4'
+                # pth = urlparse(self.vod_url).path
+                # ext = splitext(pth)[-1]
+                # if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
+                    # ext = '.mp4'
+                # filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+                # filename = re.sub(r' ', '_', filename)
+                # filename = re.sub(r'_+', '_', filename)
+                # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                # filename = filename.lower() + ext
+                # filename = filename.replace(".mp4.mp4", ".mp4")
+                # self.filename = str(filename) + str(ext)
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
@@ -1413,9 +1429,9 @@ class xc_Main(Screen):
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloady)
 
                 self.timerDownload.start(300, True)
-                self.session.open(MessageBox, _('Downloading \n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
+                self.session.open(MessageBox, _('Downloading \n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
             except:
-                self.session.open(MessageBox, _('Download Failed\n\n' + self.title + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
+                self.session.open(MessageBox, _('Download Failed\n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
                 pmovies = False
 
@@ -1432,21 +1448,21 @@ class xc_Main(Screen):
         # if self.downloading == True:
             pmovies = True
             useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
-            ext = '.mp4'
-            pth = urlparse(self.vod_url).path
-            ext = splitext(pth)[-1]
-            if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
-                ext = '.mp4'
-            filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
-            filename = re.sub(r' ', '_', filename)
-            filename = re.sub(r'_+', '_', filename)
-            filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-            filename = filename.lower() + ext
-            filename = filename.replace(".mp4.mp4", ".mp4")
-            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, filename)
-            self.timeshift_url = Path_Movies + filename
-            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.title))
-            self.createMetaFile(filename, filename)
+            # ext = '.mp4'
+            # pth = urlparse(self.vod_url).path
+            # ext = splitext(pth)[-1]
+            # if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
+                # ext = '.mp4'
+            # filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
+            # filename = re.sub(r' ', '_', filename)
+            # filename = re.sub(r'_+', '_', filename)
+            # filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+            # filename = filename.lower() + ext
+            # filename = filename.replace(".mp4.mp4", ".mp4")
+            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
+            self.timeshift_url = Path_Movies + self.filename
+            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.title))
+            self.createMetaFile(self.filename, self.filename)
             self.LastJobView()
 
     def eError(self, error):
@@ -2737,6 +2753,7 @@ class OpenServer(Screen):
                 del self.names[idx]
             else:
                 self.session.open(MessageBox, dom + _("   not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
+            self["live"].setText(str(len(self.names)) + " Team")
             m3ulistxc(self.names, self["list"])
 
     def rename(self):
