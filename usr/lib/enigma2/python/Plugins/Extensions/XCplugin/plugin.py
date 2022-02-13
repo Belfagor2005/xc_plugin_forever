@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             10/02/2022               *
+*             13/02/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -1043,78 +1043,57 @@ class xc_Main(Screen):
         re_search = False
         self.filter_search = []
 
-    # def checkinf(self):
-            # panel= str(config.plugins.XCplugin.panel.value) + '.php'
-            # url_info = urlinfo.replace("enigma2.php",panel)
-            # print "url_info2 = ", url_info
-            # try:
-                # fpage = urllib2.urlopen(url_info).read()
-                # print  "fpage =", fpage
-                # fpage = fpage.replace("null","1893452400")
-                # fp = eval(fpage)
-                # user_info = fp["user_info"]
-                # print  "user_info =", user_info
-                # if str(user_info["exp_date"]) == "1893452400" :
-                    # self["exp"].setText("Exp date: --------" )
-                # else:
-                    # exp_date = user_info["exp_date"]
-                    # tconv = datetime.fromtimestamp(float(exp_date)).strftime("%c")
-                    # self["exp"].setText("Exp date: " + str(tconv))
-                    # print  "exp =", str(tconv)
-                # max_connections = user_info["max_connections"]
-                # self["max_connect"].setText("Max Connections: " +  str(max_connections))
-                # print  "max_connect =", str(max_connections)
-                # active_cons = user_info["max_connections"]
-                # self["active_cons"].setText("User Active: " +  str(active_cons))
-                # print  "active_cons =", str(active_cons)
-
-            # except Exception as ex:
-                # print ex
-                # print "ERROR user_info"
-                # self["exp"].setText("No Info")
-
     def checkinf(self):
         try:
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
             host = config.plugins.XCplugin.hostaddress.value
             ports = config.plugins.XCplugin.port.value
-            # panel = str(config.plugins.XCplugin.panel.value)
             username = config.plugins.XCplugin.user.value
             password = config.plugins.XCplugin.passw.value
             self["max_connect"].setText("Max Connect: 0")
             self["active_cons"].setText("User Active: 0")
-            self["exp"].setText("Null")
+            self["exp"].setText("")
             self["server_protocol"].setText("Protocol: No Info ")
             self["timezone"].setText("Timezone: No Info ")
             url_info = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(username) + '&password=' + str(password) + '&action=user&sub=info'
             url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             print('url_info: ', url_info)
             print('url_info: ', url_info2)
+            # try:
+                # data = getJsonURL(url_info2)
+            # except:
+                # data = getJsonURL(url_info)
+            url = url_info2
+            print("Videos2 url =", url)
+            content = ReadUrl2(url)
+            if PY3:
+                content = six.ensure_str(content)
+            y = json.loads(content)
             try:
-                data = getJsonURL(url_info)
-            except:
-                data = getJsonURL(url_info2)
-            user = ''
-            status = ''
-            create_date = 'None'
-            exp_date = 'None'
-            auth = 'Not Authorised'
-            active_cons = '0'
-            max_cons = '0'
-            ui = data.get('user_info')
-            ux = data.get('server_info')
-            if ui:
-                user = ui.get('username', '~')
-                status = ui.get('status', '~')
-                auth = ui.get('auth', '~')
-                create_date = ui.get('created_at', '~')
-                exp_date = ui.get('exp_date', '~')
-                # create_date = ui.get('created_at', None)
-                # exp_date = ui.get('exp_date', None)
-                active_cons = ui.get('active_cons', '~')
-                max_cons = ui.get('max_connections', '~')
-                if create_date:
-                    create_date = time.strftime(TIME_GMT, time.gmtime(int(create_date)))
+                user = ''
+                status = ''
+                create_date = '~'
+                exp_date = '~'
+                auth = 'Not Authorised'
+                active_cons = ''
+                max_connections = ''
+                print('user_info =', y["user_info"])
+                username = (y["user_info"]["username"])
+                status = (y["user_info"]["status"])
+                auth = (y["user_info"]["auth"])
+                created_at = (y["user_info"]["created_at"])
+                exp_date = (y["user_info"]["exp_date"])
+                active_cons = (y["user_info"]["active_cons"])                
+                max_connections = (y["user_info"]["max_connections"])  
+                print("In Videos2 username =", username)                
+                print("In Videos2 status =", status)                
+                print("In Videos2 auth =", auth)                
+                print("In Videos2 created_at =", created_at)                
+                print("In Videos2 active_cons =", active_cons)
+                print("In Videos2 max_connections =", max_connections)                
+                
+                if created_at:
+                    created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                 if exp_date:
                     exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                 if str(auth) == "1":
@@ -1128,18 +1107,23 @@ class xc_Main(Screen):
                         self["exp"].setText("Expired")
                     if str(status) == "Active":
                         try:
-                            self["exp"].setText("Exp date:\n" + str(exp_date))
+                            self["exp"].setText("Active - Exp date:\n" + str(exp_date))
                         except:
-                            self["exp"].setText("Exp date: \n")
-                    self["max_connect"].setText("Max Connect: " + str(max_cons))
+                            pass
+                            # self["exp"].setText("Exp date:\n")
+                    self["max_connect"].setText("Max Connect: " + str(max_connections))
                     self["active_cons"].setText("User Active: " + str(active_cons))
-            if ux:
-                server_protocol = ux.get('server_protocol', '~')
-                timezone = ux.get('timezone', '~')
+
+                print('server_info =', y["server_info"])
+                server_protocol = (y["server_info"]["server_protocol"])
+                timezone = (y["server_info"]["timezone"])
                 self["server_protocol"].setText("Protocol: " + str(server_protocol))
                 self["timezone"].setText("Timezone: " + str(timezone))
-            else:
-                print('error getJsonURL: ')
+                print('server_protocol =', server_protocol)
+                print('timezone =', timezone)                
+                
+            except Exception as e:
+                print('error json checkinf : ', str(e))
 
         except Exception as ex:
             print('getJsonURL: ', str(ex))
@@ -4405,7 +4389,7 @@ def make_bouquet():
         configtext += '\t\t<allbouquet>' + all_bouquet + '</allbouquet>\r\n'
         configtext += '\t\t<picons>' + picons + '</picons>\r\n'
         configtext += '\t\t<iconpath>' + Path_Picons + '</iconpath>\r\n'
-        configtext += '\t\t<xcludesref>1</xcludesref>\r\n'
+        configtext += '\t\t<xcludesref>0</xcludesref>\r\n'
         configtext += '\t\t<bouqueturl><![CDATA[]]></bouqueturl>\r\n'
         configtext += '\t\t<bouquetdownload>0</bouquetdownload>\r\n'
         configtext += '\t\t<bouquettop>' + bouquet_top + '</bouquettop>\r\n'
