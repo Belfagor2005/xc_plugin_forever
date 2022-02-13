@@ -183,7 +183,7 @@ config.plugins.XCplugin = ConfigSubsection()
 config.plugins.XCplugin.data = ConfigYesNo(default=False)
 # config.plugins.XCplugin.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
 config.plugins.XCplugin.hostaddress = ConfigText(default="exampleserver.com")
-config.plugins.XCplugin.port = ConfigNumber(default=80)
+config.plugins.XCplugin.port = ConfigText(default="80")
 config.plugins.XCplugin.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 config.plugins.XCplugin.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
 config.plugins.XCplugin.infoname = NoSave(ConfigText(default="myBouquet"))
@@ -194,7 +194,7 @@ config.plugins.XCplugin.live = ConfigSelection(default='1', choices=modelive)
 
 config.plugins.XCplugin.services = ConfigSelection(default='4097', choices=modemovie)
 config.plugins.XCplugin.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-config.plugins.XCplugin.timeout = ConfigNumber(default=15)
+config.plugins.XCplugin.timeout = ConfigText(default="10")
 config.plugins.XCplugin.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 config.plugins.XCplugin.badcar = ConfigEnableDisable(default=False)
 config.plugins.XCplugin.picons = ConfigEnableDisable(default=False)
@@ -259,7 +259,7 @@ def check_port(tport):
     if str(config.plugins.XCplugin.port.value) != '80':
         port = str(config.plugins.XCplugin.port.value)
     else:
-        port = 80
+        port = '80'
     host = ''
     urlsplit1 = line.split("/")
     protocol = urlsplit1[0] + "//"
