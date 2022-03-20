@@ -3013,9 +3013,11 @@ def xcm3ulistEntry(download):
     white = 16777215
     blue = 79488
     col = 16777215
-    res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))
+
     if isFHD():
         res.append(MultiContentEntryText(pos=(0, 0), size=(1200, 50), text=download, color=col, color_sel=white, backcolor_sel=blue))
+    else:    
+        res.append(MultiContentEntryText(pos=(0, 0), size=(1000, 40), text=download, color=col, color_sel=white, backcolor_sel=blue))        
     return res
 
 def m3ulistxc(data, list):
@@ -3030,11 +3032,13 @@ def m3ulistxc(data, list):
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        self.l.setItemHeight(40)
-        self.l.setFont(0, gFont("Regular", 24))
+
         if isFHD():
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
+        else:    
+            self.l.setItemHeight(40)
+            self.l.setFont(0, gFont("Regular", 24))            
 
 
 class xc_Play(Screen):
