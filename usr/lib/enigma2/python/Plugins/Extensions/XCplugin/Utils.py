@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#12.02.2021
+#19.02.2021
 #a common tips used from Lululla
 #
 import sys
@@ -75,6 +75,13 @@ def listDir(what):
 
     return f
 
+def purge(dir, pattern):
+    for f in os.listdir(dir):
+        file_path = os.path.join(dir, f)
+        if os.path.isfile(file_path):
+            if re.search(pattern, f):
+                os.remove(file_path)
+
 def get_safe_filename(filename, fallback=''):
     """Convert filename to safe filename
     """
@@ -126,6 +133,7 @@ def badcar(name):
     for i in bad_chars:
         name = name.replace(i, '')
     return name
+
 
 def cleanTitle(x):
 	x = x.replace('~','')
@@ -223,17 +231,26 @@ def testWebConnection(host="www.google.com", port=80, timeout=3):
         print('error: ', str(e))
         return False
 
-def checkStr(txt):
-    # convert variable to type str both in Python 2 and 3
-    if PY3:
-        # Python 3
-        if type(txt) == type(bytes()):
-            txt = txt.decode('utf-8')
-    else:
-        #Python 2
-        if type(txt) == type(unicode()):
-            txt = txt.encode('utf-8')
-    return txt
+def checkStr(text, encoding="utf8"):
+	if PY3 == False:
+		if isinstance(text, unicode):
+			return text.encode(encoding)
+		else:
+			return text
+	else:
+		return text
+        
+# def checkStr(txt):
+    # # convert variable to type str both in Python 2 and 3
+    # if PY3:
+        # # Python 3
+        # if type(txt) == type(bytes()):
+            # txt = txt.decode('utf-8')
+    # else:
+        # #Python 2
+        # if type(txt) == type(unicode()):
+            # txt = txt.encode('utf-8')
+    # return txt
 
 # def checkStr(txt):
     #import six

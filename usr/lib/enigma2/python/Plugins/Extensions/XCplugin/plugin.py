@@ -3725,12 +3725,13 @@ class AutoStartTimer:
 
 
 def check_configuring():
-    """Check for new config values for auto start
-    """
-    global autoStartTimer
-    if autoStartTimer != None:
-        autoStartTimer.update()
-    return
+    if config.plugins.XCplugin.autobouquetupdate.value == True:
+        """Check for new config values for auto start
+        """
+        global autoStartTimer
+        if autoStartTimer != None:
+            autoStartTimer.update()
+        return
 
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
