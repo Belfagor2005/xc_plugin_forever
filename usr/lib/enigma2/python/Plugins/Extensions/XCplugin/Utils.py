@@ -261,7 +261,7 @@ def checkStr(text, encoding="utf8"):
         # if isinstance(txt, type(six.text_type())):
             # txt = txt.encode('utf-8')
     # return txt
-    #kiddac code        
+#kiddac code        
 def checkRedirect(url):
     # print("*** check redirect ***")
     try:

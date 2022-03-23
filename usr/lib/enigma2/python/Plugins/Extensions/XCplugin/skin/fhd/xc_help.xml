@@ -12,7 +12,7 @@
 	<!-- Poster -->
 	<ePixmap position="790,140" size="308,423" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvlogo.jpg" scale="1" alphatest="blend" zPosition="1" />
 	<widget name="helpdesc" position="220,135" font="Regular;24" size="753,840" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<widget name="helpdesc2" position="220,625" font="Regular;24" size="800,403" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />	
+	<widget name="helpdesc2" position="223,545" font="Regular;24" size="800,391" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />
 	<!-- Buttons Colors -->
 	<eLabel position="220,940" size="880,5" backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="220,965" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
