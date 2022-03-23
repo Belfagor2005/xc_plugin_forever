@@ -25,7 +25,6 @@
 	<ePixmap position="673,376" size="74,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
 	<eLabel position="100,660" size="1046,3" backgroundColor="#202020" zPosition="1" />
-   
 	<ePixmap position="100,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_red" position="133,673" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
     <widget name="green" alphatest="on" position="300,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" zPosition="3" transparent="1" />

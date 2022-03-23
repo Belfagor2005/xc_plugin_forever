@@ -268,10 +268,10 @@ class imagedownloadScreen(Screen):
         return
 
     def okclicked(self):
-        if not self.downloading:
-           self.instance.show()
-           self.shown=True
-           return
+        # if not self.downloading:
+           # self.instance.show()
+           # self.shown=True
+           # return
         if self.shown:
             self.shown=False
             self.instance.hide()
