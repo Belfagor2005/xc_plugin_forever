@@ -37,26 +37,19 @@
 	<!-- Buttons Colors -->
 	<ePixmap position="62,1017" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_red" position="100,1013" size="233,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	
-<!-- 	
-	<widget name="blue" alphatest="on" position="358,1018" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_blue.png" zPosition="3" transparent="1" />
-	 -->
 	<ePixmap position="358,1018" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />	 
-<!-- 	
-	<widget name="blue" position="401,1015" size="250,40" font="Regular;30" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="7" /> 	
-	 -->
-	<widget name="key_stop" position="699,1016" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="key_stop" position="699,1016" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<eLabel position="659,1021" size="25,25" backgroundColor="#ffffff" zPosition="3" />
-	<widget name="cont_play" position="401,1015" size="250,40" font="Regular;30" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="7" /> 		
+	<widget name="cont_play" position="401,1015" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" /> 		
 	<eLabel position="937,1023" size="25,25" backgroundColor="#830113" zPosition="3" />
-	<widget name="key_record" position="973,1016" size="250,40" font="Regular;30" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="6" /> 		
+	<widget name="key_record" position="973,1016" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" /> 		
     	
    	<!--eLabel position="570,1020" size="25,25" backgroundColor="#d9b301" zPosition="3" />
 	<widget name="key_yellow" position="615,1018" size="250,40" font="Regular;28" foregroundColor="#808080" backgroundColor="#000000" transparent="1" />
 	<eLabel position="750,1020" size="25,25" backgroundColor="#005a00" zPosition="3" />
 	<widget name="key_green" position="790,1018" size="250,40" font="Regular;28" foregroundColor="#808080" backgroundColor="#000000" transparent="1" /-->
-	<eLabel position="1280,1009" size="120,51" backgroundColor="#30000000" zPosition="3" />
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" position="1292,1013" size="100,40" alphatest="blend" zPosition="5" />
+	<eLabel position="1280,1009" size="120,51" backgroundColor="#30000000" zPosition="2" />
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" position="1292,1013" size="100,40" alphatest="blend" zPosition="3" />
 	<widget name="programm" position="50,20" size="1820,304" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" /> 	
 	
 	<!-- Audio icon -->
@@ -100,7 +93,7 @@
 	<widget source="session.CurrentService" render="Label" position="1470,1010" size="100,40" font="Regular;34" halign="right" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServiceInfo">VideoWidth</convert>
 	</widget>
-	<eLabel text="x" position="1577,1010" size="25,40" font="Regular;34" foregroundColor="#505050" backgroundColor="#10000000" transparent="1" zPosition="3" />
+	<eLabel text="x" position="1572,1010" size="25,40" font="Regular;34" foregroundColor="#505050" backgroundColor="#10000000" transparent="1" zPosition="3" />
 	<widget source="session.CurrentService" render="Label" position="1600,1010" size="100,40" font="Regular;34" halign="left" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServiceInfo">VideoHeight</convert>	
 	</widget>

@@ -2730,7 +2730,7 @@ class xc_help(Screen):
 
     def blue(self):
         helpdesc = self.bluecontext()
-        helpdesc2 = self.homecontext2()
+        # helpdesc2 = self.homecontext2()
         self["helpdesc"].setText(helpdesc)
         self["helpdesc2"].setText(helpdesc2)
 
@@ -2744,8 +2744,8 @@ class xc_help(Screen):
         conthelp += _("            Return to Channels List\n")
         conthelp += _("    (BLUE BUTTON):\n")
         conthelp += _("            Init Continue Play\n\n")   
-    
-        conthelp = "PLAYER M3U\n"
+
+        conthelp += "PLAYER M3U\n"
         # conthelp += _("    (OK BUTTON):\n")
         # conthelp += _("            Open file from list\n")
         conthelp += _("    (GREEN BUTTON):\n")
@@ -2944,7 +2944,6 @@ class OpenServer(Screen):
                 dom = Path_XML + self.urls[idx]
                 tree = ElementTree()
                 xml = tree.parse(dom)
-                
                 host = xml.findtext("xtream_e2portal_url")
                 self.host = host
                 port = xml.findtext("port")
