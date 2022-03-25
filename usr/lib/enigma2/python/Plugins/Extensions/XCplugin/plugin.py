@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             23/03/2022               *
+*             25/03/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -74,7 +74,7 @@ try:
     from Plugins.Extensions.XCplugin.Utils import *
 except:
     from . import Utils
-   
+
 import base64
 import glob
 import hashlib
@@ -276,18 +276,17 @@ def check_port(tport):
 
 class xc_home(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_home.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('MAIN MENU')
-        Screen.__init__(self, session)
         self.list = []
         self["Text"] = Label("")
         self["version"] = Label(version)
         # self['text'] = xcList([])
-        self['text'] = xcM3UList([])        
+        self['text'] = xcM3UList([])
         self["key_red"] = Label(_("Exit"))
         self["key_green"] = Label(_("Select"))
         self["key_yellow"] = Label(_("Movie"))
@@ -319,7 +318,7 @@ class xc_home(Screen):
             print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
                 print("*** checking multiprocessing ***")
-                # from multiprocessing.pool import ThreadPool
+                from multiprocessing.pool import ThreadPool
         except Exception as e:
             print("**** missing dependencies ***")
             print(e)
@@ -390,7 +389,7 @@ class xc_home(Screen):
             # idx += 1
         self['text'].setList(list)
         self["Text"].setText(infoname)
-        
+
     def keyNumberGlobalCB(self, idx):
         sel = self.menu_list[idx]
         if sel == ('HOME'):
@@ -427,11 +426,11 @@ class xc_home(Screen):
 
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_config.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.onChangedEntry = []
@@ -816,14 +815,14 @@ class iptv_streamse():
             print("!!!!!!!!-------------------- URL %s" % self.url)
             if '&type' in self.url:
                 next_request = 1
-                                
+
             # elif "_get" in self.url:
                 # next_request = 2
-                
+
             elif "get_" in self.url: #at start
                 next_request = 2
-                
-                
+
+
             xml = self._request(self.url)
             print('res xml: ', str(xml))
             # if xml or xml != None:
@@ -950,8 +949,8 @@ class iptv_streamse():
                         description4playlist_html = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                     # if "/movie/" in stream_url :
                     # if isStream and "/movie/" in stream_url:
-                    if isStream and ("/movie/" or "/series/") in stream_url:                    
-                    
+                    if isStream and ("/movie/" or "/series/") in stream_url:
+
                         stream_live = False
                         vodTitle = ''
                         vodDescription = ''
@@ -1066,11 +1065,11 @@ class xc_Main(Screen):
         global channel_list2
         global re_search
         _session = session
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_Main.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.channel_list = STREAMS.iptv_list
         self.index = STREAMS.list_index
@@ -1097,8 +1096,8 @@ class xc_Main(Screen):
         # self.mlist = xcM3UList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         # self['feedlist'] = self.mlist
         # # self['feedlist'] = xcM3UList(self.mlist)
-        # # self["feedlist"] = xcM3UList(self.mlist)        
-        self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)        
+        # # self["feedlist"] = xcM3UList(self.mlist)
+        self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
         self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
         self.mlist.l.setItemHeight(BLOCK_H)
@@ -1240,7 +1239,7 @@ class xc_Main(Screen):
             STREAMS.play_vod = True
             print("----------------------- MOVIE ------------------")
             self.session.openWithCallback(self.check_standby, xc_Player)
-            
+
 
     def go(self):
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
@@ -1269,14 +1268,14 @@ class xc_Main(Screen):
             self["blue"].show()
             self["green"].show()
             self["yellow"].show()
-            
+
         elif 'series' in urlinfo :
             self["key_blue"].show()
             self["key_green"].show()
             self["key_yellow"].show()
             self["blue"].show()
             self["green"].show()
-            self["yellow"].show()                
+            self["yellow"].show()
 
     def update_description(self):
         if not len(iptv_list_tmp):
@@ -1331,10 +1330,10 @@ class xc_Main(Screen):
         if not len(iptv_list_tmp):
             return
         self.channel_list = STREAMS.iptv_list
-        
+
         if re_search == False:
             self.channel_list = iptv_list_tmp
-            
+
         if 'season' or 'series' in stream_url:
             if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in stream_url:
                 global series
@@ -1370,7 +1369,7 @@ class xc_Main(Screen):
         except Exception as ex:
             print(str(ex))
 #######################
-            
+
     def search_text(self):
         global re_search
         if re_search is True:
@@ -1438,7 +1437,7 @@ class xc_Main(Screen):
         # print('next_request = ',next_request)
         # print('re_search = ',re_search)
         # print('isStream = ',isStream)
-        
+
         # print('STREAM VIDEO STATUS : ', str(STREAMS.video_status))
         # print('STREAM VIDEO BACK : ', str(self.video_back))
         # if STREAMS.video_status and self.video_back == False:
@@ -1537,15 +1536,15 @@ class xc_Main(Screen):
                 auth = (y["user_info"]["auth"])
                 created_at = (y["user_info"]["created_at"])
                 exp_date = (y["user_info"]["exp_date"])
-                active_cons = (y["user_info"]["active_cons"])                
-                max_connections = (y["user_info"]["max_connections"])  
-                print("In Videos2 username =", username)                
-                print("In Videos2 status =", status)                
-                print("In Videos2 auth =", auth)                
-                print("In Videos2 created_at =", created_at)                
+                active_cons = (y["user_info"]["active_cons"])
+                max_connections = (y["user_info"]["max_connections"])
+                print("In Videos2 username =", username)
+                print("In Videos2 status =", status)
+                print("In Videos2 auth =", auth)
+                print("In Videos2 created_at =", created_at)
                 print("In Videos2 active_cons =", active_cons)
-                print("In Videos2 max_connections =", max_connections)                
-                
+                print("In Videos2 max_connections =", max_connections)
+
                 if created_at:
                     created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                 if exp_date:
@@ -1574,14 +1573,14 @@ class xc_Main(Screen):
                 self["server_protocol"].setText("Protocol: " + str(server_protocol))
                 self["timezone"].setText("Timezone: " + str(timezone))
                 print('server_protocol =', server_protocol)
-                print('timezone =', timezone)                
-                
+                print('timezone =', timezone)
+
             except Exception as e:
                 print('error checkinf : ', str(e))
 
         except Exception as ex:
             print('checkinf: ', str(ex))
-            
+
 ##########################
     def check_download_ser(self):
         titleserie = str(STREAMS.playlistname)
@@ -1640,7 +1639,7 @@ class xc_Main(Screen):
                             filename = filename.replace('..', '.')
                             filename = filename.lower() + ext
                             filename = filename.replace(".mp4.mp4", ".mp4")
-                            
+
                             name = checkStr(filename)
                             url = checkStr(url)
                             # print('name ======= ', name)
@@ -1782,11 +1781,11 @@ class xc_Main(Screen):
                 self.picload = ePicLoad()
                 self.scale = AVSwitch().getFramebufferScale()
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-                
+
                 _l = self.picload.PictureData.get()
                 del _l[:]
                 _l.append(self.showImage)
-                
+
                 if DreamOS():
                     self.picload.startDecode(png, False)
                 else:
@@ -1980,6 +1979,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
     ALLOW_SUSPEND = True
 
     def __init__(self, session, recorder_sref=None):
+        Screen.__init__(self, session)
         self.session = session
         global _session
         _session = session
@@ -1987,7 +1987,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         skin = skin_path + "/xc_Player.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
         InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
@@ -2128,9 +2127,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.downloadError(piclogo)
             print("update COVER")
 
-            
+
     def decodeImage(self, png):
-        try:    
+        try:
             self["poster"].hide()
             if os.path.exists(png):
                 size = self['poster'].instance.size()
@@ -2148,7 +2147,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 if ptr is not None:
                     self["poster"].instance.setPixmap(ptr.__deref__())
                     self["poster"].instance.show()
-                
+
                 # if ptr != None:
                     # self['poster'].instance.setPixmap(ptr)
                     # self['poster'].show()
@@ -2157,7 +2156,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 # return
         except Exception as err:
             print("[xc] ERROR decodeImage:", err)
-            
+
     def showImage(self, picInfo=None):
         try:
             ptr = self.picload.getData()
@@ -2444,7 +2443,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.session.open(MessageBox, self.error_message, type=MessageBox.TYPE_INFO, timeout=3)
                 else:
                     self.session.open(MessageBox, "NO VIDEOSTREAM FOUND", type=MessageBox.TYPE_INFO, timeout=3)
-                
+
                 self.video_back = False
                 self.close()
         except Exception as ex:
@@ -2452,11 +2451,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
 class xc_StreamTasks(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_StreamTasks.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self["movielist"] = List([])
         self["key_green"] = Label(_("Remove"))
@@ -2570,7 +2569,7 @@ class xc_StreamTasks(Screen):
                 isFile = os.path.isfile(url)
                 if isFile:
                     # self.session.open(M3uPlayMovie, name, url)
-                    self.session.open(M3uPlay2, name, url)                    
+                    self.session.open(M3uPlay2, name, url)
                 else:
                     self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
             else:
@@ -2624,11 +2623,11 @@ class xc_StreamTasks(Screen):
 
 class xc_help(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_help.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
@@ -2659,7 +2658,7 @@ class xc_help(Screen):
         conthelp += "Skin By: Mmark - Info e2skin.blogspot.it\n"
         conthelp += "______________________________________\n\n"
         conthelp += "Please reports bug or info to forums:\n"
-        conthelp += "    Corvoboys - linuxsat-support - dream-elite\n\n"
+        conthelp += "    Corvoboys - linuxsat-support\n\n"
         conthelp += "Special thanks to:\n"
         conthelp += "    MMark, Pcd, KiddaC\n"
         conthelp += "    aime_jeux, Support, Enigma1969, MasterG\n"
@@ -2678,6 +2677,9 @@ class xc_help(Screen):
     def yellow(self):
         helpdesc = self.yellowcontext()
         self["helpdesc"].setText(helpdesc)
+        helpdesc2 = self.homecontext2()
+        self["helpdesc2"].setText(helpdesc2)
+        self["helpdesc2"].show()
 
     def yellowcontext(self):
         conthelp = "HOME - MAIN\n"
@@ -2707,6 +2709,7 @@ class xc_help(Screen):
         helpdesc2 = self.homecontext2()
         self["helpdesc"].setText(helpdesc)
         self["helpdesc2"].setText(helpdesc2)
+        self["helpdesc2"].show()
 
     def greencontext(self):
         conthelp = "MENU CONFIG\n\n"
@@ -2730,20 +2733,23 @@ class xc_help(Screen):
 
     def blue(self):
         helpdesc = self.bluecontext()
-        # helpdesc2 = self.homecontext2()
         self["helpdesc"].setText(helpdesc)
+
+        helpdesc2 = self.homecontext2()
         self["helpdesc2"].setText(helpdesc2)
+
+        self["helpdesc2"].hide()
 
     def bluecontext(self):
         conthelp = "PLAYER XC\n"
+        conthelp += _("    (RED BUTTON):\n")
+        conthelp += _("            Return to Channels List\n")
+        conthelp += _("    (BLUE BUTTON):\n")
+        conthelp += _("            Init Continue Play\n\n")
         conthelp += _("    (REC BUTTON):\n")
         conthelp += _("            Download Video \n")
         conthelp += _("    (STOP BUTTON):\n")
         conthelp += _("            Close/Stop Movie/Live\n")
-        conthelp += _("    (RED BUTTON):\n")
-        conthelp += _("            Return to Channels List\n")
-        conthelp += _("    (BLUE BUTTON):\n")
-        conthelp += _("            Init Continue Play\n\n")   
 
         conthelp += "PLAYER M3U\n"
         # conthelp += _("    (OK BUTTON):\n")
@@ -2770,11 +2776,11 @@ class xc_help(Screen):
 
 class xc_Epg(Screen):
     def __init__(self, session, text_clear):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_epg.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         text = text_clear
         self["key_red"] = Label(_("Back"))
@@ -2790,13 +2796,12 @@ class xc_Epg(Screen):
 
 class xc_maker(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_maker.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
-        Screen.__init__(self, session)
         self.list = []
         self["Text"] = Label("")
         self["version"] = Label(version)
@@ -2876,11 +2881,11 @@ class xc_maker(Screen):
 
 class OpenServer(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_OpenServer.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -3020,13 +3025,13 @@ class OpenServer(Screen):
 
 class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelection, InfoBarSubtitleSupport, InfoBarServiceNotifications, InfoBarSeek, InfoBarMoviePlayerSummarySupport):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         global _session
         _session = session
         skin = skin_path + "/xc_iptv_player.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
         InfoBarMoviePlayerSummarySupport.__init__(self)
@@ -3218,7 +3223,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
 ###################
     def decodeImage(self, png):
-        try:    
+        try:
             self["poster"].hide()
             if os.path.exists(png):
                 size = self['poster'].instance.size()
@@ -3236,7 +3241,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 if ptr is not None:
                     self["poster"].instance.setPixmap(ptr.__deref__())
                     self["poster"].instance.show()
-                
+
                 # if ptr != None:
                     # self['poster'].instance.setPixmap(ptr)
                     # self['poster'].show()
@@ -3245,7 +3250,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 # return
         except Exception as err:
             print("[xc] ERROR decodeImage:", err)
-            
+
     def showImage(self, picInfo=None):
         try:
             ptr = self.picload.getData()
@@ -3264,7 +3269,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 pass
             except:
                 pass
-            
+
     def downloadError(self, data=None):
         if data:
             print(data)
@@ -3274,11 +3279,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
 
 class xc_Play(Screen):
     def __init__(self, session):
+        Screen.__init__(self, session)
         self.session = session
         skin = skin_path + "/xc_M3uLoader.xml"
         with open(skin, 'r') as f:
             self.skin = f.read()
-        Screen.__init__(self, session)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
@@ -3288,7 +3293,7 @@ class xc_Play(Screen):
         self["path"] = Label(_("Put .m3u Files in Folder %s") % Path_Movies)
         self["version"] = Label(version)
         self["Text"] = Label("")
-        self["Text"].setText("Select File")
+        self["Text"].setText("M3u Utility")
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
@@ -3877,9 +3882,9 @@ def xcm3ulistEntry(name):
     if isFHD():
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(pngl)))
         res.append(MultiContentEntryText(pos=(100, 0), size=(1200, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
-    else:    
+    else:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(png2)))
-        res.append(MultiContentEntryText(pos=(100, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))        
+        res.append(MultiContentEntryText(pos=(100, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
 def m3ulistxc(data, list):
@@ -3897,9 +3902,9 @@ class xcM3UList(MenuList):
         if isFHD():
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
-        else:    
+        else:
             self.l.setItemHeight(40)
-            self.l.setFont(0, gFont("Regular", 24))            
+            self.l.setFont(0, gFont("Regular", 24))
 
 
 class downloadJob(Job):
