@@ -1,4 +1,4 @@
-<!-- ***** XC OpenTeam 1920x1080 ***** OK 15-05-2020 /-->
+<!-- ***** XC OpenTeam 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="XC_OPENSERVER" position="0,0" size="1280,720" title="Xtream-Team" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
 	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />

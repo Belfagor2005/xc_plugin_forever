@@ -1,4 +1,4 @@
-<!-- ***** XC-PLAY 1280x720 ***** OK 15-05-2020 /-->
+<!-- ***** XC-PLAY 1280x720 ***** OK 26/03/2022 /-->
 <screen name="xc_M3uLoader" position="0,0" size="1280,720" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
 	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
@@ -9,11 +9,10 @@
 	<widget source="global.CurrentTime" render="Label" position="533,23" size="200,53" font="Regular;20" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
-	<widget name="path" position="146,572" size="585,37" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="0" zPosition="3" />
-	<widget name="list" position="146,90" size="586,474" foregroundColor="#808080" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="5" zPosition="1" />
-	<widget name="progress" position="319,637" size="238,26" foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
-	<widget source="progresstext" render="Label" position="320,638" size="238,26" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
-
+	<widget name="path" position="147,521" size="585,30" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="0" zPosition="3" />
+	<widget name="list" position="146,103" size="585,400" foregroundColor="#808080" backgroundColor="#000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="5" zPosition="1" />
+	<widget name="progress" position="148,575" size="585,30" foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
+	<widget source="progresstext" render="Label" position="148,575" size="585,30" font="Regular;20" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->
 	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="146,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />

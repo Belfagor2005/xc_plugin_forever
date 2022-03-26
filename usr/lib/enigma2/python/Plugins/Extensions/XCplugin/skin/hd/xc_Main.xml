@@ -1,4 +1,4 @@
-<!-- ***** Home Menu 1920x1080 ***** OK 15-05-2020 /-->
+<!-- ***** Home Menu 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="xc_Main" position="0,0" size="1280,720" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/backb.png" zPosition="1" />
 	<ePixmap position="100,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="1" />

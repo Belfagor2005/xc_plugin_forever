@@ -1,4 +1,4 @@
-<!-- ***** M3U PLAYLIST 1920x1080 ***** 15-05-2020 /-->
+<!-- ***** M3U PLAYLIST 1920x1080 ***** 26/03/2022 /-->
 <screen name="xc_M3uPlay" position="0,0" size="1280,720" title="Playlist" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/backc.png" zPosition="1" />
 	<ePixmap position="106,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="1" />
@@ -10,7 +10,6 @@
 	</widget>
  	<!-- List -->
 	<widget name="list" position="106,103" size="1046,480" itemHeight="50" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" foregroundColor="#808080" backgroundColor="#000000" scrollbarMode="showOnDemand" transparent="1" zPosition="5" />
-		
 	<eLabel position="106,620" size="1046,26" backgroundColor="#202020" zPosition="1" />
 	<eLabel position="106,600" size="1046,3" backgroundColor="#202020" zPosition="1" />
 	<widget name="progress" position="106,620" size="1046,26" foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
