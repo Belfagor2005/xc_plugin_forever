@@ -23,4 +23,8 @@
 	<widget name="key_blue" position="500,640" size="200,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="713,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_yellow" position="500,673" size="200,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="996,39" size="75,35" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/PayPal.png" alphatest="on" />
+	<ePixmap position="931,90" size="225,225" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/qr-code.png" alphatest="on" />	
+	<widget name="paypal" position="860,336" size="381,193" font="Regular;20" halign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />	
+	<eLabel position="855,32" size="392,511" backgroundColor="#80000000" cornerRadius="20" zPosition="1" />
 </screen>

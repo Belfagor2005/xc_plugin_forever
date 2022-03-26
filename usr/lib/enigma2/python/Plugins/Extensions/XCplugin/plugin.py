@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             25/03/2022               *
+*             26/03/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -14,7 +14,7 @@ from . import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, configfile,  ConfigYesNo, ConfigEnableDisable, ConfigSelectionNumber, ConfigClock
-from Components.config import ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigNumber, ConfigPassword
+from Components.config import ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigPassword
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -24,7 +24,7 @@ from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.Task import Task, Job, job_manager as JobManager, Condition
+from Components.Task import Task, Condition, Job, job_manager as JobManager
 from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 from Screens.InfoBar import MoviePlayer, InfoBar
@@ -39,33 +39,33 @@ from Screens.Screen import Screen
 from Screens.Standby import Standby
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Tools import ASCIItranslit
+# from Tools import ASCIItranslit
 from Tools.Directories import SCOPE_PLUGINS
-from Tools.Directories import pathExists
+# from Tools.Directories import pathExists
 from Tools.Directories import resolveFilename
 from Tools.Downloader import downloadWithProgress
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT
-from enigma import eEnv, gPixmapPtr, eAVSwitch
+from enigma import gPixmapPtr, eAVSwitch #eEnv 
 from enigma import eListbox, eTimer
-from enigma import eListboxPythonMultiContent, eConsoleAppContainer
-from enigma import eServiceCenter
+from enigma import eListboxPythonMultiContent #, eConsoleAppContainer
+# from enigma import eServiceCenter
 from enigma import eServiceReference
-from enigma import eSize, ePicLoad
+from enigma import ePicLoad #eSize
 from enigma import gFont
 from enigma import iPlayableService
-from enigma import iServiceInformation
+# from enigma import iServiceInformation
 from enigma import loadPNG
-from enigma import quitMainloop
-from os import listdir, path, access, X_OK, chmod
+# from enigma import quitMainloop
+from os import listdir, path, X_OK, chmod, access
 from os.path import splitext
 from os.path import exists as file_exists
 from sys import version_info
 from twisted.web.client import downloadPage
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+# try:
+    # from StringIO import StringIO
+# except ImportError:
+    # from io import StringIO
 try:
     from xml.etree.cElementTree import ElementTree, fromstring
 except ImportError:
@@ -273,7 +273,6 @@ def check_port(tport):
         url = str(url.replace(protocol + domain, host))
     return url
 
-
 class xc_home(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -305,7 +304,7 @@ class xc_home(Screen):
             "movielist": self.taskManager,
             "blue": self.xcPlay,
             "ok": self.button_ok,
-            "info": self.aboutxc}, -1)
+            "info": self.help}, -1)
         self.onFirstExecBegin.append(self.check_dependencies)
         self.onLayoutFinish.append(self.updateMenuList)
 
@@ -346,10 +345,6 @@ class xc_home(Screen):
 
     def Team(self):
         self.session.open(OpenServer)
-
-    def aboutxc(self):
-        about = self.getabout()
-        self.session.open(MessageBox, about, type=MessageBox.TYPE_INFO)
 
     def help(self):
         self.session.open(xc_help)
@@ -398,31 +393,14 @@ class xc_home(Screen):
             self.session.open(OpenServer)
         elif sel == ('MAKER BOUQUET'):
             self.session.open(xc_maker)
-        elif sel == ('CONFIG'):
-            self.session.open(xc_config)
         elif sel == ('MOVIE'):
             self.taskManager()
-        elif sel == ('M3U LOADER'):
+        elif sel == ('PLAYER UTILITY '):
             self.session.open(xc_Play)
-        elif sel == ('XC HELP'):
+        elif sel == ('CONFIG'):
+            self.session.open(xc_config)            
+        elif sel == ('ABOUT HELP'):
             self.session.open(xc_help)
-        elif sel == ('ABOUT'):
-            self.aboutxc()
-
-    def getabout(self):
-        conthelp = "%s\n\n" % version
-        conthelp += "original code by Dave Sully, Doug Mackay\n\n"
-        conthelp += "Modded by Lululla\n\n"
-        conthelp += "Skin By: Mmark - Info e2skin.blogspot.it\n\n"
-        conthelp += "*************************************\n\n"
-        conthelp += "Please reports bug or info to forums:\n\n"
-        conthelp += "Corvoboys - linuxsat-support - dream-elite\n\n"
-        conthelp += "Special thanks to:\n"
-        conthelp += "MMark, Pcd, KiddaC\n"
-        conthelp += "aime_jeux, Support, Enigma1969, MasterG\n"
-        conthelp += "and all those i forgot to mention."
-        return conthelp
-
 
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
@@ -2636,6 +2614,7 @@ class xc_help(Screen):
         self["key_blue"] = Label(_("Player"))
         self["helpdesc"] = Label()
         self["helpdesc2"] = Label()
+        self["paypal"] = Label()        
         self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {
             "red": self.exit,
             "green": self.green,
@@ -2648,23 +2627,32 @@ class xc_help(Screen):
     def finishLayout(self):
         helpdesc = self.homecontext()
         helpdesc2 = self.homecontext2()
+        paypal = self.paypal2()
+        self["paypal"].setText(paypal)        
         self["helpdesc"].setText(helpdesc)
         self["helpdesc2"].setText(helpdesc2)
-
-    def homecontext(self):
-        conthelp = "%s\n" % version
-        conthelp += "original code by Dave Sully, Doug Mackay\n"
-        conthelp += "Modded by Lululla\n\n"
-        conthelp += "Skin By: Mmark - Info e2skin.blogspot.it\n"
-        conthelp += "______________________________________\n\n"
-        conthelp += "Please reports bug or info to forums:\n"
-        conthelp += "    Corvoboys - linuxsat-support\n\n"
-        conthelp += "Special thanks to:\n"
-        conthelp += "    MMark, Pcd, KiddaC\n"
-        conthelp += "    aime_jeux, Support, Enigma1969, MasterG\n"
-        conthelp += "    and all those i forgot to mention.\n\n"
+        
+    def paypal2(self):
+        conthelp = "If you like what I do you\n"
+        conthelp += " can contribute with a coffee\n\n"        
+        conthelp += "scan the qr code and donate € 1.00"
         return conthelp
-
+        
+    def homecontext(self):
+        conthelp = "%s\n\n" % version
+        conthelp += "original code by Dave Sully, Doug Mackay\n\n"
+        conthelp += "Modded by Lululla\n\n"
+        conthelp += "Skin By: Mmark - Info e2skin.blogspot.it\n\n"
+        conthelp += "*************************************\n\n"
+        conthelp += "Please reports bug or info to forums:\n\n"
+        conthelp += "Corvoboys - linuxsat-support\n\n"
+        conthelp += "*************************************\n\n"        
+        conthelp += "Special thanks to:\n"
+        conthelp += "MMark, Pcd, KiddaC\n"
+        conthelp += "aime_jeux, Support, Enigma1969, MasterG\n"
+        conthelp += "and all those i forgot to mention.\n\n"
+        return conthelp
+        
     def homecontext2(self):
         # conthelp = "\n\n\n\nCURRENT CONFIGURATION\n"
         conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value
@@ -2719,8 +2707,8 @@ class xc_help(Screen):
         conthelp += _("            USERNAME='xxxxxxxxxx'\n")
         conthelp += _("            PASSWORD='yyyyyyyyy'\n")
         conthelp += _("            url='http://server:port/xxyyzz'\n")
-        conthelp += _("            Import with Yellow Button this file\n")
-        conthelp += "        ___________________________________\n\n"
+        conthelp += _("            Import with Yellow Button this file\n\n")
+        
         conthelp += _("    (BLUE BUTTON):\n")
         conthelp += _("            If you have a file format:\n")
         conthelp += _("            /tmp/xc.txt\n")
@@ -2745,13 +2733,13 @@ class xc_help(Screen):
         conthelp += _("    (RED BUTTON):\n")
         conthelp += _("            Return to Channels List\n")
         conthelp += _("    (BLUE BUTTON):\n")
-        conthelp += _("            Init Continue Play\n\n")
+        conthelp += _("            Init Continue Play\n")
         conthelp += _("    (REC BUTTON):\n")
         conthelp += _("            Download Video \n")
         conthelp += _("    (STOP BUTTON):\n")
         conthelp += _("            Close/Stop Movie/Live\n")
-
-        conthelp += "PLAYER M3U\n"
+        conthelp += "        ___________________________________\n\n"
+        conthelp += "UTILITY PLAYER M3U\n"
         # conthelp += _("    (OK BUTTON):\n")
         # conthelp += _("            Open file from list\n")
         conthelp += _("    (GREEN BUTTON):\n")
@@ -2760,8 +2748,7 @@ class xc_help(Screen):
         conthelp += _("            Export file m3u to Bouquet .tv\n")
         conthelp += _("    (BLUE BUTTON):\n")
         conthelp += _("            Download file m3u from current server\n\n")
-
-        conthelp += _("OPEN FILE M3U:\n")
+        conthelp += _("UTILITY PLAYER M3U\OPEN FILE:\n")
         conthelp += _("    When opening an .m3u file instead:\n")
         conthelp += _("   (GREEN BUTTON):\n")
         conthelp += _("           Reload List\n")
@@ -3690,7 +3677,6 @@ class xc_M3uPlay(Screen):
         else:
             self.close()
 
-
 class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, InfoBarAudioSelection, IPTVInfoBarShowHide, InfoBarSubtitleSupport):
     STATE_IDLE = 0
     STATE_PLAYING = 1
@@ -3866,11 +3852,11 @@ Panel_list = [
     ('HOME'),
     ('PLAYLIST'),
     ('MAKER BOUQUET'),
-    ('CONFIG'),
     ('MOVIE'),
-    ('M3U LOADER'),
-    ('XC HELP'),
-    ('ABOUT')]
+    ('PLAYER UTILITY '),
+    ('CONFIG'),    
+    ('ABOUT HELP'),
+    ]
 
 def xcm3ulistEntry(name):
     pngl = plugin_path + '/skin/fhd/xcselh.png'
@@ -4096,7 +4082,6 @@ def uninstaller():
 # str(description4playlist_html),
 # nameepg)
 
-
 def show_more_infos(name, index):
     text_clear = name
     if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
@@ -4226,9 +4211,9 @@ def make_bouquet():
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
     if not os.path.exists("/etc/enigma2/e2m3u2bouquet"):
         os.system("mkdir /etc/enigma2/e2m3u2bouquet")
-    configfile = ("/etc/enigma2/e2m3u2bouquet/config.xml")
-    if os.path.exists(configfile):
-        os.remove(configfile)
+    configfilexml = ("/etc/enigma2/e2m3u2bouquet/config.xml")
+    if os.path.exists(configfilexml):
+        os.remove(configfilexml)
     all_bouquet = "0"
     iptv_types = "0"
     multi_vod = "0"
@@ -4247,7 +4232,7 @@ def make_bouquet():
     m3u_url = urlinfo.replace("enigma2.php", "get.php")
     epg_url = urlinfo.replace("enigma2.php", "xmltv.php")
 
-    with open(configfile, 'w') as f:
+    with open(configfilexml, 'w') as f:
         configtext = '<config>\r\n'
         configtext += '\t<supplier>\r\n'
         configtext += '\t\t<name>' + infoname + '</name>\r\n'
