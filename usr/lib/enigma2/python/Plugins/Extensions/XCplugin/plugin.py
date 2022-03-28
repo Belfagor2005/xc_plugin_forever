@@ -2823,14 +2823,14 @@ class xc_maker(Screen):
     def maker(self):
         if str(config.plugins.XCplugin.typelist.value) == "Multi Live & VOD":
             dom = "Multi Live & VOD"
-            self.session.openWithCallback(self.createCfgxml, MessageBox, _("Convert Playlist to:      %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
+            self.session.openWithCallback(self.createCfgxml, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
         elif str(config.plugins.XCplugin.typelist.value) == "Multi Live/Single VOD":
             dom = "Multi Live/Single VOD"
-            self.session.openWithCallback(self.createCfgxml, MessageBox, _("Convert Playlist to:      %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
+            self.session.openWithCallback(self.createCfgxml, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
 
         elif str(config.plugins.XCplugin.typelist.value) == "Combined Live/VOD":
             dom = "Combined Live/VOD"
-            self.session.openWithCallback(self.save_tv, MessageBox, _("Convert Playlist to:  %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
+            self.session.openWithCallback(self.save_tv, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
         else:
             return
 
@@ -2845,7 +2845,7 @@ class xc_maker(Screen):
             ReloadBouquets()
 
     def remove(self):
-        self.session.openWithCallback(self.removelistok, MessageBox, _("Remove all XC Plugin bouquets?"), MessageBox.TYPE_YESNO, timeout=15)  # default = True)
+        self.session.openWithCallback(self.removelistok, MessageBox, _("Remove Playlist from Bouquets?"), MessageBox.TYPE_YESNO, timeout=10)
 
     def removelistok(self, result):
         if result:
@@ -2862,15 +2862,15 @@ class xc_maker(Screen):
         conthelp += _("    created with XCplugin\n\n")
         conthelp += _("HELP BUTTON:\n")
         conthelp += _("    Go to Help info plugin\n\n\n\n")
-        
-        conthelp = "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
+        conthelp += "        ___________________________________\n\n"
+        conthelp += "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
         conthelp += "Config Media Folder %s/\n" % config.plugins.XCplugin.pthmovie.value
         conthelp += "LivePlayer Active %s\n" % config.plugins.XCplugin.LivePlayer.value        
-        conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value        
+        conthelp += "Current Service Type: %s\n" % config.plugins.XCplugin.services.value        
         conthelp += _("Current configuration for creating the bouquet\n    > %s Conversion %s\n\n") % (config.plugins.XCplugin.typem3utv.getValue(), config.plugins.XCplugin.typelist.getValue())
+        conthelp += "        ___________________________________\n\n"
         conthelp += "Time is what we want most,\n"
         conthelp += "    but what we use worst.(William Penn)"              
-        
         return conthelp
 
 class OpenServer(Screen):
