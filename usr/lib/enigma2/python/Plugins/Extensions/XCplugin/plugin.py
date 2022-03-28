@@ -2634,7 +2634,7 @@ class xc_help(Screen):
         
     def paypal2(self):
         conthelp = "If you like what I do you\n"
-        conthelp += " can contribute with a coffee\n\n"        
+        conthelp += "can contribute with a coffee\n\n"        
         conthelp += "scan the qr code and donate € 1.00"
         return conthelp
         
@@ -2655,11 +2655,12 @@ class xc_help(Screen):
         
     def homecontext2(self):
         # conthelp = "\n\n\n\nCURRENT CONFIGURATION\n"
-        conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value
-        conthelp += "LivePlayer Active %s\n" % config.plugins.XCplugin.LivePlayer.value
-        conthelp += "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
-        conthelp += "Config Media Folder %smovie/\n" % config.plugins.XCplugin.pthmovie.value
+        conthelp = "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
+        conthelp += "Config Media Folder %s/\n" % config.plugins.XCplugin.pthmovie.value
+        conthelp += "LivePlayer Active %s\n" % config.plugins.XCplugin.LivePlayer.value        
+        conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value        
         conthelp += _("Current configuration for creating the bouquet\n    > %s Conversion %s\n\n") % (config.plugins.XCplugin.typem3utv.getValue(), config.plugins.XCplugin.typelist.getValue())
+        
         return conthelp
 
     def yellow(self):
@@ -2860,10 +2861,16 @@ class xc_maker(Screen):
         conthelp += _("    Removes all the bouquets that have been\n")
         conthelp += _("    created with XCplugin\n\n")
         conthelp += _("HELP BUTTON:\n")
-        conthelp += _("    Go to Help info plugin\n\n")
-        conthelp += _("Current configuration for creating the bouquet\n>>>>%s Conversion %s\n\n") % (config.plugins.XCplugin.typem3utv.getValue(), config.plugins.XCplugin.typelist.getValue())  # config.plugins.XCplugin.typem3utv.value
+        conthelp += _("    Go to Help info plugin\n\n\n\n")
+        
+        conthelp = "Config Folder file xml %s\n" % config.plugins.XCplugin.pthxmlfile.value
+        conthelp += "Config Media Folder %s/\n" % config.plugins.XCplugin.pthmovie.value
+        conthelp += "LivePlayer Active %s\n" % config.plugins.XCplugin.LivePlayer.value        
+        conthelp = "Current Service Type: %s\n" % config.plugins.XCplugin.services.value        
+        conthelp += _("Current configuration for creating the bouquet\n    > %s Conversion %s\n\n") % (config.plugins.XCplugin.typem3utv.getValue(), config.plugins.XCplugin.typelist.getValue())
         conthelp += "Time is what we want most,\n"
-        conthelp += "    but what we use worst.(William Penn)"
+        conthelp += "    but what we use worst.(William Penn)"              
+        
         return conthelp
 
 class OpenServer(Screen):

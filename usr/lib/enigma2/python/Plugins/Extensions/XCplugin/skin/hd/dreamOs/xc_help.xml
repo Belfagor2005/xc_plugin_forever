@@ -1,4 +1,4 @@
-<!-- ***** HELP MENU 1920x1080 ***** OK 15/05/2020 /-->
+<!-- ***** HELP MENU 1280 ***** OK 26/03/2022 /-->
 <screen name="xcHelp" position="0,0" size="1280,720" title="HELP" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
 	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
@@ -11,8 +11,8 @@
 	</widget>
 	<!-- Poster -->
 	<ePixmap position="526,93" size="205,282" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvlogo.jpg" scale="1" alphatest="blend" zPosition="1" />
-	<widget name="helpdesc" position="146,85" font="Regular;16" size="502,401" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" valign="top" />
-	<widget name="helpdesc2" position="146,429" font="Regular;16" size="533,196" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />	
+	<widget name="helpdesc" position="146,85" font="Regular;16" size="502,520" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" valign="top" />
+	<widget name="helpdesc2" position="146,429" font="Regular;16" size="533,194" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />	
 	<!-- Buttons Colors -->
 	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="146,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
