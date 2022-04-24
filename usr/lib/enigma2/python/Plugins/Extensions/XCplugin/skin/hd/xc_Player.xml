@@ -1,9 +1,12 @@
 <!-- ***** XC PLAYER 1280 ***** 26/03/2022 /-->
 <screen name="Xtream_Player" position="0,0" size="1280,720" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="1280,178" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,533" size="1280,186" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/infobar.png" zPosition="-1"/>
 	<ePixmap position="33,621" size="83,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="5"/>
 	<eLabel position="133,626" size="1113,36" backgroundColor="#10202020" transparent="0" zPosition="1"/>
+	<!-- 	
 	<eLabel position="0,0" size="1280,185" backgroundColor="#10000000" transparent="0" zPosition="1"/>
+	 -->
 	<!-- Elapsed time -->
 	<widget source="session.CurrentService" render="Label" position="133,626" size="113,36" font="Regular;26" halign="center" valign="center" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServicePosition">Position</convert>

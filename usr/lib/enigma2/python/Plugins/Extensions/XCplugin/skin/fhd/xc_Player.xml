@@ -1,9 +1,12 @@
 <!-- ***** XC PLAYER 1920x1080 ***** 15-05-2020 /-->
 <screen name="Xtream_Player" position="0,0" size="1920,1080" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1"/>
-	<ePixmap position="50,932" size="125,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="5"/>
-	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1"/>
-	<eLabel position="0,0" size="1920,331" backgroundColor="#10000000" transparent="0" zPosition="1"/>
+	<ePixmap position="0,0" size="1915,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1" />
+	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1" />
+	<ePixmap position="50,932" size="125,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="5" />
+	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1" />
+	<!--
+	<eLabel position="0,0" size="1920,331" backgroundColor="#10000000" transparent="0" zPosition="1" />
+	-->
 	<!-- Elapsed time -->
 	<widget source="session.CurrentService" render="Label" position="200,940" size="170,55" font="Regular;40" halign="center" valign="center" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServicePosition">Position</convert>

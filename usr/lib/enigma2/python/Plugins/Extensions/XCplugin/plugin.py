@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             03/04/2022               *
+*             24/04/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -291,19 +291,19 @@ class xc_home(Screen):
         self["key_yellow"] = Label(_("Movie"))
         self["key_blue"] = Label(_("Loader M3U"))
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-            "cancel": self.exitY,
-            "back": self.exitY,
-            "home": self.exitY,
-            "showMediaPlayer": self.showMovies,
-            "pvr": self.showMovies,
             "2": self.showMovies,
-            "menu": self.config,
-            "help": self.help,
-            "green": self.Team,
-            "yellow": self.taskManager,
-            "movielist": self.taskManager,
+            "back": self.exitY,
             "blue": self.xcPlay,
+            "cancel": self.exitY,
+            "green": self.Team,
+            "help": self.help,
+            "home": self.exitY,
+            "menu": self.config,
+            "movielist": self.taskManager,
             "ok": self.button_ok,
+            "pvr": self.showMovies,
+            "showMediaPlayer": self.showMovies,
+            "yellow": self.taskManager,
             "info": self.help}, -1)
         self.onFirstExecBegin.append(self.check_dependencies)
         self.onLayoutFinish.append(self.updateMenuList)
@@ -517,10 +517,10 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Data Server Configuration:"), cfg.data, (_("Your Server Login and data input"))))
         if cfg.data.getValue():
             # self.list.append(getConfigListEntry(_("Old/New panel"), cfg.panel, (_("Select Panel used"))))
-            self.list.append(getConfigListEntry(_("Server URL"), cfg.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
-            self.list.append(getConfigListEntry(_("Server PORT"), cfg.port, (_("Enter Server Port '8080'"))))
-            self.list.append(getConfigListEntry(_("Server Username"), cfg.user, (_("Enter Username"))))
-            self.list.append(getConfigListEntry(_("Server Password"), cfg.passw, (_("Enter Password"))))
+            self.list.append(getConfigListEntry(indent + (_("Server URL")), cfg.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
+            self.list.append(getConfigListEntry(indent + (_("Server PORT")), cfg.port, (_("Enter Server Port '8080'"))))
+            self.list.append(getConfigListEntry(indent + (_("Server Username")), cfg.user, (_("Enter Username"))))
+            self.list.append(getConfigListEntry(indent + (_("Server Password")), cfg.passw, (_("Enter Password"))))
         self.list.append(getConfigListEntry(_("Server Timeout"), cfg.timeout, (_("Timeout Server (sec)"))))
 
         self.list.append(getConfigListEntry(_("Folder user file .xml"), cfg.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
@@ -530,7 +530,7 @@ class xc_config(Screen, ConfigListScreen):
         # if cfg.showlive.value is True:
         self.list.append(getConfigListEntry(_("LivePlayer Active "), cfg.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
         if cfg.LivePlayer.value is True:
-            self.list.append(getConfigListEntry(_("Live Services Type"), cfg.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
+            self.list.append(getConfigListEntry(indent + (_("Live Services Type")), cfg.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
 
         self.list.append(getConfigListEntry(_("Download Type "), cfg.pdownmovie, (_("Configure type of download movie: JobManager/Direct."))))
 
@@ -538,13 +538,13 @@ class xc_config(Screen, ConfigListScreen):
 
         self.list.append(getConfigListEntry(_("Bouquet style "), cfg.typelist, (_("Configure the type of conversion in the favorite list"))))
         if cfg.typelist.value == "Combined Live/VOD":
-            self.list.append(getConfigListEntry(_("Conversion type Output "), cfg.typem3utv, (_("Configure type of stream to be downloaded by conversion"))))
+            self.list.append(getConfigListEntry(indent + (_("Conversion type Output ")), cfg.typem3utv, (_("Configure type of stream to be downloaded by conversion"))))
 
         self.list.append(getConfigListEntry(_("Vod Services Type"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
 
         self.list.append(getConfigListEntry(_("Name Server Bouquet Configuration:"), cfg.infoexp, (_("Set Name for MakerBouquet"))))
         if cfg.infoexp.getValue():
-            self.list.append(getConfigListEntry(_("Name Bouquet Export"), cfg.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))
+            self.list.append(getConfigListEntry(indent + (_("Name Bouquet Export")), cfg.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))
             
         self.list.append(getConfigListEntry(_("Place IPTV bouquets at "), cfg.bouquettop, (_("Configure to place the bouquets of the converted lists"))))
 
@@ -557,7 +557,7 @@ class xc_config(Screen, ConfigListScreen):
                 self.list.append(getConfigListEntry(2 * indent + (_("Time to start update:")), cfg.fixedtime, (_("Configure at a fixed time"))))
         self.list.append(getConfigListEntry(_("Picons IPTV "), cfg.picons, (_("Download Picons ?"))))
         if cfg.picons.value:
-            self.list.append(getConfigListEntry(_("Picons IPTV bouquets to "), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
+            self.list.append(getConfigListEntry(indent + (_("Picons IPTV bouquets to ")), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
         self.list.append(getConfigListEntry(_("Link in Main Menu  "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
 
         self["config"].list = self.list
@@ -649,10 +649,6 @@ class xc_config(Screen, ConfigListScreen):
 
     def xml_plugin(self):
         filesave = "xc_" + str(cfg.user.value) + ".xml"
-        # if 'Enter' in filesave:
-            # self.mbox = self.session.open(MessageBox, _("No Valid data Username Default !"), MessageBox.TYPE_INFO, timeout=5)
-
-        # else:
         filesave = filesave.replace(":", "_")
         filesave = filesave.lower()
         port = str(cfg.port.value)
@@ -664,10 +660,6 @@ class xc_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
-            # cfg.typem3utv.save()
-            # cfg.pthmovie.save()
-            # cfg.pthxmlfile.save()
-            # configfile.save()
             self.xml_plugin()
             self.mbox = self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
@@ -822,7 +814,7 @@ class iptv_streamse():
                 if playlistname_exists:
                     self.playlistname = xml.findtext('playlist_name')#.encode('utf-8')
 
-                    infoname =  self.playlistname
+                    infoname =  str(self.playlistname)
                     if cfg.infoexp.getValue():
                         infoname =  str(cfg.infoname.value)
                                 
@@ -876,8 +868,10 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         # if desc_image.startswith("https"):
                             desc_image = str(desc_image)
-                    # if PY3:
-                        # desc_image = desc_image.encode()
+                            # if PY3:
+                                # desc_image = desc_image.encode()
+                                
+                                
                     # if isStream and "/live/"or "/series/"  in stream_url : #and category_id =='0' or category_id == '2':
                     if stream_url and stream_url != "n/A" and stream_url != "": #stream_url = None ????
                         isStream = True
@@ -1080,7 +1074,7 @@ class xc_Main(Screen):
         self.temp_index = 0
         self.temp_channel_list = None
         self.temp_playlistname = None
-        self.temp_playname = STREAMS.playlistname
+        self.temp_playname = str(STREAMS.playlistname)
         self.url_tmp = None
         self.video_back = False
         self.filter_search = []
@@ -1299,7 +1293,10 @@ class xc_Main(Screen):
                     else:
                         if PY3:
                             self.pixim = six.ensure_binary(self.pixim)
+                        # if PY3:
+                            # self.pixim = self.pixim.encode()
                         if self.pixim.startswith(b"https") and sslverify:
+                        # if self.pixim.startswith(b"https") and sslverify:                        
                             parsed_uri = urlparse(self.pixim)
                             domain = parsed_uri.hostname
                             sniFactory = SNIFactory(domain)
@@ -1782,24 +1779,60 @@ class xc_Main(Screen):
         return
 ####################
 
-    def decodeImage(self, png):
-        if os.path.exists(png):
-            size = self.instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
+
+    def decodeImage(self, poster_path):
+        if DreamOS():
+            self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
+        else:
+            self['poster'].instance.setPixmap(None) ### OPEN
+        self['poster'].hide()
+        sc = AVSwitch().getFramebufferScale()
+        self.picload = ePicLoad()
+        size = self['poster'].instance.size()
+        self.picload.setPara((size.width(),
+         size.height(),
+         sc[0],
+         sc[1],
+         False,
+         1,
+         '#FF000000'))
+        if not DreamOS():
+            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
                 else:
-                    self.picload.startDecode(png, 0, 0, False)
-            ptr = self.picload.getData()
-            if ptr != None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-            else:
-                self.instance.hide()
-                print('no cover.. error')
+                    print('no cover.. error')
+            return
+        else:
+            if self.picload.startDecode(poster_path,False) == 0:  ### CVS
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
+                else:
+                    print('no cover.. error')
+            return
+            
+    # def decodeImage(self, png):
+        # if os.path.exists(png):
+            # size = self.instance.size()
+            # self.picload = ePicLoad()
+            # sc = AVSwitch().getFramebufferScale()
+            # if self.picload:
+                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+                # if os.path.exists('/var/lib/dpkg/status'):
+                    # self.picload.startDecode(png, False)
+                # else:
+                    # self.picload.startDecode(png, 0, 0, False)
+            # ptr = self.picload.getData()
+            # if ptr != None:
+                # self["poster"].instance.setPixmap(ptr.__deref__())
+                # self["poster"].instance.show()
+            # else:
+                # self.instance.hide()
+                # print('no cover.. error')
 
     def showImage(self, picInfo=None):
         try:
@@ -2125,24 +2158,59 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.downloadError(piclogo)
             print("update COVER")
 
-    def decodeImage(self, png):
-        if os.path.exists(png):
-            size = self.instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
+    def decodeImage(self, poster_path):
+        if DreamOS():
+            self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
+        else:
+            self['poster'].instance.setPixmap(None) ### OPEN
+        self['poster'].hide()
+        sc = AVSwitch().getFramebufferScale()
+        self.picload = ePicLoad()
+        size = self['poster'].instance.size()
+        self.picload.setPara((size.width(),
+         size.height(),
+         sc[0],
+         sc[1],
+         False,
+         1,
+         '#FF000000'))
+        if not DreamOS():
+            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
                 else:
-                    self.picload.startDecode(png, 0, 0, False)
-            ptr = self.picload.getData()
-            if ptr != None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-            else:
-                self.instance.hide()
-                print('no cover.. error')
+                    print('no cover.. error')
+            return
+        else:
+            if self.picload.startDecode(poster_path,False) == 0:  ### CVS
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
+                else:
+                    print('no cover.. error')
+            return
+                
+    # def decodeImage(self, png):
+        # if os.path.exists(png):
+            # size = self.instance.size()
+            # self.picload = ePicLoad()
+            # sc = AVSwitch().getFramebufferScale()
+            # if self.picload:
+                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+                # if os.path.exists('/var/lib/dpkg/status'):
+                    # self.picload.startDecode(png, False)
+                # else:
+                    # self.picload.startDecode(png, 0, 0, False)
+            # ptr = self.picload.getData()
+            # if ptr != None:
+                # self["poster"].instance.setPixmap(ptr.__deref__())
+                # self["poster"].instance.show()
+            # else:
+                # self.instance.hide()
+                # print('no cover.. error')
 
     def showImage(self, picInfo=None):
         try:
@@ -2447,7 +2515,8 @@ class xc_StreamTasks(Screen):
         self["movielist"] = List([])
         self["key_green"] = Label(_("Remove"))
         self["key_red"] = Label(_("Close"))
-        self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions"], {
+        # self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions"], {
+        self["actions"] = ActionMap(["OkCancelActions", "ColorActions"], {        
             "ok": self.keyOK,
             "esc": self.keyClose,
             "exit": self.keyClose,
@@ -3234,24 +3303,59 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             # name = str(selected_channel[1])
             show_more_infos(name, self.index)
 
-    def decodeImage(self, png):
-        if os.path.exists(png):
-            size = self.instance.size()
-            self.picload = ePicLoad()
-            sc = AVSwitch().getFramebufferScale()
-            if self.picload:
-                self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                if os.path.exists('/var/lib/dpkg/status'):
-                    self.picload.startDecode(png, False)
+    def decodeImage(self, poster_path):
+        if DreamOS():
+            self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
+        else:
+            self['poster'].instance.setPixmap(None) ### OPEN
+        self['poster'].hide()
+        sc = AVSwitch().getFramebufferScale()
+        self.picload = ePicLoad()
+        size = self['poster'].instance.size()
+        self.picload.setPara((size.width(),
+         size.height(),
+         sc[0],
+         sc[1],
+         False,
+         1,
+         '#FF000000'))
+        if not DreamOS():
+            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
                 else:
-                    self.picload.startDecode(png, 0, 0, False)
-            ptr = self.picload.getData()
-            if ptr != None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-            else:
-                self.instance.hide()
-                print('no cover.. error')
+                    print('no cover.. error')
+            return
+        else:
+            if self.picload.startDecode(poster_path,False) == 0:  ### CVS
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
+                else:
+                    print('no cover.. error')
+            return
+
+    # def decodeImage(self, png):
+        # if os.path.exists(png):
+            # size = self.instance.size()
+            # self.picload = ePicLoad()
+            # sc = AVSwitch().getFramebufferScale()
+            # if self.picload:
+                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
+                # if os.path.exists('/var/lib/dpkg/status'):
+                    # self.picload.startDecode(png, False)
+                # else:
+                    # self.picload.startDecode(png, 0, 0, False)
+            # ptr = self.picload.getData()
+            # if ptr != None:
+                # self["poster"].instance.setPixmap(ptr.__deref__())
+                # self["poster"].instance.show()
+            # else:
+                # self.instance.hide()
+                # print('no cover.. error')
 
     def showImage(self, picInfo=None):
         try:
@@ -4281,7 +4385,8 @@ def make_bouquet():
 def menu(menuid, **kwargs):
     if menuid == "mainmenu":
         return [("XCplugin", main, "XCplugin", 4)]
-    return []
+    else:
+        return []
 
 def main(session, **kwargs):
     global STREAMS
