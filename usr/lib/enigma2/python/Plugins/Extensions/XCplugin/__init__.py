@@ -37,19 +37,15 @@ else:
     language.addCallback(localeInit())
 
 def checks():
-    try:
-        from . import Utils
-    except:
-        from Plugins.Extensions.XCplugin.Utils import checkInternet        
-    checkInternet()
+    from . import Utils
     chek_in= False
-    if checkInternet():
+    if Utils.checkInternet():
         chek_in = True
     return chek_in
 
 if checks:
     try:
-        from Plugins.Extensions.XCplugin.Update import upd_done
-        upd_done()
+        from . import Update
+        Update.upd_done()
     except:
         pass

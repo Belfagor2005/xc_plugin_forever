@@ -1,5 +1,7 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # Code by mfaraj57 and RAED (c) 2018
+# adatted from Lululla 2020
 #thank's
 from __future__ import print_function
 from Components.ActionMap import ActionMap
@@ -62,35 +64,35 @@ if sslverify:
 
 sz_w = getDesktop(0).size().width()
 if sz_w == 1280 :
-        SKIN_imagedownloadScreen = """
-<screen name="imagedownloadScreen" position="center,center" size="560,155" title="Downloading image...">
-<widget name="activityslider" position="20,50" size="510,20" borderWidth="1" transparent="1" />
-<widget name="package" position="20,5" size="510,45" font="Regular;18" halign="center" valign="center" transparent="1" />
-<widget name="status" position="20,80" size="510,45" font="Regular;16" halign="center" valign="center" transparent="1" />
-</screen>"""
+    SKIN_imagedownloadScreen = """
+        <screen name="imagedownloadScreen" position="center,center" size="560,155" title="Downloading image...">
+        <widget name="activityslider" position="20,50" size="510,20" borderWidth="1" transparent="1" />
+        <widget name="package" position="20,5" size="510,45" font="Regular;18" halign="center" valign="center" transparent="1" />
+        <widget name="status" position="20,80" size="510,45" font="Regular;16" halign="center" valign="center" transparent="1" />
+        </screen>"""
 
 else:
-        SKIN_imagedownloadScreen = """
-<screen name="imagedownloadScreen" position="center,center" size="805,232" title="Downloading image...">
-<widget name="activityslider" position="30,75" size="755,30" borderWidth="1" transparent="1" />
-<widget name="package" position="30,7" size="755,60" font="Regular;27" halign="center" valign="center" transparent="1" />
-<widget name="status" position="30,120" size="755,60" font="Regular;24" halign="center" valign="center" transparent="1" />
-</screen>"""
+    SKIN_imagedownloadScreen = """
+        <screen name="imagedownloadScreen" position="center,center" size="805,232" title="Downloading image...">
+        <widget name="activityslider" position="30,75" size="755,30" borderWidth="1" transparent="1" />
+        <widget name="package" position="30,7" size="755,60" font="Regular;27" halign="center" valign="center" transparent="1" />
+        <widget name="status" position="30,120" size="755,60" font="Regular;24" halign="center" valign="center" transparent="1" />
+        </screen>"""
 
 #### progress screen
 sz_w = getDesktop(0).size().width()
 if sz_w == 1280 :
-        SKIN_Progress = """
-<screen position="350,250"  size="550,155" title="Command execution..." >
-<widget name="text" position="10,10"  size="550,130" font="Console;18" />
-<widget name="slider" position="0,142" size="550,15" borderWidth="1" transparent="1" />
-</screen>"""
+    SKIN_Progress = """
+        <screen position="350,250"  size="550,155" title="Command execution..." >
+        <widget name="text" position="10,10"  size="550,130" font="Console;18" />
+        <widget name="slider" position="0,142" size="550,15" borderWidth="1" transparent="1" />
+        </screen>"""
 else:
-        SKIN_Progress = """
-<screen position="500,430"  size="850,200" title="Command execution..." >
-<widget name="text" position="20,20"  size="850,160" font="Console;24" />
-<widget name="slider" position="0,185" size="850,20" borderWidth="1" transparent="1" />
-</screen>"""
+    SKIN_Progress = """
+        <screen position="500,430"  size="850,200" title="Command execution..." >
+        <widget name="text" position="20,20"  size="850,160" font="Console;24" />
+        <widget name="slider" position="0,185" size="850,20" borderWidth="1" transparent="1" />
+        </screen>"""
 
 def log(label,data):
     data=str(data)
