@@ -30,8 +30,8 @@ from Screens.Console import Console
 from Screens.InfoBar import MoviePlayer, InfoBar
 from Screens.Standby import TryQuitMainloop, Standby
 from Screens.InfoBarGenerics import InfoBarShowHide, InfoBarSubtitleSupport, InfoBarSummarySupport, \
-	InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
-	InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
+    InfoBarNumberZap, InfoBarMenu, InfoBarEPG, InfoBarSeek, InfoBarMoviePlayerSummarySupport, \
+    InfoBarAudioSelection, InfoBarNotifications, InfoBarServiceNotifications
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
@@ -591,46 +591,92 @@ class xc_config(Screen, ConfigListScreen):
         self.showhide()
 
     def ok(self):
-        ConfigListScreen.keyOK(self)
         sel = self["config"].getCurrent()[1]
         if sel and sel == cfg.pthmovie:
             self.setting = "pthmovie"
-            self.openDirectoryBrowser(cfg.pthmovie.value)
+            self.openDirectoryBrowser(cfg.pthmovie.value, self.setting)
         if sel and sel == cfg.pthxmlfile:
             self.setting = "pthxmlfile"
-            self.openDirectoryBrowser(cfg.pthxmlfile.value)
+            self.openDirectoryBrowser(cfg.pthxmlfile.value, self.setting)
         if sel and sel == cfg.pthpicon:
             self.setting = "pthpicon"
-            self.openDirectoryBrowser(cfg.pthpicon.value)
+            self.openDirectoryBrowser(cfg.pthpicon.value, self.setting)
         else:
             pass
+        ConfigListScreen.keyOK(self)
+        
+    def openDirectoryBrowser(self, path, itemcfg):
+        if os.path.exists("/usr/bin/apt-get"):
+            path = None
+        if itemcfg == "pthmovie":
+            try:
+                self.session.openWithCallback(
+                    self.openDirectoryBrowserCB,
+                    LocationBox,
+                    windowTitle=_("Choose Directory:"),
+                    text=_("Choose directory"),
+                    currDir=str(path),
+                    bookmarks=config.movielist.videodirs,
+                    autoAdd=False,
+                    editDir=True,
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
+                    minFree=15)
+           
+            except Exception as ex:
+                print("openDirectoryBrowser get failed: ", str(ex))
+            ConfigListScreen.keyOK(self)
+            
+        elif itemcfg == "pthxmlfile":
+            try:
+                self.session.openWithCallback(
+                    self.openDirectoryBrowserCD,
+                    LocationBox,
+                    windowTitle=_("Choose Directory:"),
+                    text=_("Choose directory"),
+                    currDir=str(path),
+                    bookmarks=config.movielist.videodirs,
+                    autoAdd=False,
+                    editDir=True,
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
+                    minFree=15)
 
-    def openDirectoryBrowser(self, path):
-        try:
-            self.session.openWithCallback(
-                self.openDirectoryBrowserCB,
-                LocationBox,
-                windowTitle=_("Choose Directory:"),
-                text=_("Choose directory"),
-                currDir=str(path),
-                bookmarks=config.movielist.videodirs,
-                autoAdd=False,
-                editDir=True,
-                inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
-                minFree=15)
-        except Exception as ex:
-            print("openDirectoryBrowser get failed: ", str(ex))
+            except Exception as ex:
+                print("openDirectoryBrowser get failed: ", str(ex))                    
+            ConfigListScreen.keyOK(self)                    
+        elif itemcfg == "pthpicon":
+            try:
+                self.session.openWithCallback(
+                    self.openDirectoryBrowserCE,
+                    LocationBox,
+                    windowTitle=_("Choose Directory:"),
+                    text=_("Choose directory"),
+                    currDir=str(path),
+                    bookmarks=config.movielist.videodirs,
+                    autoAdd=False,
+                    editDir=True,
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
+                    minFree=15)
+            except Exception as ex:
+                print("openDirectoryBrowser get failed: ", str(ex))                    
+            ConfigListScreen.keyOK(self)
 
     def openDirectoryBrowserCB(self, path):
         if path != None:
-            if self.setting == "pthmovie":
-                cfg.pthmovie.setValue(path)
-            if self.setting == "pthxmlfile":
-                cfg.pthxmlfile.setValue(path)
-            if self.setting == "pthpicon":
-                cfg.pthpicon.setValue(path)
-        configfile.save()
+            cfg.pthmovie.setValue(path)
+        # configfile.save()
         return
+        
+    def openDirectoryBrowserCD(self, path):
+        if path != None:
+            cfg.pthxmlfile.setValue(path)
+        # configfile.save()
+        return        
+        
+    def openDirectoryBrowserCE(self, path):
+        if path != None:
+            cfg.pthpicon.setValue(path)
+        # configfile.save()
+        return         
 
     def cfgok(self):
         if cfg.picons.value and cfg.pthpicon.value == "/usr/share/enigma2/picon/":

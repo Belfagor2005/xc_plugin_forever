@@ -72,7 +72,6 @@ DEBUG = 0
 #config.plugins.e2m3u2b.debug.addNotifier(debugNotifier, initial_call=False)
 
 TESTRUN = 0
-
 ENIGMAPATH = '/etc/enigma2/'
 EPGIMPORTPATH = '/etc/epgimport/'
 CFGPATH = os.path.join(ENIGMAPATH, 'e2m3u2bouquet/')
