@@ -4,7 +4,7 @@
 ****************************************
 *        coded by Lululla & PCD        *
 *             skin by MMark            *
-*             24/04/2022               *
+*             15/07/2022               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -41,7 +41,6 @@ from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 # from Tools import ASCIItranslit
 from Tools.Directories import SCOPE_PLUGINS
-# from Tools.Directories import pathExists
 from Tools.Directories import resolveFilename
 from Tools.Downloader import downloadWithProgress
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
@@ -49,14 +48,11 @@ from enigma import RT_HALIGN_LEFT, RT_HALIGN_RIGHT
 from enigma import gPixmapPtr, eAVSwitch #eEnv
 from enigma import eListbox, eTimer
 from enigma import eListboxPythonMultiContent #, eConsoleAppContainer
-# from enigma import eServiceCenter
 from enigma import eServiceReference
 from enigma import ePicLoad #eSize
 from enigma import gFont
 from enigma import iPlayableService
-# from enigma import iServiceInformation
 from enigma import loadPNG
-# from enigma import quitMainloop
 from os import listdir, path, X_OK, chmod, access
 from os.path import splitext
 from os.path import exists as file_exists
@@ -179,21 +175,17 @@ else:
 config.plugins.XCplugin = ConfigSubsection()
 
 cfg = config.plugins.XCplugin
-
 cfg.data = ConfigYesNo(default=False)
 # cfg.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
 cfg.hostaddress = ConfigText(default="exampleserver.com")
 cfg.port = ConfigText(default="80")
 cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
-
 cfg.infoexp = ConfigYesNo(default=False)
 cfg.infoname = NoSave(ConfigText(default="myBouquet"))
-
 # cfg.showlive = ConfigEnableDisable(default=True)
 cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.live = ConfigSelection(default='1', choices=modelive)
-
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
 cfg.timeout = ConfigText(default="10")
@@ -317,7 +309,7 @@ class xc_home(Screen):
             print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
                 print("*** checking multiprocessing ***")
-                from multiprocessing.pool import ThreadPool
+                # from multiprocessing.pool import ThreadPool
         except Exception as e:
             print("**** missing dependencies ***")
             print(e)
@@ -403,7 +395,7 @@ class xc_home(Screen):
             self.session.open(xc_Play)
         elif sel == ('CONFIG'):
             self.session.open(xc_config)
-        elif sel == ('ABOUT HELP'):
+        elif sel == ('ABOUT & HELP'):
             self.session.open(xc_help)
 
 class xc_config(Screen, ConfigListScreen):
@@ -4014,13 +4006,13 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
 #util
 Panel_list = [
+    ('CONFIG'), 
     ('HOME'),
     ('PLAYLIST'),
     ('MAKER BOUQUET'),
     ('MOVIE'),
     ('PLAYER UTILITY '),
-    ('CONFIG'),
-    ('ABOUT HELP'),
+    ('ABOUT & HELP'),
     ]
 
 def xcm3ulistEntry(name):

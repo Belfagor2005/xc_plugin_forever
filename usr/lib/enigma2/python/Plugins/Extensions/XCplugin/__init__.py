@@ -22,7 +22,15 @@ def localeInit():
         os_environ["LANGUAGE"] = lang 
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
-
+def intCheck():
+    import socket
+    try:
+        socket.setdefaulttimeout(1)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
+        return True
+    except:
+        return False
+            
 if isDreamOS:  # check if DreamOS image
     _ = lambda txt: gettext.dgettext(PluginLanguageDomain, txt) if txt else ""
     localeInit()
@@ -43,7 +51,7 @@ def checks():
         chek_in = True
     return chek_in
 
-if checks:
+if intCheck():
     try:
         from . import Update
         Update.upd_done()
