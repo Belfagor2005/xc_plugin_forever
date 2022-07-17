@@ -44,16 +44,24 @@ else:
             return gettext.gettext(txt)
     language.addCallback(localeInit())
 
-def checks():
-    from . import Utils
-    chek_in= False
-    if Utils.checkInternet():
-        chek_in = True
-    return chek_in
-
-if intCheck():
+def intCheck():
+    import socket
     try:
-        from . import Update
-        Update.upd_done()
+        socket.setdefaulttimeout(1)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
+        return True
     except:
-        pass
+        return False
+
+try:
+    if intCheck():
+            from . import Update
+            Update.upd_done()
+    else:
+        from Screens.MessageBox import MessageBox
+        from Tools.Notifications import AddPopup
+        AddPopup(_("Sorry but No Internet :("),MessageBox.TYPE_INFO, 10, 'Sorry')            
+
+except:
+    import traceback
+    traceback.print_exc()
