@@ -1,5 +1,5 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+#!/usr/bin/python
 '''
 ****************************************
 *        coded by Lululla & PCD        *
@@ -10,7 +10,8 @@
 #--------------------#
 '''
 from __future__ import print_function
-from . import _
+# from . import _
+from .__init__ import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, configfile,  ConfigYesNo, ConfigEnableDisable, ConfigSelectionNumber, ConfigClock

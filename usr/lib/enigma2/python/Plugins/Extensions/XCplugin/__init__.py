@@ -44,15 +44,6 @@ else:
             return gettext.gettext(txt)
     language.addCallback(localeInit())
 
-def intCheck():
-    import socket
-    try:
-        socket.setdefaulttimeout(1)
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
-        return True
-    except:
-        return False
-
 try:
     if intCheck():
             from . import Update
@@ -61,7 +52,6 @@ try:
         from Screens.MessageBox import MessageBox
         from Tools.Notifications import AddPopup
         AddPopup(_("Sorry but No Internet :("),MessageBox.TYPE_INFO, 10, 'Sorry')            
-
 except:
     import traceback
     traceback.print_exc()
