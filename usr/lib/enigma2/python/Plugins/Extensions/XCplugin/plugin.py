@@ -10,8 +10,8 @@
 #--------------------#
 '''
 from __future__ import print_function
-# from . import _
-from .__init__ import _
+from . import _
+# from .__init__ import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, configfile,  ConfigYesNo, ConfigEnableDisable, ConfigSelectionNumber, ConfigClock
@@ -67,10 +67,8 @@ try:
     from xml.etree.cElementTree import ElementTree, fromstring
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
-try:
-    from Plugins.Extensions.XCplugin.Utils import *
-except:
-    from . import Utils
+
+from . import Utils
 
 import base64
 import glob
@@ -157,7 +155,7 @@ if os.path.exists("/usr/bin/gstplayer"):
     modelive.append(("5001", "Gstreamer(5001)"))
 if os.path.exists("/usr/bin/exteplayer3"):
     modelive.append(("5002", "Exteplayer3(5002)"))
-if DreamOS():
+if Utils.DreamOS():
     modelive.append(("8193", "eServiceUri(8193)"))
 
 modemovie = [("4097", "IPTV(4097)")]
@@ -165,10 +163,10 @@ if os.path.exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "Gstreamer(5001)"))
 if os.path.exists("/usr/bin/exteplayer3"):
     modemovie.append(("5002", "Exteplayer3(5002)"))
-if DreamOS():
+if Utils.DreamOS():
     modemovie.append(("8193", "eServiceUri(8193)"))
 
-if DreamOS():
+if Utils.DreamOS():
     WGET = '/usr/bin/wget --no-check-certificate'
 else:
     WGET = '/usr/bin/wget'
@@ -213,7 +211,7 @@ cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("inte
 cfg.fixedtime = ConfigClock(default=0)
 
 
-if isHD():
+if Utils.isHD():
     CHANNEL_NUMBER = [3, 0, 50, 40, 0]
     CHANNEL_NAME = [75, 0, 900, 40, 1]
     FONT_0 = ("Regular", 24)
@@ -221,7 +219,7 @@ if isHD():
     BLOCK_H = 40
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
     skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
-elif isFHD():
+elif Utils.isFHD():
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
     FONT_0 = ("Regular", 32)
@@ -229,7 +227,7 @@ elif isFHD():
     BLOCK_H = 50
     skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))
     piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
-if DreamOS():
+if Utils.DreamOS():
     skin_path =  skin_path + '/dreamOs'
 
 def copy_poster():
@@ -324,7 +322,7 @@ class xc_home(Screen):
             self.start()
 
     def start(self):
-        OnclearMem()
+        Utils.OnclearMem()
 
     def config(self):
         self.session.open(xc_config)
@@ -333,7 +331,7 @@ class xc_home(Screen):
         self.keyNumberGlobalCB(self['text'].getSelectedIndex())
 
     def exitY(self):
-        ReloadBouquets()
+        Utils.ReloadBouquets()
         self.close()
 
     def Team(self):
@@ -363,7 +361,7 @@ class xc_home(Screen):
             self.session.openWithCallback(check_configuring, xc_Main)
         else:
             message = (_("First Select the list or enter it in Config"))
-            web_info(message)
+            Utils.web_info(message)
 
     def updateMenuList(self):
         global infoname
@@ -470,7 +468,7 @@ class xc_config(Screen, ConfigListScreen):
 
     def importIptv_txt(self, result):
         if result:
-            if os.path.isfile(xc_list) and os.stat(xc_list).st_size > 0:
+            if os.path.isfile(xc_list) and os.stat(xc_list).st_size > 100:
                 with open(xc_list, 'r') as f:
                     chaine = f.readlines()
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
@@ -886,7 +884,7 @@ class iptv_streamse():
                     name = base64.b64decode(title64).decode('utf-8')
                     ####test bad char from kiddac plugin
                     if cfg.badcar.value == True:
-                        name = badcar(name)
+                        name = Utils.badcar(name)
                     ####
                     description64 = channel.findtext('description')
                     description = base64.b64decode(description64).decode('utf-8')
@@ -898,12 +896,12 @@ class iptv_streamse():
                         description = ''.join(chr(ord(c)) for c in description).decode('utf8')
                     except:
                         pass
-                    stream_url = checkStr(channel.findtext('stream_url'))
-                    piconname = checkStr(channel.findtext("logo"))
-                    category_id = checkStr(channel.findtext('category_id'))
-                    ts_stream = checkStr(channel.findtext("ts_stream"))
-                    playlist_url = checkStr(channel.findtext('playlist_url'))
-                    desc_image = checkStr(channel.findtext('desc_image'))
+                    stream_url = Utils.checkStr(channel.findtext('stream_url'))
+                    piconname = Utils.checkStr(channel.findtext("logo"))
+                    category_id = Utils.checkStr(channel.findtext('category_id'))
+                    ts_stream = Utils.checkStr(channel.findtext("ts_stream"))
+                    playlist_url = Utils.checkStr(channel.findtext('playlist_url'))
+                    desc_image = Utils.checkStr(channel.findtext('desc_image'))
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         # if desc_image.startswith("https"):
                             desc_image = str(desc_image)
@@ -989,7 +987,7 @@ class iptv_streamse():
                         vodLines = description.splitlines()
                         vodItems = {}
                         for line in vodLines:
-                            vodItems[checkStr(line.partition(": ")[0])] = checkStr(line.partition(": ")[-1])
+                            vodItems[Utils.checkStr(line.partition(": ")[0])] = Utils.checkStr(line.partition(": ")[-1])
                         if "NAME" in vodItems:
                             vodTitle = str(vodItems["NAME"]).strip()
                         elif "O_NAME" in vodItems:
@@ -1062,7 +1060,7 @@ class iptv_streamse():
                 print('my url final 1', url)
                 next_request = 2
                 print('next_request 2 : ', next_request)
-            urlinfo = checkRedirect(url)
+            urlinfo = Utils.checkRedirect(url)
             print('urlinfo 1 ', urlinfo)
             try:
                 req = Request(urlinfo)
@@ -1128,7 +1126,6 @@ class xc_Main(Screen):
         self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
         self.mlist.l.setItemHeight(BLOCK_H)
 
-
         if cfg.infoexp.getValue():
             infoname =  str(cfg.infoname.value)
             
@@ -1159,9 +1156,10 @@ class xc_Main(Screen):
         self["playlist"].setText(STREAMS.playlistname)
         #
         self.go()
-        #
+        
         self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        self.Scale = AVSwitch().getFramebufferScale()
+            
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1321,32 +1319,39 @@ class xc_Main(Screen):
         if self.update_desc:
             try:
                 self["info"].setText("")
-                self["description"].setText("")
+                self["description"].setText("NO DESCRIPTIONS")
+                
+                piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+                
                 self['poster'].instance.setPixmapFromFile(piclogo)
+                try:
+                    os.remove(pictmp)
+                except:
+                    pass                
+                # self.downloadError(piclogo)   
+                #  
                 selected_channel = self.channel_list[self.index]
-                self.pixim = str(selected_channel[7])
-                if self.pixim != "" or self.pixim != "n/A" or self.pixim != None or self.pixim != "null" :
-                    if self.pixim.find('http') == -1:
-                        self.downloadError(piclogo)
-                        return
-                    else:
+                pixim = str(selected_channel[7])
+                print('self pixim   ', str(pixim))
+                # if pixim and pixim != "" or pixim != "n/A" or pixim != None or pixim != "null" :
+                if pixim and pixim != "n/A" :                
+                    try:
+                        parsed = urlparse(pixim)
+                        domain = parsed.hostname
+                        scheme = parsed.scheme
                         if PY3:
-                            self.pixim = six.ensure_binary(self.pixim)
-                        # if PY3:
-                            # self.pixim = self.pixim.encode()
-                        if self.pixim.startswith(b"https") and sslverify:
-                        # if self.pixim.startswith(b"https") and sslverify:                        
-                            parsed_uri = urlparse(self.pixim)
-                            domain = parsed_uri.hostname
-                            sniFactory = SNIFactory(domain)
-                            # print('uurrll: ', self.pixim)
-                            downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-                        else:
-                            downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-                else:
-                    self.downloadError(piclogo)
-                    print("update COVER")
+                            pixim = pixim.encode()
 
+                        if scheme == "https" and sslverify:
+                            sniFactory = SNIFactory(domain)
+
+                            print('uurrll: ', pixim)
+                            downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        else:
+                            downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                    except Exception as ex:
+                        print(str(ex))
+                    
                 if selected_channel[2] != None:
                     if stream_live == True:
                         description = selected_channel[2]
@@ -1362,8 +1367,48 @@ class xc_Main(Screen):
                         description = str(selected_channel[2])
                         self["description"].setText(description)
             except Exception as ex:
+                
                 print(str(ex))
+                
+    def image_downloaded(self, data, pictmp):
+        if os.path.exists(pictmp):
+            try:
+                self.decodeImage(pictmp)
+            except Exception as ex:
+                print("* error ** %s" % str(ex))
+                self.downloadError()
+                print("* data ** " )
+            except:
+                pass
+                
+    def decodeImage(self, png):
+        # self["poster"].hide()
+        if os.path.exists(png):
+            if self["poster"].instance:
+                size = self['poster'].instance.size()
+                self.picload = ePicLoad()
+                self.scale = AVSwitch().getFramebufferScale()
+                self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+                # _l = self.picload.PictureData.get()
+                # del _l[:]
+                if Utils.DreamOS():
+                    self.picload.startDecode(png, False)
+                else:
+                    self.picload.startDecode(png, 0, 0, False)
+                ptr = self.picload.getData()
+                if ptr != None:
+                    self['poster'].instance.setPixmap(ptr)
+                    self['poster'].show()
+                else:
+                    self.downloadError()
+                    print('no cover.. error')
+                return     
 
+    def downloadError(self, data=None):
+        if self["poster"].instance:
+            self["poster"].instance.setPixmapFromFile(piclogo)  
+        return
+            
     def update_channellist(self):
         if not len(iptv_list_tmp):
             return
@@ -1451,7 +1496,7 @@ class xc_Main(Screen):
 
     def mmark(self):
         global iptv_list_tmp
-        del_jpg()
+        Utils.del_jpg()
         copy_poster()
         self.temp_index = 0
         self.temp_channel_list = None
@@ -1562,7 +1607,7 @@ class xc_Main(Screen):
             print('url_info: ', url_info2)
             url = url_info2
             print("Videos2 url =", url)
-            content = ReadUrl2(url)
+            content = Utils.ReadUrl2(url)
             if PY3:
                 content = six.ensure_str(content)
             y = json.loads(content)
@@ -1656,7 +1701,7 @@ class xc_Main(Screen):
                     filename = re.sub(r' ', '_', filename)
                     filename = re.sub(r'_+', '_', filename)
                     filename = filename.replace("(", "").replace(")", "").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                    filename = checkStr(filename)
+                    filename = Utils.checkStr(filename)
                     Path_Movies2 = Path_Movies + filename + '/'
                     if not os.path.exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
@@ -1684,8 +1729,8 @@ class xc_Main(Screen):
                             filename = filename.lower() + ext
                             filename = filename.replace(".mp4.mp4", ".mp4")
 
-                            name = checkStr(filename)
-                            url = checkStr(url)
+                            name = Utils.checkStr(filename)
+                            url = Utils.checkStr(url)
                             # print('name ======= ', name)
                             # print('url  ======= ', url)
                             self.icount += 1
@@ -1705,7 +1750,7 @@ class xc_Main(Screen):
                 else:
                     pmovies = False
                     self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
-                OnclearMem()
+                Utils.OnclearMem()
 
             except Exception as ex:
                 print(str(ex))
@@ -1819,84 +1864,7 @@ class xc_Main(Screen):
 ####################
 
 
-    def decodeImage(self, poster_path):
-        if DreamOS():
-            self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
-        else:
-            self['poster'].instance.setPixmap(None) ### OPEN
-        self['poster'].hide()
-        sc = AVSwitch().getFramebufferScale()
-        self.picload = ePicLoad()
-        size = self['poster'].instance.size()
-        self.picload.setPara((size.width(),
-         size.height(),
-         sc[0],
-         sc[1],
-         False,
-         1,
-         '#FF000000'))
-        if not DreamOS():
-            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
-                ptr = self.picload.getData()
-                if ptr != None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
-                else:
-                    print('no cover.. error')
-            return
-        else:
-            if self.picload.startDecode(poster_path,False) == 0:  ### CVS
-                ptr = self.picload.getData()
-                if ptr != None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
-                else:
-                    print('no cover.. error')
-            return
-            
-    # def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            # self.picload = ePicLoad()
-            # sc = AVSwitch().getFramebufferScale()
-            # if self.picload:
-                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                # if os.path.exists('/var/lib/dpkg/status'):
-                    # self.picload.startDecode(png, False)
-                # else:
-                    # self.picload.startDecode(png, 0, 0, False)
-            # ptr = self.picload.getData()
-            # if ptr != None:
-                # self["poster"].instance.setPixmap(ptr.__deref__())
-                # self["poster"].instance.show()
-            # else:
-                # self.instance.hide()
-                # print('no cover.. error')
 
-    def showImage(self, picInfo=None):
-        try:
-            ptr = self.picload.getData()
-            if ptr is not None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-        except Exception as err:
-            print("[xc] ERROR showImage:", err)
-
-    def image_downloaded(self, data, pictmp):
-        if os.path.exists(pictmp):
-            try:
-                self.decodeImage(pictmp)
-            except Exception as ex:
-                print("* error ** %s" % str(ex))
-                pass
-            except:
-                pass
-
-    def downloadError(self, data=None):
-        if data:
-            print(data)
-        if self["poster"].instance:
-            self["poster"].instance.setPixmapFromFile(piclogo)
 
 #######################
     def check_standby(self, myparam=None):
@@ -2083,7 +2051,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         try:
             self.picload.PictureData.get().append(self.setCover)
         except:
-            self.PicLoad_conn = self.picload.PictureData.connect(self.setCover)
+            self.picload_conn = self.picload.PictureData.connect(self.setCover)
         self.state = self.STATE_PLAYING
         self.cont_play = STREAMS.cont_play
         self.service = None
@@ -2198,7 +2166,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             print("update COVER")
 
     def decodeImage(self, poster_path):
-        if DreamOS():
+        if Utils.DreamOS():
             self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
         else:
             self['poster'].instance.setPixmap(None) ### OPEN
@@ -2213,7 +2181,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
          False,
          1,
          '#FF000000'))
-        if not DreamOS():
+        if not Utils.DreamOS():
             if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
                 ptr = self.picload.getData()
                 if ptr != None:
@@ -2232,35 +2200,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     print('no cover.. error')
             return
                 
-    # def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            # self.picload = ePicLoad()
-            # sc = AVSwitch().getFramebufferScale()
-            # if self.picload:
-                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                # if os.path.exists('/var/lib/dpkg/status'):
-                    # self.picload.startDecode(png, False)
-                # else:
-                    # self.picload.startDecode(png, 0, 0, False)
-            # ptr = self.picload.getData()
-            # if ptr != None:
-                # self["poster"].instance.setPixmap(ptr.__deref__())
-                # self["poster"].instance.show()
-            # else:
-                # self.instance.hide()
-                # print('no cover.. error')
-
-    def showImage(self, picInfo=None):
-        try:
-            ptr = self.picload.getData()
-            if ptr is not None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-        except Exception as err:
-            print("[xc] ERROR showImage:", err)
-
-
     def image_downloaded(self, data, pictmp):
         if os.path.exists(pictmp):
             try:
@@ -2272,12 +2211,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 pass
 
     def downloadError(self, data=None):
-        if data:
-            print(data)
         if self["poster"].instance:
             self["poster"].instance.setPixmapFromFile(piclogo)
-##################
-
+            
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
             self.doShow()
@@ -2592,7 +2528,7 @@ class xc_StreamTasks(Screen):
             self["movielist"].updateList(self.movielist)
         else:
             message = "The Movie path not configured or path not exist!!!"
-            web_info(message)
+            Utils.web_info(message)
             self.close()
 
     def getTaskList(self):
@@ -2965,7 +2901,7 @@ class xc_maker(Screen):
     def createCfgxml(self, result):
         if result:
             make_bouquet()
-            ReloadBouquets()
+            Utils.ReloadBouquets()
 
     def remove(self):
         self.session.openWithCallback(self.removelistok, MessageBox, _("Remove Playlist from Bouquets?"), MessageBox.TYPE_YESNO, timeout=10)
@@ -2973,7 +2909,7 @@ class xc_maker(Screen):
     def removelistok(self, result):
         if result:
             uninstaller()
-            ReloadBouquets()
+            Utils.ReloadBouquets()
 
     def getabout(self):
         conthelp = _("GREEN BUTTON:\n ")
@@ -3295,7 +3231,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                         eserv = 4097
 
                 url = self.live_url
-                url = checkStr(url)
+                url = Utils.checkStr(url)
                 self.session.nav.stopService()
 
                 if url != "" and url is not None:
@@ -3343,7 +3279,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             show_more_infos(name, self.index)
 
     def decodeImage(self, poster_path):
-        if DreamOS():
+        if Utils.DreamOS():
             self['poster'].instance.setPixmap(gPixmapPtr()) ### CVS
         else:
             self['poster'].instance.setPixmap(None) ### OPEN
@@ -3358,7 +3294,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
          False,
          1,
          '#FF000000'))
-        if not DreamOS():
+        if not Utils.DreamOS():
             if self.picload.startDecode(poster_path, 0, 0, False) == 0:  ### OPEN
                 ptr = self.picload.getData()
                 if ptr != None:
@@ -3415,11 +3351,16 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             except:
                 pass
 
+
     def downloadError(self, data=None):
-        if data:
-            print(data)
         if self["poster"].instance:
             self["poster"].instance.setPixmapFromFile(piclogo)
+            
+    # def downloadError(self, data=None):
+        # if data:
+            # print(data)
+        # if self["poster"].instance:
+            # self["poster"].instance.setPixmapFromFile(piclogo)
 ##############
 
 class xc_Play(Screen):
@@ -3631,12 +3572,12 @@ class xc_Play(Screen):
                         in_bouquets = 1
                 if in_bouquets == 0:
                     if os.path.isfile("/etc/enigma2/%s" % xcname) and os.path.isfile("/etc/enigma2/bouquets.tv"):
-                        remove_line("/etc/enigma2/bouquets.tv", xcname)
+                        Utils.remove_line("/etc/enigma2/bouquets.tv", xcname)
                         with open("/etc/enigma2/bouquets.tv", "a") as outfile:
                             outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
                 outfile.close()
             self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
-            ReloadBouquets()
+            Utils.ReloadBouquets()
 
 class xc_M3uPlay(Screen):
     def __init__(self, session, name):
@@ -3919,17 +3860,17 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def showIMDB(self):
         text_clear = self.name
-        if is_tmdb:
+        if Utils.is_tmdb:
             try:
                 from Plugins.Extensions.TMBD.plugin import TMBD
-                text = badcar(text_clear)
+                text = Utils.badcar(text_clear)
                 _session.open(tmdb.tmdbScreen, text, 0)
             except Exception as ex:
                 print("[XCF] Tmdb: ", str(ex))
-        elif is_imdb:
+        elif Utils.is_imdb:
             try:
                 from Plugins.Extensions.IMDb.plugin import main as imdb
-                text = badcar(text_clear)
+                text = Utils.badcar(text_clear)
                 imdb(_session, text)
             except Exception as ex:
                 print("[XCF] imdb: ", str(ex))
@@ -4023,7 +3964,7 @@ def xcm3ulistEntry(name):
     white = 16777215
     blue = 79488
     col = 16777215
-    if isFHD():
+    if Utils.isFHD():
         res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(pngl)))
         res.append(MultiContentEntryText(pos=(100, 0), size=(1200, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     else:
@@ -4043,11 +3984,11 @@ def m3ulistxc(data, list):
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        if isFHD():
+        if Utils.isFHD():
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
         else:
-            self.l.setItemHeight(40)
+            self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 24))
 
 
@@ -4150,7 +4091,7 @@ class downloadTask(Task):
                 self.toolbox.download_finished()
                 self.downloading = False
                 message = "Movie successfully transfered to your HDD!" + "\n" + self.filename
-                web_info(message)
+                Utils.web_info(message)
             except:
                 pass
         pass
@@ -4255,17 +4196,17 @@ def show_more_infos(name, index):
                 print('text_clear: ', str(text_clear))
                 # _session.open(xc_Epg, str(text_clear))
             # else:
-            if is_tmdb:
+            if Utils.is_tmdb:
                 try:
                     from Plugins.Extensions.TMBD.plugin import TMBD
-                    text = badcar(text_clear)
+                    text = Utils.badcar(text_clear)
                     _session.open(tmdb.tmdbScreen, text, 0)
                 except Exception as ex:
                     print("[XCF] Tmdb: ", str(ex))
-            elif is_imdb:
+            elif Utils.is_imdb:
                 try:
                     from Plugins.Extensions.IMDb.plugin import main as imdb
-                    text = badcar(text_clear)
+                    text = Utils.badcar(text_clear)
                     imdb(_session, text)
                 except Exception as ex:
                     print("[XCF] imdb: ", str(ex))
@@ -4276,7 +4217,7 @@ def show_more_infos(name, index):
                 _session.open(xc_Epg, text_clear)
     else:
         message = (_("Please enter correct server parameters in Config\n no valid list "))
-        web_info(message)
+        Utils.web_info(message)
 
 def save_old():
     fldbouquet = "/etc/enigma2/bouquets.tv"
@@ -4297,7 +4238,7 @@ def save_old():
                 urlX = xc12 + xc2
                 localFile = '%suserbouquet.%s%s_.tv'% (enigma_path, tag, namebouquet) #' #resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tvaddon'))
                 print('localFile ', localFile)
-                r = getUrl(urlX)
+                r = Utils.getUrl(urlX)
                 with open(localFile,'w') as f:
                   f.write(r)
             except Exception as ex:
@@ -4311,7 +4252,7 @@ def save_old():
             try:
                 urlY = xc12 + xc2
                 localFile = '%s%s.m3u' % (Path_Movies, namebouquet)
-                r = getUrl(urlY)
+                r = Utils.getUrl(urlY)
                 with open(localFile,'w') as f:
                   f.write(r)
             except Exception as ex:
@@ -4361,7 +4302,7 @@ def save_old():
                 new_bouquet.close()
             os.system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
-        ReloadBouquets()
+        Utils.ReloadBouquets()
     except Exception as ex:
         print(str(ex))
 

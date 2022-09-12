@@ -18,7 +18,7 @@
 				MultiContentEntryProgress(pos = (766, 6), size = (193, 13), percent = -3),                                              # index 3 should be progress
 				MultiContentEntryText(pos = (960, 3),     size = (66, 33), font=1, color=0x3faaff, flags = RT_HALIGN_RIGHT, text = 4), # index 4 is the percentage
 				],
-				"fonts": [gFont("Regular", 17),gFont("Regular", 17)],
+				"fonts": [gFont("Regular", 17),gFont("Regular", 20)],
 				"itemHeight": 40
 			}
 		</convert>
