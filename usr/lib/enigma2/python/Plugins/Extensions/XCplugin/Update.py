@@ -17,11 +17,9 @@ def upd_done():
         os.remove("/tmp/xcforever.tar")
         return
     xfile = 'http://patbuweb.com/xcplugin/xcforever.tar'
-    print('xfile: ', xfile)
     if PY3:
         xfile = b"http://patbuweb.com/xcplugin/xcforever.tar"
         print("Update.py not in PY3")
-
     import requests
     response = requests.head(xfile)
     if response.status_code == 200:

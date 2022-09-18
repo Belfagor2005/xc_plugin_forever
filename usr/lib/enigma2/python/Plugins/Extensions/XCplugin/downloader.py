@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 # Code by mfaraj57 and RAED (c) 2018
 # adatted from Lululla 2020
 #thank's
@@ -79,7 +80,6 @@ else:
         <widget name="status" position="30,120" size="755,60" font="Regular;24" halign="center" valign="center" transparent="1" />
         </screen>"""
 
-#### progress screen
 sz_w = getDesktop(0).size().width()
 if sz_w == 1280 :
     SKIN_Progress = """

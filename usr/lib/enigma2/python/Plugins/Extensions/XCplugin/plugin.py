@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/python
+
 '''
 ****************************************
 *        coded by Lululla & PCD        *
@@ -882,10 +883,10 @@ class iptv_streamse():
                     description4playlist_html = ''
                     title64 = channel.findtext('title')
                     name = base64.b64decode(title64).decode('utf-8')
-                    ####test bad char from kiddac plugin
+                    # test bad char from kiddac plugin
                     if cfg.badcar.value == True:
                         name = Utils.badcar(name)
-                    ####
+                    # #
                     description64 = channel.findtext('description')
                     description = base64.b64decode(description64).decode('utf-8')
                     try:
@@ -1039,7 +1040,6 @@ class iptv_streamse():
             print("ERROR IPTV_LIST_LEN = %s" % len(iptv_list_tmp))
         return
 
-#control next_request ???
     def _request(self, url):
         if "exampleserver.com" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
@@ -1053,7 +1053,7 @@ class iptv_streamse():
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
                 url = url
-                #next_request = 1
+                # next_request = 1
                 print('next_request 1: ', next_request)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
@@ -1451,7 +1451,6 @@ class xc_Main(Screen):
                 self.button_updater()
         except Exception as ex:
             print(str(ex))
-#######################
 
     def search_text(self):
         global re_search
@@ -1481,8 +1480,8 @@ class xc_Main(Screen):
         re_search = False
         self.filter_search = []
 
-#######################
-##try for back to the list
+
+# try for back to the list
 # # def load_from_tmp(self):
 # # STREAMS.iptv_list = STREAMS.iptv_list_tmp
 # # STREAMS.list_index = STREAMS.list_index_tmp
@@ -1861,12 +1860,7 @@ class xc_Main(Screen):
             print(str(ex))
             print('ERROR metaFile')
         return
-####################
-
-
-
-
-#######################
+#
     def check_standby(self, myparam=None):
         debug(myparam, "check_standby")
         if myparam:
@@ -2136,7 +2130,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.new_aspect = temp
         self.setAspect(temp)
 
-################
     def setCover(self):
         try:
             self.channelx = iptv_list_tmp[STREAMS.list_index]
@@ -2451,7 +2444,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.channelx = iptv_list_tmp[STREAMS.list_index]
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
-
         ####################
         self.descr = self.channelx[2]
         if self.descr != '' or self.descr != None:
@@ -3361,7 +3353,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             # print(data)
         # if self["poster"].instance:
             # self["poster"].instance.setPixmapFromFile(piclogo)
-##############
+
 
 class xc_Play(Screen):
     def __init__(self, session):
@@ -3944,9 +3936,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def leavePlayer(self):
         self.close()
 
-
-
-#util
+# util
 Panel_list = [
     ('CONFIG'), 
     ('HOME'),
