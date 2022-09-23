@@ -3,34 +3,34 @@
 
 # Code by mfaraj57 and RAED (c) 2018
 # adatted from Lululla 2020
-#thank's
+# thank's
+
 from __future__ import print_function
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from enigma import eTimer, eConsoleAppContainer,getDesktop
+from enigma import eTimer, eConsoleAppContainer, getDesktop
 from os import path as os_path
-from Components.GUIComponent import *
-from Components.HTMLComponent import *
+# from Components.GUIComponent import *
+# from Components.HTMLComponent import *
 from Components.ProgressBar import ProgressBar
 from Tools.Downloader import downloadWithProgress
 import os
-import time
 import sys
 import ssl
-# import six
 
 PY3 = sys.version_info.major >= 3
 if PY3:
     # Python 3
     PY3 = True
-    unicode = str; unichr = chr; long = int; xrange = range
-    from urllib.parse import quote
+    unicode = str
+    unichr = chr
+    long = int
+    xrange = range
     from urllib.request import urlopen
     from urllib.request import Request
-    from urllib.error import HTTPError, URLError
-    
+    from urllib.error import URLError
 else:
     # # Python 2
     # _str = str
@@ -38,11 +38,10 @@ else:
     # range = xrange
     # unicode = unicode
     # basestring = basestring
-    from urllib import quote
     from urllib2 import urlopen
     from urllib2 import Request
-    from urllib2 import HTTPError, URLError
-    
+    from urllib2 import URLError
+
 
 try:
     from OpenSSL import SSL
@@ -64,7 +63,7 @@ if sslverify:
             return ctx
 
 sz_w = getDesktop(0).size().width()
-if sz_w == 1280 :
+if sz_w == 1280:
     SKIN_imagedownloadScreen = """
         <screen name="imagedownloadScreen" position="center,center" size="560,155" title="Downloading image...">
         <widget name="activityslider" position="20,50" size="510,20" borderWidth="1" transparent="1" />
@@ -81,7 +80,7 @@ else:
         </screen>"""
 
 sz_w = getDesktop(0).size().width()
-if sz_w == 1280 :
+if sz_w == 1280:
     SKIN_Progress = """
         <screen position="350,250"  size="550,155" title="Command execution..." >
         <widget name="text" position="10,10"  size="550,130" font="Console;18" />
@@ -94,31 +93,33 @@ else:
         <widget name="slider" position="0,185" size="850,20" borderWidth="1" transparent="1" />
         </screen>"""
 
-def log(label,data):
-    data=str(data)
-    open("/tmp/XCplugin.log","a").write("\n"+label+":>"+data)
+
+def log(label, data):
+    data = str(data)
+    open("/tmp/XCplugin.log", "a").write("\n" + label + ":>" + data)
+
 
 class imagedownloadScreen(Screen):
     def __init__(self, session, name='', target='', url=''):
         Screen.__init__(self, session)
         self.skin = SKIN_imagedownloadScreen
         self.target = target
-        self.name=name
-        self.url=url
-        print("debug: url:",url)
-        print("debug: url:",type(url))
-        self.shown=True
+        self.name = name
+        self.url = url
+        print("debug: url:", url)
+        print("debug: url:", type(url))
+        self.shown = True
         self.count_success = 0
-        self.success=False
+        self.success = False
         self['activityslider'] = ProgressBar()
         self['activityslider'].setRange((0, 100))
         self['activityslider'].setValue(0)
         self['status'] = Label()
         self['package'] = Label()
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {'back': self.dexit,
-         'ok': self.okclicked,
-         'cancel': self.dexit}, -1)
         self['status'].setText(_('Downloading, please wait..'))
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {'back': self.dexit,
+                                                                          'ok': self.okclicked,
+                                                                          'cancel': self.dexit}, -1)
         self.downloading = False
         self.downloader = None
         self.setTitle(_('Connecting') + '...')
@@ -142,45 +143,43 @@ class imagedownloadScreen(Screen):
         self.downloading = True
         if PY3:
             self.url = self.url.encode()
-        self.downloadfile2(self.url,self.target)
+        self.downloadfile2(self.url, self.target)
 
-    def downloadfile(self,url,target):
-            list1 = []
+    def downloadfile(self, url, target):
+        try:
+            req = Request(url)
             try:
-                req = Request(url)
-                try:
-                    response = urlopen(req, context=ssl._create_unverified_context())
-                except:
-                    response = urlopen(req)
-                data = response.read()
-                response.close()
-                with open(target, 'wb') as f:
-                    f.write(r.content)
-                    f.seek(0)
-                f.close()
-                self['status'].setText('downloaded successfully')
-            except URLError as e:
-                # trace_error()
-                if hasattr(e, 'code'):
-                    print('We failed with error code - %s.' % e.code)
-                    if '401' in str(e.code):
-                        self['status'].setText('Falied to download -401')
-                        return None
-                    if '404' in str(e.code):
-                        self['status'].setText('Falied to download -404')
-                        return None
-                    if '400' in str(e.code):
-                        self['status'].setText('Falied to download -400')
-                        return None
-                    if '403' in str(e.code):
-                        self['status'].setText('Falied to download -403')
-                        return None
-                elif hasattr(e, 'reason'):
-                        self['status'].setText('Falied to download -')
-                        return None
+                response = urlopen(req, context=ssl._create_unverified_context())
+            except:
+                response = urlopen(req)
+            data = response.read()
+            response.close()
+            with open(target, 'wb') as f:
+                f.write(data.content)
+                f.seek(0)
+            f.close()
+            self['status'].setText('downloaded successfully')
+        except URLError as e:
+            # trace_error()
+            if hasattr(e, 'code'):
+                print('We failed with error code - %s.' % e.code)
+                if '401' in str(e.code):
+                    self['status'].setText('Falied to download -401')
+                    return None
+                if '404' in str(e.code):
+                    self['status'].setText('Falied to download -404')
+                    return None
+                if '400' in str(e.code):
+                    self['status'].setText('Falied to download -400')
+                    return None
+                if '403' in str(e.code):
+                    self['status'].setText('Falied to download -403')
+                    return None
+            elif hasattr(e, 'reason'):
+                self['status'].setText('Falied to download -')
+                return None
 
-    def downloadfile2(self, url = None, ofile=''):
-        debug = True
+    def downloadfile2(self, url=None, ofile=''):
         if True:
             # url = self.url
             self['package'].setText(self.name)
@@ -200,17 +199,17 @@ class imagedownloadScreen(Screen):
         self['status'].setText(info)
         self.setTitle(_('Downloading') + ' ' + str(p) + '%...')
 
-    def responseCompleted(self, data = None):
-        print('[ downloader] Download succeeded. ')
+    def responseCompleted(self, data=None):
+        print('[ downloader] Download succeeded.')
         info = 'Download completed successfully.\npress Exit'
         self['status'].setText(info)
         self.setTitle(_('Download completed successfully.'))
         self.downloading = False
-        self.success=True
+        self.success = True
         self.instance.show()
         return
 
-    def responseFailed(self, failure_instance = None, error_message = ''):
+    def responseFailed(self, failure_instance=None, error_message=''):
         print('[downloader] Download failed. ')
         self.error_message = error_message
         if error_message == '' and failure_instance is not None:
@@ -223,36 +222,32 @@ class imagedownloadScreen(Screen):
         self.container = eConsoleAppContainer()
         self.container.execute(cmd)
         self.downloading = False
-        self.success=False
+        self.success = False
         self['key_green'].hide()
         self.instance.show()
         self.remove_target()
         return
 
     def dexit(self):
-        try:
-            path=os.path.split(self.target)[0]
-        except:
-            pass
         if self.downloading:
-            self.session.openWithCallback(self.abort,MessageBox, _('Are you sure to stop download.'), MessageBox.TYPE_YESNO)
+            self.session.openWithCallback(self.abort, MessageBox, _('Are you sure to stop download.'), MessageBox.TYPE_YESNO)
         else:
             self.close(False)
 
     def remove_target(self):
-            import os
-            try:
-                if os.path.exists(self.target):
-                    os.remove(self.target)
-            except:
-                pass
+        import os
+        try:
+            if os.path.exists(self.target):
+                os.remove(self.target)
+        except:
+            pass
 
-    def abort(self,answer=True):
-        if answer==False:
+    def abort(self, answer=True):
+        if answer is False:
             return
         if not self.downloading:
             if os_path.exists('/tmp/download_install.log'):
-               os.remove('/tmp/download_install.log')
+                os.remove('/tmp/download_install.log')
             self.close(False)
         elif self.downloader is not None:
             self.downloader.stop
@@ -270,13 +265,9 @@ class imagedownloadScreen(Screen):
         return
 
     def okclicked(self):
-        # if not self.downloading:
-           # self.instance.show()
-           # self.shown=True
-           # return
         if self.shown:
-            self.shown=False
+            self.shown = False
             self.instance.hide()
         else:
             self.instance.show()
-            self.shown=True
+            self.shown = True
