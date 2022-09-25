@@ -44,8 +44,8 @@ else:
 
 
 try:
-    from OpenSSL import SSL
-    from twisted.internet import ssl
+    # from OpenSSL import SSL
+    # from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
     sslverify = True
 except:
