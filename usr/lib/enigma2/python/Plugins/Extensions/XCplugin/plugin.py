@@ -268,6 +268,32 @@ def check_port(tport):
     return url
 
 
+def returnIMDB(text_clear):
+    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
+    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
+    if TMDB:
+        try:
+            from Plugins.Extensions.TMBD.plugin import TMBD
+            text = decodeHtml(text_clear)
+            _session.open(TMBD.tmdbScreen, text, 0)
+        except Exception as ex:
+            print("[XCF] Tmdb: ", str(ex))
+        return True
+    elif IMDb:
+        try:
+            from Plugins.Extensions.IMDb.plugin import main as imdb
+            text = decodeHtml(text_clear)
+            imdb(_session, text)
+        except Exception as ex:
+            print("[XCF] imdb: ", str(ex))
+        return True
+    else:
+        text_clear = decodeHtml(text_clear)
+        _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
+        return True
+    return
+
+
 class xc_home(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -3831,24 +3857,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def showIMDB(self):
         text_clear = self.name
-        if Utils.is_tmdb:
-            try:
-                from Plugins.Extensions.TMBD.plugin import TMBD
-                text = Utils.badcar(text_clear)
-                _session.open(TMBD.tmdbScreen, text, 0)
-            except Exception as ex:
-                print("[XCF] Tmdb: ", str(ex))
-        elif Utils.is_imdb:
-            try:
-                from Plugins.Extensions.IMDb.plugin import main as imdb
-                text = Utils.badcar(text_clear)
-                imdb(_session, text)
-            except Exception as ex:
-                print("[XCF] imdb: ", str(ex))
-
-        else:
-            text_clear = self.name
-            self.session.open(xc_Epg, text_clear)
+        if returnIMDB(text_clear):
+            print('show imdb/tmdb')
 
     def openPlay(self, servicetype, url):
         name = self.name
@@ -4168,13 +4178,8 @@ def show_more_infos(name, index):
         selected_channel = iptv_list_tmp[index]
         if selected_channel:
             if stream_live is True:
-                # # text2 = selected_channel[2]
-                # # text3 = selected_channel[8]
-                # # text_clear += str(text2) + '\n\n' + str(text3)
                 text_clear = selected_channel[9]
                 print('text_clear: ', str(text_clear))
-                # _session.open(xc_Epg, str(text_clear))
-            # else:
             if Utils.is_tmdb:
                 try:
                     from Plugins.Extensions.TMBD.plugin import TMBD

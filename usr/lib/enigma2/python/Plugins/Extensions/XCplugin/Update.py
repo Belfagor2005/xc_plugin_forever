@@ -13,7 +13,7 @@ print("Update.py")
 
 def upd_done():
     print("In upd_done")
-    if os.isfile(a):
+    if os.path.isfile(a):
         os.remove(a)
         return
     xfile = 'http://patbuweb.com/xcplugin/xcforever.tar'
