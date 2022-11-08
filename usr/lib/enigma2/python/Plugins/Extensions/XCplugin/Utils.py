@@ -604,15 +604,31 @@ def ConverDateBack(data):
     return year + month + day
 
 
-def isExtEplayer3Available():
-    from enigma import eEnv
-    return os.path.isfile(eEnv.resolve('$bindir/exteplayer3'))
+def isPythonFolder():
+    import os
+    path = ('/usr/lib/')
+    for name in os.listdir(path):
+        fullname = path + name
+        if not os.path.isfile(fullname) and 'python' in fullname:
+            print(fullname)
+            import sys
+            print("sys.version_info =", sys.version_info)
+            pythonvr = fullname
+            print('pythonvr is ', pythonvr)
+            x = ('%s/site-packages/streamlink' % pythonvr)
+            print(x)
+            # /usr/lib/python3.9/site-packages/streamlink
+    return x
 
 
 def isStreamlinkAvailable():
-    from enigma import eEnv
-    return os.path.isdir(eEnv.resolve('/usr/lib/python2.7/site-packages/streamlink'))
+    pythonvr = isPythonFolder()
+    return pythonvr
 
+
+def isExtEplayer3Available():
+    from enigma import eEnv
+    return os.path.isfile(eEnv.resolve('$bindir/exteplayer3'))
 # def Controlexteplayer():
     # exteplayer = False
     # if os.path.exists("/usr/bin/exteplayer3") or os.path.exists("/bin/exteplayer3")  or os.path.exists("exteplayer3"):

@@ -3400,7 +3400,7 @@ class xc_Play(Screen):
     def openList(self):
         self.names = []
         self.Movies = []
-        # path = self.name
+        path = self.name
         AA = ['.m3u']
         for root, dirs, files in os.walk(path):
             for name in files:
