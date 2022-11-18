@@ -3423,7 +3423,7 @@ class xc_Play(Screen):
     def runList(self):
         idx = self["list"].getSelectionIndex()
         if self.Movies:
-            # path = self.Movies[idx]
+            path = self.Movies[idx]
             if idx == -1 or idx is None:
                 return
             else:
@@ -3519,8 +3519,7 @@ class xc_Play(Screen):
     def message2(self):
         idx = self["list"].getSelectionIndex()
         dom = self.names[idx]
-        # path = self.Movies[idx]
-        name = path
+        name = self.Movies[idx]
         if idx == -1 or idx is None:
             return
         if ".m3u" in name:
