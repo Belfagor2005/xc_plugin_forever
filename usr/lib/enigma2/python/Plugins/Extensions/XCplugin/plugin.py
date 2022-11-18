@@ -15,12 +15,17 @@ from __future__ import print_function
 from . import _
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
-from Components.config import ConfigSubsection, config, ConfigYesNo, ConfigEnableDisable, ConfigSelectionNumber, ConfigClock
-from Components.config import ConfigSelection, getConfigListEntry, NoSave, ConfigText, ConfigDirectory, ConfigPassword  # , configfile
+from Components.config import ConfigSubsection, config, ConfigYesNo
+from Components.config import ConfigEnableDisable
+from Components.config import ConfigSelectionNumber, ConfigClock
+from Components.config import ConfigSelection, getConfigListEntry, NoSave
+from Components.config import ConfigText, ConfigDirectory
+from Components.config import ConfigPassword  # , configfile
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.MultiContent import MultiContentEntryText, MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import MultiContentEntryText
+from Components.MultiContent import MultiContentEntryPixmapAlphaTest
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
@@ -55,7 +60,7 @@ from enigma import ePicLoad
 from enigma import gFont
 from enigma import iPlayableService
 from enigma import loadPNG
-from os import listdir, path
+from os import listdir
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
@@ -274,7 +279,7 @@ def returnIMDB(text_clear):
     if TMDB:
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
-            text = decodeHtml(text_clear)
+            text = Utils.decodeHtml(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as ex:
             print("[XCF] Tmdb: ", str(ex))
@@ -282,13 +287,13 @@ def returnIMDB(text_clear):
     elif IMDb:
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
-            text = decodeHtml(text_clear)
+            text = Utils.decodeHtml(text_clear)
             imdb(_session, text)
         except Exception as ex:
             print("[XCF] imdb: ", str(ex))
         return True
     else:
-        text_clear = decodeHtml(text_clear)
+        text_clear = Utils.decodeHtml(text_clear)
         _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
         return True
     return
