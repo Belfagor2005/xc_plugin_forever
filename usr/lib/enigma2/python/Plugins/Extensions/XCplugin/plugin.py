@@ -13,6 +13,8 @@
 '''
 from __future__ import print_function
 from . import _
+from . import Utils
+from . import html_conv
 from Components.AVSwitch import AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, ConfigYesNo
@@ -64,14 +66,6 @@ from os import listdir
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
-
-try:
-    from xml.etree.cElementTree import ElementTree, fromstring
-except ImportError:
-    from xml.etree.ElementTree import ElementTree, fromstring
-
-from . import Utils
-
 import base64
 import json
 import os
@@ -80,6 +74,11 @@ import six
 import socket
 import sys
 import time
+
+try:
+    from xml.etree.cElementTree import ElementTree, fromstring
+except ImportError:
+    from xml.etree.ElementTree import ElementTree, fromstring
 
 global STREAMS, piclogo, pictmp, skin_path, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path
 global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo, epgimport_path
@@ -239,7 +238,6 @@ def copy_poster():
 
 
 copy_poster()
-
 ntimeout = int(cfg.timeout.value)
 socket.setdefaulttimeout(ntimeout)
 eserv = int(cfg.services.value)
@@ -279,7 +277,7 @@ def returnIMDB(text_clear):
     if TMDB:
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
-            text = Utils.decodeHtml(text_clear)
+            text = html_conv.html_unescape(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as ex:
             print("[XCF] Tmdb: ", str(ex))
@@ -287,13 +285,13 @@ def returnIMDB(text_clear):
     elif IMDb:
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
-            text = Utils.decodeHtml(text_clear)
+            text = html_conv.html_unescape(text_clear)
             imdb(_session, text)
         except Exception as ex:
             print("[XCF] imdb: ", str(ex))
         return True
     else:
-        text_clear = Utils.decodeHtml(text_clear)
+        text_clear = html_conv.html_unescape(text_clear)
         _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
         return True
     return
@@ -1543,7 +1541,6 @@ class xc_Main(Screen):
         # print('next_request = ',next_request)
         # print('re_search = ',re_search)
         # print('isStream = ',isStream)
-
         # print('STREAM VIDEO STATUS : ', str(STREAMS.video_status))
         # print('STREAM VIDEO BACK : ', str(self.video_back))
         # if STREAMS.video_status and self.video_back == False:
@@ -3211,7 +3208,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                     else:
                         if PY3:
                             self.cover = six.ensure_binary(self.cover)
-
                         if self.cover.startswith(b"https") and sslverify:
                             parsed_uri = urlparse(self.cover)
                             domain = parsed_uri.hostname
@@ -3235,7 +3231,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 if str(os.path.splitext(self.live_url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
-
                 url = self.live_url
                 url = Utils.checkStr(url)
                 self.session.nav.stopService()
@@ -3319,25 +3314,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                     print('no cover.. error')
             return
 
-    # def decodeImage(self, png):
-        # if os.path.exists(png):
-            # size = self.instance.size()
-            # self.picload = ePicLoad()
-            # sc = AVSwitch().getFramebufferScale()
-            # if self.picload:
-                # self.picload.setPara([size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'])
-                # if os.path.exists('/var/lib/dpkg/status'):
-                    # self.picload.startDecode(png, False)
-                # else:
-                    # self.picload.startDecode(png, 0, 0, False)
-            # ptr = self.picload.getData()
-            # if ptr is not None:
-                # self["poster"].instance.setPixmap(ptr.__deref__())
-                # self["poster"].instance.show()
-            # else:
-                # self.instance.hide()
-                # print('no cover.. error')
-
     def showImage(self, picInfo=None):
         try:
             ptr = self.picload.getData()
@@ -3360,12 +3336,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
     def downloadError(self, data=None):
         if self["poster"].instance:
             self["poster"].instance.setPixmapFromFile(piclogo)
-
-    # def downloadError(self, data=None):
-        # if data:
-            # print(data)
-        # if self["poster"].instance:
-            # self["poster"].instance.setPixmapFromFile(piclogo)
 
 
 class xc_Play(Screen):
