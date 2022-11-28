@@ -4343,11 +4343,16 @@ def main(session, **kwargs):
 
 _session = None
 autoStartTimer = None
+_firstStart = True
 
 
 class AutoStartTimer:
     def __init__(self, session):
+        global _firstStart
+        print("*** running AutoStartTimerFxy ***")
         self.session = session
+        if _firstStart:
+            self.runUpdate()        
         self.timer = eTimer()
         self.timer.start(50, 1)
         try:
@@ -4355,6 +4360,16 @@ class AutoStartTimer:
         except:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
         self.update()
+
+    def runUpdate(self):
+        print("*** running update ***")
+        try:
+            from . import Update
+            Update.upd_done()
+            _firstStart = False
+        except Exception as e:
+            print('error Fxy', str(e))
+
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value:
@@ -4438,10 +4453,12 @@ def check_configuring():
 
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
+    global _firstStart    
     global _session
     if reason == 0 and _session is None:
         if session is not None:
             _session = session
+            _firstStart = True
             if autoStartTimer is None:
                 autoStartTimer = AutoStartTimer(session)
     return
