@@ -1621,7 +1621,7 @@ class xc_Main(Screen):
             print('url_info: ', url_info2)
             url = url_info2
             print("Videos2 url =", url)
-            content = Utils.ReadUrl2(url)
+            content = Utils.ReadUrl(url)
             if PY3:
                 content = six.ensure_str(content)
             y = json.loads(content)
