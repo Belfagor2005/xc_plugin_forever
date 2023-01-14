@@ -5,7 +5,12 @@
 	<ePixmap position="160,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="1" />
 	<eLabel position="160,120" size="1570,5" backgroundColor="#202020" zPosition="2" />
 	<eLabel position="160,980" size="1570,5" backgroundColor="#202020" zPosition="1" />	
-	
+
+	<widget name="totalItem" position="1291,1013" size="425,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+	<widget name="label2" position="840,1013" size="420,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+
+
+
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1335,30" size="400,80" font="Regular;34" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>

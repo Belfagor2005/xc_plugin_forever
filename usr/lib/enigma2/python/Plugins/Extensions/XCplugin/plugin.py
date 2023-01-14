@@ -4,9 +4,9 @@
 
 '''
 ****************************************
-*        coded by Lululla & PCD        *
+*        coded by Lululla              *
 *             skin by MMark            *
-*             15/09/2022               *
+*             14/01/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -80,7 +80,7 @@ try:
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
 
-global STREAMS, piclogo, pictmp, skin_path, Path_Picons, Path_Movies, Path_Movies2, Path_XML, enigma_path
+global STREAMS, piclogo, pictmp, skin_path, Path_Movies, Path_Movies2, Path_XML
 global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo, epgimport_path
 
 _session = " "
@@ -297,6 +297,28 @@ def returnIMDB(text_clear):
     return
 
 
+EXTENSIONS = {
+		"mts": "movie",
+		"m2ts": "movie",
+		"pls": "music",
+		"vdr": "movie",
+		"vob": "movie",
+		"ogm": "movie",
+		"wmv": "movie",
+		"ts": "movie",
+		"avi": "movie",
+		"divx": "movie",
+		"mpg": "movie",
+		"mpeg": "movie",
+		"mkv": "movie",
+		"mp4": "movie",
+		"mov": "movie",
+		"trp": "movie",
+		"m4v": "movie",
+		"flv": "movie",
+	}
+
+
 class xc_home(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -468,7 +490,7 @@ class xc_config(Screen, ConfigListScreen):
         self.onLayoutFinish.append(self.layoutFinished)
 
     def iptv_sh(self):
-        self.session.openWithCallback(self.importIptv_sh, MessageBox, _("Import Server from /ect/enigma2/iptv.sh?"), type=MessageBox.TYPE_YESNO, timeout=10, default=False)
+        self.session.openWithCallback(self.importIptv_sh, MessageBox, _("Import Server from /ect/enigma2/iptv.sh?"), type=MessageBox.TYPE_YESNO, timeout=10, default=True)
 
     def importIptv_sh(self, result):
         if result:
@@ -496,7 +518,7 @@ class xc_config(Screen, ConfigListScreen):
                 self.mbox = self.session.open(MessageBox, (_("Missing %s !") % iptvsh), MessageBox.TYPE_INFO, timeout=4)
 
     def ImportInfosServer(self):
-        self.session.openWithCallback(self.importIptv_txt, MessageBox, _("Import Server from /tmp/xc.tx?"), type=MessageBox.TYPE_YESNO, timeout=10, default=False)
+        self.session.openWithCallback(self.importIptv_txt, MessageBox, _("Import Server from /tmp/xc.tx?"), type=MessageBox.TYPE_YESNO, timeout=10, default=True)
 
     def importIptv_txt(self, result):
         if result:
@@ -863,10 +885,8 @@ class iptv_streamse():
             print("!!!!!!!!-------------------- URL %s" % self.url)
             if '&type' in self.url:
                 next_request = 1
-
             # elif "_get" in self.url:
                 # next_request = 2
-
             elif "get_" in self.url:  # at start
                 next_request = 2
             xml = self._request(self.url)
@@ -927,6 +947,7 @@ class iptv_streamse():
                         description = ''.join(chr(ord(c)) for c in description).decode('utf8')
                     except:
                         pass
+                    # name = Utils.checkStr(name)
                     stream_url = Utils.checkStr(channel.findtext('stream_url'))
                     piconname = Utils.checkStr(channel.findtext("logo"))
                     category_id = Utils.checkStr(channel.findtext('category_id'))
@@ -1001,7 +1022,6 @@ class iptv_streamse():
                     # if "/movie/" in stream_url :
                     # if isStream and "/movie/" in stream_url:
                     if isStream and ("/movie/" or "/series/") in stream_url:
-
                         stream_live = False
                         vodTitle = ''
                         vodDescription = ''
@@ -1016,7 +1036,7 @@ class iptv_streamse():
                         vodLines = description.splitlines()
                         vodItems = {}
                         for line in vodLines:
-                            vodItems[Utils.checkStr(line.partition(": ")[0])] = Utils.checkStr(line.partition(": ")[-1])
+                            vodItems[(line.partition(": ")[0])] = (line.partition(": ")[-1])
                         if "NAME" in vodItems:
                             vodTitle = str(vodItems["NAME"]).strip()
                         elif "O_NAME" in vodItems:
@@ -1091,16 +1111,14 @@ class iptv_streamse():
             urlinfo = Utils.checkRedirect(url)
             print('urlinfo 1 ', urlinfo)
             try:
-                req = Request(urlinfo)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                response = urlopen(req, timeout=ntimeout)
-                if PY3:
-                    res = response.read().decode()
+                headers = {'Accept': 'application/json'}
+                request = Request(urlinfo, headers=headers)
+                if not PY3:
+                    response = urlopen(request, timeout=10).read()
                 else:
-                    res = response.read()
-                print("Here in client1 link =", res)
-                res = fromstring(res)
-                response.close()
+                    response = urlopen(request, timeout=10).read().decode('utf-8')
+                print("Here in request link =", res)
+                res = fromstring(response)
                 return res
             except Exception as e:
                 print('error requests ------------------------------------- ', str(e))
@@ -1144,11 +1162,6 @@ class xc_Main(Screen):
         self.url_tmp = None
         self.video_back = False
         self.filter_search = []
-        # self.mlist = []
-        # self.mlist = xcM3UList([], enableWrapAround=True, content=eListboxPythonMultiContent)
-        # self['feedlist'] = self.mlist
-        # # self['feedlist'] = xcM3UList(self.mlist)
-        # # self["feedlist"] = xcM3UList(self.mlist)
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
         self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
@@ -1496,7 +1509,6 @@ class xc_Main(Screen):
         re_search = False
         self.filter_search = []
 
-
 # try for back to the list
 # # def load_from_tmp(self):
 # # STREAMS.iptv_list = STREAMS.iptv_list_tmp
@@ -1508,7 +1520,6 @@ class xc_Main(Screen):
 # # STREAMS.prev_page_url = STREAMS.prev_page_url_tmp
 # # STREAMS.prev_page_text = STREAMS.prev_page_text_tmp
 # # self.index = STREAMS.list_index
-
 
     def mmark(self):
         global iptv_list_tmp
@@ -1715,7 +1726,7 @@ class xc_Main(Screen):
                     filename = re.sub(r' ', '_', filename)
                     filename = re.sub(r'_+', '_', filename)
                     filename = filename.replace("(", "").replace(")", "").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                    filename = Utils.checkStr(filename)
+                    filename = html_conv.html_unescape(filename)
                     Path_Movies2 = Path_Movies + filename + '/'
                     if not os.path.exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
@@ -1742,9 +1753,7 @@ class xc_Main(Screen):
                             filename = filename.replace('..', '.')
                             filename = filename.lower() + ext
                             filename = filename.replace(".mp4.mp4", ".mp4")
-
-                            name = Utils.checkStr(filename)
-                            url = Utils.checkStr(url)
+                            name = html_conv.html_unescape(filename)
                             # print('name ======= ', name)
                             # print('url  ======= ', url)
                             self.icount += 1
@@ -1798,10 +1807,11 @@ class xc_Main(Screen):
                 filename = re.sub(r' ', '_', filename)
                 filename = re.sub(r'_+', '_', filename)
                 filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = html_conv.html_unescape(filename)
                 filename = filename.lower() + ext
                 filename = filename.replace(".mp4.mp4", ".mp4")
-                self.filename = str(filename)  # + str(ext)
-                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.filename), type=MessageBox.TYPE_YESNO, timeout=5)  # default=False)
+                self.filename = str(filename)
+                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.filename), type=MessageBox.TYPE_YESNO, timeout=5)
             else:
                 if cfg.LivePlayer.value is True:
                     self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
@@ -1826,11 +1836,15 @@ class xc_Main(Screen):
                     try:
                         import requests
                         file_down = Path_Movies + self.filename
-                        r = requests.get(self.vod_url)
-                        with open(file_down, 'wb') as f:
-                            f.write(r.content)
+                        print('save movie to: ', file_down)
+                        r = requests.get(self.vod_url, verify=False)
+                        if r.status_code == requests.codes.ok:
+                            with open(file_down, 'wb') as f:
+                                f.write(r.content)
                     except Exception as e:
                         print('error requests: ', str(e))
+                        self.downloading = False
+                        pmovies = False               
                 else:
                     try:
                         self.timerDownload.callback.append(self.downloady)
@@ -1849,20 +1863,25 @@ class xc_Main(Screen):
             pmovies = True
             self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, self.vod_url)
         else:
+            self.downloading = False
             pmovies = False
             return
 
     def downloadx(self):
-        pmovies = True
-        useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
-        cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, self.filename)
+        # useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
+        cmd = WGET + " %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
+        if "https" in str(self.vod_url):
+            cmd = WGET + " --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
         self.timeshift_url = Path_Movies + self.filename
+        self.downloading = False
+        pmovies = False
         JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.title))
         self.createMetaFile(self.filename, self.filename)
         self.LastJobView()
 
     def eError(self, error):
         print("----------- %s" % error)
+        self.downloading = False
         pmovies = False
         pass
 
@@ -2497,7 +2516,8 @@ class xc_StreamTasks(Screen):
         self["movielist"] = List([])
         self["key_green"] = Label(_("Remove"))
         self["key_red"] = Label(_("Close"))
-        # self["shortcuts"] = ActionMap(["OkCancelActions", "ColorActions"], {
+        self['totalItem'] = Label()
+        self['label2'] = Label()
         self["actions"] = ActionMap(["OkCancelActions", "ColorActions"], {
                                      "ok": self.keyOK,
                                      "esc": self.keyClose,
@@ -2543,68 +2563,64 @@ class xc_StreamTasks(Screen):
                 job,
                 job.name,
                 job.getStatustext(),
-                int(100 * job.progress / float(job.end)),
-                # str(100 * job.progress / float(job.end)),
-                str(100 * job.progress / float(job.end)) + "%"))
+                int(100 * job.progress // float(job.end)),
+                str(100 * job.progress // float(job.end)) + "%"))
         if len(self.movielist) >= 1:
             self.Timer.startLongTimer(10)
         return
 
     def getMovieList(self):
-        global filelist, filelist2, file1, file2
+        global filelist, file1
+        free = _('Free Space')
+        folder = _('Movie Folder')
         file1 = False
-        file2 = False
-        filelist2 = ''
         filelist = ''
         self.pth = ''
-        if os.path.isdir(Path_Movies):
-            filelist = listdir(Path_Movies)
-        path = Path_Movies
-        # for root, dirs, files in os.walk(path):
-            # for dir in dirs:
-                # self.pth = Path_Movies + dir #+ '/'
-                # print('pth: ', self.pth)
-                # file2 = True
-                # print('Filelist2 True: ' )
-                # filelist2 = listdir(self.pth)
-            # for fil in filelist2:
-                # if os.path.isfile(self.pth + '/' + fil) and filename2.endswith(".meta") is False:
-                    # if ".m3u" in fil:
-                        # continue
-                    # if "autotimer" in fil:
-                        # continue
-                    # print('filename2: ', fil)
-                # self.movielist.append(("movie", fil, _("Finished"), 100, "100%"))
-        if filelist is not None:
-            file1 = True
-            filelist.sort()
-            for filename in filelist:
-                if os.path.isfile(path + filename):
-                    if filename.endswith(".meta"):
-                        continue
-                    if ".m3u" in filename:
-                        continue
-                    if "autotimer" in filename:
-                        continue
-                self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+        freeSize = "-?-"
+        if os.path.isdir(cfg.pthmovie.value):
+            filelist = listdir(cfg.pthmovie.value)
+            if filelist is not None:
+                file1 = True
+                filelist.sort()
+                count = 0
+                for filename in filelist:
+                    if os.path.isfile(Path_Movies + filename):
+                        extension = filename.split('.')
+                        extension = extension[-1].lower()
+                        if extension in EXTENSIONS:
+                            count = count + 1
+                            self.totalItem = str(count)
+                            movieFolder = os.statvfs(cfg.pthmovie.value)
+                            try:
+                                stat = movieFolder
+                                freeSize = Utils.convert_size(float(stat.f_bfree * stat.f_bsize))
+                                print('freesize= ', freeSize)
+                            except Exception as e:
+                                print(e)
+                            titel2 = '%s: %s %s' % (folder, str(freeSize), free)
+                            self['label2'].setText(titel2)
+                            self['totalItem'].setText('Item %s' % str(self.totalItem))
+                            self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+        else:
+            titel2 = '(%s offline)' % folder
+            self['label2'].setText(titel2)
+            self['totalItem'].setText('Item %s' % str(self.totalItem))
+
+
 
     def keyOK(self):
-        global file1, file2
+        global file1
         current = self["movielist"].getCurrent()
         path = Path_Movies
         if current:
             if current[0] == "movie":
                 if file1 is True:
                     path = Path_Movies
-                # elif file2 is True:
-                    # path = self.pth + '/' +
                 url = path + current[1]
                 name = current[1]
                 file1 = False
-                file2 = False
                 isFile = os.path.isfile(url)
                 if isFile:
-                    # self.session.open(M3uPlayMovie, name, url)
                     self.session.open(M3uPlay2, name, url)
                 else:
                     self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
@@ -2630,10 +2646,10 @@ class xc_StreamTasks(Screen):
         sel2 = self.pth + current[1]
         dom = sel
         dom2 = sel2
-        if pmovies is True and filelist2 != '':
-            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom2, MessageBox.TYPE_YESNO, timeout=15, default=False)
+        if pmovies is True:
+            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom2, MessageBox.TYPE_YESNO, timeout=15, default=True)
         else:
-            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
+            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=True)
 
     def callMyMsg1(self, result):
         if result:
@@ -3039,7 +3055,7 @@ class OpenServer(Screen):
             return
         else:
             nam = Path_XML + self.names[idx]
-            self.session.openWithCallback(self.removeXml, MessageBox, _("Do you want to remove: %s ?") % nam, MessageBox.TYPE_YESNO, timeout=15, default=False)
+            self.session.openWithCallback(self.removeXml, MessageBox, _("Do you want to remove: %s ?") % nam, MessageBox.TYPE_YESNO, timeout=15, default=True)
 
     def removeXml(self, result):
         if result:
@@ -3232,7 +3248,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                     if eserv == 1:
                         eserv = 4097
                 url = self.live_url
-                url = Utils.checkStr(url)
+                url = html_conv.html_unescape(url)
                 self.session.nav.stopService()
 
                 if url != "" and url is not None:
@@ -3426,7 +3442,7 @@ class xc_Play(Screen):
         else:
             idx = self["list"].getSelectionIndex()
             dom = self.name + self.names[idx]
-            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
+            self.session.openWithCallback(self.callMyMsg1, MessageBox, _("Do you want to remove: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=True)
 
     def callMyMsg1(self, result):
         if result:
@@ -3445,7 +3461,7 @@ class xc_Play(Screen):
             self.session.open(MessageBox, _("Wait... downloading in progress ..."), MessageBox.TYPE_INFO, timeout=5)
             return
         elif "exampleserver.com" not in STREAMS.xtream_e2portal_url:
-            self.session.openWithCallback(self.dowM3u1, MessageBox, _("Download M3u File?"), MessageBox.TYPE_YESNO, timeout=15, default=False)
+            self.session.openWithCallback(self.dowM3u1, MessageBox, _("Download M3u File?"), MessageBox.TYPE_YESNO, timeout=15, default=True)
         else:
             self.refreshmylist()
 
@@ -3474,8 +3490,8 @@ class xc_Play(Screen):
 
     def downloadProgress(self, recvbytes, totalbytes):
         self["progress"].show()
-        self['progress'].value = int(100 * recvbytes / float(totalbytes))
-        self['progresstext'].text = '%d of %d kBytes (%.2f%%)' % (recvbytes / 1024, totalbytes / 1024, 100 * recvbytes / float(totalbytes))
+        self['progress'].value = int(100 * recvbytes // float(totalbytes))
+        self['progresstext'].text = '%d of %d kBytes (%.2f%%)' % (recvbytes // 1024, totalbytes // 1024, 100 * recvbytes // float(totalbytes))
 
     def check(self, fplug):
         checkfile = self.pathm3u
@@ -3499,7 +3515,7 @@ class xc_Play(Screen):
             return
         if ".m3u" in name:
             idx = self["list"].getSelectionIndex()
-            self.session.openWithCallback(self.convert, MessageBox, _("Do you want to Convert %s to favorite .tv ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=False)
+            self.session.openWithCallback(self.convert, MessageBox, _("Do you want to Convert %s to favorite .tv ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=True)
         else:
             return
 
@@ -3690,7 +3706,7 @@ class xc_M3uPlay(Screen):
         else:
             if ('.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' or 'relinker') in self.urlm3u:
                 self.downloading = True
-                self.session.openWithCallback(self.download_m3u, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.namem3u), type=MessageBox.TYPE_YESNO, timeout=10, default=False)
+                self.session.openWithCallback(self.download_m3u, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.namem3u), type=MessageBox.TYPE_YESNO, timeout=10, default=True)
             else:
                 self.downloading = False
                 self.session.open(MessageBox, _("Only VOD Movie allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
@@ -3722,8 +3738,8 @@ class xc_M3uPlay(Screen):
 
     def downloadProgress(self, recvbytes, totalbytes):
         self["progress"].show()
-        self['progress'].value = int(100 * recvbytes / float(totalbytes))
-        self['progresstext'].text = '%d of %d kBytes (%.2f%%)' % (recvbytes / 1024, totalbytes / 1024, 100 * recvbytes / float(totalbytes))
+        self['progress'].value = int(100 * recvbytes // float(totalbytes))
+        self['progresstext'].text = '%d of %d kBytes (%.2f%%)' % (recvbytes // 1024, totalbytes // 1024, 100 * recvbytes // float(totalbytes))
 
     def check(self, fplug):
         checkfile = self.in_tmp
@@ -4344,6 +4360,10 @@ def main(session, **kwargs):
 _session = None
 autoStartTimer = None
 _firstStart = True
+# try:
+    # from . import Update
+# except ImportError:
+    # print('error import update')
 
 
 class AutoStartTimer:
@@ -4352,13 +4372,14 @@ class AutoStartTimer:
         print("*** running AutoStartTimerFxy ***")
         self.session = session
         if _firstStart:
-            self.runUpdate()        
+            self.runUpdate()
+
         self.timer = eTimer()
-        self.timer.start(50, 1)
         try:
             self.timer.callback.append(self.on_timer)
         except:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
+        self.timer.start(100, 1)
         self.update()
 
     def runUpdate(self):
@@ -4369,7 +4390,6 @@ class AutoStartTimer:
             _firstStart = False
         except Exception as e:
             print('error Fxy', str(e))
-
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value:
@@ -4453,7 +4473,7 @@ def check_configuring():
 
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
-    global _firstStart    
+    global _firstStart
     global _session
     if reason == 0 and _session is None:
         if session is not None:

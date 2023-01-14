@@ -8,7 +8,12 @@
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
 	<eLabel text="MovieList" position="213,20" size="333,66" font="Regular;32" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<!-- Movie List -->
+	
+	<widget name="totalItem" position="835,675" size="300,26" font="Regular;22" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+	<widget name="label2" position="523,675" size="300,26" font="Regular; 20" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+
+    
+    <!-- Movie List -->
 	<widget source="movielist" render="Listbox" position="106,103" size="1046,533" scrollbarMode="showOnDemand" transparent="1" zPosition="2"  
 		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" >
 		<convert type="TemplatedMultiContent">
