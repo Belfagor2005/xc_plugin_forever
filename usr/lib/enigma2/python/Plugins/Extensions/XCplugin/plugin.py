@@ -105,8 +105,6 @@ btnsearch = 0
 next_request = 0
 stream_url = ""
 urlinfo = ""
-WGET = ''
-
 pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
 
@@ -168,13 +166,8 @@ if os.path.exists("/usr/bin/exteplayer3"):
 if Utils.DreamOS():
     modemovie.append(("8193", "eServiceUri(8193)"))
 
-if Utils.DreamOS():
-    WGET = '/usr/bin/wget --no-check-certificate'
-else:
-    WGET = '/usr/bin/wget'
 
 config.plugins.XCplugin = ConfigSubsection()
-
 cfg = config.plugins.XCplugin
 cfg.data = ConfigYesNo(default=False)
 # cfg.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
@@ -1089,7 +1082,7 @@ class iptv_streamse():
         return
 
     def _request(self, url):
-        if "exampleserver.com" not in str(cfg.hostaddress.value):
+        if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
             res = None
             TYPE_PLAYER = '/enigma2.php'
@@ -1617,85 +1610,90 @@ class xc_Main(Screen):
     def checkinf(self):
         try:
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
-            host = cfg.hostaddress.value
-            ports = cfg.port.value
-            username = cfg.user.value
-            password = cfg.passw.value
             self["max_connect"].setText("Max Connect: 0")
             self["active_cons"].setText("User Active: 0")
-            self["exp"].setText("")
-            self["server_protocol"].setText("Protocol: No Info ")
-            self["timezone"].setText("Timezone: No Info ")
-            url_info = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(username) + '&password=' + str(password) + '&action=user&sub=info'
-            url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-            print('url_info: ', url_info)
-            print('url_info: ', url_info2)
-            url = url_info2
-            print("Videos2 url =", url)
-            content = Utils.ReadUrl(url)
-            if PY3:
-                content = six.ensure_str(content)
-            y = json.loads(content)
-            try:
-                username = ''
-                status = ''
-                created_at = '~'
-                exp_date = '~'
-                auth = 'Not Authorised'
-                active_cons = ''
-                max_connections = ''
-                print('user_info =', y["user_info"])
-                username = (y["user_info"]["username"])
-                status = (y["user_info"]["status"])
-                auth = (y["user_info"]["auth"])
-                created_at = (y["user_info"]["created_at"])
-                exp_date = (y["user_info"]["exp_date"])
-                active_cons = (y["user_info"]["active_cons"])
-                max_connections = (y["user_info"]["max_connections"])
-                print("In Videos2 username =", username)
-                print("In Videos2 status =", status)
-                print("In Videos2 auth =", auth)
-                print("In Videos2 created_at =", created_at)
-                print("In Videos2 active_cons =", active_cons)
-                print("In Videos2 max_connections =", max_connections)
+            self["exp"].setText(" ")
+            self["server_protocol"].setText("Protocol: - ? -")
+            self["timezone"].setText("Timezone: - ? -") 
+            
+            # username = ''
+            status = '- ? -'
+            created_at = '- ? -'
+            exp_date = 'Exp date: - ? -'
+            auth = 'Not Authorised'
+            active_cons = '- ? -'
+            max_connections = '- ? -'
+            
+            host = ''
+            # ports = 80
+            user = ''
+            passw = ''
+            if cfg.hostaddress != 'exampleserver.com':
+                host = cfg.hostaddress.value
+            ports = cfg.port.value
+            if cfg.user.value != "Enter_Username":
+                user = cfg.user.value
+            if cfg.passw != '******':
+                passw = cfg.passw.value
 
-                if created_at:
-                    created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-                if exp_date:
-                    exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                if str(auth) == "1":
-                    if str(status) == "Active":
-                        self["exp"].setText("Active")
-                    elif str(status) == "Banned":
-                        self["exp"].setText("Banned")
-                    elif str(status) == "Disabled":
-                        self["exp"].setText("Disabled")
-                    elif str(status) == "Expired":
-                        self["exp"].setText("Expired")
-                    if str(status) == "Active":
-                        try:
+            url_info = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
+            url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
+            # print('url_info: ', url_info)
+            # print('url_info: ', url_info2)
+            # content = Utils.ReadUrl(url_info2)
+            # if PY3:
+                # content = six.ensure_str(content)
+            # y = json.loads(content)            
+            headers = {'Accept': 'application/json'}
+            request = Request(url_info2, headers=headers)
+            if not PY3:
+                response = urlopen(request, timeout=10).read()
+            else:
+                response = urlopen(request, timeout=10).read().decode('utf-8')
+            # print("Here in request link =", response)
+            # response = Utils.checkGZIP(url_info2)
+            if response:
+                try:
+                    y = json.loads(response)
+                except Exception as e:
+                    print(e)
+                try:
+                    status = (y["user_info"]["status"])
+                    auth = (y["user_info"]["auth"])
+                    created_at = (y["user_info"]["created_at"])
+                    exp_date = (y["user_info"]["exp_date"])
+                    active_cons = (y["user_info"]["active_cons"])
+                    max_connections = (y["user_info"]["max_connections"])
+                    if created_at:
+                        created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
+                        print("created_at =", created_at)
+                    if exp_date:
+                        exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+                    if str(auth) == "1":
+                        if str(status) == "Active":
+                            self["exp"].setText("Active")
                             self["exp"].setText("Active - Exp date:\n" + str(exp_date))
-                        except:
-                            pass
-                            # self["exp"].setText("Exp date:\n")
-                    self["max_connect"].setText("Max Connect: " + str(max_connections))
-                    self["active_cons"].setText("User Active: " + str(active_cons))
-
-                print('server_info =', y["server_info"])
-                server_protocol = (y["server_info"]["server_protocol"])
-                timezone = (y["server_info"]["timezone"])
-                self["server_protocol"].setText("Protocol: " + str(server_protocol))
-                self["timezone"].setText("Timezone: " + str(timezone))
-                print('server_protocol =', server_protocol)
-                print('timezone =', timezone)
-
-            except Exception as e:
-                print('error checkinf : ', str(e))
+                        elif str(status) == "Banned":
+                            self["exp"].setText("Banned")
+                        elif str(status) == "Disabled":
+                            self["exp"].setText("Disabled")
+                        elif str(status) == "Expired":
+                            self["exp"].setText("Expired")
+                        else:
+                            self["exp"].setText("Server Not Responding" + str(exp_date))
+                        self["max_connect"].setText("Max Connect: " + str(max_connections))
+                        self["active_cons"].setText("User Active: " + str(active_cons))
+                    server_protocol = (y["server_info"]["server_protocol"])
+                    self["server_protocol"].setText("Protocol: " + str(server_protocol))                    
+                    timezone = (y["server_info"]["timezone"])
+                    self["timezone"].setText("Timezone: " + str(timezone))
+                except Exception as e:
+                    print('error checkinf : ', str(e))
 
         except Exception as ex:
             print('checkinf: ', str(ex))
 
-##########################
+# #
     def check_download_ser(self):
         titleserie = str(STREAMS.playlistname)
         if self.temp_index > -1:
@@ -1707,69 +1705,55 @@ class xc_Main(Screen):
         elif "/movie/" in stream_url:
             self.mbox = self.session.open(MessageBox, _("But Only Series Episodes Allowed!!!\nThis Stream is Movie"), MessageBox.TYPE_INFO, timeout=5)
         elif series is True and btnsearch == 1:
-            streamfile = '/tmp/streamfile.txt'
-            if os.path.isfile(streamfile) and os.stat(streamfile).st_size > 0:
+            self.streamfile = '/tmp/streamfile.txt'
+            if os.path.isfile(self.streamfile) and os.stat(self.streamfile).st_size > 0:
                 self.session.openWithCallback(self.download_series, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???\n%s?" % titleserie), type=MessageBox.TYPE_YESNO, timeout=5)  # default=False)
         else:
             self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
 
     def download_series(self, result):
         if result:
-            global Path_Movies2
+            # global Path_Movies2
             global series
             global pmovies
             self.icount = 0
             try:
                 if series is True:
-                    title = str(STREAMS.playlistname).replace(' ', '').replace('[', '').replace(']', '').lower()
-                    filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', title)
-                    filename = re.sub(r' ', '_', filename)
-                    filename = re.sub(r'_+', '_', filename)
-                    filename = filename.replace("(", "").replace(")", "").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                    filename = html_conv.html_unescape(filename)
+                    self["state"].setText("Download SERIES")
+                    filename = Utils.cleantitle(STREAMS.playlistname)
                     Path_Movies2 = Path_Movies + filename + '/'
                     if not os.path.exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
                     if Path_Movies2.endswith("//") is True:
                         Path_Movies2 = Path_Movies2[:-1]
-                    self["state"].setText("Download SERIES")
-                    streamfile = '/tmp/streamfile.txt'
-                    f = open(streamfile, "r")
+                    f = open(self.streamfile, "r")
                     read_data = f.read()
                     regexcat = ".*?'(.*?)','(.*?)'.*?\\n"
                     match = re.compile(regexcat, re.DOTALL).findall(read_data)
-                    useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
                     f.close()
                     for name, url in match:
-                        # print('name: ', name)
-                        # print('url : ', url)
                         if url.startswith('http'):
                             ext = '.mp4'
                             ext = str(splitext(url)[-1])
-                            # print('extttttttttttttt', ext)
                             if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                                 ext = '.mp4'
-                            filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', name)
-                            filename = filename.replace('..', '.')
+                            name = Utils.cleantitle(name)
+                            filename = filename.replace('..', '.').replace(".mp4", "")
                             filename = filename.lower() + ext
-                            filename = filename.replace(".mp4.mp4", ".mp4")
-                            name = html_conv.html_unescape(filename)
-                            # print('name ======= ', name)
-                            # print('url  ======= ', url)
                             self.icount += 1
-                            self.downloading = True
-                            cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, url, str(Path_Movies2), name)
-                            cmd2 = WGET + " -c '%s' -O '%s%s'" % (url, str(Path_Movies2), name)
-                            # print('cmd movie: ',cmd)
+                            cmd = "wget %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), filename)
+                            if "https" in str(url):
+                                cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), filename)
                             try:
-                                JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + name, name))
-                            except:
-                                JobManager.AddJob(downloadJob(self, cmd2, Path_Movies2 + name, name))
-                            pmovies = True
-                            self.createMetaFile(name, name)
+                                JobManager.AddJob(downloadJob(self, cmd, Path_Movies2 + filename, filename))
+                                self.downloading = True
+                                pmovies = True
+                            except Exception as e:
+                                print(e)
+                                pass
+                            self.createMetaFile(filename, filename)
                         else:
                             pmovies = False
-                            # self.mbox = self.session.open(MessageBox, _("No Url Allowed!!!"), MessageBox.TYPE_INFO, timeout=3)
                 else:
                     pmovies = False
                     self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
@@ -1781,6 +1765,7 @@ class xc_Main(Screen):
                 pmovies = False
                 self.downloading = False
 
+# #
     def check_download_vod(self):
         if btnsearch == 0 or btnsearch == 2:
             self.mbox = self.session.open(MessageBox, _("This is Category or List Channel?"), MessageBox.TYPE_INFO, timeout=5)
@@ -1791,9 +1776,6 @@ class xc_Main(Screen):
         self.title = str(self.selected_channel[1])
         self.desc = str(self.selected_channel[2])
         print('title: ', self.title)
-        # if PY3:
-            # self.vod_url = self.vod_url.encode()
-            # print('self.vod_url encode')
         if self.vod_url is not None and btnsearch == 1:
             pth = urlparse(self.vod_url).path
             ext = splitext(pth)[-1]
@@ -1803,14 +1785,9 @@ class xc_Main(Screen):
                 ext = splitext(pth)[-1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
-                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.title)
-                filename = re.sub(r' ', '_', filename)
-                filename = re.sub(r'_+', '_', filename)
-                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                filename = html_conv.html_unescape(filename)
-                filename = filename.lower() + ext
-                filename = filename.replace(".mp4.mp4", ".mp4")
-                self.filename = str(filename)
+                filename = Utils.cleantitle(self.title)
+                filename = filename.replace(".mp4", "")
+                self.filename = filename.lower() + ext
                 self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.filename), type=MessageBox.TYPE_YESNO, timeout=5)
             else:
                 if cfg.LivePlayer.value is True:
@@ -1851,7 +1828,7 @@ class xc_Main(Screen):
                     except:
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloady)
                 self.timerDownload.start(300, True)
-                self.session.open(MessageBox, _('Downloading \n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
+                # self.session.open(MessageBox, _('Downloading \n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
@@ -1868,14 +1845,16 @@ class xc_Main(Screen):
             return
 
     def downloadx(self):
-        # useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
-        cmd = WGET + " %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
+        cmd = "wget %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
         if "https" in str(self.vod_url):
-            cmd = WGET + " --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
+            cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
         self.timeshift_url = Path_Movies + self.filename
         self.downloading = False
         pmovies = False
-        JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.title))
+        try:        
+            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.title))
+        except Exception as e:
+            print(e)        
         self.createMetaFile(self.filename, self.filename)
         self.LastJobView()
 
@@ -1885,14 +1864,14 @@ class xc_Main(Screen):
         pmovies = False
         pass
 
-    def createMetaFile(self, filename, cleanName):
+    def createMetaFile(self, filename, filmtitle):
         try:
-            serviceref = eServiceReference(4097, 0, Path_Movies + filename)
-            with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
-                f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
-        except Exception as ex:
-            print(str(ex))
-            print('ERROR metaFile')
+            serviceref = eServiceReference(4097, 0, filename)
+            with open("%s.meta" % (filename), "w") as f:
+                f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), filmtitle, "", time.time()))
+            pmovies = False
+        except Exception as e:
+            print(e)
         return
 
     def check_standby(self, myparam=None):
@@ -2118,6 +2097,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                                                                       "channelUp": self.prevAR,
                                                                       "channelDown": self.nextAR,
                                                                       "instantRecord": self.record,
+                                                                      "rec": self.record,
                                                                       "blue": self.timeshift_autoplay,
                                                                       "tv": self.stopnew,
                                                                       "stop": self.stopnew,
@@ -2355,29 +2335,29 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             if STREAMS.trial != '':
                 self.session.open(MessageBox, 'Trialversion dont support this function', type=MessageBox.TYPE_INFO, timeout=10)
             else:
-                self.session.open(MessageBox, 'BLUE = START PLAY RECORDED VIDEO', type=MessageBox.TYPE_INFO, timeout=5)
-                self.session.nav.stopService()
-                self['state'].setText('RECORD')
-                useragent = "--header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'"
-                ext = '.mp4'
-                pth = urlparse(self.vod_url).path
-                ext = splitext(pth)[-1]
-                if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
+                try:
+                    self.session.open(MessageBox, 'BLUE = START PLAY RECORDED VIDEO', type=MessageBox.TYPE_INFO, timeout=5)
+                    self.session.nav.stopService()
+                    self['state'].setText('RECORD')
                     ext = '.mp4'
-                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '', self.titlex)
-                filename = re.sub(r' ', '_', filename)
-                filename = re.sub(r'_+', '_', filename)
-                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
-                filename = filename.lower() + ext
-                filename = filename.replace(".mp4.mp4", ".mp4")
-                cmd = WGET + " %s -c '%s' -O '%s%s'" % (useragent, self.vod_url, Path_Movies, filename)
-                self.timeshift_url = Path_Movies + filename
-                JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex))
-                self.createMetaFile(filename, filename)
-                self.LastJobView()
-                self.timeshift_title = '[REC] ' + self.titlex
-                self.recorder = True
-
+                    pth = urlparse(self.vod_url).path
+                    ext = splitext(pth)[-1]
+                    if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
+                        ext = '.mp4'
+                    filename = Utils.cleantitle(self.titlex)
+                    filename = filename.replace(".mp4", "")
+                    filename = filename.lower() + ext
+                    cmd = "wget %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), filename)
+                    if "https" in str(self.vod_url):
+                        cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), filename)
+                    self.timeshift_url = Path_Movies + filename
+                    JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex))
+                    self.createMetaFile(filename, filename)
+                    self.LastJobView()
+                    self.timeshift_title = '[REC] ' + self.titlex
+                    self.recorder = True
+                except Exception as ex:
+                    print ('error record x: ', str(ex))                    
         except Exception as ex:
             print ('error record : ', str(ex))
 
@@ -3719,12 +3699,9 @@ class xc_M3uPlay(Screen):
                 ext = splitext(pth)[1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
-                filename = re.sub(r'[\<\>\:\"\/\\\|\?\*\[\]]', '_', self.namem3u)
-                filename = re.sub(r' ', '_', filename)
-                filename = re.sub(r'_+', '_', filename)
-                filename = filename.replace("(", "_").replace(")", "_").replace("#", "").replace("+ ", "_").replace("\'", "_").replace("'", "_")
+                filename = Utils.cleantitle(self.namem3u)
+                filename = filename.replace(".mp4", "")
                 filename = filename.lower() + ext
-                filename = filename.replace(".mp4.mp4", ".mp4")
                 self.in_tmp = Path_Movies + filename
                 self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
                 self.download.addProgress(self.downloadProgress)

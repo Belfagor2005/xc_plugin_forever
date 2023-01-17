@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# 01.10.2022
+# 15.01.2023
 # a common tips used from Lululla
 #
 import sys
@@ -59,6 +59,43 @@ if sys.version_info >= (2, 7, 9):
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
+
+
+def checkGZIP(url):
+    from io import StringIO
+    import gzip
+    response = None
+    request = Request(url, headers=hdr)
+
+    try:
+        response = urlopen(request, timeout=20)
+
+        if response.info().get('Content-Encoding') == 'gzip':
+            buffer = StringIO(response.read())
+            deflatedContent = gzip.GzipFile(fileobj=buffer)
+            if pythonVer == 3:
+                return deflatedContent.read().decode('utf-8')
+            else:
+                return deflatedContent.read()
+        else:
+            if pythonVer == 3:
+                return response.read().decode('utf-8')
+            else:
+                return response.read()
+    except Exception as e:
+        print(e)
+        return None
+
+
+def cleantitle(title):
+    import re
+    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(title))
+    cleanName = re.sub(r"   ", " ", cleanName)
+    cleanName = re.sub(r"  ", " ", cleanName)
+    cleanName = re.sub(r" ", "-", cleanName)
+    cleanName = re.sub(r"---", "-", cleanName)
+    cleanName = cleanName.strip()
+    return cleanName
 
 
 def ssl_urlopen(url):
@@ -151,8 +188,8 @@ else:
 
 
 def getFreeMemory():
-    mem_free=None
-    mem_total=None
+    mem_free = None
+    mem_total = None
     try:
         with open('/proc/meminfo', 'r') as f:
             for line in f.readlines():
@@ -165,18 +202,18 @@ def getFreeMemory():
             f.close()
     except:
         pass
-    return (mem_free,mem_total)
+    return (mem_free, mem_total)
 
 
 def sizeToString(nbytes):
     suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
-    size="0 B"
+    size = "0 B"
     if nbytes > 0:
         i = 0
         while nbytes >= 1024 and i < len(suffixes)-1:
             nbytes /= 1024.
             i += 1
-        f = ('%.2f' % nbytes).rstrip('0').rstrip('.').replace(".",",")
+        f = ('%.2f' % nbytes).rstrip('0').rstrip('.').replace(".", ",")
         size = '%s %s' % (f, suffixes[i])
     return size  
 
@@ -193,26 +230,26 @@ def convert_size(size_bytes):
 
 
 def getMountPoint(path):
-    pathname= os.path.realpath(path)
-    parent_device=os.stat(pathname).st_dev
-    path_device= os.stat(pathname).st_dev
-    mount_point=""
+    pathname = os.path.realpath(path)
+    parent_device = os.stat(pathname).st_dev
+    path_device = os.stat(pathname).st_dev
+    mount_point = ""
     while parent_device == path_device:
-        mount_point=pathname
-        pathname= os.path.dirname(pathname)
+        mount_point = pathname
+        pathname = os.path.dirname(pathname)
         if pathname == mount_point:
             break
-        parent_device= os.stat(pathname).st_dev
+        parent_device = os.stat(pathname).st_dev
     return mount_point
 
 def getMointedDevice(pathname):
-    md=None
+    md = None
     try:
         with open("/proc/mounts", "r") as f:
             for line in f:
-                fields= line.rstrip('\n').split()
+                fields = line.rstrip('\n').split()
                 if fields[1] == pathname:
-                    md=fields[0]
+                    md = fields[0]
                     break
             f.close()
     except:
@@ -221,10 +258,10 @@ def getMointedDevice(pathname):
 
 def getFreeSpace(path):
     try:
-        moin_point=getMountPoint(path)
-        device=getMointedDevice(moin_point)
-        print(moin_point+"|"+device)
-        stat= os.statvfs(device)  # @UndefinedVariable
+        moin_point = getMountPoint(path)
+        device = getMointedDevice(moin_point)
+        print(moin_point+"|" + device)
+        stat = os.statvfs(device)  # @UndefinedVariable
         print(stat)
         return sizeToString(stat.f_bfree*stat.f_bsize)
     except:
@@ -376,7 +413,8 @@ def downloadFilest(url, target):
         print('URL Error: ', e.reason)
 
 
-def getserviceinfo(sref):  # this def returns the current playing service name and stream_url from give sref
+# this def returns the current playing service name and stream_url from give sref
+def getserviceinfo(sref):
     try:
         from ServiceReference import ServiceReference
         p = ServiceReference(sref)
@@ -402,10 +440,11 @@ global CountConnOk
 CountConnOk = 0
 
 
-def zCheckInternet(opt=1, server=None, port=None):  # opt=5 custom server and port.
+# opt=5 custom server and port.
+def zCheckInternet(opt=1, server=None, port=None):
     global CountConnOk
     sock = False
-    checklist = [('8.8.44.4', 53), ('8.8.88.8', 53), ('www.lululla.altervista.org/', 80), ('www.e2skin.blogspot.com', 443), ('www.google.com', 443)]
+    checklist = [("8.8.44.4", 53), ("8.8.88.8", 53), ("www.lululla.altervista.org/", 80), ("www.linuxsat-support.com", 443), ("www.google.com", 443)]
     if opt < 5:
         srv = checklist[opt]
     else:
@@ -417,18 +456,18 @@ def zCheckInternet(opt=1, server=None, port=None):  # opt=5 custom server and po
         sock = True
         # print('[iSettingE2] - Internet OK')
         CountConnOk = 0
-        print(_('Status Internet: %s:%s -> OK' % (srv[0], srv[1])))
+        print('Status Internet: %s:%s -> OK' % (srv[0], srv[1]))
     except:
         sock = False
         # print('[iSettingE2] - Internet KO')
-        print(_('Status Internet: %s:%s -> KO' % (srv[0], srv[1])))
+        print('Status Internet: %s:%s -> KO' % (srv[0], srv[1]))
         if CountConnOk == 0 and opt != 2 and opt != 3:
             CountConnOk = 1
-            print(_('Restart Check 1 Internet.'))
+            print('Restart Check 1 Internet.')
             return zCheckInternet(0)
         elif CountConnOk == 1 and opt != 2 and opt != 3:
             CountConnOk = 2
-            print(_('Restart Check 2 Internet.'))
+            print('Restart Check 2 Internet.')
             return zCheckInternet(4)
     return sock
 
@@ -475,12 +514,10 @@ def testWebConnection(host='www.google.com', port=80, timeout=3):
 def checkStr(text, encoding='utf8'):
     if PY3:
         if isinstance(text, type(bytes())):
-            text = text.decode('utf-8')    
+            text = text.decode('utf-8')
     else:
         if isinstance(text, unicode):
             text = text.encode(encoding)
-        # else:
-            # return text
     return text
 
 
@@ -527,7 +564,7 @@ def freespace():
         available = float(diskSpace.f_bsize * diskSpace.f_bavail)
         fspace = round(float(available / 1048576.0), 2)
         tspace = round(float(capacity / 1048576.0), 1)
-        spacestr = 'Free space(' + str(fspace) + 'MB)\nTotal space(' + str(tspace) + 'MB)'
+        spacestr = 'Free space(' + str(fspace) + 'MB) Total space(' + str(tspace) + 'MB)'
         return spacestr
     except:
         return ''
@@ -929,7 +966,7 @@ def ReadUrl2(url, referer):
         CONTEXT = None
 
     TIMEOUT_URL = 15
-    print(_('ReadUrl1:\n  url = %s') % url)
+    print('ReadUrl1:\n  url = %s' % url)
     try:
 
         req = urllib2.Request(url)
@@ -996,7 +1033,7 @@ def ReadUrl(url):
         CONTEXT = None
 
     TIMEOUT_URL = 15
-    print(_('ReadUrl1:\n  url = %s') % url)
+    print('ReadUrl1:\n  url = %s' % url)
     try:
         req = urllib2.Request(url)
         req.add_header('User-Agent', RequestAgent())
@@ -1527,11 +1564,11 @@ def addstreamboq(bouquetname=None):
             if 'userbouquet.' + bouquetname + '.tv' in line:
                 add = False
                 break
-    if add is True:
-        fp = open(boqfile, 'a')
-        fp.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquetname)
-        fp.close()
-        add = True
+        if add is True:
+            fp = open(boqfile, 'a')
+            fp.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.%s.tv" ORDER BY bouquet\n' % bouquetname)
+            fp.close()
+            add = True
 
 
 def stream2bouquet(url=None, name=None, bouquetname=None):
@@ -1554,7 +1591,7 @@ def stream2bouquet(url=None, name=None, bouquetname=None):
             fp.close()
             for line in lines:
                 if out in line:
-                    error = (_('Stream already added to bouquet'))
+                    error = ('Stream already added to bouquet')
                     return error
             fp = open(fileName, 'a')
             fp.write(out)
