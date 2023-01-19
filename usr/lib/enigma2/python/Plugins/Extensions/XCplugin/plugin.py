@@ -1614,8 +1614,8 @@ class xc_Main(Screen):
             self["active_cons"].setText("User Active: 0")
             self["exp"].setText(" ")
             self["server_protocol"].setText("Protocol: - ? -")
-            self["timezone"].setText("Timezone: - ? -") 
-            
+            self["timezone"].setText("Timezone: - ? -")
+
             # username = ''
             status = '- ? -'
             created_at = '- ? -'
@@ -1623,7 +1623,7 @@ class xc_Main(Screen):
             auth = 'Not Authorised'
             active_cons = '- ? -'
             max_connections = '- ? -'
-            
+
             host = ''
             # ports = 80
             user = ''
@@ -1643,7 +1643,7 @@ class xc_Main(Screen):
             # content = Utils.ReadUrl(url_info2)
             # if PY3:
                 # content = six.ensure_str(content)
-            # y = json.loads(content)            
+            # y = json.loads(content)
             headers = {'Accept': 'application/json'}
             request = Request(url_info2, headers=headers)
             if not PY3:
@@ -1684,7 +1684,7 @@ class xc_Main(Screen):
                         self["max_connect"].setText("Max Connect: " + str(max_connections))
                         self["active_cons"].setText("User Active: " + str(active_cons))
                     server_protocol = (y["server_info"]["server_protocol"])
-                    self["server_protocol"].setText("Protocol: " + str(server_protocol))                    
+                    self["server_protocol"].setText("Protocol: " + str(server_protocol))
                     timezone = (y["server_info"]["timezone"])
                     self["timezone"].setText("Timezone: " + str(timezone))
                 except Exception as e:
@@ -1751,7 +1751,7 @@ class xc_Main(Screen):
                             except Exception as e:
                                 print(e)
                                 pass
-                            self.createMetaFile(filename, filename)
+                            # self.createMetaFile(filename, filename)
                         else:
                             pmovies = False
                 else:
@@ -1821,7 +1821,7 @@ class xc_Main(Screen):
                     except Exception as e:
                         print('error requests: ', str(e))
                         self.downloading = False
-                        pmovies = False               
+                        pmovies = False
                 else:
                     try:
                         self.timerDownload.callback.append(self.downloady)
@@ -1837,8 +1837,9 @@ class xc_Main(Screen):
     def downloady(self):
         if self.downloading is True:
             from .downloader import imagedownloadScreen
+            file_down = Path_Movies + self.filename
             pmovies = True
-            self.session.open(imagedownloadScreen, self.filename, Path_Movies + self.filename, self.vod_url)
+            self.session.open(imagedownloadScreen, self.filename, file_down, self.vod_url)
         else:
             self.downloading = False
             pmovies = False
@@ -1851,10 +1852,10 @@ class xc_Main(Screen):
         self.timeshift_url = Path_Movies + self.filename
         self.downloading = False
         pmovies = False
-        try:        
-            JobManager.AddJob(downloadJob(self, cmd, Path_Movies + self.filename, self.title))
+        try:
+            JobManager.AddJob(downloadJob(self, cmd, self.timeshift_url, self.title))
         except Exception as e:
-            print(e)        
+            print(e)
         self.createMetaFile(self.filename, self.filename)
         self.LastJobView()
 
@@ -1867,7 +1868,7 @@ class xc_Main(Screen):
     def createMetaFile(self, filename, filmtitle):
         try:
             serviceref = eServiceReference(4097, 0, filename)
-            with open("%s.meta" % (filename), "w") as f:
+            with open("%s\%s.meta" % (Path_Movies, filename), "w") as f:
                 f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), filmtitle, "", time.time()))
             pmovies = False
         except Exception as e:
@@ -2357,15 +2358,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.timeshift_title = '[REC] ' + self.titlex
                     self.recorder = True
                 except Exception as ex:
-                    print ('error record x: ', str(ex))                    
+                    print ('error record x: ', str(ex))
         except Exception as ex:
             print ('error record : ', str(ex))
 
-    def createMetaFile(self, filename, cleanName):
+    def createMetaFile(self, filename, filmtitle):
         try:
             serviceref = eServiceReference(4097, 0, Path_Movies + filename)
             with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
-                f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), cleanName, "", time.time()))
+                f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), filmtitle, "", time.time()))
         except Exception as ex:
             print(str(ex))
             print('ERROR metaFile')
