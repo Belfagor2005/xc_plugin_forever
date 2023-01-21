@@ -416,13 +416,13 @@ class xc_home(Screen):
         for x in self.menu_list:
             del self.menu_list[0]
         list = []
-        # idx = 0
         for x in Panel_list:
             list.append(xcm3ulistEntry(x))
             self.menu_list.append(x)
-            # idx += 1
         self['text'].setList(list)
-        if cfg.infoexp.getValue():
+        
+        infoname = str(STREAMS.playlistname)
+        if cfg.infoexp.value != 'myBouquet':
             infoname = str(cfg.infoname.value)
         self["Text"].setText(infoname)
 
@@ -815,8 +815,8 @@ class iptv_streamse():
         self.img_loader = False
         self.cont_play = False
         self.disable_audioselector = False
+        self.hostaddress = str(cfg.hostaddress.value)
         self.port = str(cfg.port.value)
-        self.hostaddress = cfg.hostaddress.value
         self.hosts = "http://" + str(cfg.hostaddress.value)
         self.xtream_e2portal_url = self.hosts + ':' + self.port
         self.username = str(cfg.user.value)
@@ -866,8 +866,6 @@ class iptv_streamse():
         stream_url = ""
         # self.xml_error = ""
         self.url = check_port(url)
-        # self.url = url
-        # self.clear_url = self.url
         self.list_index = 0
         iptv_list_tmp = []
         xml = None
@@ -883,7 +881,7 @@ class iptv_streamse():
             elif "get_" in self.url:  # at start
                 next_request = 2
             xml = self._request(self.url)
-            print('res xml: ', str(xml))
+            print('_request xml: ', str(xml))
             # if xml or xml is not None:
             if xml:
                 self.next_page_url = ""
@@ -929,7 +927,7 @@ class iptv_streamse():
                     # test bad char from kiddac plugin
                     if cfg.badcar.value is True:
                         name = Utils.badcar(name)
-                    # #
+                    #
                     description64 = channel.findtext('description')
                     description = base64.b64decode(description64).decode('utf-8')
                     try:
@@ -940,7 +938,7 @@ class iptv_streamse():
                         description = ''.join(chr(ord(c)) for c in description).decode('utf8')
                     except:
                         pass
-                    # name = Utils.checkStr(name)
+                    name = Utils.checkStr(name)
                     stream_url = Utils.checkStr(channel.findtext('stream_url'))
                     piconname = Utils.checkStr(channel.findtext("logo"))
                     category_id = Utils.checkStr(channel.findtext('category_id'))
@@ -1011,7 +1009,8 @@ class iptv_streamse():
                                 if len(descriptionmatch) > 1:
                                     epgnextdescription = descriptionmatch[1].strip()
                         description = epgnowtime + ' ' + name + '\n' + epgnowdescription
-                        description4playlist_html = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
+                        description = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
+                        description4playlist_html = html_conv.html_unescape(description)
                     # if "/movie/" in stream_url :
                     # if isStream and "/movie/" in stream_url:
                     if isStream and ("/movie/" or "/series/") in stream_url:
@@ -1031,11 +1030,11 @@ class iptv_streamse():
                         for line in vodLines:
                             vodItems[(line.partition(": ")[0])] = (line.partition(": ")[-1])
                         if "NAME" in vodItems:
-                            vodTitle = str(vodItems["NAME"]).strip()
+                            vodTitle = Utils.checkStr((vodItems["NAME"])).strip()
                         elif "O_NAME" in vodItems:
-                            vodTitle = str(vodItems["O_NAME"]).strip()
+                            vodTitle = Utils.checkStr((vodItems["O_NAME"])).strip()
                         else:
-                            vodTitle = str(name)
+                            vodTitle = (name)
 
                         if "COVER_BIG" in vodItems and vodItems["COVER_BIG"] and vodItems["COVER_BIG"] != "null":
                             piconname = str(vodItems["COVER_BIG"]).strip()
@@ -1057,6 +1056,8 @@ class iptv_streamse():
                             vodGenre = str('GENRE: -- --')
                         name = str(vodTitle)
                         description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
+                        ####
+                        description = html_conv.html_unescape(description)
                     chan_tulpe = (
                         chan_counter,
                         str(name),
@@ -1110,7 +1111,7 @@ class iptv_streamse():
                     response = urlopen(request, timeout=10).read()
                 else:
                     response = urlopen(request, timeout=10).read().decode('utf-8')
-                print("Here in request link =", res)
+                print("Here in _request link =", res)
                 res = fromstring(response)
                 return res
             except Exception as e:
@@ -1165,6 +1166,7 @@ class xc_Main(Screen):
         self["max_connect"] = Label("")
         self["active_cons"] = Label("")
         self["server_protocol"] = Label("")
+        self["created_at"] = Label("")
         self["timezone"] = Label("")
         self["info"] = Label()
         self["playlist"] = Label()
@@ -1185,7 +1187,7 @@ class xc_Main(Screen):
         self["poster"] = Pixmap()
         self["Text"] = Label("")
         self["Text"].setText(infoname)
-        self["playlist"].setText(STREAMS.playlistname)
+        self["playlist"].setText(self.temp_playname)
         self.go()
         self.picload = ePicLoad()
         self.Scale = AVSwitch().getFramebufferScale()
@@ -1316,7 +1318,7 @@ class xc_Main(Screen):
         if cfg.infoexp.getValue():
             infoname = str(cfg.infoname.value)
         self["Text"].setText(infoname)
-        self["playlist"].setText(STREAMS.playlistname)
+        self["playlist"].setText(self.temp_playname)
         self["green"].hide()
         self["yellow"].hide()
         self["blue"].hide()
@@ -1612,18 +1614,16 @@ class xc_Main(Screen):
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
             self["max_connect"].setText("Max Connect: 0")
             self["active_cons"].setText("User Active: 0")
-            self["exp"].setText(" ")
+            self["exp"].setText("- ? -")
+            self["created_at"].setText("- ? -")
             self["server_protocol"].setText("Protocol: - ? -")
             self["timezone"].setText("Timezone: - ? -")
-
-            # username = ''
             status = '- ? -'
             created_at = '- ? -'
-            exp_date = 'Exp date: - ? -'
+            exp_date = '- ? -'
             auth = 'Not Authorised'
             active_cons = '- ? -'
             max_connections = '- ? -'
-
             host = ''
             # ports = 80
             user = ''
@@ -1638,20 +1638,12 @@ class xc_Main(Screen):
 
             url_info = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
             url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
-            # print('url_info: ', url_info)
-            # print('url_info: ', url_info2)
-            # content = Utils.ReadUrl(url_info2)
-            # if PY3:
-                # content = six.ensure_str(content)
-            # y = json.loads(content)
             headers = {'Accept': 'application/json'}
             request = Request(url_info2, headers=headers)
             if not PY3:
                 response = urlopen(request, timeout=10).read()
             else:
                 response = urlopen(request, timeout=10).read().decode('utf-8')
-            # print("Here in request link =", response)
-            # response = Utils.checkGZIP(url_info2)
             if response:
                 try:
                     y = json.loads(response)
@@ -1667,11 +1659,11 @@ class xc_Main(Screen):
                     if created_at:
                         created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                         print("created_at =", created_at)
+                        self["created_at"].setText('Start date:\n' + created_at)
                     if exp_date:
                         exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                     if str(auth) == "1":
                         if str(status) == "Active":
-                            self["exp"].setText("Active")
                             self["exp"].setText("Active - Exp date:\n" + str(exp_date))
                         elif str(status) == "Banned":
                             self["exp"].setText("Banned")
@@ -1713,7 +1705,6 @@ class xc_Main(Screen):
 
     def download_series(self, result):
         if result:
-            # global Path_Movies2
             global series
             global pmovies
             self.icount = 0
@@ -1754,8 +1745,10 @@ class xc_Main(Screen):
                             # self.createMetaFile(filename, filename)
                         else:
                             pmovies = False
+                            series = False
                 else:
                     pmovies = False
+                    series = False
                     self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
                 Utils.OnclearMem()
 
@@ -1802,7 +1795,6 @@ class xc_Main(Screen):
                 self["state"].setText("Download VOD")
                 os.system('sleep 3')
                 self.downloading = True
-                # pmovies = True
                 self.timerDownload = eTimer()
                 if cfg.pdownmovie.value == "JobManager":
                     try:
@@ -1828,7 +1820,6 @@ class xc_Main(Screen):
                     except:
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloady)
                 self.timerDownload.start(300, True)
-                # self.session.open(MessageBox, _('Downloading \n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_INFO)
             except:
                 self.session.open(MessageBox, _('Download Failed\n\n' + self.filename + "\n\n" + Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
                 self.downloading = False
@@ -1837,6 +1828,7 @@ class xc_Main(Screen):
     def downloady(self):
         if self.downloading is True:
             from .downloader import imagedownloadScreen
+            Utils.OnclearMem()
             file_down = Path_Movies + self.filename
             pmovies = True
             self.session.open(imagedownloadScreen, self.filename, file_down, self.vod_url)
@@ -1846,13 +1838,14 @@ class xc_Main(Screen):
             return
 
     def downloadx(self):
-        cmd = "wget %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
-        if "https" in str(self.vod_url):
-            cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, Path_Movies, self.filename)
         self.timeshift_url = Path_Movies + self.filename
+        cmd = "wget %s -c '%s' -O '%s'" % ('Enigma2 - XC Forever Plugin', str(self.vod_url), str(self.timeshift_url))
+        if "https" in str(self.vod_url):
+            cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s'" % ('Enigma2 - XC Forever Plugin', str(self.vod_url), str(self.timeshift_url))
         self.downloading = False
         pmovies = False
         try:
+            Utils.OnclearMem()
             JobManager.AddJob(downloadJob(self, cmd, self.timeshift_url, self.title))
         except Exception as e:
             print(e)
@@ -1868,8 +1861,8 @@ class xc_Main(Screen):
     def createMetaFile(self, filename, filmtitle):
         try:
             serviceref = eServiceReference(4097, 0, filename)
-            with open("%s\%s.meta" % (Path_Movies, filename), "w") as f:
-                f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), filmtitle, "", time.time()))
+            with open("%s/%s.meta" % (Path_Movies, filename), "wb") as f:
+                f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), str(filmtitle), "", time.time()))
             pmovies = False
         except Exception as e:
             print(e)
@@ -2458,12 +2451,12 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.channelx = iptv_list_tmp[STREAMS.list_index]
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
-        ####################
+        #
         self.descr = self.channelx[2]
         if self.descr != '' or self.descr is not None:
             text_clear = str(self.descr)
         self["programm"].setText(text_clear)
-        ##########################
+        #
         try:
             if self.vod_url is not None:
                 print("------------------------ MOVIE ------------------")
@@ -2586,8 +2579,6 @@ class xc_StreamTasks(Screen):
             titel2 = '(%s offline)' % folder
             self['label2'].setText(titel2)
             self['totalItem'].setText('Item %s' % str(self.totalItem))
-
-
 
     def keyOK(self):
         global file1
