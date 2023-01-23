@@ -20,10 +20,8 @@
 	<widget name="key_green" position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="146,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_red" position="180,674" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<!-- 	
 	<ePixmap position="713,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_blue" position="566,640" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	 -->
 	<ePixmap position="713,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_yellow" position="566,673" size="133,26" font="Regular;20" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="766,671" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/help.png" alphatest="blend" zPosition="3" transparent="1" />

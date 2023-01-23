@@ -18,16 +18,18 @@ from Components.ProgressBar import ProgressBar
 from Tools.Downloader import downloadWithProgress
 import os
 import sys
-import ssl
+# import ssl
+from twisted.internet import ssl
+from twisted.internet._sslverify import ClientTLSOptions
 
 PY3 = sys.version_info.major >= 3
 if PY3:
     # Python 3
     PY3 = True
-    unicode = str
-    unichr = chr
-    long = int
-    xrange = range
+    # unicode = str
+    # unichr = chr
+    # long = int
+    # xrange = range
     from urllib.request import urlopen
     from urllib.request import Request
     from urllib.error import URLError
@@ -45,13 +47,15 @@ else:
 
 try:
     # from OpenSSL import SSL
-    # from twisted.internet import ssl
+    from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
     sslverify = True
 except:
     sslverify = False
 
 if sslverify:
+    from twisted.internet import ssl
+    from twisted.internet._sslverify import ClientTLSOptions
     class SNIFactory(ssl.ClientContextFactory):
         def __init__(self, hostname=None):
             self.hostname = hostname

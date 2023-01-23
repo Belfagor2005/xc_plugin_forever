@@ -87,17 +87,6 @@ def checkGZIP(url):
         return None
 
 
-def cleantitle(title):
-    import re
-    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(title))
-    cleanName = re.sub(r"   ", " ", cleanName)
-    cleanName = re.sub(r"  ", " ", cleanName)
-    cleanName = re.sub(r" ", "-", cleanName)
-    cleanName = re.sub(r"---", "-", cleanName)
-    cleanName = cleanName.strip()
-    return cleanName
-
-
 def ssl_urlopen(url):
     if sslContext:
         return urlopen(url, context=sslContext)
@@ -282,80 +271,6 @@ def purge(dir, pattern):
         if os.path.isfile(file_path):
             if re.search(pattern, f):
                 os.remove(file_path)
-
-
-def get_safe_filename(filename, fallback=''):
-    '''Convert filename to safe filename'''
-    import unicodedata
-    import six
-    name = filename.replace(' ', '_').replace('/', '_')
-    if isinstance(name, six.text_type):
-        name = name.encode('utf-8')
-    name = unicodedata.normalize('NFKD', six.text_type(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
-    name = re.sub(b'[^a-z0-9-_]', b'', name.lower())
-    if not name:
-        name = fallback
-    return six.ensure_str(name)
-
-
-def remove_line(filename, what):
-    if os.path.isfile(filename):
-        file_read = open(filename).readlines()
-        file_write = open(filename, 'w')
-        for line in file_read:
-            if what not in line:
-                file_write.write(line)
-        file_write.close()
-
-
-def badcar(name):
-    name = name
-    bad_chars = ["sd", "hd", "fhd", "uhd", "4k", "1080p", "720p", "blueray", "x264", "aac", "ozlem", "hindi", "hdrip", "(cache)", "(kids)", "[3d-en]", "[iran-dubbed]", "imdb", "top250", "multi-audio",
-                 "multi-subs", "multi-sub", "[audio-pt]", "[nordic-subbed]", "[nordic-subbeb]",
-                 "SD", "HD", "FHD", "UHD", "4K", "1080P", "720P", "BLUERAY", "X264", "AAC", "OZLEM", "HINDI", "HDRIP", "(CACHE)", "(KIDS)", "[3D-EN]", "[IRAN-DUBBED]", "IMDB", "TOP250", "MULTI-AUDIO",
-                 "MULTI-SUBS", "MULTI-SUB", "[AUDIO-PT]", "[NORDIC-SUBBED]", "[NORDIC-SUBBEB]",
-                 "-ae-", "-al-", "-ar-", "-at-", "-ba-", "-be-", "-bg-", "-br-", "-cg-", "-ch-", "-cz-", "-da-", "-de-", "-dk-", "-ee-", "-en-", "-es-", "-ex-yu-", "-fi-", "-fr-", "-gr-", "-hr-", "-hu-", "-in-", "-ir-", "-it-", "-lt-", "-mk-",
-                 "-mx-", "-nl-", "-no-", "-pl-", "-pt-", "-ro-", "-rs-", "-ru-", "-se-", "-si-", "-sk-", "-tr-", "-uk-", "-us-", "-yu-",
-                 "-AE-", "-AL-", "-AR-", "-AT-", "-BA-", "-BE-", "-BG-", "-BR-", "-CG-", "-CH-", "-CZ-", "-DA-", "-DE-", "-DK-", "-EE-", "-EN-", "-ES-", "-EX-YU-", "-FI-", "-FR-", "-GR-", "-HR-", "-HU-", "-IN-", "-IR-", "-IT-", "-LT-", "-MK-",
-                 "-MX-", "-NL-", "-NO-", "-PL-", "-PT-", "-RO-", "-RS-", "-RU-", "-SE-", "-SI-", "-SK-", "-TR-", "-UK-", "-US-", "-YU-",
-                 "|ae|", "|al|", "|ar|", "|at|", "|ba|", "|be|", "|bg|", "|br|", "|cg|", "|ch|", "|cz|", "|da|", "|de|", "|dk|", "|ee|", "|en|", "|es|", "|ex-yu|", "|fi|", "|fr|", "|gr|", "|hr|", "|hu|", "|in|", "|ir|", "|it|", "|lt|", "|mk|",
-                 "|mx|", "|nl|", "|no|", "|pl|", "|pt|", "|ro|", "|rs|", "|ru|", "|se|", "|si|", "|sk|", "|tr|", "|uk|", "|us|", "|yu|",
-                 "|AE|", "|AL|", "|AR|", "|AT|", "|BA|", "|BE|", "|BG|", "|BR|", "|CG|", "|CH|", "|CZ|", "|DA|", "|DE|", "|DK|", "|EE|", "|EN|", "|ES|", "|EX-YU|", "|FI|", "|FR|", "|GR|", "|HR|", "|HU|", "|IN|", "|IR|", "|IT|", "|LT|", "|MK|",
-                 "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
-                 "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|", "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|",
-                 "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
-                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/",
-                 "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11", "PF12", "PF13", "PF14", "PF15", "PF16", "PF17", "PF18", "PF19", "PF20", "PF21", "PF22", "PF23", "PF24", "PF25", "PF26", "PF27", "PF28", "PF29", "PF30",
-                 "480p", "4K", "720p", "ANIMAZIONE",  "AVVENTURA", "BIOGRAFICO",  "BDRip",  "BluRay",  "CINEMA", "COMMEDIA", "DOCUMENTARIO", "DRAMMATICO", "FANTASCIENZA", "FANTASY", "HDCAM", "HDTC", "HDTS", "LD", "MARVEL", "MD", "NEW_AUDIO",
-                 "R3", "R6", "SD", "SENTIMENTALE", "TC", "TELECINE", "TELESYNC", "THRILLER", "Uncensored", "V2", "WEBDL", "WEBRip", "WEB", "WESTERN", "-", "_", ".", "+", "[", "]"
-                 ]
-
-    for j in range(1900, 2025):
-        bad_chars.append(str(j))
-    for i in bad_chars:
-        name = name.replace(i, '')
-    return name
-
-
-def cleanTitle(x):
-    x = x.replace('~', '')
-    x = x.replace('#', '')
-    x = x.replace('%', '')
-    x = x.replace('&', '')
-    x = x.replace('*', '')
-    x = x.replace('{', '')
-    x = x.replace('}', '')
-    x = x.replace(':', '')
-    x = x.replace('<', '')
-    x = x.replace('>', '')
-    x = x.replace('?', '')
-    x = x.replace('/', '')
-    x = x.replace('+', '')
-    x = x.replace('|', '')
-    x = x.replace('"', '')
-    x = x.replace('\\', '')
-    x = x.replace('--', '-')
-    return x
 
 
 def getLanguage():
@@ -608,15 +523,6 @@ def b64decoder(s):
         return outp
 
 
-def MemClean():
-    try:
-        os.system('sync')
-        os.system('echo 1 > /proc/sys/vm/drop_caches')
-        os.system('echo 2 > /proc/sys/vm/drop_caches')
-        os.system('echo 3 > /proc/sys/vm/drop_caches')
-    except:
-        pass
-
 
 def __createdir(list):
     dir = ''
@@ -692,6 +598,16 @@ def del_jpg():
 
 
 def OnclearMem():
+    try:
+        os.system('sync')
+        os.system('echo 1 > /proc/sys/vm/drop_caches')
+        os.system('echo 2 > /proc/sys/vm/drop_caches')
+        os.system('echo 3 > /proc/sys/vm/drop_caches')
+    except:
+        pass
+
+
+def MemClean():
     try:
         os.system('sync')
         os.system('echo 1 > /proc/sys/vm/drop_caches')
@@ -1534,6 +1450,91 @@ def clean_html(html):
         html = html.encode('utf-8')
     return html.strip()
 #######################################
+
+
+def cleantitle(title):
+    import re
+    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(title))
+    cleanName = re.sub(r"   ", " ", cleanName)
+    cleanName = re.sub(r"  ", " ", cleanName)
+    cleanName = re.sub(r" ", "-", cleanName)
+    cleanName = re.sub(r"---", "-", cleanName)
+    cleanName = cleanName.strip()
+    return cleanName
+
+
+def cleanTitle(x):
+    x = x.replace('~', '')
+    x = x.replace('#', '')
+    x = x.replace('%', '')
+    x = x.replace('&', '')
+    x = x.replace('*', '')
+    x = x.replace('{', '')
+    x = x.replace('}', '')
+    x = x.replace(':', '')
+    x = x.replace('<', '')
+    x = x.replace('>', '')
+    x = x.replace('?', '')
+    x = x.replace('/', '')
+    x = x.replace('+', '')
+    x = x.replace('|', '')
+    x = x.replace('"', '')
+    x = x.replace('\\', '')
+    x = x.replace('--', '-')
+    return x
+
+
+def get_safe_filename(filename, fallback=''):
+    '''Convert filename to safe filename'''
+    import unicodedata
+    import six
+    name = filename.replace(' ', '_').replace('/', '_')
+    if isinstance(name, six.text_type):
+        name = name.encode('utf-8')
+    name = unicodedata.normalize('NFKD', six.text_type(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
+    name = re.sub(b'[^a-z0-9-_]', b'', name.lower())
+    if not name:
+        name = fallback
+    return six.ensure_str(name)
+
+
+def remove_line(filename, what):
+    if os.path.isfile(filename):
+        file_read = open(filename).readlines()
+        file_write = open(filename, 'w')
+        for line in file_read:
+            if what not in line:
+                file_write.write(line)
+        file_write.close()
+
+
+def badcar(name):
+    name = name
+    bad_chars = ["sd", "hd", "fhd", "uhd", "4k", "1080p", "720p", "blueray", "x264", "aac", "ozlem", "hindi", "hdrip", "(cache)", "(kids)", "[3d-en]", "[iran-dubbed]", "imdb", "top250", "multi-audio",
+                 "multi-subs", "multi-sub", "[audio-pt]", "[nordic-subbed]", "[nordic-subbeb]",
+                 "SD", "HD", "FHD", "UHD", "4K", "1080P", "720P", "BLUERAY", "X264", "AAC", "OZLEM", "HINDI", "HDRIP", "(CACHE)", "(KIDS)", "[3D-EN]", "[IRAN-DUBBED]", "IMDB", "TOP250", "MULTI-AUDIO",
+                 "MULTI-SUBS", "MULTI-SUB", "[AUDIO-PT]", "[NORDIC-SUBBED]", "[NORDIC-SUBBEB]",
+                 "-ae-", "-al-", "-ar-", "-at-", "-ba-", "-be-", "-bg-", "-br-", "-cg-", "-ch-", "-cz-", "-da-", "-de-", "-dk-", "-ee-", "-en-", "-es-", "-ex-yu-", "-fi-", "-fr-", "-gr-", "-hr-", "-hu-", "-in-", "-ir-", "-it-", "-lt-", "-mk-",
+                 "-mx-", "-nl-", "-no-", "-pl-", "-pt-", "-ro-", "-rs-", "-ru-", "-se-", "-si-", "-sk-", "-tr-", "-uk-", "-us-", "-yu-",
+                 "-AE-", "-AL-", "-AR-", "-AT-", "-BA-", "-BE-", "-BG-", "-BR-", "-CG-", "-CH-", "-CZ-", "-DA-", "-DE-", "-DK-", "-EE-", "-EN-", "-ES-", "-EX-YU-", "-FI-", "-FR-", "-GR-", "-HR-", "-HU-", "-IN-", "-IR-", "-IT-", "-LT-", "-MK-",
+                 "-MX-", "-NL-", "-NO-", "-PL-", "-PT-", "-RO-", "-RS-", "-RU-", "-SE-", "-SI-", "-SK-", "-TR-", "-UK-", "-US-", "-YU-",
+                 "|ae|", "|al|", "|ar|", "|at|", "|ba|", "|be|", "|bg|", "|br|", "|cg|", "|ch|", "|cz|", "|da|", "|de|", "|dk|", "|ee|", "|en|", "|es|", "|ex-yu|", "|fi|", "|fr|", "|gr|", "|hr|", "|hu|", "|in|", "|ir|", "|it|", "|lt|", "|mk|",
+                 "|mx|", "|nl|", "|no|", "|pl|", "|pt|", "|ro|", "|rs|", "|ru|", "|se|", "|si|", "|sk|", "|tr|", "|uk|", "|us|", "|yu|",
+                 "|AE|", "|AL|", "|AR|", "|AT|", "|BA|", "|BE|", "|BG|", "|BR|", "|CG|", "|CH|", "|CZ|", "|DA|", "|DE|", "|DK|", "|EE|", "|EN|", "|ES|", "|EX-YU|", "|FI|", "|FR|", "|GR|", "|HR|", "|HU|", "|IN|", "|IR|", "|IT|", "|LT|", "|MK|",
+                 "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
+                 "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|", "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|",
+                 "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
+                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/",
+                 "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11", "PF12", "PF13", "PF14", "PF15", "PF16", "PF17", "PF18", "PF19", "PF20", "PF21", "PF22", "PF23", "PF24", "PF25", "PF26", "PF27", "PF28", "PF29", "PF30",
+                 "480p", "4K", "720p", "ANIMAZIONE",  "AVVENTURA", "BIOGRAFICO",  "BDRip",  "BluRay",  "CINEMA", "COMMEDIA", "DOCUMENTARIO", "DRAMMATICO", "FANTASCIENZA", "FANTASY", "HDCAM", "HDTC", "HDTS", "LD", "MARVEL", "MD", "NEW_AUDIO",
+                 "R3", "R6", "SD", "SENTIMENTALE", "TC", "TELECINE", "TELESYNC", "THRILLER", "Uncensored", "V2", "WEBDL", "WEBRip", "WEB", "WESTERN", "-", "_", ".", "+", "[", "]"
+                 ]
+
+    for j in range(1900, 2025):
+        bad_chars.append(str(j))
+    for i in bad_chars:
+        name = name.replace(i, '')
+    return name
 
 
 def get_title(title):

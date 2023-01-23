@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-################################################################################
 #    RunningText.py - Running Text Renderer for Enigma2
 #    Version: 1.5 (04.04.2012 23:40)
 #    Copyright (C) 2010-2012 vlamo <vlamodev@gmail.com>
@@ -17,9 +16,7 @@ from __future__ import absolute_import
 #    You should have received a copy of the GNU General Public License along
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-################################################################################
 
-################################################################################
 # several changes made by Dr.Best <dr.best@dreambox-tools.info> (07-18-2013)
 # - I got rid of eCanvas, instead I took a widget as a parent and scroll the label directly into the widget (this saves performance (about 30%))
 # - new property: mShown --> this fixes the bug that this renderer keeps running in background when its not shown
@@ -27,7 +24,6 @@ from __future__ import absolute_import
 # - due to changing to eWidget in combination with eLabel transparent flag is possible (still cpu killer!)
 # - fixed left / right scrolling , fixed nowrap-mode
 # take a look at the discussion: http://board.dreambox-tools.info/showthread.php?6050-Erweiterung-Running-Text-render
-################################################################################
 
 from enigma import eWidget, eLabel, eTimer, ePoint, eSize, gFont, \
     RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_HALIGN_RIGHT, RT_HALIGN_BLOCK, \
@@ -36,7 +32,8 @@ from enigma import eWidget, eLabel, eTimer, ePoint, eSize, gFont, \
 from Components.Renderer.Renderer import Renderer
 from skin import parseColor, parseFont
 
-import Plugins.Extensions.XCplugin.owibranding as xowibranding                                                              
+# import Plugins.Extensions.revolution.owibranding as xowibranding
+
 
 # scroll type:
 NONE = 0
@@ -49,6 +46,8 @@ RIGHT = 1
 TOP = 2
 BOTTOM = 3
 # halign:
+# LEFT = 0
+# RIGHT = 1
 CENTER = 2
 BLOCK = 3
 
@@ -63,14 +62,14 @@ class xcRunningText(Renderer):
         self.txtext = ""
         self.scroll_label = self.mTimer = self.mStartPoint = None
         self.X = self.Y = self.W = self.H = self.mStartDelay = 0
-        self.mAlways = 1        # always move text
-        self.mStep = 1          # moving step: 1 pixel per 1 time
-        self.mStepTimeout = 50      # step timeout: 1 step per 50 milliseconds ( speed: 20 pixel per second )
+        self.mAlways = 1  # always move text
+        self.mStep = 1  # moving step: 1 pixel per 1 time
+        self.mStepTimeout = 50  # step timeout: 1 step per 50 milliseconds ( speed: 20 pixel per second )
         self.direction = LEFT
         self.mLoopTimeout = self.mOneShot = 0
         self.mRepeat = 0
         self.mPageDelay = self.mPageLength = 0
-        self.lineHeight = 0     # for text height auto correction on dmm-enigma2
+        self.lineHeight = 0  # for text height auto correction on dmm-enigma2
         self.mShown = 0
 
     GUI_WIDGET = eWidget
@@ -85,29 +84,39 @@ class xcRunningText(Renderer):
         self.scroll_label = eLabel(instance)
         self.mTimer = eTimer()
 
+        # try:
+            # from boxbranding import getImageDistro, getImageVersion, getOEVersion
+            # self.mTimer.callback.append(self.movingLoop)
+        # except:
+            # try:
+                # if xowibranding.getMachineBrand() == "Dream Multimedia" or xowibranding.getOEVersion() == "OE 2.2":
+                    # self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
+            # except:
+                # pass
+
         try:
-            self.mTimer.callback.append(self.movingLoop)
+            self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
         except:
-            try:
-                if xowibranding.getMachineBrand() == "Dream Multimedia" or xowibranding.getOEVersion() == "OE 2.2":
-                    self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
-            except:
-                pass
+            self.mTimer.callback.append(self.movingLoop)
+        # self.mTimer.start(100, True)
 
     def preWidgetRemove(self, instance):
         self.mTimer.stop()
-
+        # from boxbranding import getMachineBrand, getImageDistro, getImageVersion, getOEVersion
         try:
-            from boxbranding import getImageDistro, getImageVersion, getOEVersion
             self.mTimer.callback.remove(self.movingLoop)
         except:
-            if getMachineBrand() == "Dream Multimedia" or getOEVersion() == "OE 2.2":
-                self.mTimer_conn = self.mTimer.timeout.disconnect(self.movingLoop)
+            # if getMachineBrand() == "Dream Multimedia" or getOEVersion() == "OE 2.2":
+            self.mTimer_conn = self.mTimer.timeout.disconnect(self.movingLoop)
+
+        """
+        self.mTimer.callback.remove(self.movingLoop)
+        """
+
         self.mTimer = None
         self.scroll_label = None
 
     def applySkin(self, desktop, screen):
-
         def retValue(val, limit, default, Min=False):
             try:
                 if Min:
@@ -133,16 +142,16 @@ class xcRunningText(Renderer):
                     self.txfont = parseFont(value, ((1, 1), (1, 1)))
                 elif attrib == "foregroundColor":
                     self.scroll_label.setForegroundColor(parseColor(value))
-                elif attrib in ("shadowColor", "borderColor"):   # fake for openpli-enigma2
+                elif attrib in ("shadowColor", "borderColor"):  # fake for openpli-enigma2
                     self.scroll_label.setShadowColor(parseColor(value))
                 elif attrib == "shadowOffset":
                     x, y = value.split(',')
                     self.soffset = (int(x), int(y))
                     self.scroll_label.setShadowOffset(ePoint(self.soffset))
-                elif attrib == "borderWidth":           # fake for openpli-enigma2
+                elif attrib == "borderWidth":  # fake for openpli-enigma2
                     self.soffset = (-int(value), -int(value))
                 elif attrib == "valign" and value in ("top", "center", "bottom"):
-                    valign = {"top": eLabel. alignTop, "center": eLabel. alignCenter, "bottom": eLabel. alignBottom}[value]
+                    valign = {"top": eLabel.alignTop, "center": eLabel.alignCenter, "bottom": eLabel.alignBottom}[value]
                     self.txtflags |= {"top": RT_VALIGN_TOP, "center": RT_VALIGN_CENTER, "bottom": RT_VALIGN_BOTTOM}[value]
                 elif attrib == "halign" and value in ("left", "center", "right", "block"):
                     self.halign = {"left": eLabel.alignLeft, "center": eLabel.alignCenter, "right": eLabel.alignRight, "block": eLabel.alignBlock}[value]
@@ -212,7 +221,7 @@ class xcRunningText(Renderer):
         # test for auto correction text height:
         if self.direction in (TOP, BOTTOM):
             from enigma import fontRenderClass
-            flh = int(fontRenderClass.getInstance().getLineHeight(self.txfont) or self.txfont.pointSize / 6 + self.txfont.pointSize)
+            flh = int(fontRenderClass.getInstance().getLineHeight(self.txfont) or self.txfont.pointSize/6 + self.txfont.pointSize)
             self.scroll_label.setText("WQq")
             if flh > self.scroll_label.calculateSize().height():
                 self.lineHeight = flh
@@ -244,7 +253,7 @@ class xcRunningText(Renderer):
                     self.moveLabel(self.X, self.Y)
 
     def moveLabel(self, X, Y):
-        self.scroll_label.move(ePoint(X - self.soffset[0], Y - self.soffset[1]))
+        self.scroll_label.move(ePoint(X-self.soffset[0], Y-self.soffset[1]))
 
     def calcMoving(self):
         self.X = self.Y = 0
@@ -312,7 +321,7 @@ class xcRunningText(Renderer):
                         self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
                 else:
                     if text_width == self.W:
-                        text_width += max(2, text_width / 20)
+                        text_width += max(2, text_width/20)
                     self.A = self.W - text_width
                     self.B = self.X
                     if self.halign == LEFT:
@@ -357,7 +366,7 @@ class xcRunningText(Renderer):
                         self.mStep = abs(self.mStep)
                 else:
                     if text_height == self.H:
-                        text_height += max(2, text_height / 40)
+                        text_height += max(2, text_height/40)
                     self.A = self.H - text_height
                     self.B = self.Y
                     if self.direction == TOP:
@@ -383,6 +392,7 @@ class xcRunningText(Renderer):
                 self.moveLabel(self.P, self.Y)
             else:  # if self.direction in (TOP,BOTTOM):
                 self.moveLabel(self.X, self.P)
+
         self.mCount = self.mRepeat
         self.mTimer.start(self.mStartDelay, True)
         return True
@@ -396,7 +406,7 @@ class xcRunningText(Renderer):
             timeout = self.mStepTimeout
             if (self.mStop is not None) and (self.mStop + abs(self.mStep) > self.P >= self.mStop):
                 if (self.type == RUNNING) and (self.mOneShot > 0):
-                    if (self.mRepeat > 0) and (self.mCount - 1 <= 0):
+                    if (self.mRepeat > 0) and (self.mCount-1 <= 0):
                         return
                     timeout = self.mOneShot
                 elif (self.type == SWIMMING) and (self.mPageLength > 0) and (self.mPageDelay > 0):
