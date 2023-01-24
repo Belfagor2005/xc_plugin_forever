@@ -24,26 +24,14 @@ from twisted.internet._sslverify import ClientTLSOptions
 
 PY3 = sys.version_info.major >= 3
 if PY3:
-    # Python 3
     PY3 = True
-    # unicode = str
-    # unichr = chr
-    # long = int
-    # xrange = range
     from urllib.request import urlopen
     from urllib.request import Request
     from urllib.error import URLError
 else:
-    # # Python 2
-    # _str = str
-    # str = unicode
-    # range = xrange
-    # unicode = unicode
-    # basestring = basestring
     from urllib2 import urlopen
     from urllib2 import Request
     from urllib2 import URLError
-
 
 try:
     # from OpenSSL import SSL

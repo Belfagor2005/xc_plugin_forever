@@ -1,21 +1,25 @@
 #!/bin/sh
 echo
-echo "--- PostInst * IPK Scripting v1.0 - date 10.02.2021 ---"
+echo "--- PostInst * IPK Scripting v1.0 - date 10.08.2021 ---"
 
-if [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyo ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyc ]; then
-    echo
-    echo "Renaming python modules ... from .pyc to .pyo"
-    for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyc; do &> /dev/null
-         mv $file ${file%.pyc}.pyo &> /dev/null
-    done
+# if [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyo ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyc ]; then
+    # echo
+    # echo "Renaming python modules ... from .pyc to .pyo"
+    # for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyc; do &> /dev/null
+         # mv $file ${file%.pyc}.pyo &> /dev/null
+		 # rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.py &> /dev/null
+    # done
     
-elif [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyc ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyo ]; then
-    echo
-    echo "Renaming python modules ... from .pyo to .pyc"
-    for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyo; do &> /dev/null
-         mv $file ${file%.pyo}.pyc &> /dev/null
-    done       
-fi
+# elif [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyc ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyo ]; then
+    # echo
+    # echo "Renaming python modules ... from .pyo to .pyc"
+    # for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyo; do &> /dev/null
+         # mv $file ${file%.pyo}.pyc &> /dev/null
+		 # rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.py &> /dev/null
+    # done       
+
+	
+# fi
 
 sleep 5
 

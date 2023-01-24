@@ -7,24 +7,6 @@ import gettext
 import os
 from os import environ as os_environ
 
-
-# try:
-    # # from . import Utils
-    
-    # # if Utils.zCheckInternet(1):
-    # try:
-        # from . import Update
-        # Update.upd_done()
-    # except Exception as e:
-        # print('error ', str(e))
-    # # else:
-        # # from Screens.MessageBox import MessageBox
-        # # from Tools.Notifications import AddPopup
-        # # AddPopup(_("Sorry but No Internet :("),MessageBox.TYPE_INFO, 10, 'Sorry')            
-# except:
-    # import traceback
-    # traceback.print_exc()
-
 PluginLanguageDomain = 'XCplugin'
 PluginLanguagePath = 'Extensions/XCplugin/locale'
 try:
@@ -52,5 +34,3 @@ else:
             print(("[%s] fallback to default translation for %s" % (PluginLanguageDomain, txt)))
             return gettext.gettext(txt)
     language.addCallback(localeInit())
-
-

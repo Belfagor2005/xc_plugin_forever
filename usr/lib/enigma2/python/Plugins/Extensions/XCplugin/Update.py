@@ -6,6 +6,7 @@ import os
 import sys
 from twisted.web.client import downloadPage
 
+
 PY3 = sys.version_info.major >= 3
 a = "/tmp/xcforever.tar"
 print("Update.py")

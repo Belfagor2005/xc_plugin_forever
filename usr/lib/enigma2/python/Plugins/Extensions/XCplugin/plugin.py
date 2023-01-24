@@ -2823,9 +2823,6 @@ class xc_maker(Screen):
             infoname = str(cfg.infoname.value)
         self["description"].setText(self.getabout())
         self["Text"].setText(infoname)
-        if cfg.infoexp.getValue():
-            infoname = str(cfg.infoname.value)
-        self["Text"].setText(infoname)
 
     def maker(self):
         if str(cfg.typelist.value) == "Multi Live & VOD":
@@ -2999,9 +2996,9 @@ class OpenServer(Screen):
             headers = {'Accept': 'application/json'}
             request = Request(url_info2, headers=headers)
             if not PY3:
-                response = urlopen(request, timeout=10).read()
+                response = urlopen(request, timeout=ntimeout).read()
             else:
-                response = urlopen(request, timeout=10).read().decode('utf-8')
+                response = urlopen(request, timeout=ntimeout).read().decode('utf-8')
             if response:
                 try:
                     y = json.loads(response)
@@ -3924,11 +3921,11 @@ def xcm3ulistEntry(name):
     res = [name]
     white = 16777215
     if Utils.isFHD():
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(pngl)))
-        res.append(MultiContentEntryText(pos=(100, 0), size=(1200, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(70, 40), png=loadPNG(pngl)))
+        res.append(MultiContentEntryText(pos=(80, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     else:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(10, 5), size=(70, 40), png=loadPNG(png2)))
-        res.append(MultiContentEntryText(pos=(100, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(3, 5), size=(50, 30), png=loadPNG(png2)))
+        res.append(MultiContentEntryText(pos=(70, 0), size=(500, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
 

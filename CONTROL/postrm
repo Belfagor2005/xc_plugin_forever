@@ -4,7 +4,7 @@ echo "--- PostRemove * IPK Scripting v1.0 - date 10.02.2021 ---"
 echo
 echo "A shell script which is executed after uninstallation of the package:"
 echo
-echo "Name: XCplugin v1.7 for OEOE2.0"
+echo "Name: XCplugin Xcforever for OEOE2.0"
 echo
 echo "uninstall XCplugin ..."
 
