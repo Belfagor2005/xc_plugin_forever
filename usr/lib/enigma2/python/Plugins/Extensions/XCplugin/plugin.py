@@ -182,7 +182,9 @@ cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-cfg.timeout = ConfigText(default="10")
+# cfg.timeout = ConfigText(default="10")
+cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=1)
+
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.badcar = ConfigEnableDisable(default=False)
 cfg.picons = ConfigEnableDisable(default=False)
@@ -231,7 +233,8 @@ def copy_poster():
 
 
 copy_poster()
-ntimeout = int(cfg.timeout.value)
+# ntimeout = int(cfg.timeout.value)
+ntimeout = cfg.timeout.value
 socket.setdefaulttimeout(ntimeout)
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
@@ -522,17 +525,13 @@ class xc_config(Screen, ConfigListScreen):
                 port = chaine[1].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
                 user = chaine[2].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
                 pswrd = chaine[3].replace("\n", "").replace("\t", "").replace("\r", "")
-                filesave = "xc_txt_" + user + ".xml"
-                filesave = filesave.replace(":", "_")
-                filesave = filesave.lower()
-                with open(Path_XML + filesave, "w") as t:
-                    t.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + url + ']]></xtream_e2portal_url>\n' + '<port>' + str(port) + '</port>\n' + '<username>' + user + '</username>\n' + '<password>' + pswrd + '</password>\n' + '</items>'))
-                    t.close()
-                self.mbox = self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
                 cfg.hostaddress.setValue(url)
                 cfg.port.setValue(port)
                 cfg.user.setValue(user)
                 cfg.passw.setValue(pswrd)
+                self.xml_plugin()
+                filesave = "xc_" + str(cfg.user.value) + ".xml"
+                self.mbox = self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
                 self.createSetup()
             else:
                 self.mbox = self.session.open(MessageBox, _("File not found %s" % xc_list), MessageBox.TYPE_INFO, timeout=5)
@@ -662,7 +661,7 @@ class xc_config(Screen, ConfigListScreen):
 
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", str(ex))
-            ConfigListScreen.keyOK(self)
+            # ConfigListScreen.keyOK(self)
 
         elif itemcfg == "pthxmlfile":
             try:
@@ -680,7 +679,7 @@ class xc_config(Screen, ConfigListScreen):
 
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", str(ex))
-            ConfigListScreen.keyOK(self)
+            # ConfigListScreen.keyOK(self)
         elif itemcfg == "pthpicon":
             try:
                 self.session.openWithCallback(
@@ -696,24 +695,21 @@ class xc_config(Screen, ConfigListScreen):
                     minFree=15)
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", str(ex))
-            ConfigListScreen.keyOK(self)
+        ConfigListScreen.keyOK(self)
 
     def openDirectoryBrowserCB(self, path):
         if path is not None:
             cfg.pthmovie.setValue(path)
-        # configfile.save()
         return
 
     def openDirectoryBrowserCD(self, path):
         if path is not None:
             cfg.pthxmlfile.setValue(path)
-        # configfile.save()
         return
 
     def openDirectoryBrowserCE(self, path):
         if path is not None:
             cfg.pthpicon.setValue(path)
-        # configfile.save()
         return
 
     def cfgok(self):
@@ -731,15 +727,6 @@ class xc_config(Screen, ConfigListScreen):
                 return
         self.save()
 
-    def xml_plugin(self):
-        filesave = "xc_" + str(cfg.user.value) + ".xml"
-        filesave = filesave.replace(":", "_")
-        filesave = filesave.lower()
-        port = str(cfg.port.value)
-        with open(Path_XML + filesave, "w") as f:
-            f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(cfg.user.value) + '</username>\n' + '<password>' + str(cfg.passw.value) + '</password>\n' + '</items>'))
-            f.close()
-
     def save(self):
         if self["config"].isChanged():
             for x in self["config"].list:
@@ -747,6 +734,16 @@ class xc_config(Screen, ConfigListScreen):
             self.xml_plugin()
             self.mbox = self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
+
+    def xml_plugin(self):
+        if str(cfg.user.value) != 'Enter_Username':
+            filesave = "xc_" + str(cfg.user.value) + ".xml"
+            filesave = filesave.replace(":", "_")
+            filesave = filesave.lower()
+            port = str(cfg.port.value)
+            with open(Path_XML + filesave, "w") as f:
+                f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(cfg.user.value) + '</username>\n' + '<password>' + str(cfg.passw.value) + '</password>\n' + '</items>'))
+                f.close()
 
     def KeyText(self):
         sel = self["config"].getCurrent()
@@ -832,9 +829,6 @@ class iptv_streamse():
     def read_config(self):
         try:
             print("-----------CONFIG NEW START----------")
-            # self.hosts = "http://" + str(cfg.hostaddress.value)
-            # self.port = str(cfg.port.value)
-            # self.xtream_e2portal_url = self.hosts + ':' + self.port
             username = self.username
             if username and username != "" and 'Enter' not in username:
                 self.username = username
@@ -849,7 +843,6 @@ class iptv_streamse():
             print('username = ', self.username)
             print('password = ', self.password)
             print('plugin_version = ', plugin_version)
-            # print('stream_live = ', stream_live)
             print('stream_url = ', stream_url)
             print('iptv_list_tmp = ', iptv_list_tmp)
             print('btnsearch = ', btnsearch)
@@ -864,7 +857,6 @@ class iptv_streamse():
         global stream_live, iptv_list_tmp, stream_url, btnsearch, isStream, next_request, infoname
         stream_live = False
         stream_url = ""
-        # self.xml_error = ""
         self.url = check_port(url)
         self.list_index = 0
         iptv_list_tmp = []
@@ -905,7 +897,6 @@ class iptv_streamse():
                     self.prev_page_text = prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 chan_counter = 0
                 for channel in xml.findall("channel"):
-                    # chan_counter = chan_counter + 1
                     title64 = ''
                     name = ''
                     description64 = ''
@@ -943,11 +934,9 @@ class iptv_streamse():
                         desc_image = str(desc_image)
                         # if PY3:
                             # desc_image = desc_image.encode()
-
                     # if isStream and "/live/"or "/series/"  in stream_url :  # and category_id =='0' or category_id == '2':
                     if stream_url and stream_url != "n/A" and stream_url != "":  # stream_url = None ????
                         isStream = True
-
                     if isStream and "/live/" in stream_url:
                     # if isStream and "get_live_streams" in stream_url:
                         print("****** is live stream **** ")
@@ -960,27 +949,6 @@ class iptv_streamse():
                         epgnextdescription = ''
                         if len(name.split("[")) > 1:
                             name = name.split("[")[0].strip()
-                            # if description != '':
-                                # timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
-                                # titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
-                                # descriptionmatch = re.findall(r'\n(?s)\((.*?)\)', description)
-                                # if timematch:
-                                    # if len(timematch) > 0:
-                                        # epgnowtime = timematch[0].strip()
-                                    # if len(timematch) > 1:
-                                        # epgnexttime = timematch[1].strip()
-                                # if titlematch:
-                                    # if len(titlematch) > 0:
-                                        # name = titlematch[0].strip()
-                                    # if len(titlematch) > 1:
-                                        # epgnexttitle = titlematch[1].strip()
-                                # if descriptionmatch:
-                                    # if len(descriptionmatch) > 0:
-                                        # epgnowdescription = descriptionmatch[0].strip()
-                                    # if len(descriptionmatch) > 1:
-                                        # epgnextdescription = descriptionmatch[1].strip()
-                            # description = epgnowtime + ' ' + name + '\n' + epgnowdescription
-                            # description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                         if description != '':
                             timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
                             titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
@@ -992,8 +960,6 @@ class iptv_streamse():
                                 if len(timematch) > 1:
                                     epgnexttime = timematch[1].strip()
                             if titlematch:
-                                # if len(titlematch) > 0:
-                                    # name = titlematch[0].strip()
                                 if len(titlematch) > 0:
                                     nameepg = titlematch[0].strip()
                                 if len(titlematch) > 1:
@@ -1003,11 +969,14 @@ class iptv_streamse():
                                     epgnowdescription = descriptionmatch[0].strip()
                                 if len(descriptionmatch) > 1:
                                     epgnextdescription = descriptionmatch[1].strip()
+
                         description1 = epgnowtime + ' ' + name + '\n' + epgnowdescription
                         description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
-                        description = Utils.checkStr(description1)
-                        description2 = Utils.checkStr(description2)
-                        # description2 = html_conv.html_unescape(description)                        
+                        # description = Utils.checkStr(description1)
+                        # description2 = Utils.checkStr(description2)
+                        description = html_conv.html_unescape(description1)
+                        description2 = html_conv.html_unescape(description2)
+
                         chan_counter = chan_counter + 1
 
                     elif isStream and ("/movie/" or "/series/") in stream_url:
@@ -1018,9 +987,6 @@ class iptv_streamse():
                         vodDescription = ''
                         vodDuration = ''
                         vodGenre = ''
-
-                        # vodTitle = vodDescription = vodDuration = vodGenre = ''
-                        # vodVideoType = vodRating = vodCountry = vodReleaseDate = vodDirector = vodCast = ''
                         vodLines = description.splitlines()
                         for line in vodLines:
                             vodItems[(line.partition(": ")[0])] = (line.partition(": ")[-1])
@@ -1048,9 +1014,10 @@ class iptv_streamse():
                             vodGenre = str('GENRE: -- --')
                         name = str(vodTitle)
                         description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
-                        ####
-                        # description = html_conv.html_unescape(description)
-                        description = Utils.checkStr(description)
+
+                        description = html_conv.html_unescape(description)
+                        # description = Utils.checkStr(description)
+
                         chan_counter = chan_counter + 1
 
                     chan_tulpe = (
@@ -1068,7 +1035,6 @@ class iptv_streamse():
                     btnsearch = next_request
         except Exception as e:
             print('checkRedirect get failed: ', str(e))
-            # self.xml_error = 'error'
         if len(iptv_list_tmp):
             self.iptv_list = iptv_list_tmp
             iptv_list_tmp = self.iptv_list
@@ -1079,9 +1045,10 @@ class iptv_streamse():
     def _request(self, url):
         if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
-            # res = None
+
             TYPE_PLAYER = '/enigma2.php'
             # TYPE_PLAYER= '/player_api.php'
+
             url = url.strip(" \t\n\r")
             if next_request == 1:
                 if not url.find(":"):
@@ -1106,22 +1073,8 @@ class iptv_streamse():
                     response = urlopen(request, timeout=ntimeout).read().decode('utf-8')
                 res = fromstring(response)
                 response.close()
-                # return res
             except Exception as e:
                 print('error requests ------------------------------------- ', str(e))
-            # try:
-                # req = Request(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, timeout=ntimeout)
-                # # res=response.read()
-                # if PY3:
-                    # res=response.read().decode('utf-8')
-                # else:
-                    # res=response.read()
-                # res = fromstring(res)
-                # response.close()
-                # return res
-            # except:
                 req = Request(urlinfo)
                 req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                 response = urlopen(req, None, ntimeout)
