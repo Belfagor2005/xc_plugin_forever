@@ -897,6 +897,7 @@ class iptv_streamse():
                     self.prev_page_text = prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 chan_counter = 0
                 for channel in xml.findall("channel"):
+                    chan_counter = chan_counter + 1
                     title64 = ''
                     name = ''
                     description64 = ''
@@ -947,8 +948,13 @@ class iptv_streamse():
                         epgnexttitle = ''
                         epgnexttime = ''
                         epgnextdescription = ''
-                        if len(name.split("[")) > 1:
-                            name = name.split("[")[0].strip()
+                        if len(name.split("[")) > 2:
+                            name = name.split("[")[1].strip()
+                            if len(name.split("[")) > 1:
+                                name = name.split("[")[0].strip()
+                        else:
+                            name = name
+
                         if description != '':
                             timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
                             titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
@@ -977,12 +983,13 @@ class iptv_streamse():
                         description = html_conv.html_unescape(description1)
                         description2 = html_conv.html_unescape(description2)
 
-                        chan_counter = chan_counter + 1
+                        # chan_counter = chan_counter + 1
 
                     elif isStream and ("/movie/" or "/series/") in stream_url:
                     # if isStream and ("get_vod" or "get_series") in stream_url:
                         stream_live = False
                         vodItems = {}
+                        name = str(name)
                         vodTitle = ''
                         vodDescription = ''
                         vodDuration = ''
@@ -995,7 +1002,7 @@ class iptv_streamse():
                         elif "O_NAME" in vodItems:
                             vodTitle = Utils.checkStr((vodItems["O_NAME"])).strip()
                         else:
-                            vodTitle = (name)
+                            vodTitle = title
                         if "COVER_BIG" in vodItems and vodItems["COVER_BIG"] and vodItems["COVER_BIG"] != "null":
                             piconname = str(vodItems["COVER_BIG"]).strip()
                         if "DESCRIPTION" in vodItems:
@@ -1012,13 +1019,13 @@ class iptv_streamse():
                             vodGenre = str(vodItems["GENRE"]).strip()
                         else:
                             vodGenre = str('GENRE: -- --')
-                        name = str(vodTitle)
+                        # name = str(vodTitle)
                         description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
 
                         description = html_conv.html_unescape(description)
                         # description = Utils.checkStr(description)
 
-                        chan_counter = chan_counter + 1
+                        # chan_counter = chan_counter + 1
 
                     chan_tulpe = (
                         chan_counter,
@@ -1325,21 +1332,21 @@ class xc_Main(Screen):
                 pass
             selected_channel = self.channel_list[self.index]
             if selected_channel[2] is not None:
-                if stream_live is True:
-                    description = selected_channel[2]
-                    description2 = selected_channel[8]
-                    description3 = selected_channel[6]
-                    description_3 = description3.split(" #-# ")
-                    descall = str(description) + '\n\n' + str(description2)
-                    self["description"].setText(descall)
-                    print('------------------------------------------ descall desc', descall)
-                    if description_3:
-                        if len(description_3) > 1:
-                            self["info"].setText(str(description_3[1]))
-                else:
-                    description = str(selected_channel[2])
-                    self["description"].setText(description)
-                    print('------------------------------------------ else desc', description)
+                # if stream_live is True:
+                    # description = selected_channel[2]
+                    # description2 = selected_channel[8]
+                    # description3 = selected_channel[6]
+                    # description_3 = description3.split(" #-# ")
+                    # descall = str(description) + '\n\n' + str(description2)
+                    # self["description"].setText(descall)
+                    # print('------------------------------------------ descall desc', descall)
+                    # if description_3:
+                        # if len(description_3) > 1:
+                            # self["info"].setText(str(description_3[1]))
+                # else:
+                    # description = str(selected_channel[2])
+                    # self["description"].setText(description)
+                    # print('------------------------------------------ else desc', description)
 
                 pixim = str(selected_channel[7])
                 print('self pixim   ', str(pixim))
@@ -1357,6 +1364,21 @@ class xc_Main(Screen):
                         downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                     else:
                         downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                if stream_live is True:
+                    description = selected_channel[2]
+                    description2 = selected_channel[8]
+                    description3 = selected_channel[6]
+                    description_3 = description3.split(" #-# ")
+                    descall = str(description) + '\n\n' + str(description2)
+                    self["description"].setText(descall)
+                    print('------------------------------------------ descall desc', descall)
+                    if description_3:
+                        if len(description_3) > 1:
+                            self["info"].setText(str(description_3[1]))
+                else:
+                    description = str(selected_channel[2])
+                    self["description"].setText(description)
+                    print('------------------------------------------ else desc', description)
         except Exception as ex:
             print(str(ex))
 
