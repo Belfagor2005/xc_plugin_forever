@@ -203,10 +203,10 @@ cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "M
 cfg.strtmain = ConfigEnableDisable(default=True)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
-cfg.last_update = ConfigText(default="none")
+cfg.last_update = ConfigText(default="Never")
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.fixedtime = ConfigClock(default=0)
-
+cfg.autoupdate = ConfigEnableDisable(default=True)
 
 if Utils.isHD():
     CHANNEL_NUMBER = [3, 0, 50, 40, 0]
@@ -234,7 +234,7 @@ def copy_poster():
 
 copy_poster()
 # ntimeout = int(cfg.timeout.value)
-ntimeout = cfg.timeout.value
+ntimeout = float(cfg.timeout.value)
 socket.setdefaulttimeout(ntimeout)
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
@@ -504,11 +504,9 @@ class xc_config(Screen, ConfigListScreen):
                     cfg.port.setValue(ports)
                     cfg.user.setValue(usernamesh)
                     cfg.passw.setValue(passwordsh)
-                filesave = "xc_sh_" + str(cfg.user.value) + ".xml"
-                filesave = filesave.replace(":", "_").lower()
-                with open(Path_XML + filesave, "w") as t:
-                    t.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + urlsh + ']]></xtream_e2portal_url>\n' + '<port>' + ports + '</port>\n' + '<username>' + usernamesh + '</username>\n' + '<password>' + passwordsh + '</password>\n' + '</items>'))
-                    t.close()
+                self.xml_plugin()
+                filesave = "xc_" + str(cfg.user.value) + ".xml"
+                self.mbox = self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
                 self.ConfigText()
             else:
                 self.mbox = self.session.open(MessageBox, (_("Missing %s !") % iptvsh), MessageBox.TYPE_INFO, timeout=4)
@@ -579,9 +577,9 @@ class xc_config(Screen, ConfigListScreen):
 
         self.list.append(getConfigListEntry(_("Vod Services Type"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
 
-        self.list.append(getConfigListEntry(_("Name Server Bouquet Configuration:"), cfg.infoexp, (_("Set Name for MakerBouquet"))))
+        self.list.append(getConfigListEntry(_("Name Bouquet Configuration:"), cfg.infoexp, (_("Set Name for MakerBouquet"))))
         if cfg.infoexp.getValue():
-            self.list.append(getConfigListEntry(indent + (_("Name Bouquet Export")), cfg.infoname, (_("Configure name of bouqet exported. Default is myBouquet"))))
+            self.list.append(getConfigListEntry(indent + (_("Name Bouquet Export")), cfg.infoname, (_("Configure name of exported bouqet. Default is myBouquet"))))
 
         self.list.append(getConfigListEntry(_("Place IPTV bouquets at "), cfg.bouquettop, (_("Configure to place the bouquets of the converted lists"))))
 
@@ -595,10 +593,11 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Picons IPTV "), cfg.picons, (_("Download Picons ?"))))
         if cfg.picons.value:
             self.list.append(getConfigListEntry(indent + (_("Picons IPTV bouquets to ")), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
+        self.list.append(getConfigListEntry(_("Auto Update Plugin  "), cfg.autoupdate, (_("Auto Update Plugin"))))
         self.list.append(getConfigListEntry(_("Link in Main Menu  "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
 
         self["config"].list = self.list
-        self["config"].setList(self.list)
+        self["config"].l.setList(self.list)
 
     def changedEntry(self):
         for x in self.onChangedEntry:
@@ -897,7 +896,7 @@ class iptv_streamse():
                     self.prev_page_text = prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 chan_counter = 0
                 for channel in xml.findall("channel"):
-                    chan_counter = chan_counter + 1
+                    # chan_counter = chan_counter + 1
                     title64 = ''
                     name = ''
                     description64 = ''
@@ -955,6 +954,14 @@ class iptv_streamse():
                         else:
                             name = name
 
+                        # if len(name.split("[")) > 1:
+                            # name = name.split("[")[0].strip()
+                        # import re
+                        # name = name.strip()
+                        # if (name.startswith("[")):
+                            # name = re.sub('\[.*?\]', '', name, 1).strip()
+                        # print("name=%s" % name)
+
                         if description != '':
                             timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
                             titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
@@ -978,12 +985,9 @@ class iptv_streamse():
 
                         description1 = epgnowtime + ' ' + name + '\n' + epgnowdescription
                         description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
-                        # description = Utils.checkStr(description1)
-                        # description2 = Utils.checkStr(description2)
                         description = html_conv.html_unescape(description1)
                         description2 = html_conv.html_unescape(description2)
-
-                        # chan_counter = chan_counter + 1
+                        chan_counter = chan_counter + 1
 
                     elif isStream and ("/movie/" or "/series/") in stream_url:
                     # if isStream and ("get_vod" or "get_series") in stream_url:
@@ -1019,14 +1023,11 @@ class iptv_streamse():
                             vodGenre = str(vodItems["GENRE"]).strip()
                         else:
                             vodGenre = str('GENRE: -- --')
-                        # name = str(vodTitle)
                         description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
 
                         description = html_conv.html_unescape(description)
-                        # description = Utils.checkStr(description)
 
-                        # chan_counter = chan_counter + 1
-
+                        chan_counter = chan_counter + 1
                     chan_tulpe = (
                         chan_counter,
                         str(name),
@@ -1123,7 +1124,6 @@ class xc_Main(Screen):
         self.pin = False
         self.icount = 0
         self.errcount = 0
-        # self.update_desc = True
         self.pass_ok = False
         self.temp_index = 0
         self.temp_channel_list = None
@@ -1185,7 +1185,6 @@ class xc_Main(Screen):
             "movielist": self.taskManager,
             "help": self.help,
             "power": self.power}, -1)
-        # self.passwd_ok = False
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self.onFirstExecBegin.append(self.checkinf)
         self.onShown.append(self.show_all)
@@ -1320,7 +1319,6 @@ class xc_Main(Screen):
         if re_search is True:
             self.channel_list = iptv_list_tmp
         self.index = self.mlist.getSelectionIndex()
-        # if self.update_desc:
         try:
             self["info"].setText("")
             self["description"].setText("NO DESCRIPTIONS")
@@ -1437,23 +1435,19 @@ class xc_Main(Screen):
                     f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
                     f.write('\n')  # for last episode
                     f.close()
-        # self.update_desc = False
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.mlist.moveToIndex(0)
-        # self.update_desc = True
         self.update_description()
         self.button_updater()
 
     def show_all(self):
         try:
-            # if self.passwd_ok == False:
             if re_search is True:
                 self.channel_list = iptv_list_tmp
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self["feedlist"] = self.mlist
                 self["feedlist"].moveToIndex(0)
             else:
-                # self.channel_list = iptv_list_tmp
                 self.channel_list = STREAMS.iptv_list
             self.mlist.moveToIndex(self.index)
             self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
@@ -1512,19 +1506,16 @@ class xc_Main(Screen):
         self.url_tmp = None
         self.video_back = False
         STREAMS.video_status = False
-        # self.passwd_ok = False
         self.list_index = 0
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
         STREAMS.list_index = self.index2
-        # self.go()
         self.update_channellist()
         self.decodeImage(piclogo)
         global infoname
         infoname = self.temp_playname
         if cfg.infoexp.getValue():
             infoname = str(cfg.infoname.value)
-        # self["Text"].setText(infoname)
         self["playlist"].setText(infoname)
 
     def exitY(self):
@@ -4377,7 +4368,8 @@ class AutoStartTimer:
         print("*** running AutoStartTimerFxy ***")
         self.session = session
         if _firstStart:
-            self.runUpdate()
+            if cfg.autoupdate.value is True:
+                self.runUpdate()
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.on_timer)
