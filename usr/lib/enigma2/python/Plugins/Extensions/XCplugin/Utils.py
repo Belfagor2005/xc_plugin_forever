@@ -13,7 +13,7 @@ from random import choice
 
 # from sys import version_info
 # pythonFull = float(str(sys.version_info.major) + '.' + str(sys.version_info.minor))
-# pythonVer = sys.version_info.major
+pythonVer = sys.version_info.major
 # PY3 = version_info[0] == 3
 
 PY2 = False
@@ -64,6 +64,7 @@ if sys.version_info >= (2, 7, 9):
 def checkGZIP(url):
     from io import StringIO
     import gzip
+    hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
     response = None
     request = Request(url, headers=hdr)
 
@@ -459,19 +460,37 @@ def checkStr(text, encoding='utf8'):
     # return txt
 
 
+# def checkRedirect(url):
+    # # print('*** check redirect ***')
+    # try:
+        # import requests
+        # x = requests.get(url, timeout=15, verify=False, stream=True)
+        # print('**** redirect url 1 *** %s' % x.url)
+        # return str(x.url)
+    # except Exception as e:
+        # print('checkRedirect get failed: ', str(e))
+        # print('**** redirect url 2 *** %s' % url)
+        # return str(url)
+
+
 def checkRedirect(url):
-    # print('*** check redirect ***')
+    # print("*** check redirect ***")
+    import requests
+    from requests.adapters import HTTPAdapter
+    hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
+    x = ""
+    adapter = HTTPAdapter()
+    http = requests.Session()
+    http.mount("http://", adapter)
+    http.mount("https://", adapter)
     try:
-        import requests
-        x = requests.get(url, timeout=15, verify=False, stream=True)
-        print('**** redirect url 1 *** %s' % x.url)
+        x = http.get(url, headers=hdr, timeout=15, verify=False, stream=True)
         return str(x.url)
     except Exception as e:
-        print('checkRedirect get failed: ', str(e))
-        print('**** redirect url 2 *** %s' % url)
+        print(e)
         return str(url)
-
-
+            
+            
 def freespace():
     try:
         diskSpace = os.statvfs('/')
