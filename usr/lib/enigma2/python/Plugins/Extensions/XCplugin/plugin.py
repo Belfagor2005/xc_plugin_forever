@@ -904,7 +904,7 @@ class iptv_streamse():
                     self.prev_page_text = prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 chan_counter = 0
                 for channel in xml.findall("channel"):
-                    # chan_counter = chan_counter + 1
+                    chan_counter = chan_counter + 1
                     title64 = ''
                     name = ''
                     description64 = ''
@@ -914,7 +914,9 @@ class iptv_streamse():
                     desc_image = ''
                     piconname = ''
                     nameepg = ''
+                    description1 = ''
                     description2 = ''
+                    description3 = ''
                     title64 = channel.findtext('title')
                     name = base64.b64decode(title64).decode('utf-8')
                     # test bad char from kiddac plugin
@@ -995,7 +997,7 @@ class iptv_streamse():
                         description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                         description = html_conv.html_unescape(description1)
                         description2 = html_conv.html_unescape(description2)
-                        chan_counter = chan_counter + 1
+                        # chan_counter = chan_counter + 1
 
                     elif isStream and ("/movie/" or "/series/") in stream_url:
                     # if isStream and ("get_vod" or "get_series") in stream_url:
@@ -1031,11 +1033,11 @@ class iptv_streamse():
                             vodGenre = str(vodItems["GENRE"]).strip()
                         else:
                             vodGenre = str('GENRE: -- --')
-                        description = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
+                        description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
 
-                        description = html_conv.html_unescape(description)
+                        description = html_conv.html_unescape(description3)
 
-                        chan_counter = chan_counter + 1
+                        # chan_counter = chan_counter + 1
                     chan_tulpe = (
                         chan_counter,
                         str(name),
@@ -1352,12 +1354,12 @@ class xc_Main(Screen):
         try:
             self["info"].setText("")
             self["description"].setText("NO DESCRIPTIONS")
-            piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
-            self['poster'].instance.setPixmapFromFile(piclogo)
             try:
                 os.remove(pictmp)
             except:
                 pass
+            piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+            self['poster'].instance.setPixmapFromFile(piclogo)
             selected_channel = self.channel_list[self.index]
             if selected_channel[2] is not None:
                 # if stream_live is True:
