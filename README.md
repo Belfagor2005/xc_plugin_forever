@@ -1,5 +1,7 @@
 Xc Forever v.2.3 by Lululla
 
+![](https://komarev.com/ghpvc/?username=Belfagor2005)
+
 <img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.png">
 
 Enigma2 project
