@@ -22,7 +22,11 @@ import tempfile
 import glob
 import hashlib
 import socket
-from PIL import Image
+try:
+    from PIL import Image
+except:
+    import Image
+
 from collections import OrderedDict
 try:
     import xml.etree.cElementTree as ET
@@ -32,6 +36,7 @@ try:
     from enigma import eDVBDB
 except ImportError:
     eDVBDB = None
+
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 from six.moves import range
@@ -45,18 +50,28 @@ PY3 = False
 PY3 = sys.version_info.major >= 3
 print('Py3: ',PY3)
 
+# if PY3:
+    # from urllib.parse import quote
+    # from urllib.parse import quote_plus
+    # from urllib.parse import urlparse
+    # from urllib.parse import parse_qs
+    # PY3 = True
+# else:
+    # from urllib import quote, quote_plus
+    # from urlparse import urlparse
+    # from urlparse import parse_qs
+
 if PY3:
-    from urllib.parse import quote
-    from urllib.parse import quote_plus
+    from urllib.request import urlopen, Request
+    from urllib.error import URLError, HTTPError
     from urllib.parse import urlparse
-    from urllib.parse import parse_qs
-    PY3 = True; unicode = str; unichr = chr; long = int; xrange = range
+    from urllib.parse import urlencode, quote, quote_plus, parse_qs
+              
 else:
-    from urllib import quote, quote_plus
-    from urlparse import urlparse
-    from urlparse import parse_qs
-
-
+    from urllib2 import urlopen, Request
+    from urllib2 import URLError, HTTPError
+    from urlparse import urlparse, parse_qs
+    from urllib import urlencode, quote, quote_plus
 
 __all__ = []
 __version__ = '0.8.5'
@@ -176,11 +191,13 @@ def reload_bouquets():
     if not TESTRUN:
         print("\n----Reloading bouquets----")
         if eDVBDB:
+            eDVBDB.getInstance().reloadServicelist()
             eDVBDB.getInstance().reloadBouquets()
-            print("bouquets reloaded...")
+            print("eDVBDB: bouquets reloaded...")
         else:
             os.system("wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &")
-            print("bouquets reloaded...")
+            os.system("wget -qO - http://127.0.0.1/web/servicelistreload?mode=4 > /dev/null 2>&1 &")
+            print("wGET: bouquets reloaded...")
 
 def xml_escape(string):
     return escape(string, {'"': '&quot;', "'": "&apos;"})
@@ -188,7 +205,7 @@ def xml_escape(string):
 
 def xml_safe_comment(string):
     """Can't have -- in xml comments"""
-    return string.replace('--','- - ')
+    return string.replace('--', '- - ')
 
 
 def get_safe_filename(filename, fallback=''):
@@ -566,7 +583,7 @@ class Provider:
         for path in search_path:
             if os.path.isfile(path):
                 mapping_file = path
-                break;
+                break
         return mapping_file
 
     def _save_bouquet_entry(self, f, channel):
@@ -836,10 +853,10 @@ class Provider:
             print("m3uurl = {}".format(self.config.m3u_url))
         try:
             r = requests.get(self.config.m3u_url, headers=myheaders, allow_redirects=True)  # to get content after redirection
-            print("[e2m3u2Bouquet] status code=%s" % r.status_code)
+            # print("[e2m3u2Bouquet] status code=%s" % r.status_code)
             if r.status_code == 200:
                 with open(filename, 'wb') as f:
-                    f.write(r.content)   
+                    f.write(r.content)
             else:
                 filename = None
         except Exception as e:
@@ -847,7 +864,7 @@ class Provider:
             print(Status.message)
             filename = None
         self._m3u_file = filename
-        # print("[e2m3u2Bouquet] filename=%s" % filename)      
+        # print("[e2m3u2Bouquet] filename=%s" % filename)
 
     def parse_m3u(self):
         """core parsing routine"""
