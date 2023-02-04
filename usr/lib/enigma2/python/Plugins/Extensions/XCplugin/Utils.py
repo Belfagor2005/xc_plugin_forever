@@ -31,10 +31,10 @@ PY39 = sys.version_info[0:2] >= (3, 9)
 if PY3:
     # Python 3
     PY3 = True
-    unicode = str
-    unichr = chr
-    long = int
-    xrange = range
+    # unicode = str
+    # unichr = chr
+    # long = int
+    # xrange = range
     from urllib.parse import quote
     from urllib.request import urlopen
     from urllib.request import Request

@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             14/01/2023               *
+*             04/02/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -87,11 +87,13 @@ _session = " "
 version = "XC Forever V.2.3"
 
 PY3 = False
-plugin_path = os.path.dirname(sys.modules[__name__].__file__)
-skin_path = plugin_path + '/skin/fhd'
-iconpic = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/plugin.png".format('XCplugin'))
-filterlist = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/cfg/filterlist.txt".format('XCplugin'))
-piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+# plugin_path = os.path.dirname(sys.modules[__name__].__file__)
+plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
+
+skin_path = os.path.join(plugin_path, 'skin/fhd')
+iconpic = os.path.join(plugin_path, 'plugin.png')
+filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
+piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
@@ -214,24 +216,24 @@ if Utils.isHD():
     FONT_0 = ("Regular", 24)
     FONT_1 = ("Regular", 24)
     BLOCK_H = 40
-    skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd".format('XCplugin'))
-    piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/hd/iptvlogo.jpg".format('XCplugin'))
+    skin_path = os.path.join(plugin_path, 'skin/hd')
+    piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 elif Utils.isFHD():
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
     FONT_0 = ("Regular", 32)
     FONT_1 = ("Regular", 32)
     BLOCK_H = 50
-    skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))
-    piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+    skin_path = os.path.join(plugin_path, 'skin/fhd')
+    piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
 else:
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
     FONT_0 = ("Regular", 34)
     FONT_1 = ("Regular", 34)
     BLOCK_H = 50
-    skin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd".format('XCplugin'))
-    piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+    skin_path = os.path.join(plugin_path, 'skin/fhd')
+    piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
 
 if Utils.DreamOS():
     skin_path = skin_path + '/dreamOs'
@@ -327,7 +329,7 @@ class xc_home(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_home.xml"
+        skin = os.path.join(skin_path, 'xc_home.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('MAIN MENU')
@@ -373,7 +375,7 @@ class xc_home(Screen):
             dependencies = False
 
         if dependencies is False:
-            os.chmod("/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh", 0o0755)
+            os.chmod(os.path.join(plugin_path, 'dependencies.sh', 0o0755))
             cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh"
             self.session.openWithCallback(self.start, Console, title="Checking Dependencies", cmdlist=[cmd1], closeOnSuccess=True)
         else:
@@ -459,7 +461,7 @@ class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_config.xml"
+        skin = os.path.join(skin_path, 'xc_config.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -1140,7 +1142,7 @@ class xc_Main(Screen):
         _session = session
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_Main.xml"
+        skin = os.path.join(skin_path, 'xc_Main.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -2110,22 +2112,26 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
-        return {0: '4:3 Letterbox',
-                1: '4:3 PanScan',
-                2: '16:9',
-                3: '16:9 always',
-                4: '16:10 Letterbox',
-                5: '16:10 PanScan',
-                6: '16:9 Letterbox'}[aspectnum]
+        return {
+            0: '4:3 Letterbox',
+            1: '4:3 PanScan',
+            2: '16:9',
+            3: '16:9 always',
+            4: '16:10 Letterbox',
+            5: '16:10 PanScan',
+            6: '16:9 Letterbox'
+        }[aspectnum]
 
     def setAspect(self, aspect):
-        map = {0: '4_3_letterbox',
-               1: '4_3_panscan',
-               2: '16_9',
-               3: '16_9_always',
-               4: '16_10_letterbox',
-               5: '16_10_panscan',
-               6: '16_9_letterbox'}
+        map = {
+            0: '4_3_letterbox',
+            1: '4_3_panscan',
+            2: '16_9',
+            3: '16_9_always',
+            4: '16_10_letterbox',
+            5: '16_10_panscan',
+            6: '16_9_letterbox'
+        }
         config.av.aspectratio.setValue(map[aspect])
         try:
             AVSwitch().setAspectRatio(aspect)
@@ -2335,7 +2341,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.session.open(MessageBox, 'BLUE = START PLAY RECORDED VIDEO', type=MessageBox.TYPE_INFO, timeout=5)
                     self.session.nav.stopService()
                     self['state'].setText('RECORD')
-                    ext = '.mp4'
                     pth = urlparse(self.vod_url).path
                     ext = splitext(pth)[-1]
                     if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
@@ -2485,7 +2490,7 @@ class xc_StreamTasks(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_StreamTasks.xml"
+        skin = os.path.join(skin_path, 'xc_StreamTasks.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -2652,7 +2657,7 @@ class xc_help(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_help.xml"
+        skin = os.path.join(skin_path, 'xc_help.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -2814,7 +2819,7 @@ class xc_Epg(Screen):
     def __init__(self, session, text_clear):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_epg.xml"
+        skin = os.path.join(skin_path, 'xc_epg.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -2835,7 +2840,7 @@ class xc_maker(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_maker.xml"
+        skin = os.path.join(skin_path, 'xc_maker.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -2930,7 +2935,7 @@ class OpenServer(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_OpenServer.xml"
+        skin = os.path.join(skin_path, 'xc_OpenServer.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -3154,7 +3159,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         self.session = session
         global _session
         _session = session
-        skin = skin_path + "/xc_iptv_player.xml"
+        skin = os.path.join(skin_path, 'xc_iptv_player.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         InfoBarBase.__init__(self, steal_current_service=True)
@@ -3205,22 +3210,26 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
         return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
-        return {0: _('4:3 Letterbox'),
-                1: _('4:3 PanScan'),
-                2: _('16:9'),
-                3: _('16:9 always'),
-                4: _('16:10 Letterbox'),
-                5: _('16:10 PanScan'),
-                6: _('16:9 Letterbox')}[aspectnum]
+        return {
+            0: '4:3 Letterbox',
+            1: '4:3 PanScan',
+            2: '16:9',
+            3: '16:9 always',
+            4: '16:10 Letterbox',
+            5: '16:10 PanScan',
+            6: '16:9 Letterbox'
+        }[aspectnum]
 
     def setAspect(self, aspect):
-        map = {0: '4_3_letterbox',
-               1: '4_3_panscan',
-               2: '16_9',
-               3: '16_9_always',
-               4: '16_10_letterbox',
-               5: '16_10_panscan',
-               6: '16_9_letterbox'}
+        map = {
+            0: '4_3_letterbox',
+            1: '4_3_panscan',
+            2: '16_9',
+            3: '16_9_always',
+            4: '16_10_letterbox',
+            5: '16_10_panscan',
+            6: '16_9_letterbox'
+        }
         config.av.aspectratio.setValue(map[aspect])
         try:
             AVSwitch().setAspectRatio(aspect)
@@ -3403,7 +3412,7 @@ class xc_Play(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_M3uLoader.xml"
+        skin = os.path.join(skin_path, 'xc_M3uLoader.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
@@ -3619,7 +3628,7 @@ class xc_M3uPlay(Screen):
     def __init__(self, session, name):
         Screen.__init__(self, session)
         self.session = session
-        skin = skin_path + "/xc_M3uPlay.xml"
+        skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         print('self.skin: ', skin)
@@ -3855,22 +3864,26 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
-        return {0: _('4:3 Letterbox'),
-                1: _('4:3 PanScan'),
-                2: _('16:9'),
-                3: _('16:9 always'),
-                4: _('16:10 Letterbox'),
-                5: _('16:10 PanScan'),
-                6: _('16:9 Letterbox')}[aspectnum]
+        return {
+            0: '4:3 Letterbox',
+            1: '4:3 PanScan',
+            2: '16:9',
+            3: '16:9 always',
+            4: '16:10 Letterbox',
+            5: '16:10 PanScan',
+            6: '16:9 Letterbox'
+        }[aspectnum]
 
     def setAspect(self, aspect):
-        map = {0: '4_3_letterbox',
-               1: '4_3_panscan',
-               2: '16_9',
-               3: '16_9_always',
-               4: '16_10_letterbox',
-               5: '16_10_panscan',
-               6: '16_9_letterbox'}
+        map = {
+            0: '4_3_letterbox',
+            1: '4_3_panscan',
+            2: '16_9',
+            3: '16_9_always',
+            4: '16_10_letterbox',
+            5: '16_10_panscan',
+            6: '16_9_letterbox'
+        }
         config.av.aspectratio.setValue(map[aspect])
         try:
             AVSwitch().setAspectRatio(aspect)
