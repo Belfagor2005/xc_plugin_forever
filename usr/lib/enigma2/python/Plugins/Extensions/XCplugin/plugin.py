@@ -185,7 +185,7 @@ cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
 # cfg.timeout = ConfigText(default="10")
-cfg.timeout = ConfigSelectionNumber(default=5, min=5, max=80, stepwidth=1)
+cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
 
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.badcar = ConfigEnableDisable(default=False)
