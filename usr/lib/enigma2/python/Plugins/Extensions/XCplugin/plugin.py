@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             04/02/2023               *
+*             24/02/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -45,7 +45,6 @@ from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
-from Screens.Standby import Standby
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 # from Tools import ASCIItranslit
@@ -86,8 +85,6 @@ global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, 
 _session = " "
 version = "XC Forever V.2.3"
 
-PY3 = False
-# plugin_path = os.path.dirname(sys.modules[__name__].__file__)
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 
 skin_path = os.path.join(plugin_path, 'skin/fhd')
@@ -109,11 +106,9 @@ stream_url = ""
 urlinfo = ""
 pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
-
+PY3 = False
 if pythonVer == 3:
     PY3 = True
-else:
-    PY3 = False
 
 if PY3:
     from urllib.request import urlopen, Request
@@ -242,10 +237,11 @@ if Utils.DreamOS():
 def copy_poster():
     os.system("cd / && cp -f " + piclogo + " " + pictmp)
 
+
 copy_poster()
 # ntimeout = int(cfg.timeout.value)
 ntimeout = float(cfg.timeout.value)
-socket.setdefaulttimeout(1)
+socket.setdefaulttimeout(10)
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
 Path_Picons = str(cfg.pthpicon.value) + "/"
@@ -286,7 +282,7 @@ def returnIMDB(text_clear):
             text = html_conv.html_unescape(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
-            print("[XCF] Tmdb: ", str(e))
+            print("[XCF] Tmdb: ", e)
         return True
     elif os.path.exists(IMDb):
         try:
@@ -294,7 +290,7 @@ def returnIMDB(text_clear):
             text = html_conv.html_unescape(text_clear)
             imdb(_session, text)
         except Exception as e:
-            print("[XCF] imdb: ", str(e))
+            print("[XCF] imdb: ", e)
         return True
     else:
         text_clear = html_conv.html_unescape(text_clear)
@@ -801,14 +797,13 @@ class iptv_streamse():
         self.next_page_text_tmp = ""
         self.prev_page_url_tmp = ""
         self.prev_page_text_tmp = ""
-        # self.xml_error = ""
-        # self.clear_url = ""
         self.iptv_list = []
         self.iptv_list_tmp = []
         self.iptv_list_history = []
         self.esr_id = 4097
         self.list_index_tmp = 0
         self.list_index = 0
+        list_index = 0
         self.ar_id_start = 0
         self.ar_id_end = 0
         self.ar_id_player = 0
@@ -851,11 +846,11 @@ class iptv_streamse():
             print('username = ', self.username)
             print('password = ', self.password)
             print('plugin_version = ', plugin_version)
-            print('stream_url = ', stream_url)
-            print('iptv_list_tmp = ', iptv_list_tmp)
-            print('btnsearch = ', btnsearch)
-            print('next_request = ', next_request)
-            print('isStream = ', isStream)
+            # print('stream_url = ', str(stream_url))
+            # print('iptv_list_tmp = ', iptv_list_tmp)
+            # print('btnsearch = ', btnsearch)
+            # print('next_request = ', next_request)
+            # print('isStream = ', isStream)
             print("-----------CONFIG NEW END----------")
         except Exception as ex:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
@@ -881,31 +876,44 @@ class iptv_streamse():
             elif "get_" in self.url:  # at start
                 next_request = 2
             xml = self._request(self.url)
-            print('_request xml: ', str(xml))
+            # print('_request xml: ', str(xml))
             # if xml or xml is not None:
-            if xml:  # is not None:
-                # self.next_page_url = ""
-                # self.next_page_text = ""
-                # self.prev_page_url = ""
-                # self.prev_page_text = ""
-                # self.playlistname = ""
+            if xml:
+                self.playlistname = ""
+                self.category_title = ""
+                self.category_id = ""
+                self.next_page_url = ""
+                self.next_page_text = ""
+                self.prev_page_url = ""
+                self.prev_page_text = ""
+                self.prev_page_text_element = ""
+                self.next_page_text_element = ""
                 playlistname_exists = xml.findtext('playlist_name')
                 if playlistname_exists:
+                    print('playlistname_exists: ', playlistname_exists)
                     self.playlistname = xml.findtext('playlist_name')  # .encode('utf-8')
                     infoname = str(self.playlistname)
                     if cfg.infoexp.getValue():
                         infoname = str(cfg.infoname.value)
                 self.next_page_url = xml.findtext("next_page_url")
-                next_page_text_element = xml.findall("next_page_url")
-                if next_page_text_element:
-                    self.next_page_text = next_page_text_element[0].attrib.get("text")  # .encode("utf-8")
+                if self.next_page_url:
+                    print('next_page_url: ', self.next_page_url)
+                    self.next_page_url = self.next_page_url[0].attrib.get("text")  # .encode("utf-8")
+                self.next_page_text_element = xml.findall("next_page_url")
+                if self.next_page_text_element:
+                    print('next_page_text_element: ', self.next_page_text_element)
+                    self.next_page_text = self.next_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 self.prev_page_url = xml.findtext("prev_page_url")
-                prev_page_text_element = xml.findall("prev_page_url")
-                if prev_page_text_element:
-                    self.prev_page_text = prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
+                if self.prev_page_url:
+                    print('prev_page_url: ', self.prev_page_url)
+                    self.prev_page_url = self.prev_page_url[0].attrib.get("text")
+                self.prev_page_text_element = xml.findall("prev_page_url")
+                if self.prev_page_text_element:
+                    print('prev_page_text_element: ', self.prev_page_text_element)
+                    self.prev_page_text = self.prev_page_text_element[0].attrib.get("text")  # .encode("utf-8")
                 chan_counter = 0
                 for channel in xml.findall("channel"):
-                    chan_counter += 1
+                    # chan_counter += 1
                     title64 = ''
                     name = ''
                     description64 = ''
@@ -919,89 +927,92 @@ class iptv_streamse():
                     description2 = ''
                     description3 = ''
                     title64 = channel.findtext('title')
+                    if (title64 != "" or title64 != "n/A" or title64 is not None or title64 != "null"):
+                        title64 = str(title64)
                     name = base64.b64decode(title64).decode('utf-8')
-                    # test bad char from kiddac plugin
                     if cfg.badcar.value is True:
                         name = Utils.badcar(name)
-                    description64 = channel.findtext('description')
-                    description = base64.b64decode(description64).decode('utf-8')
+
                     try:
                         name = ''.join(chr(ord(c)) for c in name).decode('utf-8')
                     except:
                         name = ''.join(chr(ord(c)) for c in name)
                         pass
+                    description64 = channel.findtext('description')
+                    if (description64 != "" or description64 != "n/A" or description64 is not None or description64 != "null"):
+                        description64 = str(description64)
+                    description = base64.b64decode(description64).decode('utf-8')
                     try:
                         description = ''.join(chr(ord(c)) for c in description).decode('utf-8')
                     except:
                         description = ''.join(chr(ord(c)) for c in description)
                         pass
                     name = Utils.checkStr(name)
-                    category_id = Utils.checkStr(channel.findtext('category_id'))
-                    stream_url = Utils.checkStr(channel.findtext('stream_url'))
-                    playlist_url = Utils.checkStr(channel.findtext('playlist_url'))
-                    piconname = Utils.checkStr(channel.findtext("logo"))
-                    desc_image = Utils.checkStr(channel.findtext('desc_image'))
-                    if desc_image and desc_image != "n/A" and desc_image != "":
+                    # category_id = Utils.checkStr(channel.findtext('category_id'))
+
+                    category_id = channel.findtext('category_id')
+                    # playlist_url = Utils.checkStr(channel.findtext('playlist_url'))
+                    playlist_url = channel.findtext('playlist_url')
+                    ts_stream = channel.findtext("ts_stream")
+                    if (ts_stream != "" or ts_stream != "n/A" or ts_stream is not None or ts_stream != "null"):
+                        ts_stream = str(ts_stream)
+                        print('ts_stream: ', ts_stream)
+                    # piconname = Utils.checkStr(channel.findtext("logo"))
+                    piconname = channel.findtext("logo")
+                    # desc_image = Utils.checkStr(channel.findtext('desc_image'))
+                    desc_image = channel.findtext('desc_image')
+                    if (desc_image != "" or desc_image != "n/A" or desc_image is not None or desc_image != "null"):
                         desc_image = str(desc_image)
                         # if PY3:
                             # desc_image = desc_image.encode()
                     # if isStream and "/live/"or "/series/"  in stream_url :  # and category_id =='0' or category_id == '2':
-                    if stream_url and stream_url != "n/A" and stream_url != "":  # stream_url = None ????
+                    # stream_url = Utils.checkStr(channel.findtext('stream_url'))
+                    stream_url = channel.findtext('stream_url')
+                    if (stream_url != "" or stream_url != "n/A" or stream_url is not None or stream_url != "null"):
                         isStream = True
-                    if isStream and "/live/" in stream_url:
+                    if isStream and "/live/" in str(stream_url):
                     # if isStream and "get_live_streams" in stream_url:
                         print("****** is live stream **** ")
                         stream_live = True
-                        # epgnowtime = epgnowdescription = epgnexttitle = epgnexttime = epgnextdescription = ''
                         epgnowtime = ''
                         epgnowdescription = ''
                         epgnexttitle = ''
                         epgnexttime = ''
                         epgnextdescription = ''
-                        if len(name.split("[")) > 2:
-                            name = name.split("[")[1].strip()
-                            if len(name.split("[")) > 1:
-                                name = name.split("[")[0].strip()
+                        if len(name.split("[")) > 1:
+                            name = name.split("[")[0].strip()
                         else:
                             name = name
 
-                        # if len(name.split("[")) > 1:
-                            # name = name.split("[")[0].strip()
-                        # import re
-                        # name = name.strip()
-                        # if (name.startswith("[")):
-                            # name = re.sub('\[.*?\]', '', name, 1).strip()
-                        # print("name=%s" % name)
-
-                        if description != '':
-                            timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
-                            titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
-                            print('=============titlematch: ', titlematch)
-                            descriptionmatch = re.findall(r'\n(?s)\((.*?)\)', description)
-                            if timematch:
-                                if len(timematch) > 0:
-                                    epgnowtime = timematch[0].strip()
-                                if len(timematch) > 1:
-                                    epgnexttime = timematch[1].strip()
-                            if titlematch:
-                                if len(titlematch) > 0:
-                                    nameepg = titlematch[0].strip()
-                                if len(titlematch) > 1:
-                                    epgnexttitle = titlematch[1].strip()
-                            if descriptionmatch:
-                                if len(descriptionmatch) > 0:
-                                    epgnowdescription = descriptionmatch[0].strip()
-                                if len(descriptionmatch) > 1:
-                                    epgnextdescription = descriptionmatch[1].strip()
+                        # if description != '':
+                        timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
+                        titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
+                        print('=============titlematch: ', titlematch)
+                        descriptionmatch = re.findall(r'\n(?s)\((.*?)\)', description)
+                        if timematch:
+                            if len(timematch) > 0:
+                                epgnowtime = timematch[0].strip()
+                            if len(timematch) > 1:
+                                epgnexttime = timematch[1].strip()
+                        if titlematch:
+                            if len(titlematch) > 0:
+                                nameepg = titlematch[0].strip()
+                            if len(titlematch) > 1:
+                                epgnexttitle = titlematch[1].strip()
+                        if descriptionmatch:
+                            if len(descriptionmatch) > 0:
+                                epgnowdescription = descriptionmatch[0].strip()
+                            if len(descriptionmatch) > 1:
+                                epgnextdescription = descriptionmatch[1].strip()
 
                         description1 = epgnowtime + ' ' + name + '\n' + epgnowdescription
                         description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                         description = html_conv.html_unescape(description1)
                         description2 = html_conv.html_unescape(description2)
-                        # chan_counter = chan_counter + 1
-
-                    elif isStream and ("/movie/" or "/series/") in stream_url:
-                    # if isStream and ("get_vod" or "get_series") in stream_url:
+                        chan_counter += 1
+                    # if isStream and ("get_vod" or "get_series") in str(stream_url):
+                    # elif isStream and ("/movie/" or "/series/") in str(stream_url):
+                    elif isStream and ("/movie/") in str(stream_url):
                         stream_live = False
                         vodItems = {}
                         name = str(name)
@@ -1035,25 +1046,25 @@ class iptv_streamse():
                         else:
                             vodGenre = str('GENRE: -- --')
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
-
                         description = html_conv.html_unescape(description3)
 
-                        # chan_counter = chan_counter + 1
+                        chan_counter += 1
                     chan_tulpe = (
                         chan_counter,
-                        str(name),
-                        str(description),
+                        name,
+                        description,
                         piconname,
                         stream_url,
                         playlist_url,
-                        str(category_id),
+                        category_id,
                         desc_image,
                         str(description2),
-                        nameepg)
+                        str(nameepg),
+                        )
                     iptv_list_tmp.append(chan_tulpe)
                     btnsearch = next_request
         except Exception as e:
-            print('checkRedirect get failed: ', str(e))
+            print('------------- get_list failed: ', e)
         if len(iptv_list_tmp):
             self.iptv_list = iptv_list_tmp
             iptv_list_tmp = self.iptv_list
@@ -1064,24 +1075,27 @@ class iptv_streamse():
     def _request(self, url):
         if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
-
+            res = None
             TYPE_PLAYER = '/enigma2.php'
             # TYPE_PLAYER= '/player_api.php'
 
-            url1 = url.strip(" \t\n\r")
+            url = url.strip(" \t\n\r")
             if next_request == 1:
-                if not url1.find(":"):
+                if not url.find(":"):
                     self.port = str(cfg.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
-                    url1 = url1.replace(self.xtream_e2portal_url, full_url)
-                url1 = str(url1)
+                    url = url.replace(self.xtream_e2portal_url, full_url)
+                url = str(url)
                 print('next_request 1: ', next_request)
             else:
-                url1 = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
-                print('my url final 1', url1)
-                next_request = 2
-                print('next_request 2 : ', next_request)
-            urlinfo = Utils.checkRedirect(url1)
+                url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
+                print('my url final 1', url)
+                # indecise 2 or 3
+                # next_request = 2
+                next_request = 3
+                print('next_request 3 : ', next_request)
+
+            urlinfo = Utils.checkRedirect(url)
             print('urlinfo 1 ', urlinfo)
             try:
                 headers = {'Accept': 'application/json'}
@@ -1091,9 +1105,16 @@ class iptv_streamse():
                 else:
                     response = urlopen(request, timeout=ntimeout).read().decode('utf-8')
                 res = fromstring(response)
-                response.close()
+                # response.close()
             except Exception as e:
-                print('error requests ------------------------------------- ', str(e))
+                print('error requests ------------------------------------- ', e)
+            return res
+        else:
+            res = None
+            return res
+
+
+'''
                 # url1 = url.strip(" \t\n\r")
                 # url = url1 + TYPE_PLAYER2 + "?" + "username=" + self.username + "&password=" + self.password
 
@@ -1115,20 +1136,15 @@ class iptv_streamse():
                         # if "auth" in response["user_info"]:
                             # if response["user_info"]["auth"] == 1:
 
-                req = Utils.checkGZIP(url1)
+                # req = Utils.checkGZIP(url1)
                 # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                 # response = urlopen(req, None, timeout=15)
                 # if PY3:
                     # res = response.read().decode('utf-8')
                 # else:
                     # res = response.read()
-                res = fromstring(req)
-                print('ressssssss ', res)
                 # response.close()
-            return res
-        else:
-            res = None
-            return res
+'''
 
 
 class xc_Main(Screen):
@@ -1199,7 +1215,7 @@ class xc_Main(Screen):
         self["playlist"].setText(self.temp_playname)
         self.go()
         self.picload = ePicLoad()
-        self.Scale = AVSwitch().getFramebufferScale()
+        self.scale = AVSwitch().getFramebufferScale()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1363,6 +1379,7 @@ class xc_Main(Screen):
             self['poster'].instance.setPixmapFromFile(piclogo)
             selected_channel = self.channel_list[self.index]
             if selected_channel[2] is not None:
+                '''
                 # if stream_live is True:
                     # description = selected_channel[2]
                     # description2 = selected_channel[8]
@@ -1379,22 +1396,23 @@ class xc_Main(Screen):
                     # self["description"].setText(description)
                     # print('------------------------------------------ else desc', description)
 
-                pixim = str(selected_channel[7])
-                print('self pixim   ', str(pixim))
-                # if pixim and pixim != "" or pixim != "n/A" or pixim != None or pixim != "null" :
-                if pixim and pixim != "n/A":
-                    parsed = urlparse(pixim)
-                    domain = parsed.hostname
-                    scheme = parsed.scheme
-                    if PY3:
-                        pixim = pixim.encode()
-                    if scheme == "https" and sslverify:
-                        sniFactory = SNIFactory(domain)
+                # pixim = str(selected_channel[7])
+                # print('self pixim   ', str(pixim))
+                # # if pixim and pixim != "" or pixim != "n/A" or pixim != None or pixim != "null" :
+                # if pixim and pixim != "n/A":
+                    # parsed = urlparse(pixim)
+                    # domain = parsed.hostname
+                    # scheme = parsed.scheme
+                    # if PY3:
+                        # pixim = pixim.encode()
+                    # if scheme == "https" and sslverify:
+                        # sniFactory = SNIFactory(domain)
 
-                        print('uurrll: ', pixim)
-                        downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-                    else:
-                        downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        # print('uurrll: ', pixim)
+                        # downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                    # else:
+                        # downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                '''
                 if stream_live is True:
                     description = selected_channel[2]
                     description2 = selected_channel[8]
@@ -1410,6 +1428,21 @@ class xc_Main(Screen):
                     description = str(selected_channel[2])
                     self["description"].setText(description)
                     print('------------------------------------------ else desc', description)
+                pixim = six.ensure_binary(selected_channel[7])
+                print('self pixim   ', str(pixim))
+                if (pixim != "" or pixim != "n/A" or pixim is not None or pixim != "null"):
+                    parsed = urlparse(pixim)
+                    domain = parsed.hostname
+                    scheme = parsed.scheme
+                    if PY3:
+                        pixim = pixim.encode()
+                    if scheme == "https" and sslverify:
+                        sniFactory = SNIFactory(domain)
+
+                        print('uurrll: ', pixim)
+                        downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                    else:
+                        downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
         except Exception as ex:
             print(str(ex))
 
@@ -1447,10 +1480,13 @@ class xc_Main(Screen):
                     print('no cover.. error')
                 return
 
-    def downloadError(self, data=None):
-        if self["poster"].instance:
-            self["poster"].instance.setPixmapFromFile(piclogo)
-        return
+    def downloadError(self):
+        try:
+            if self["poster"].instance:
+                self["poster"].instance.setPixmapFromFile(piclogo)
+            return
+        except Exception as e:
+            print('error poster', e)
 
     def update_channellist(self):
         if not len(iptv_list_tmp):
@@ -1459,8 +1495,8 @@ class xc_Main(Screen):
         if re_search is False:
             self.channel_list = iptv_list_tmp
 
-        if 'season' or 'series' in stream_url:
-            if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in stream_url:
+        if 'season' or 'series' in str(stream_url):
+            if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in str(stream_url):
                 global series
                 series = True
                 streamfile = '/tmp/streamfile.txt'
@@ -1482,7 +1518,9 @@ class xc_Main(Screen):
                 self["feedlist"].moveToIndex(0)
             else:
                 self.channel_list = STREAMS.iptv_list
-            self.mlist.moveToIndex(self.index)
+            self.mlist.moveToIndex(0)
+
+            # self.mlist.moveToIndex(self.index)
             self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.selectionEnabled(1)
             self.button_updater()
@@ -1517,29 +1555,31 @@ class xc_Main(Screen):
         re_search = False
         self.filter_search = []
 
-# try for back to the list
-# # def load_from_tmp(self):
-# # STREAMS.iptv_list = STREAMS.iptv_list_tmp
-# # STREAMS.list_index = STREAMS.list_index_tmp
-# # STREAMS.playlistname = STREAMS.playlistname_tmp
-# # STREAMS.url = STREAMS.url_tmp
-# # STREAMS.next_page_url = STREAMS.next_page_url_tmp
-# # STREAMS.next_page_text = STREAMS.next_page_text_tmp
-# # STREAMS.prev_page_url = STREAMS.prev_page_url_tmp
-# # STREAMS.prev_page_text = STREAMS.prev_page_text_tmp
-# # self.index = STREAMS.list_index
+        '''
+        # try for back to the list
+        # def load_from_tmp(self):
+        # STREAMS.iptv_list = STREAMS.iptv_list_tmp
+        # STREAMS.list_index = STREAMS.list_index_tmp
+        # STREAMS.playlistname = STREAMS.playlistname_tmp
+        # STREAMS.url = STREAMS.url_tmp
+        # STREAMS.next_page_url = STREAMS.next_page_url_tmp
+        # STREAMS.next_page_text = STREAMS.next_page_text_tmp
+        # STREAMS.prev_page_url = STREAMS.prev_page_url_tmp
+        # STREAMS.prev_page_text = STREAMS.prev_page_text_tmp
+        # self.index = STREAMS.list_index
+        '''
 
     def mmark(self):
         global iptv_list_tmp
         Utils.del_jpg()
         copy_poster()
         self.temp_index = 0
+        self.list_index = 0
         self.temp_channel_list = None
         # self.temp_playlistname = None
         self.url_tmp = None
         self.video_back = False
         STREAMS.video_status = False
-        self.list_index = 0
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
         STREAMS.list_index = self.index2
@@ -1553,6 +1593,7 @@ class xc_Main(Screen):
 
     def exitY(self):
         global btnsearch
+        ''''
         # print('btnsearch = ',btnsearch)
         # print('next_request = ',next_request)
         # print('re_search = ',re_search)
@@ -1562,26 +1603,32 @@ class xc_Main(Screen):
         # if STREAMS.video_status and self.video_back == False:
             # self.video_back = True
             # self.back_to_video()
+        '''
+        try:
+            if next_request == 1 and btnsearch == 1:
+                btnsearch = 0
+                self["key_blue"].hide()
+                self["key_green"].hide()
+                self["key_yellow"].hide()
+                self.mmark()
 
-        if next_request == 1 and btnsearch == 1:
-            btnsearch = 0
-            self["key_blue"].hide()
-            self["key_green"].hide()
-            self["key_yellow"].hide()
-            self.mmark()
-        elif isStream and "/live/" in stream_url and btnsearch == 1:
-            btnsearch = 0
-            self["key_blue"].hide()
-            self["key_green"].hide()
-            self["key_yellow"].hide()
-            self.mmark()
-        elif isStream and "/movie/" in stream_url and btnsearch == 1:
-            btnsearch = 0
-            self["key_blue"].hide()
-            self["key_green"].hide()
-            self["key_yellow"].hide()
-            self.mmark()
-        else:
+            # elif isStream and "/live/" in str(stream_url) and btnsearch == 1:
+                # btnsearch = 0
+                # self["key_blue"].hide()
+                # self["key_green"].hide()
+                # self["key_yellow"].hide()
+                # self.mmark()
+
+            elif isStream and "/movie/" in str(stream_url) and btnsearch == 1:
+                btnsearch = 0
+                self["key_blue"].hide()
+                self["key_green"].hide()
+                self["key_yellow"].hide()
+                self.mmark()
+            else:
+                self.close()
+        except Exception as e:
+            print('error on exit: ', e)
             self.close()
 
     def showMediaPlayer(self):
@@ -1686,7 +1733,7 @@ class xc_Main(Screen):
                                 timezone = (y["server_info"]["timezone"])
                                 self["timezone"].setText("Timezone: " + str(timezone))
                             except Exception as e:
-                                print('error checkinf : ', str(e))
+                                print('error checkinf : ', e)
         except Exception as ex:
             print('checkinf: ', str(ex))
 
@@ -1695,11 +1742,11 @@ class xc_Main(Screen):
         titleserie = str(STREAMS.playlistname)
         if self.temp_index > -1:
             self.index = self.temp_index
-        # if isStream and "/live/" in stream_url:
-        if "/live/" in stream_url:
+        # if isStream and "/live/" in str(stream_url):
+        if "/live/" in str(stream_url):
             self.mbox = self.session.open(MessageBox, _("This is Category or Live Player is active!!!"), MessageBox.TYPE_INFO, timeout=5)
-        # elif isStream and "/movie/" in stream_url:
-        elif "/movie/" in stream_url:
+        # elif isStream and "/movie/" in str(stream_url):
+        elif "/movie/" in str(stream_url):
             self.mbox = self.session.open(MessageBox, _("But Only Series Episodes Allowed!!!\nThis Stream is Movie"), MessageBox.TYPE_INFO, timeout=5)
         elif series is True and btnsearch == 1:
             self.streamfile = '/tmp/streamfile.txt'
@@ -1729,7 +1776,6 @@ class xc_Main(Screen):
                     f.close()
                     for name, url in match:
                         if url.startswith('http'):
-                            ext = '.mp4'
                             ext = str(splitext(url)[-1])
                             if ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8':
                                 ext = '.mp4'
@@ -1778,9 +1824,6 @@ class xc_Main(Screen):
             pth = urlparse(self.vod_url).path
             ext = splitext(pth)[-1]
             if ext != '.ts':
-                ext = '.mp4'
-                pth = urlparse(self.vod_url).path
-                ext = splitext(pth)[-1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
                 filename = Utils.cleantitle(self.title)
@@ -1816,10 +1859,10 @@ class xc_Main(Screen):
                             with open(self.file_down, 'wb') as f:
                                 f.write(r.content)
                     except Exception as e:
-                        print('error requests: ', str(e))
+                        print('error requests: ', e)
                         self.downloading = False
                         pmovies = False
-                else:
+                else:  # direct
                     try:
                         self.timerDownload.callback.append(self.downloady)
                     except:
@@ -1848,8 +1891,8 @@ class xc_Main(Screen):
         self.downloading = False
         pmovies = False
         try:
-            Utils.OnclearMem()
             JobManager.AddJob(downloadJob(self, cmd, self.file_down, self.title))
+            Utils.OnclearMem()
         except Exception as e:
             print(e)
         self.createMetaFile(self.filename, self.filename)
@@ -2152,11 +2195,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.pixim = str(self.channelx[7])
             if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
                 if self.pixim.find('http') == -1:
-                    self.downloadError(piclogo)
+                    self.downloadError()
                     return
                 else:
-                    if PY3:
-                        self.pixim = six.ensure_binary(self.pixim)
+                    # if PY3:
+                    self.pixim = six.ensure_binary(self.pixim)
                     if self.pixim.startswith(b"https") and sslverify:
                         parsed_uri = urlparse(self.pixim)
                         domain = parsed_uri.hostname
@@ -2166,11 +2209,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     else:
                         downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
             else:
-                self.downloadError(piclogo)
+                self.downloadError()
                 print("update COVER")
         except Exception as ex:
             print(str(ex))
-            self.downloadError(piclogo)
+            self.downloadError()
             print("update COVER")
 
     def decodeImage(self, poster_path):
@@ -2218,9 +2261,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             except:
                 pass
 
-    def downloadError(self, data=None):
-        if self["poster"].instance:
-            self["poster"].instance.setPixmapFromFile(piclogo)
+    def downloadError(self):
+        try:
+            if self["poster"].instance:
+                self["poster"].instance.setPixmapFromFile(piclogo)
+            return
+        except Exception as e:
+            print('error poster', e)
 
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
@@ -2351,7 +2398,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     if "https" in str(self.vod_url):
                         cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), filename)
                     self.timeshift_url = Path_Movies + filename
-                    JobManager.AddJob(downloadJob(self, cmd, Path_Movies + filename, self.titlex))
+                    JobManager.AddJob(downloadJob(self, cmd, self.timeshift_url, self.titlex))
                     self.createMetaFile(filename, filename)
                     self.LastJobView()
                     self.timeshift_title = '[REC] ' + self.titlex
@@ -2363,7 +2410,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def createMetaFile(self, filename, filmtitle):
         try:
-            serviceref = eServiceReference(4097, 0, Path_Movies + filename)
+            serviceref = eServiceReference(4097, 0, self.timeshift_url)
             with open('%s/%s.meta' % (Path_Movies, filename), 'w') as f:
                 f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), filmtitle, "", time.time()))
         except Exception as ex:
@@ -3094,11 +3141,11 @@ class OpenServer(Screen):
                                 print(str(message))
                                 self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
                             except Exception as e:
-                                message = ("Error %s") % (str(e))
+                                message = ("Error %s") % (e)
                                 print(str(message))
                                 self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
-            message = ("Error %s") % (str(e))
+            message = ("Error %s") % (e)
             print(str(message))
             self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
 
@@ -3273,13 +3320,13 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 text_clear = str(self.descr)
             self["programm"].setText(text_clear)
             try:
-                if self.cover != "" or self.cover != "n/A" or self.cover is not None:
+                if (self.cover != "" or self.cover != "n/A" or self.cover is not None or self.cover != "null"):
                     if self.cover.find("http") == -1:
-                        self.downloadError(piclogo)
+                        self.downloadError()
                         return
                     else:
-                        if PY3:
-                            self.cover = six.ensure_binary(self.cover)
+                        # if PY3:
+                        self.cover = six.ensure_binary(self.cover)
                         if self.cover.startswith(b"https") and sslverify:
                             parsed_uri = urlparse(self.cover)
                             domain = parsed_uri.hostname
@@ -3289,7 +3336,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                         else:
                             downloadPage(self.cover, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                 else:
-                    self.downloadError(piclogo)
+                    self.downloadError()
                     print("update COVER LIVE")
 
             except Exception as ex:
@@ -3402,9 +3449,13 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             except:
                 pass
 
-    def downloadError(self, data=None):
-        if self["poster"].instance:
-            self["poster"].instance.setPixmapFromFile(piclogo)
+    def downloadError(self):
+        try:
+            if self["poster"].instance:
+                self["poster"].instance.setPixmapFromFile(piclogo)
+            return
+        except Exception as e:
+            print('error poster', e)
 
 
 class xc_Play(Screen):
@@ -3631,7 +3682,6 @@ class xc_M3uPlay(Screen):
         with open(skin, 'r') as f:
             self.skin = f.read()
         print('self.skin: ', skin)
-        f.close()
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.name = name
@@ -3767,7 +3817,6 @@ class xc_M3uPlay(Screen):
         if result:
             if self.downloading is True:
                 pth = urlparse(self.urlm3u).path
-                ext = '.mp4'
                 ext = splitext(pth)[1]
                 if (ext != '.mp4' or ext != '.mkv' or ext != '.avi' or ext != '.flv' or ext != '.m3u8'):
                     ext = '.mp4'
@@ -4407,10 +4456,13 @@ def main(session, **kwargs):
 _session = None
 autoStartTimer = None
 _firstStart = True
+
+'''
 # try:
     # from . import Update
 # except ImportError:
     # print('error import update')
+'''
 
 
 class AutoStartTimer:
@@ -4436,7 +4488,7 @@ class AutoStartTimer:
             Update.upd_done()
             _firstStart = False
         except Exception as e:
-            print('error Fxy', str(e))
+            print('error Fxy', e)
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value:
