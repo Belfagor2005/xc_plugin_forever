@@ -442,7 +442,7 @@ def checkStr(text, encoding='utf8'):
             text = text.encode(encoding)
     return text
 
-
+# only py3
 def checkRedirect(url):
     # print("*** check redirect ***")
     import requests

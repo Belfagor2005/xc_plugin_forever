@@ -20,9 +20,9 @@
 	<widget position="1010,230" size="400,50" name="max_connect" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1010,280" size="400,50" name="active_cons" font="Regular;28" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1010,330" size="400,50" name="server_protocol" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
-    <widget position="1010,465" size="400,50" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+    <widget position="1010,465" size="400,80" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1010,380" size="400,85" name="created_at" font="Regular;32" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
-	<widget position="1108,520" size="300,40" name="state" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1149,570" size="266,40" name="state" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1284,1091" size="340,40" name="key_text" font="Regular;32" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
 	<ePixmap position="1010,565" size="112,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
