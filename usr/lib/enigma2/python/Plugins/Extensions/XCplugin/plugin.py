@@ -919,6 +919,7 @@ class iptv_streamse():
                     chan_counter += 1
                     title64 = ''
                     name = ''
+                    ts_stream = ''
                     description64 = ''
                     description = ''
                     category_id = ''
@@ -1007,7 +1008,7 @@ class iptv_streamse():
                             if len(name.split("[")) > 1:
                                 name = name.split("[")[0].strip()
                         elif len(name.split("[")) > 1:
-                            name = name.split("[")[1].strip()
+                            name = name.split("[")[0].strip()
                         else:
                             name = str(name)
 
@@ -1036,7 +1037,6 @@ class iptv_streamse():
                         description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                         description = html_conv.html_unescape(description1)
                         description2 = html_conv.html_unescape(description2)
-                        # chan_counter += 1
                     # if isStream and ("get_vod" or "get_series") in str(stream_url):
                     # elif isStream and ("/movie/" or "/series/") in str(stream_url):
                     elif isStream and ("/movie/") in str(stream_url):
@@ -1075,7 +1075,6 @@ class iptv_streamse():
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
 
-                        # chan_counter += 1
                     chan_tulpe = (
                         chan_counter,
                         name,
@@ -1198,13 +1197,14 @@ class iptv_streamse():
                     self.port = str(cfg.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
+                    print('my url final next_request 1', url)
                 url = str(url)
                 print('next_request 1: ', next_request)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
                 print('my url final 1', url)
-                # next_request = 3
-                next_request = 2
+                next_request = 3
+                # next_request = 2
                 print('next_request 3 : ', next_request)
             urlinfo = Utils.checkRedirect(url)
             # urlinfo = Utils.checkStr(url)
@@ -1226,6 +1226,7 @@ class iptv_streamse():
                     res = response.read()
                 print("Here in client1 link =", res)
                 res = fromstring(res)
+                response.close()                
                 return res
             except Exception as e:
                 print('request failed: ', e)
@@ -1566,13 +1567,14 @@ class xc_Main(Screen):
                     print('no cover.. error')
                 return
 
-    def downloadError(self):
+    def downloadError(self, error=""):
         try:
             if self["poster"].instance:
                 self["poster"].instance.setPixmapFromFile(piclogo)
-            return
+            # return
+            print('error download: ', error)
         except Exception as e:
-            print('error poster', e)
+            print('error poster', e
 
     def update_channellist(self):
         if not len(iptv_list_tmp):
@@ -2340,13 +2342,14 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             except:
                 pass
 
-    def downloadError(self):
+    def downloadError(self, error=""):
         try:
             if self["poster"].instance:
                 self["poster"].instance.setPixmapFromFile(piclogo)
-            return
+            # return
+            print('error download: ', error)
         except Exception as e:
-            print('error poster', e)
+            print('error poster', e
 
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
@@ -3526,13 +3529,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
             except:
                 pass
 
-    def downloadError(self):
+    def downloadError(self, error=""):
         try:
             if self["poster"].instance:
                 self["poster"].instance.setPixmapFromFile(piclogo)
-            return
+            # return
+            print('error download: ', error)
         except Exception as e:
-            print('error poster', e)
+            print('error poster', e
 
 
 class xc_Play(Screen):
