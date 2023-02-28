@@ -739,15 +739,18 @@ class xc_config(Screen, ConfigListScreen):
         self.close()
 
     def xml_plugin(self):
-        if str(cfg.user.value) != 'Enter_Username':
-            filesave = "xc_" + str(cfg.user.value) + ".xml"
-            filesave = filesave.replace(":", "_")
-            filesave = filesave.lower()
-            port = str(cfg.port.value)
-            with open(Path_XML + filesave, "w") as f:
-                f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(cfg.user.value) + '</username>\n' + '<password>' + str(cfg.passw.value) + '</password>\n' + '</items>'))
-                f.close()
-            return
+        try:
+            if str(cfg.user.value) != 'Enter_Username':
+                filesave = "xc_" + str(cfg.user.value) + ".xml"
+                filesave = filesave.replace(":", "_")
+                filesave = filesave.lower()
+                port = str(cfg.port.value)
+                with open(Path_XML + filesave, "w") as f:
+                    f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(cfg.user.value) + '</username>\n' + '<password>' + str(cfg.passw.value) + '</password>\n' + '</items>'))
+                    f.close()
+                return
+        except Exception as ex:
+            print("xcConfig xml_plugin failed: ", ex)
 
     def KeyText(self):
         sel = self["config"].getCurrent()
