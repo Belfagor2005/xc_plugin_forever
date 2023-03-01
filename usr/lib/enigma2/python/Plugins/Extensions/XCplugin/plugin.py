@@ -179,7 +179,7 @@ cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
+cfg.timeout = ConfigSelectionNumber(default=5, min=5, max=80, stepwidth=5)
 
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.badcar = ConfigEnableDisable(default=False)
@@ -238,7 +238,6 @@ def copy_poster():
 
 
 copy_poster()
-# ntimeout = int(cfg.timeout.value)
 ntimeout = float(cfg.timeout.value)
 socket.setdefaulttimeout(10)
 eserv = int(cfg.services.value)
@@ -718,8 +717,9 @@ class xc_config(Screen, ConfigListScreen):
     def cfgok(self):
         if cfg.picons.value:  # and cfg.pthpicon.value == "/usr/share/enigma2/picon/":
             if not file_exists(cfg.picons.value):
-                os.system("mkdir %s" % cfg.picons.value)
-
+                # os.system("mkdir %s" % cfg.picons.value)
+                self.mbox = self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.picons.value), MessageBox.TYPE_INFO, timeout=4)
+                return
         if cfg.pthxmlfile.value:
             if not file_exists(cfg.pthxmlfile.value):
                 self.mbox = self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.pthxmlfile.value), MessageBox.TYPE_INFO, timeout=4)
@@ -1020,14 +1020,7 @@ class iptv_streamse():
                     except:
 
                         pass
-                    '''
-                    stream_url = channel.findtext('stream_url')
-                    piconname = channel.findtext("logo")
-                    category_id = channel.findtext('category_id')
-                    ts_stream = channel.findtext("ts_stream")
-                    playlist_url = channel.findtext('playlist_url')
-                    desc_image = channel.findtext('desc_image')
-                    '''
+
                     stream_url = Utils.checkStr(channel.findtext('stream_url'))
                     piconname = Utils.checkStr(channel.findtext("logo"))
                     category_id = Utils.checkStr(channel.findtext('category_id'))
@@ -1035,11 +1028,11 @@ class iptv_streamse():
                     playlist_url = Utils.checkStr(channel.findtext('playlist_url'))
                     desc_image = Utils.checkStr(channel.findtext('desc_image'))
 
-                    if desc_image and desc_image != "n/A" and desc_image != "":
-                        if desc_image.startswith("https"):
-                            desc_image = desc_image.replace("https", "http")
-                    if PY3 == 3:
-                        desc_image = desc_image.encode()
+                    # if desc_image and desc_image != "n/A" and desc_image != "":
+                        # if desc_image.startswith("https"):
+                            # desc_image = desc_image.replace("https", "http")
+                    # if PY3 == 3:
+                        # desc_image = desc_image.encode()
                     # epgnowtitle = ''
                     # #####################
 
@@ -1177,16 +1170,12 @@ class iptv_streamse():
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
                 url = url
-                print('next_request 1: ', next_request)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
-                print('my url final 1', url)
-                next_request = 2
-                print('next_request 2 : ', next_request)
-
+            print('next_request 2 : ', next_request)
+            print('my url final 2 ', url)
             # urlinfo = Utils.checkRedirect(url)
             # urlinfo= Utils.checkStr(url)
-            print('url 1 ', url)
             urlinfo = url
             try:
                 req = Request(urlinfo)
@@ -1194,15 +1183,14 @@ class iptv_streamse():
                 response = urlopen(req, timeout=ntimeout)
                 if PY3:
                     res = response.read().decode('utf-8')
-                    print('resssssssssssssssssssssssssssssssssss', res)
                 else:
                     res = response.read()
-                print("Here in client1 link =", res)
+                print("Here in client1 _request link =", res)
                 res = fromstring(res)
                 response.close()
                 return res
             except Exception as e:
-                print('error requests ------------------------------------- ', e)
+                print('error _request ---------- ', e)
         else:
             res = None
             return res
@@ -1300,7 +1288,7 @@ class xc_Main(Screen):
         self.onShown.append(self.show_all)
 
     def ok(self):
-        if not len(iptv_list_tmp):
+        if len(iptv_list_tmp) < 0:
             self.session.open(MessageBox, _("No data or playlist not compatible with XCplugin."), type=MessageBox.TYPE_WARNING, timeout=5)
             return
         self.index = self.mlist.getSelectionIndex()

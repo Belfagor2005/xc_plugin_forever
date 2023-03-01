@@ -84,21 +84,13 @@ class xcRunningText(Renderer):
         self.scroll_label = eLabel(instance)
         self.mTimer = eTimer()
 
-        # try:
-            # from boxbranding import getImageDistro, getImageVersion, getOEVersion
-            # self.mTimer.callback.append(self.movingLoop)
-        # except:
-            # try:
-                # if xowibranding.getMachineBrand() == "Dream Multimedia" or xowibranding.getOEVersion() == "OE 2.2":
-                    # self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
-            # except:
-                # pass
-
         try:
             self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
         except:
-            self.mTimer.callback.append(self.movingLoop)
-        # self.mTimer.start(100, True)
+            try:
+                self.mTimer.callback.append(self.movingLoop)
+            except:
+                pass
 
     def preWidgetRemove(self, instance):
         self.mTimer.stop()
@@ -256,146 +248,149 @@ class xcRunningText(Renderer):
         self.scroll_label.move(ePoint(X-self.soffset[0], Y-self.soffset[1]))
 
     def calcMoving(self):
-        self.X = self.Y = 0
-        if not (self.txtflags & RT_WRAP):
-            self.txtext = self.txtext.replace("\xe0\x8a", " ").replace(chr(0x8A), " ").replace("\n", " ").replace("\r", " ")
+        try:
+            self.X = self.Y = 0
+            if not (self.txtflags & RT_WRAP):
+                self.txtext = self.txtext.replace("\xe0\x8a", " ").replace(chr(0x8A), " ").replace("\n", " ").replace("\r", " ")
 
-        self.scroll_label.setText(self.txtext)
+            self.scroll_label.setText(self.txtext)
 
-        if self.txtext == "" or \
-           self.type == NONE or \
-           self.scroll_label is None:
-            return False
-
-        if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
-            self.scroll_label.resize(eSize(self.txfont.pointSize * len(self.txtext), self.H))  # stupid workaround, have no better idea right now...
-
-        text_size = self.scroll_label.calculateSize()
-        text_width = text_size.width()
-        text_height = text_size.height()
-
-        if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
-            text_width += 10
-
-        self.mStop = None
-        # text height correction if necessary:
-        if self.lineHeight and self.direction in (TOP, BOTTOM):
-            text_height = max(text_height, (text_height + self.lineHeight - 1) // self.lineHeight * self.lineHeight)
-
-
-#       self.type =     0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
-#       self.direction =    0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
-#       self.halign =       0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
-
-        if self.direction in (LEFT, RIGHT):
-            if not self.mAlways and text_width <= self.W:
+            if self.txtext == "" or \
+               self.type == NONE or \
+               self.scroll_label is None:
                 return False
-            if self.type == RUNNING:
-                self.A = self.X - text_width - self.soffset[0] - abs(self.mStep)
-                self.B = self.W - self.soffset[0] + abs(self.mStep)
-                if self.direction == LEFT:
-                    self.mStep = -abs(self.mStep)
-                    self.mStop = self.X
-                    self.P = self.B
-                else:
-                    self.mStep = abs(self.mStep)
-                    self.mStop = self.B - text_width + self.soffset[0] - self.mStep
-                    self.P = self.A
-                if self.mStartPoint is not None:
-                    if self.direction == LEFT:
-                        self.mStop = self.P = max(self.A, min(self.W, self.mStartPoint))
-                    else:
-                        self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_width + self.soffset[0]))
-            elif self.type == SWIMMING:
-                if text_width < self.W:
-                    self.A = self.X + 1         # incomprehensible indent '+ 1' ???
-                    self.B = self.W - text_width - 1    # incomprehensible indent '- 1' ???
-                    if self.halign == LEFT:
-                        self.P = self.A
-                        self.mStep = abs(self.mStep)
-                    elif self.halign == RIGHT:
-                        self.P = self.B
-                        self.mStep = -abs(self.mStep)
-                    else:  # if self.halign in (CENTER, BLOCK):
-                        self.P = int(self.B // 2)
-                        self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
-                else:
-                    if text_width == self.W:
-                        text_width += max(2, text_width//20)
-                    self.A = self.W - text_width
-                    self.B = self.X
-                    if self.halign == LEFT:
-                        self.P = self.B
-                        self.mStep = -abs(self.mStep)
-                    elif self.halign == RIGHT:
-                        self.P = self.A
-                        self.mStep = abs(self.mStep)
-                    else:  # if self.halign in (CENTER, BLOCK):
-                        self.P = int(self.A // 2)
-                        self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
-            else:
-                return False
-        elif self.direction in (TOP, BOTTOM):
-            if not self.mAlways and text_height <= self.H:
-                return False
-            if self.type == RUNNING:
-                self.A = self.Y - text_height - self.soffset[1] - abs(self.mStep)
-                self.B = self.H - self.soffset[1] + abs(self.mStep)
-                if self.direction == TOP:
-                    self.mStep = -abs(self.mStep)
-                    self.mStop = self.Y
-                    self.P = self.B
-                else:
-                    self.mStep = abs(self.mStep)
-                    self.mStop = self.B - text_height + self.soffset[1] - self.mStep
-                    self.P = self.A
-                if self.mStartPoint is not None:
-                    if self.direction == TOP:
-                        self.mStop = self.P = max(self.A, min(self.H, self.mStartPoint))
-                    else:
-                        self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_height + self.soffset[1]))
-            elif self.type == SWIMMING:
-                if text_height < self.H:
-                    self.A = self.Y
-                    self.B = self.H - text_height
-                    if self.direction == TOP:
-                        self.P = self.B
-                        self.mStep = -abs(self.mStep)
-                    else:
-                        self.P = self.A
-                        self.mStep = abs(self.mStep)
-                else:
-                    if text_height == self.H:
-                        text_height += max(2, text_height//40)
-                    self.A = self.H - text_height
-                    self.B = self.Y
-                    if self.direction == TOP:
-                        self.P = self.B
-                        self.mStep = -abs(self.mStep)
-                        self.mStop = self.B
-                    else:
-                        self.P = self.A
-                        self.mStep = abs(self.mStep)
-                        self.mStop = self.A
-            else:
-                return False
-        else:
-            return False
 
-        self.xW = max(self.W, text_width)
-        self.xH = max(self.H, text_height)
+            if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
+                self.scroll_label.resize(eSize(self.txfont.pointSize * len(self.txtext), self.H))  # stupid workaround, have no better idea right now...
 
-        self.scroll_label.resize(eSize(self.xW, self.xH))
+            text_size = self.scroll_label.calculateSize()
+            text_width = text_size.width()
+            text_height = text_size.height()
 
-        if self.mStartDelay:
+            if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
+                text_width += 10
+
+            self.mStop = None
+            # text height correction if necessary:
+            if self.lineHeight and self.direction in (TOP, BOTTOM):
+                text_height = max(text_height, (text_height + self.lineHeight - 1) / self.lineHeight * self.lineHeight)
+    #       self.type =     0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
+    #       self.direction =    0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
+    #       self.halign =       0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
+
             if self.direction in (LEFT, RIGHT):
-                self.moveLabel(self.P, self.Y)
-            else:  # if self.direction in (TOP,BOTTOM):
-                self.moveLabel(self.X, self.P)
+                if not self.mAlways and text_width <= self.W:
+                    return False
+                if self.type == RUNNING:
+                    self.A = self.X - text_width - self.soffset[0] - abs(self.mStep)
+                    self.B = self.W - self.soffset[0] + abs(self.mStep)
+                    if self.direction == LEFT:
+                        self.mStep = -abs(self.mStep)
+                        self.mStop = self.X
+                        self.P = self.B
+                    else:
+                        self.mStep = abs(self.mStep)
+                        self.mStop = self.B - text_width + self.soffset[0] - self.mStep
+                        self.P = self.A
+                    if self.mStartPoint is not None:
+                        if self.direction == LEFT:
+                            self.mStop = self.P = max(self.A, min(self.W, self.mStartPoint))
+                        else:
+                            self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_width + self.soffset[0]))
+                elif self.type == SWIMMING:
+                    if text_width < self.W:
+                        self.A = self.X + 1         # incomprehensible indent '+ 1' ???
+                        self.B = self.W - text_width - 1    # incomprehensible indent '- 1' ???
+                        if self.halign == LEFT:
+                            self.P = self.A
+                            self.mStep = abs(self.mStep)
+                        elif self.halign == RIGHT:
+                            self.P = self.B
+                            self.mStep = -abs(self.mStep)
+                        else:  # if self.halign in (CENTER, BLOCK):
+                            self.P = int(self.B / 2)
+                            self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
+                    else:
+                        if text_width == self.W:
+                            text_width += max(2, text_width/20)
+                        self.A = self.W - text_width
+                        self.B = self.X
+                        if self.halign == LEFT:
+                            self.P = self.B
+                            self.mStep = -abs(self.mStep)
+                        elif self.halign == RIGHT:
+                            self.P = self.A
+                            self.mStep = abs(self.mStep)
+                        else:  # if self.halign in (CENTER, BLOCK):
+                            self.P = int(self.A / 2)
+                            self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
+                else:
+                    return False
+            elif self.direction in (TOP, BOTTOM):
+                if not self.mAlways and text_height <= self.H:
+                    return False
+                if self.type == RUNNING:
+                    self.A = self.Y - text_height - self.soffset[1] - abs(self.mStep)
+                    self.B = self.H - self.soffset[1] + abs(self.mStep)
+                    if self.direction == TOP:
 
-        self.mCount = self.mRepeat
-        self.mTimer.start(self.mStartDelay, True)
-        return True
+                        self.mStep = -abs(self.mStep)
+                        self.mStop = self.Y
+                        self.P = self.B
+                    else:
+
+                        self.mStep = abs(self.mStep)
+                        self.mStop = self.B - text_height + self.soffset[1] - self.mStep
+                        self.P = self.A
+                    if self.mStartPoint is not None:
+                        if self.direction == TOP:
+                            self.mStop = self.P = max(self.A, min(self.H, self.mStartPoint))
+                        else:
+                            self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_height + self.soffset[1]))
+                elif self.type == SWIMMING:
+                    if text_height < self.H:
+                        self.A = self.Y
+                        self.B = self.H - text_height
+                        if self.direction == TOP:
+                            self.P = self.B
+                            self.mStep = -abs(self.mStep)
+                        else:
+                            self.P = self.A
+                            self.mStep = abs(self.mStep)
+                    else:
+                        if text_height == self.H:
+                            text_height += max(2, text_height/40)
+                        self.A = self.H - text_height
+                        self.B = self.Y
+                        if self.direction == TOP:
+                            self.P = self.B
+                            self.mStep = -abs(self.mStep)
+                            self.mStop = self.B
+                        else:
+                            self.P = self.A
+                            self.mStep = abs(self.mStep)
+                            self.mStop = self.A
+                else:
+                    return False
+            else:
+                return False
+
+            self.xW = max(self.W, text_width)
+            self.xH = max(self.H, text_height)
+
+            self.scroll_label.resize(eSize(self.xW, self.xH))
+
+            if self.mStartDelay:
+                if self.direction in (LEFT, RIGHT):
+                    self.moveLabel(self.P, self.Y)
+                else:  # if self.direction in (TOP,BOTTOM):
+                    self.moveLabel(self.X, self.P)
+
+            self.mCount = self.mRepeat
+            self.mTimer.start(self.mStartDelay, True)
+            return True
+        except Exception as e:
+            print('type error in runner txt', str(e))
 
     def movingLoop(self):
         if self.A <= self.P <= self.B:

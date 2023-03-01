@@ -41,37 +41,20 @@ from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 from six.moves import range
 from xml.sax.saxutils import escape
-#from Components.config import config
 
 import six
 import requests
 
 PY3 = False
 PY3 = sys.version_info.major >= 3
-print('Py3: ',PY3)
-
-# if PY3:
-    # from urllib.parse import quote
-    # from urllib.parse import quote_plus
-    # from urllib.parse import urlparse
-    # from urllib.parse import parse_qs
-    # PY3 = True
-# else:
-    # from urllib import quote, quote_plus
-    # from urlparse import urlparse
-    # from urlparse import parse_qs
+print('Py3: ', PY3)
 
 if PY3:
-    from urllib.request import urlopen, Request
-    from urllib.error import URLError, HTTPError
     from urllib.parse import urlparse
-    from urllib.parse import urlencode, quote, quote_plus, parse_qs
-              
+    from urllib.parse import quote, quote_plus, parse_qs
 else:
-    from urllib2 import urlopen, Request
-    from urllib2 import URLError, HTTPError
     from urlparse import urlparse, parse_qs
-    from urllib import urlencode, quote, quote_plus
+    from urllib import quote, quote_plus
 
 __all__ = []
 __version__ = '0.8.5'
@@ -79,13 +62,6 @@ __date__ = '2017-06-04'
 __updated__ = '2020-01-28'
 
 DEBUG = 0
-
-#DEBUG = config.plugins.e2m3u2b.debug.value
-#def debugNotifier(configElement):
-#    global DEBUG
-#    DEBUG = configElement.value
-#config.plugins.e2m3u2b.debug.addNotifier(debugNotifier, initial_call=False)
-
 TESTRUN = 0
 ENIGMAPATH = '/etc/enigma2/'
 EPGIMPORTPATH = '/etc/epgimport/'
@@ -118,6 +94,7 @@ def display_welcome():
     print(str(datetime.datetime.now()))
     print("********************************\n")
 
+
 def display_end_msg():
     print("\n********************************")
     print("Enigma2 IPTV bouquets created ! ")
@@ -128,6 +105,7 @@ def display_end_msg():
     print("(will be listed as under 'XCplugin')")
     print("Save the selected sources, press yellow button to start manual import")
     print("You can then set EPG-Importer to automatically import the EPG every day")
+
 
 def make_config_folder():
     """create config folder if it doesn't exist
@@ -168,7 +146,7 @@ def uninstaller():
         bakfile.close()
         tvfile.close()
     except Exception as e:
-        print('Unable to uninstall')
+        print('Unable to uninstall', e)
         raise
     print('----Uninstall complete----')
 
@@ -198,6 +176,7 @@ def reload_bouquets():
             os.system("wget -qO - http://127.0.0.1/web/servicelistreload?mode=2 > /dev/null 2>&1 &")
             os.system("wget -qO - http://127.0.0.1/web/servicelistreload?mode=4 > /dev/null 2>&1 &")
             print("wGET: bouquets reloaded...")
+
 
 def xml_escape(string):
     return escape(string, {'"': '&quot;', "'": "&apos;"})
@@ -313,14 +292,14 @@ class Provider:
         # get image type
         try:
             # ext = imghdr.what(picon_file_path)
-            ext = str(os.path.splitext(picon_file_path))                                            
+            ext = str(os.path.splitext(picon_file_path))
         except Exception as e:
             if DEBUG:
                 print('Picon post processing - not an image or no file', e, picon_file_path)
             self._picon_create_empty(picon_file_path)
             return
         # if image but not png convert to png
-        if (ext != None) and (ext != 'png'):
+        if (ext is not None) and (ext != 'png'):
             if DEBUG:
                 print('Converting Picon to png')
             try:
@@ -414,7 +393,7 @@ class Provider:
         mapping_file = self._get_mapping_file()
         if mapping_file:
             self._update_status('----Parsing custom bouquet order----')
-            print('\n'.format(Status.message))
+            print(Status.message)
 
             try:
                 tree = ET.ElementTree(file=mapping_file)
@@ -443,6 +422,7 @@ class Provider:
                 self._update_status('custom bouquet order applied...')
                 print(Status.message)
             except Exception as e:
+                print(e)
                 msg = 'Corrupt override.xml file'
                 print(msg)
                 if DEBUG:
@@ -539,7 +519,7 @@ class Provider:
                         # check if the channel has been moved to the new category
                         try:
                             channel_index = next((self._dictchannels[category_override].index(item) for item in self._dictchannels[category_override]
-                                              if item['stream-name'] == name), None)
+                                                  if item['stream-name'] == name), None)
                         except KeyError:
                             pass
 
@@ -569,11 +549,11 @@ class Provider:
                 self._update_status('custom overrides applied...')
                 print(Status.message)
             except Exception as e:
+                print(e)
                 msg = 'Corrupt override.xml file'
                 print(msg)
                 if DEBUG:
                     raise msg
-
 
     def _get_mapping_file(self):
         mapping_file = None
@@ -740,7 +720,7 @@ class Provider:
         print('\n{}'.format(Status.message))
         print('provider update url = ', self.config.provider_update_url)
         try:
-            r = requests.get(self.config.provider_update_url, headers=myheaders, allow_redirects=True, verify=False) # verify=False means user created ssl certificates will be accepted
+            r = requests.get(self.config.provider_update_url, headers=myheaders, allow_redirects=True, verify=False)  # verify=False means user created ssl certificates will be accepted
             if r.status_code == 200:
                 with open(filename, 'wb') as f:
                     f.write(r.content)
@@ -860,6 +840,7 @@ class Provider:
             else:
                 filename = None
         except Exception as e:
+            print(e)
             self._update_status('Unable to download m3u file from url')
             print(Status.message)
             filename = None
@@ -1070,7 +1051,7 @@ class Provider:
         i = 1
         for cat in self._dictchannels:
             if self._category_options[cat].get('type', 'live') == 'live':
-                self._update_status('----Downloading Picon files (%d/%d), please be patient----' % (i,len_channels))
+                self._update_status('----Downloading Picon files (%d/%d), please be patient----' % (i, len_channels))
                 i += 1
                 # Download Picon if not VOD
                 for x in self._dictchannels[cat]:
@@ -1095,6 +1076,7 @@ class Provider:
                         urllist.append(url.text)
                     self._xmltv_sources_list[group_name] = urllist
             except Exception as e:
+                print(e)
                 msg = 'Corrupt override.xml file'
                 print(msg)
                 if DEBUG:
@@ -1524,6 +1506,7 @@ class Config:
                     self.providers[provider.name] = provider
                     provider_num += 1
         except Exception as e:
+            print(e)
             msg = 'Corrupt config.xml file'
             print(msg)
             if DEBUG:
@@ -1748,6 +1731,7 @@ USAGE
         sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
         return 2
+
 
 if __name__ == "__main__":
     if TESTRUN:
