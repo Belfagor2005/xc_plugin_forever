@@ -175,6 +175,7 @@ cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
 cfg.infoexp = ConfigYesNo(default=False)
 cfg.infoname = NoSave(ConfigText(default="myBouquet"))
 # cfg.showlive = ConfigEnableDisable(default=True)
+cfg.screenxl = ConfigEnableDisable(default=False)
 cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
@@ -566,6 +567,9 @@ class xc_config(Screen, ConfigListScreen):
 
         # self.list.append(getConfigListEntry(_("Show/Hide Live Channel "), cfg.showlive, (_("Show/Hide Live Channel"))))
         # if cfg.showlive.value is True:
+        
+        self.list.append(getConfigListEntry(_("Type Main Screen XL"), cfg.screenxl, (_("Active Screen Main Large"))))
+        
         self.list.append(getConfigListEntry(_("LivePlayer Active "), cfg.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
         if cfg.LivePlayer.value is True:
             self.list.append(getConfigListEntry(indent + (_("Live Services Type")), cfg.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
@@ -1207,6 +1211,8 @@ class xc_Main(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_Main.xml')
+        if cfg.screenxl.value:
+            skin = os.path.join(skin_path, 'xc_Mainxl.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
