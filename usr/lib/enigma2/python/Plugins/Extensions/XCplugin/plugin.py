@@ -1139,14 +1139,14 @@ class iptv_streamse():
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
                     chan_tulpe = (
-                        chan_counter,
-                        name,
-                        description,
-                        piconname,
-                        stream_url,
-                        playlist_url,
-                        category_id,
-                        desc_image,
+                        str(chan_counter),
+                        str(name),
+                        str(description),
+                        str(piconname),
+                        str(stream_url),
+                        str(playlist_url),
+                        str(category_id),
+                        str(desc_image),
                         str(description2),
                         str(nameepg),
                         )
