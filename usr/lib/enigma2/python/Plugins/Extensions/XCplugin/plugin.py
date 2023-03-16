@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             28/02/2023               *
+*             16/032/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -476,6 +476,8 @@ class xc_config(Screen, ConfigListScreen):
             "cancel": self.extnok,
             "left": self.keyLeft,
             "right": self.keyRight,
+            "up": self.keyUp,
+            "down": self.keyDown,
             "help": self.help,
             "yellow": self.iptv_sh,
             "green": self.cfgok,
@@ -605,6 +607,19 @@ class xc_config(Screen, ConfigListScreen):
 
         self["config"].list = self.list
         self["config"].l.setList(self.list)
+        self.setInfo()
+
+    def setInfo(self):
+        try:
+            sel = self['config'].getCurrent()[2]
+            if sel:
+                # print('sel =: ', sel)
+                self['description'].setText(str(sel))
+            else:
+                self['description'].setText(_('SELECT YOUR CHOICE'))
+            return
+        except Exception as e:
+            print("Error ", e)
 
     def changedEntry(self):
         for x in self.onChangedEntry:
@@ -630,6 +645,16 @@ class xc_config(Screen, ConfigListScreen):
 
     def keyRight(self):
         ConfigListScreen.keyRight(self)
+        self.createSetup()
+        self.showhide()
+
+    def keyDown(self):
+        ConfigListScreen.keyDown(self)
+        self.createSetup()
+        self.showhide()
+        
+    def keyUp(self):
+        ConfigListScreen.keyUp(self)
         self.createSetup()
         self.showhide()
 
@@ -3333,7 +3358,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
                 if cfg.LivePlayer.value is True:
                     eserv = int(cfg.live.value)
-                if str(os.path.splitext(self.live_url)[-1]) == ".m3u8":
+                if str(splitext(self.live_url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
                 url = self.live_url
@@ -3947,7 +3972,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.servicetype = int(cfg.services.value)  # '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
-        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
+        if str(splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
         currentindex = 0

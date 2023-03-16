@@ -7,9 +7,9 @@
 	<eLabel position="220,120" size="880,5" backgroundColor="#202020" zPosition="1" />
 	<widget name="version" position="380,85" size="200,30" halign="right" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
         <!-- Config -->
-	<widget name="config" position="220,155" size="880,650" font="Regular;32" itemHeight="50" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" transparent="1" zPosition="1" />
-	<widget name="description" position="431,1104" size="807,51" font="Regular;36" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
-	<widget name="statusbar" position="220,890" size="950,60" font="Regular;32" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="config" position="220,155" size="880,600" font="Regular;32" itemHeight="50" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" transparent="1" zPosition="1" />
+	<widget name="description" position="220,769" size="882,110" font="Regular;36" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="statusbar" position="220,880" size="882,60" font="Regular;32" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->
 	<eLabel position="220,940" size="880,5" backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="220,965" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />

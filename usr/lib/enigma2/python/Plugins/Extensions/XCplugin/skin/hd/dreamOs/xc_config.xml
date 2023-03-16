@@ -10,11 +10,11 @@
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>	
 	<!-- Config -->
-	<widget name="config" position="146,103" size="586,433" itemHeight="40" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
-	<widget name="description" position="142,540" size="589,49" font="Regular; 22" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
-	<widget name="statusbar" position="146,593" size="633,40" font="Regular;21" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="config" position="146,93" size="586,445" itemHeight="50" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" transparent="1" zPosition="1" />
+	<widget name="description" position="146,540" size="589,49" font="Regular; 22" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<widget name="statusbar" position="146,589" size="589,40" font="Regular;21" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->
-	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
+	<eLabel position="146,631" size="589,3" backgroundColor="#202020" zPosition="1" />
    	<ePixmap position="146,643" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
 	<widget name="key_green" position="180,640" size="133,26" font="Regular;20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
     <ePixmap position="146,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
