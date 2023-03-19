@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             16/032/2023               *
+*             19/03/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -180,7 +180,7 @@ cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-cfg.timeout = ConfigSelectionNumber(default=5, min=5, max=80, stepwidth=5)
+cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
 
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.badcar = ConfigEnableDisable(default=False)
@@ -569,9 +569,7 @@ class xc_config(Screen, ConfigListScreen):
 
         # self.list.append(getConfigListEntry(_("Show/Hide Live Channel "), cfg.showlive, (_("Show/Hide Live Channel"))))
         # if cfg.showlive.value is True:
-        
         self.list.append(getConfigListEntry(_("Type Main Screen XL"), cfg.screenxl, (_("Active Screen Main Large"))))
-        
         self.list.append(getConfigListEntry(_("LivePlayer Active "), cfg.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
         if cfg.LivePlayer.value is True:
             self.list.append(getConfigListEntry(indent + (_("Live Services Type")), cfg.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
@@ -652,7 +650,7 @@ class xc_config(Screen, ConfigListScreen):
         ConfigListScreen.keyDown(self)
         self.createSetup()
         self.showhide()
-        
+
     def keyUp(self):
         ConfigListScreen.keyUp(self)
         self.createSetup()
@@ -1049,7 +1047,14 @@ class iptv_streamse():
                     except:
 
                         pass
-
+                    '''
+                    stream_url = channel.findtext('stream_url')
+                    piconname = channel.findtext("logo")
+                    category_id = channel.findtext('category_id')
+                    ts_stream = channel.findtext("ts_stream")
+                    playlist_url = channel.findtext('playlist_url')
+                    desc_image = channel.findtext('desc_image')
+                    '''
                     stream_url = Utils.checkStr(channel.findtext('stream_url'))
                     piconname = Utils.checkStr(channel.findtext("logo"))
                     category_id = Utils.checkStr(channel.findtext('category_id'))
@@ -1057,11 +1062,11 @@ class iptv_streamse():
                     playlist_url = Utils.checkStr(channel.findtext('playlist_url'))
                     desc_image = Utils.checkStr(channel.findtext('desc_image'))
 
-                    # if desc_image and desc_image != "n/A" and desc_image != "":
-                        # if desc_image.startswith("https"):
-                            # desc_image = desc_image.replace("https", "http")
-                    # if PY3 == 3:
-                        # desc_image = desc_image.encode()
+                    if desc_image and desc_image != "n/A" and desc_image != "":
+                        if desc_image.startswith("https"):
+                            desc_image = desc_image.replace("https", "http")
+                    if PY3 == 3:
+                        desc_image = desc_image.encode()
                     # epgnowtitle = ''
                     # #####################
 
@@ -1164,14 +1169,22 @@ class iptv_streamse():
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
                     chan_tulpe = (
-                        str(chan_counter),
-                        str(name),
-                        str(description),
-                        str(piconname),
-                        str(stream_url),
-                        str(playlist_url),
-                        str(category_id),
-                        str(desc_image),
+                        chan_counter,
+                        name,
+                        description,
+                        piconname,
+                        stream_url,
+                        playlist_url,
+                        category_id,
+                        desc_image,
+                        # str(chan_counter),
+                        # str(name),
+                        # str(description),
+                        # str(piconname),
+                        # str(stream_url),
+                        # str(playlist_url),
+                        # str(category_id),
+                        # str(desc_image),
                         str(description2),
                         str(nameepg),
                         )
@@ -1192,6 +1205,7 @@ class iptv_streamse():
             TYPE_PLAYER = '/enigma2.php'
             # TYPE_PLAYER= '/player_api.php'
             url = url.strip(" \t\n\r")
+            print('my url striped ', url)
             if next_request == 1:
                 url = check_port(url)
                 if not url.find(":"):
@@ -1201,10 +1215,15 @@ class iptv_streamse():
                 url = url
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
+
+            print('next_request : ', next_request)
+            next_request = 2
             print('next_request 2 : ', next_request)
-            print('my url final 2 ', url)
+            print('my url final ', url)
+
             # urlinfo = Utils.checkRedirect(url)
             # urlinfo= Utils.checkStr(url)
+            print('url 1 ', url)
             urlinfo = url
             try:
                 req = Request(urlinfo)
@@ -1212,6 +1231,7 @@ class iptv_streamse():
                 response = urlopen(req, timeout=ntimeout)
                 if PY3:
                     res = response.read().decode('utf-8')
+                    print('resssssssssssssssssssssssssssssssssss', res)
                 else:
                     res = response.read()
                 print("Here in client1 _request link =", res)
@@ -1219,7 +1239,7 @@ class iptv_streamse():
                 response.close()
                 return res
             except Exception as e:
-                print('error _request ---------- ', e)
+                print('error requests ------------------------------------- ', e)
         else:
             res = None
             return res
@@ -1319,7 +1339,7 @@ class xc_Main(Screen):
         self.onShown.append(self.show_all)
 
     def ok(self):
-        if len(iptv_list_tmp) < 0:
+        if not len(iptv_list_tmp):
             self.session.open(MessageBox, _("No data or playlist not compatible with XCplugin."), type=MessageBox.TYPE_WARNING, timeout=5)
             return
         self.index = self.mlist.getSelectionIndex()
@@ -3358,7 +3378,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                 print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
                 if cfg.LivePlayer.value is True:
                     eserv = int(cfg.live.value)
-                if str(splitext(self.live_url)[-1]) == ".m3u8":
+                if str(os.path.splitext(self.live_url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
                 url = self.live_url
@@ -3972,7 +3992,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.servicetype = int(cfg.services.value)  # '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
-        if str(splitext(self.url)[-1]) == ".m3u8":
+        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
         currentindex = 0
