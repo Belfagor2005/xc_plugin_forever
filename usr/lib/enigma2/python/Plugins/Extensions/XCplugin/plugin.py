@@ -1217,7 +1217,7 @@ class iptv_streamse():
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
 
             print('next_request : ', next_request)
-            next_request = 2
+            # next_request = 2
             print('next_request 2 : ', next_request)
             print('my url final ', url)
 
@@ -1446,6 +1446,8 @@ class xc_Main(Screen):
         self["green"].hide()
         self["yellow"].hide()
         self["blue"].hide()
+        print('isStream ', isStream)
+        print('btnsearch ', btnsearch)
         if isStream and btnsearch == 1:
             self["key_blue"].show()
             self["key_green"].show()
@@ -1666,26 +1668,28 @@ class xc_Main(Screen):
             self.back_to_video()
         '''
         try:
-            if next_request == 1 and btnsearch == 1:
+            # if next_request == 1 and btnsearch == 1:
+            print('btttnsearch ', btnsearch)
+            if btnsearch == 1:
                 btnsearch = 0
                 self["key_blue"].hide()
                 self["key_green"].hide()
                 self["key_yellow"].hide()
                 self.mmark()
-            # elif isStream and "/live/" in str(stream_url) and btnsearch == 1:
-            elif stream_url and "/live/" in stream_url and btnsearch == 1:
-                btnsearch = 0
-                self["key_blue"].hide()
-                self["key_green"].hide()
-                self["key_yellow"].hide()
-                self.mmark()
-            # elif isStream and "/movie/" in str(stream_url) and btnsearch == 1:
-            elif stream_url and ("/movie/" or "/series/") in stream_url and btnsearch == 1:
-                btnsearch = 0
-                self["key_blue"].hide()
-                self["key_green"].hide()
-                self["key_yellow"].hide()
-                self.mmark()
+            # # elif isStream and "/live/" in str(stream_url) and btnsearch == 1:
+            # elif stream_url and "/live/" in stream_url and btnsearch == 1:
+                # btnsearch = 0
+                # self["key_blue"].hide()
+                # self["key_green"].hide()
+                # self["key_yellow"].hide()
+                # self.mmark()
+            # # elif isStream and "/movie/" in str(stream_url) and btnsearch == 1:
+            # elif stream_url and ("/movie/" or "/series/") in stream_url and btnsearch == 1:
+                # btnsearch = 0
+                # self["key_blue"].hide()
+                # self["key_green"].hide()
+                # self["key_yellow"].hide()
+                # self.mmark()
             else:
                 self.close()
         except Exception as e:
@@ -1804,8 +1808,8 @@ class xc_Main(Screen):
         if self.temp_index > -1:
             self.index = self.temp_index
         # if isStream and "/live/" in str(stream_url):
-        if "/live/" in str(stream_url):
-            self.mbox = self.session.open(MessageBox, _("This is Category or Live Player is active!!!"), MessageBox.TYPE_INFO, timeout=5)
+        # if "/live/" in str(stream_url):
+            # self.mbox = self.session.open(MessageBox, _("This is Category or Live Player is active!!!"), MessageBox.TYPE_INFO, timeout=5)
         # elif isStream and "/movie/" in str(stream_url):
         elif "/movie/" in str(stream_url):
             self.mbox = self.session.open(MessageBox, _("But Only Series Episodes Allowed!!!\nThis Stream is Movie"), MessageBox.TYPE_INFO, timeout=5)
@@ -1872,9 +1876,9 @@ class xc_Main(Screen):
 
 # #
     def check_download_vod(self):
-        if btnsearch == 0 or btnsearch == 2:
-            self.mbox = self.session.open(MessageBox, _("This is Category or List Channel?"), MessageBox.TYPE_INFO, timeout=5)
-            return
+        # if btnsearch == 0 or btnsearch == 2:
+            # self.mbox = self.session.open(MessageBox, _("This is Category or List Channel?"), MessageBox.TYPE_INFO, timeout=5)
+            # return
         self.index = self.mlist.getSelectionIndex()
         self.selected_channel = iptv_list_tmp[self.index]
         self.vod_url = str(self.selected_channel[4])
