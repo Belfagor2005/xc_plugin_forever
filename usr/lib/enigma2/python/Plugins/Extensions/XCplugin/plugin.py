@@ -573,7 +573,7 @@ class xc_config(Screen, ConfigListScreen):
         if cfg.data.getValue():
             # self.list.append(getConfigListEntry(_("Old/New panel"), cfg.panel, (_("Select Panel used"))))
             self.list.append(getConfigListEntry(indent + (_("Server URL")), cfg.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
-            self.list.append(getConfigListEntry(indent + (_("Server PORT")), cfg.port, (_("Enter Server Port '8080'"))))
+            self.list.append(getConfigListEntry(indent + (_("Server PORT")), cfg.port, (_("Enter Server Port Eg.:'8080'"))))
             self.list.append(getConfigListEntry(indent + (_("Server Username")), cfg.user, (_("Enter Username"))))
             self.list.append(getConfigListEntry(indent + (_("Server Password")), cfg.passw, (_("Enter Password"))))
         self.list.append(getConfigListEntry(_("Server Timeout"), cfg.timeout, (_("Timeout Server (sec)"))))
@@ -583,7 +583,7 @@ class xc_config(Screen, ConfigListScreen):
 
         # self.list.append(getConfigListEntry(_("Show/Hide Live Channel "), cfg.showlive, (_("Show/Hide Live Channel"))))
         # if cfg.showlive.value is True:
-        self.list.append(getConfigListEntry(_("Type Main Screen XL"), cfg.screenxl, (_("Active Screen Main Large"))))
+        self.list.append(getConfigListEntry(_("Type Main Screen XL"), cfg.screenxl, (_("Active Main Screen Large"))))
         self.list.append(getConfigListEntry(_("LivePlayer Active "), cfg.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
         if cfg.LivePlayer.value is True:
             self.list.append(getConfigListEntry(indent + (_("Live Services Type")), cfg.live, (_("Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"))))
@@ -614,8 +614,8 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Picons IPTV "), cfg.picons, (_("Download Picons ?"))))
         if cfg.picons.value:
             self.list.append(getConfigListEntry(indent + (_("Picons IPTV bouquets to ")), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
-        self.list.append(getConfigListEntry(_("Auto Update Plugin  "), cfg.autoupdate, (_("Auto Update Plugin"))))
-        self.list.append(getConfigListEntry(_("Link in Main Menu  "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
+        self.list.append(getConfigListEntry(_("Auto Update Plugin "), cfg.autoupdate, (_("Set ON for Auto Update Plugin"))))
+        self.list.append(getConfigListEntry(_("Link in Main Menu "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
 
         self["config"].list = self.list
         self["config"].l.setList(self.list)
@@ -3034,56 +3034,61 @@ class OpenServer(Screen):
             # url_info = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
             # url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
             url_info2 = str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
-            import requests
-            from requests.adapters import HTTPAdapter
-            hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
-            r = ""
-            adapter = HTTPAdapter()
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(url_info2, headers=hdr, timeout=15, verify=False, stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                y = r.json()
-                if "user_info" in y:
-                    if "auth" in y["user_info"]:
-                        if y["user_info"]["auth"] == 1:
-                            try:
-                                auth = (y["user_info"]["auth"])
-                                status = (y["user_info"]["status"])
-                                created_at = (y["user_info"]["created_at"])
-                                exp_date = (y["user_info"]["exp_date"])
-                                active_cons = (y["user_info"]["active_cons"])
-                                max_connections = (y["user_info"]["max_connections"])
-                                server_protocol = (y["server_info"]["server_protocol"])
-                                timezone = (y["server_info"]["timezone"])
-                                if created_at:
-                                    created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-                                if exp_date:
-                                    exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                                if str(auth) == "1":  # force for message popup
-                                    if str(status) == "Active":
-                                        auth = "Active - Exp date:\n" + str(exp_date)
-                                    elif str(status) == "Banned":
-                                        auth = "Banned"
-                                    elif str(status) == "Disabled":
-                                        auth = "Disabled"
-                                    elif str(status) == "Expired":
-                                        auth = "Expired"
-                                    else:
-                                        auth = "Server Not Responding" + str(exp_date)
-                                    active_cons = "User Active Now: " + str(active_cons)
-                                    max_connections = "Max Connect: " + str(max_connections)
-                                    server_protocol = "Protocol: " + str(server_protocol)
-                                    timezone = "Timezone: " + str(timezone)
-                                message = ("User %s %s\nExp date: %s\nLine make at %s\n%s\n%s\n%s\n%s") % (username, status, exp_date, created_at, active_cons, max_connections, server_protocol, timezone)
-                                print(str(message))
-                                self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
-                            except Exception as e:
-                                message = ("Error %s") % (e)
-                                print(str(message))
-                                self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
+            try:
+                import requests
+                from requests.adapters import HTTPAdapter
+                hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
+                r = ""
+                adapter = HTTPAdapter()
+                http = requests.Session()
+                http.mount("http://", adapter)
+                http.mount("https://", adapter)
+                r = http.get(url_info2, headers=hdr, timeout=15, verify=False, stream=True)
+                r.raise_for_status()
+                if r.status_code == requests.codes.ok:
+                    y = r.json()
+                    if "user_info" in y:
+                        if "auth" in y["user_info"]:
+                            if y["user_info"]["auth"] == 1:
+                                try:
+                                    auth = (y["user_info"]["auth"])
+                                    status = (y["user_info"]["status"])
+                                    created_at = (y["user_info"]["created_at"])
+                                    exp_date = (y["user_info"]["exp_date"])
+                                    active_cons = (y["user_info"]["active_cons"])
+                                    max_connections = (y["user_info"]["max_connections"])
+                                    server_protocol = (y["server_info"]["server_protocol"])
+                                    timezone = (y["server_info"]["timezone"])
+                                    if created_at:
+                                        created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
+                                    if exp_date:
+                                        exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+                                    if str(auth) == "1":  # force for message popup
+                                        if str(status) == "Active":
+                                            auth = "Active - Exp date:\n" + str(exp_date)
+                                        elif str(status) == "Banned":
+                                            auth = "Banned"
+                                        elif str(status) == "Disabled":
+                                            auth = "Disabled"
+                                        elif str(status) == "Expired":
+                                            auth = "Expired"
+                                        else:
+                                            auth = "Server Not Responding" + str(exp_date)
+                                        active_cons = "User Active Now: " + str(active_cons)
+                                        max_connections = "Max Connect: " + str(max_connections)
+                                        server_protocol = "Protocol: " + str(server_protocol)
+                                        timezone = "Timezone: " + str(timezone)
+                                    message = ("User: %s\nStatus: %s\nLine make at: %s\n%s\n%s\n%s\n%s") % (str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(timezone))
+                                    print(str(message))
+                                    self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
+                                except Exception as e:
+                                    message = ("Error %s") % (e)
+                                    print(str(message))
+                                    self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
+            except Exception as e:
+                message = ("a Error %s") % (e)
+                print(str(message))
+                self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
             message = ("Error %s") % (e)
             print(str(message))
