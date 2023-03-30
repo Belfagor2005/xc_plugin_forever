@@ -127,7 +127,7 @@ except ImportError:
     class SubsSupportStatus(object):
         def __init__(self, *args, **kwargs):
             pass
-
+sslverify = False
 try:
     from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
@@ -985,8 +985,8 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         if desc_image.startswith("https"):
                             desc_image = desc_image.replace("https", "http")
-                    if PY3:
-                        desc_image = desc_image.encode()
+                    # if PY3:
+                        # desc_image = desc_image.encode()
                     # epgnowtitle = ''
                     # #####################
                     if stream_url:
@@ -1095,14 +1095,6 @@ class iptv_streamse():
                         playlist_url,
                         category_id,
                         desc_image,
-                        # str(chan_counter),
-                        # str(name),
-                        # str(description),
-                        # str(piconname),
-                        # str(stream_url),
-                        # str(playlist_url),
-                        # str(category_id),
-                        # str(desc_image),
                         str(description2),
                         str(nameepg),
                         )
@@ -1408,21 +1400,33 @@ class xc_Main(Screen):
                     self["description"].setText(description)
                     print('------------------------------------------ else desc', description)
                 pixim = six.ensure_binary(selected_channel[7])
+                # if PY3:
+                    # pixim = pixim.decode('utf-8') #.encode()
+
                 print('self pixim   ', str(pixim))
-                if (pixim != "" or pixim != "n/A" or pixim is not None or pixim != "null"):
+                # if (pixim != "" or pixim != "n/A" or pixim is not None or pixim != "null"):
+                if pixim != "":
                     parsed = urlparse(pixim)
                     domain = parsed.hostname
                     scheme = parsed.scheme
-                    # if PY3:
-                        # pixim = pixim.encode()
+                    # pixim = self.checkin(pixim)
                     if scheme == "https" and sslverify:
                         sniFactory = SNIFactory(domain)
-                        print('uurrll: ', pixim)
-                        downloadPage(pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        print('https uurrll: ', str(pixim))
+                        downloadPage(pixim, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        # downloadPage(pixim, pictmp, sniFactory).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)                        
                     else:
+                        print('http uurrll: ', pixim)
                         downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
         except Exception as ex:
             print(ex)
+
+    # def checkin(self, url):
+        # with urlopen(url) as response:
+            # encoding = response.info().get_param('charset', 'utf8')
+            # url = response.read().decode(encoding)
+            # print('url checked: ', url)
+        # return url
 
     def image_downloaded(self, data, pictmp):
         if file_exists(pictmp):
@@ -1432,8 +1436,6 @@ class xc_Main(Screen):
                 print("* error ** %s" % ex)
                 self.downloadError()
                 print("* data ** ")
-            except:
-                pass
 
     def decodeImage(self, png):
         if file_exists(png):
@@ -1669,7 +1671,7 @@ class xc_Main(Screen):
             http = requests.Session()
             http.mount("http://", adapter)
             http.mount("https://", adapter)
-            r = http.get(url_info2, headers=hdr, timeout=15, verify=False, stream=True)
+            r = http.get(url_info2, headers=hdr, timeout=ntimeout, verify=False, stream=True)
             r.raise_for_status()
             if r.status_code == requests.codes.ok:
                 y = r.json()
@@ -1691,7 +1693,7 @@ class xc_Main(Screen):
                                     exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                 if str(auth) == "1":
                                     if str(status) == "Active":
-                                        self["exp"].setText("Active - Exp date:\n" + str(exp_date))
+                                        self["exp"].setText("Active\nExp date: " + str(exp_date))
                                     elif str(status) == "Banned":
                                         self["exp"].setText("Banned")
                                     elif str(status) == "Disabled":
@@ -1765,6 +1767,7 @@ class xc_Main(Screen):
                                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies2, self.title))
                                 self.downloading = True
                                 pmovies = True
+                                
                             except Exception as e:
                                 print(e)
                                 pass
@@ -2162,23 +2165,26 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.channelx = iptv_list_tmp[STREAMS.list_index]
             self['poster'].instance.setPixmapFromFile(piclogo)
             self.pixim = str(self.channelx[7])
-            if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
-                if self.pixim.find('http') == -1:
-                    self.downloadError()
-                    return
-                else:
-                    # if PY3:
-                    self.pixim = six.ensure_binary(self.pixim)
-                    if self.pixim.startswith(b"https") and sslverify:
-                        parsed_uri = urlparse(self.pixim)
-                        domain = parsed_uri.hostname
-                        sniFactory = SNIFactory(domain)
-                        downloadPage(self.pixim, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+            try:
+                if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
+                    if self.pixim.find('http') == -1:
+                        self.downloadError()
+                        return
                     else:
-                        downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-            else:
-                self.downloadError()
-                print("update COVER")
+                        # if PY3:
+                        self.pixim = six.ensure_binary(self.pixim)
+                        if self.pixim.startswith("https") and sslverify:
+                            parsed_uri = urlparse(self.pixim)
+                            domain = parsed_uri.hostname
+                            sniFactory = SNIFactory(domain)
+                            downloadPage(self.pixim, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                        else:
+                            downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                else:
+                    self.downloadError()
+                    print("setCover err")
+            except Exception as ex:
+                print(ex)
         except Exception as ex:
             print(ex)
             self.downloadError()
@@ -3272,13 +3278,12 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarAudioSelectio
                             parsed_uri = urlparse(self.cover)
                             domain = parsed_uri.hostname
                             sniFactory = SNIFactory(domain)
-                            downloadPage(self.cover, pictmp, sniFactory, timeout=5).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+                            downloadPage(self.cover, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                         else:
                             downloadPage(self.cover, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                 else:
                     self.downloadError()
                     print("update COVER LIVE")
-
             except Exception as ex:
                 print(ex)
             try:
