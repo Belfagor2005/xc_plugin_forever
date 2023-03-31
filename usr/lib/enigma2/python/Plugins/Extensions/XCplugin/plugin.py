@@ -1222,7 +1222,7 @@ class xc_Main(Screen):
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
-            "tv": self.update_list,
+            "1": self.update_list,
             "green": self.check_download_vod,
             "yellow": self.check_download_ser,
             "blue": self.search_text,
@@ -1402,7 +1402,6 @@ class xc_Main(Screen):
                 pixim = six.ensure_binary(selected_channel[7])
                 # if PY3:
                     # pixim = pixim.decode('utf-8') #.encode()
-
                 print('self pixim   ', str(pixim))
                 # if (pixim != "" or pixim != "n/A" or pixim is not None or pixim != "null"):
                 if pixim != "":
@@ -1414,7 +1413,7 @@ class xc_Main(Screen):
                         sniFactory = SNIFactory(domain)
                         print('https uurrll: ', str(pixim))
                         downloadPage(pixim, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-                        # downloadPage(pixim, pictmp, sniFactory).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)                        
+                        # downloadPage(pixim, pictmp, sniFactory).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                     else:
                         print('http uurrll: ', pixim)
                         downloadPage(pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
@@ -1474,13 +1473,13 @@ class xc_Main(Screen):
         if 'season' or 'series' in str(stream_url).lower():
             # if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in str(stream_url):
             # if ext in EXTDOWN:
-                global series
-                series = True
-                streamfile = '/tmp/streamfile.txt'
-                with open(streamfile, 'w') as f:
-                    f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
-                    f.write('\n')
-                    f.close()
+            global series
+            series = True
+            streamfile = '/tmp/streamfile.txt'
+            with open(streamfile, 'w') as f:
+                f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
+                f.write('\n')
+                f.close()
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.mlist.moveToIndex(0)
         self.update_description()
@@ -1495,8 +1494,8 @@ class xc_Main(Screen):
                 self["feedlist"].moveToIndex(0)
             else:
                 self.channel_list = STREAMS.iptv_list
-            self.mlist.moveToIndex(0)
-            # self.mlist.moveToIndex(self.index)
+            # self.mlist.moveToIndex(0)
+            self.mlist.moveToIndex(self.index)
             self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.selectionEnabled(1)
             self.button_updater()
@@ -3071,7 +3070,7 @@ class OpenServer(Screen):
                                         exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                     if str(auth) == "1":  # force for message popup
                                         if str(status) == "Active":
-                                            auth = "Active - Exp date:\n" + str(exp_date)
+                                            auth = "Active\nExp date: " + str(exp_date)
                                         elif str(status) == "Banned":
                                             auth = "Banned"
                                         elif str(status) == "Disabled":
@@ -4028,8 +4027,6 @@ class downloadTaskPostcondition(Condition):
         }[task.error]
 
 
-ui = False
-# from Xstreamitly ny KiddaC
 class downloadTask(Task):
     if PY3:
         ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
