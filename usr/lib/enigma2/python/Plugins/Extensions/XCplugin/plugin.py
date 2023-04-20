@@ -127,7 +127,7 @@ except ImportError:
     class SubsSupportStatus(object):
         def __init__(self, *args, **kwargs):
             pass
-sslverify = False
+
 try:
     from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
@@ -1748,7 +1748,7 @@ class xc_Main(Screen):
                                 JobManager.AddJob(downloadJob(self, cmd, Path_Movies2, self.title))
                                 self.downloading = True
                                 pmovies = True
-                                
+
                             except Exception as e:
                                 print(e)
                                 pass
@@ -2018,7 +2018,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         global _session
         _session = session
         self.recorder_sref = None
-        skin = skin_path + "/xc_Player.xml"
+        skin = os.path.join(skin_path, 'xc_Player.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         InfoBarBase.__init__(self, steal_current_service=True)
@@ -2301,7 +2301,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.player_helper()
         except Exception as ex:
             print(ex)
-           
+
     def player_helper(self):
         self.show_info()
         self.channelx = iptv_list_tmp[STREAMS.list_index]
@@ -3133,7 +3133,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         global _session
         _session = session
         self.recorder_sref = None
-        skin = skin_path + "/xc_iptv_player.xml"
+        skin = os.path.join(skin_path, 'xc_iptv_player.xml')
         with open(skin, 'r') as f:
             self.skin = f.read()
         InfoBarBase.__init__(self, steal_current_service=True)
@@ -3148,7 +3148,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-        
+
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self["channel_name"] = Label("")
         self["programm"] = Label("")
@@ -3165,12 +3165,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.cover = self.channely[3]
         self.pixim = self.channely[7]
         # print('live url=', self.live_url)
-        # print('titlex url=', self.titlex)        
-        # print('descr url=', self.descr)   
-        # print('cover url=', self.cover)        
-        # print('pixim url=', self.pixim)   
+        # print('titlex url=', self.titlex)
+        # print('descr url=', self.descr)
+        # print('cover url=', self.cover)
+        # print('pixim url=', self.pixim)
         self.service = None
-        self.onFirstExecBegin.append(self.play_channel)                                                       
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "0": self.show_more_info,
@@ -3184,7 +3183,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             "channelUp": self.nextAR,
             "channelDown": self.prevAR,
             "power": self.power_off}, -1)
-
+        self.onFirstExecBegin.append(self.play_channel)
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
@@ -3242,11 +3241,15 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def play_channel(self):
         try:
+            self.channely = iptv_list_tmp[self.index]
             self["channel_name"].setText(self.channely[1])
+            self.titlex = self.channely[1]
+            self.descr = self.channely[2]
+            self.cover = self.channely[3]
             self.live_url = self.channely[4]
             text_clear = ""
             eserv = 4097
-            if self.descr != '' or self.descr is not None:
+            if self.descr != '' or self.descr is None:
                 text_clear = str(self.descr)
             self["programm"].setText(text_clear)
             try:
