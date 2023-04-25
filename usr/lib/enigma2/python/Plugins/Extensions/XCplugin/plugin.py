@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             28/03/2023               *
+*             28/04/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -1199,7 +1199,7 @@ class xc_Main(Screen):
         self["info"] = Label()
         self["playlist"] = Label()
         self["description"] = StaticText('')
-        self["state"] = Label("")
+        self["state"] = Label()
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Rec Movie"))
@@ -1707,20 +1707,27 @@ class xc_Main(Screen):
         global series
         global pmovies
         titleserie = str(STREAMS.playlistname)
-        if self.temp_index > -1:
-            self.index = self.temp_index
 
+        # self.index = self.mlist.getSelectionIndex()
+        # selected_channel = iptv_list_tmp[self.index]
+        # if selected_channel:
+            # self.title = str(selected_channel[1])
+            # self.vod_url = selected_channel[4]
+            # self.desc = str(selected_channel[2])
+
+        # if self.temp_index > -1:
+            # self.index = self.temp_index
         if series is True and btnsearch == 1:
             if answer is None:
                 self.streamfile = '/tmp/streamfile.txt'
                 if os.path.isfile(self.streamfile) and os.stat(self.streamfile).st_size > 0:
-                    self.session.openWithCallback(self.check_download_ser, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES %s\nSURE???\n?" % titleserie))
+                    self.session.openWithCallback(self.check_download_ser, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???"))
             elif answer:
                 self.icount = 0
                 try:
                     self["state"].setText("Download SERIES")
-                    filename = Utils.cleantitle(STREAMS.playlistname)
-                    Path_Movies2 = Path_Movies + filename + '/'
+                    # filename = Utils.cleantitle(STREAMS.playlistname)
+                    Path_Movies2 = Path_Movies + titleserie + '/'
                     if not file_exists(Path_Movies2):
                         os.system("mkdir " + Path_Movies2)
                     if Path_Movies2.endswith("//") is True:
@@ -1735,7 +1742,7 @@ class xc_Main(Screen):
                         if url.startswith('http'):
                             ext = str(splitext(url)[-1])
                             if ext not in EXTDOWN:
-                                ext = '.mp4'
+                                ext = '.avi'
                             self.title = Utils.cleantitle(name) + ext
                             self.title = self.title.lower()
                             self.icount += 1
@@ -1764,35 +1771,41 @@ class xc_Main(Screen):
             self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
 
     def check_download_vod(self):
-        if self.temp_index > -1:
-            self.index = self.temp_index
-        self.selected_channel = STREAMS.iptv_list[self.index]
-        self.vod_url = self.selected_channel[4]
-        self.title = str(self.selected_channel[1])
-        self.desc = str(self.selected_channel[2])
-        print('title: ', self.title)
-        if self.vod_url is not None and btnsearch == 1:
-            pth = urlparse(self.vod_url).path
-            ext = splitext(pth)[-1]
-            if ext != '.ts':
-                filename = Utils.cleantitle(self.title)
-                if ext not in EXTDOWN:
-                    ext = '.mp4'
-                filename = filename + ext
-                self.filename = filename.lower()  # + ext
-                print('self filename title download: ', self.filename)
-                self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.filename), type=MessageBox.TYPE_YESNO, timeout=5)
+        self.index = self.mlist.getSelectionIndex()
+        selected_channel = iptv_list_tmp[self.index]
+        if selected_channel:
+            self.title = str(selected_channel[1])
+            self.vod_url = selected_channel[4]
+            self.desc = str(selected_channel[2])
+            # if self.temp_index > -1:
+                # self.index = self.temp_index
+            # self.selected_channel = STREAMS.iptv_list[self.index]
+            # self.vod_url = self.selected_channel[4]
+            # self.title = str(self.selected_channel[1])
+            # self.desc = str(self.selected_channel[2])
+            print('title: ', self.title)
+            if self.vod_url is not None and btnsearch == 1:
+                pth = urlparse(self.vod_url).path
+                ext = splitext(pth)[-1]
+                if ext != '.ts':
+                    filename = Utils.cleantitle(self.title)
+                    if ext not in EXTDOWN:
+                        ext = '.avi'
+                    filename = filename + ext
+                    self.filename = filename.lower()  # + ext
+                    print('self filename title download: ', self.filename)
+                    self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?"), type=MessageBox.TYPE_YESNO, timeout=5)
+                else:
+                    if cfg.LivePlayer.value is True:
+                        self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
+                        return
             else:
-                if cfg.LivePlayer.value is True:
-                    self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
-                    return
-        else:
-            self.mbox = self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
+                self.mbox = self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
 
     def download_vod(self, result):
         if result:
             try:
-                self["state"].setText("Download VOD")
+                self["state"].setText("Download MOVIE")
                 os.system('sleep 3')
                 self.downloading = True
                 self.timerDownload = eTimer()
@@ -2330,7 +2343,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     ext = splitext(pth)[-1]
                     filename = Utils.cleantitle(self.titlex)
                     if ext not in EXTDOWN:
-                        ext = '.mp4'
+                        ext = '.avi'
                     filename = filename + ext
                     self.filename = filename.lower()  # + ext
                     cmd = "wget -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), self.filename)
@@ -2604,7 +2617,7 @@ class xc_StreamTasks(Screen):
         sel2 = self.pth + current[1]
         dom = sel
         if answer is None:
-            self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove %s ?" % dom))
+            self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove %s ?") % dom)
         elif answer:
             if file_exists(sel):
                 if self.Timer:
@@ -3075,12 +3088,12 @@ class OpenServer(Screen):
             self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
 
     def message1(self, answer=None):
+        idx = self["list"].getSelectionIndex()
+        nam = Path_XML + self.names[idx]
+        dom = Path_XML + self.urls[idx]
         if answer is None:
-            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s ?"))
+            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s?") % nam)
         elif answer:
-            idx = self["list"].getSelectionIndex()
-            nam = Path_XML + self.names[idx]
-            dom = Path_XML + self.urls[idx]
             if file_exists(dom):
                 os.remove(dom)
                 self.session.open(MessageBox, nam + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
@@ -3094,11 +3107,11 @@ class OpenServer(Screen):
 
     def rename(self):
         idx = self["list"].getSelectionIndex()
+        dom = Path_XML + self.urls[idx]
+        nam = Path_XML + self.names[idx]
         if idx == -1 or idx is None:
             return
         else:
-            dom = Path_XML + self.urls[idx]
-            nam = Path_XML + self.names[idx]
             if dom is None:
                 return
             else:
@@ -3461,13 +3474,13 @@ class xc_Play(Screen):
         self.close()
 
     def message1(self, answer=None):
+        idx = self["list"].getSelectionIndex()
+        if idx == -1 or idx is None:
+            return
+        dom = self.Movies[idx]
         if answer is None:
-            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s ?"))
+            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s ?") % dom)
         elif answer:
-            idx = self["list"].getSelectionIndex()
-            if idx == -1 or idx is None:
-                return
-            dom = self.Movies[idx]
             if file_exists(dom):
                 os.remove(dom)
                 self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
@@ -3723,12 +3736,12 @@ class xc_M3uPlay(Screen):
         pth = urlparse(self.urlm3u).path
         ext = splitext(pth)[1]
         if ext not in EXTDOWN:
-            ext = '.mp4'
+            ext = '.avi'
         print('select file name: ', self.namem3u)
         print('select file url: ', self.urlm3u)
-        if ext in EXTDOWN or ext == '.mp4':
+        if ext in EXTDOWN or ext == '.avi':
             if answer is None:
-                self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s" % self.namem3u))
+                self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.namem3u)
             elif answer:
                 filename = Utils.cleantitle(self.namem3u)
                 filename = filename + ext
