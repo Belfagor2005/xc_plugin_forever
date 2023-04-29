@@ -1532,7 +1532,8 @@ class xc_Main(Screen):
 # # STREAMS.prev_page_url = STREAMS.prev_page_url_tmp
 # # STREAMS.prev_page_text = STREAMS.prev_page_text_tmp
 # # self.index = STREAMS.list_index
-
+# STREAMS.read_config()
+# STREAMS.get_list(STREAMS.xtream_e2portal_url)
     def mmark(self):
         global iptv_list_tmp
         Utils.del_jpg()
@@ -1551,8 +1552,8 @@ class xc_Main(Screen):
         self.decodeImage(piclogo)
         global infoname
         infoname = self.temp_playname
-        if cfg.infoexp.getValue():
-            infoname = str(cfg.infoname.value)
+        # if cfg.infoexp.getValue():
+            # infoname = str(cfg.infoname.value)
         self["playlist"].setText(infoname)
 
     def exitY(self):
@@ -2318,13 +2319,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
     def player_helper(self):
         self.show_info()
         self.channelx = iptv_list_tmp[STREAMS.list_index]
-        if self.channelx:
-            self.channelx = STREAMS.iptv_list[STREAMS.list_index]
-            self.vod_url = self.channelx[4]
-            self.titlex = self.channelx[1]
-            self.descr = self.channelx[2]
-            self.cover = self.channelx[3]
-            self.pixim = self.channelx[7]
+        # if self.channelx:
+            # self.channelx = STREAMS.iptv_list[STREAMS.list_index]
+            # self.vod_url = self.channelx[4]
+            # self.titlex = self.channelx[1]
+            # self.descr = self.channelx[2]
+            # self.cover = self.channelx[3]
+            # self.pixim = self.channelx[7]
         STREAMS.play_vod = False
         STREAMS.list_index_tmp = STREAMS.list_index
         self.setCover()
@@ -2454,9 +2455,10 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
         self.descr = self.channelx[2]
+        self["programm"].setText('')
         if self.descr != '' or self.descr is not None:
             text_clear = str(self.descr)
-        self["programm"].setText(text_clear)
+            self["programm"].setText(text_clear)
         try:
             if self.vod_url is not None:
                 print("------------------------ MOVIE ------------------")
@@ -2546,6 +2548,7 @@ class xc_StreamTasks(Screen):
         global filelist, file1
         free = _('Free Space')
         folder = _('Movie Folder')
+        self.totalItem  = '0'
         file1 = False
         filelist = ''
         self.pth = ''
@@ -2570,10 +2573,14 @@ class xc_StreamTasks(Screen):
                                 print('freesize= ', freeSize)
                             except Exception as e:
                                 print(e)
-                            titel2 = '%s: %s %s' % (folder, str(freeSize), free)
-                            self['label2'].setText(titel2)
-                            self['totalItem'].setText('Item %s' % str(self.totalItem))
-                            self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+                            # titel2 = '%s: %s %s' % (folder, str(freeSize), free)
+                            # self['label2'].setText(titel2)
+                            # self['totalItem'].setText('Item %s' % str(self.totalItem))
+                            # self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+                    titel2 = '%s: %s %s' % (folder, str(freeSize), free)
+                    self['label2'].setText(titel2)
+                    self['totalItem'].setText('Item %s' % str(self.totalItem))
+                    self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
         else:
             titel2 = '(%s offline)' % folder
             self['label2'].setText(titel2)
