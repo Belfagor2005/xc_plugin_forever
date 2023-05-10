@@ -60,7 +60,7 @@ from enigma import ePicLoad
 from enigma import gFont
 from enigma import iPlayableService
 from enigma import loadPNG
-from os import listdir
+from os import listdir, remove, system
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
@@ -89,7 +89,7 @@ plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 skin_path = os.path.join(plugin_path, 'skin/fhd')
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
-piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
+
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
@@ -204,15 +204,7 @@ cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("inte
 cfg.fixedtime = ConfigClock(default=0)
 cfg.autoupdate = ConfigEnableDisable(default=False)
 
-if Utils.isHD():
-    CHANNEL_NUMBER = [3, 0, 50, 40, 0]
-    CHANNEL_NAME = [75, 0, 900, 40, 1]
-    FONT_0 = ("Regular", 24)
-    FONT_1 = ("Regular", 24)
-    BLOCK_H = 40
-    skin_path = os.path.join(plugin_path, 'skin/hd')
-    piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
-elif Utils.isFHD():
+if Utils.isFHD():
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
     FONT_0 = ("Regular", 32)
@@ -221,25 +213,25 @@ elif Utils.isFHD():
     skin_path = os.path.join(plugin_path, 'skin/fhd')
     piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
 else:
-    CHANNEL_NUMBER = [3, 0, 100, 50, 0]
-    CHANNEL_NAME = [110, 0, 1200, 50, 1]
-    FONT_0 = ("Regular", 34)
-    FONT_1 = ("Regular", 34)
-    BLOCK_H = 50
-    skin_path = os.path.join(plugin_path, 'skin/fhd')
-    piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
+    CHANNEL_NUMBER = [3, 0, 50, 40, 0]
+    CHANNEL_NAME = [75, 0, 900, 40, 1]
+    FONT_0 = ("Regular", 24)
+    FONT_1 = ("Regular", 24)
+    BLOCK_H = 40
+    skin_path = os.path.join(plugin_path, 'skin/hd')
+    piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
 if Utils.DreamOS():
     skin_path = skin_path + '/dreamOs'
 
 
 def copy_poster():
-    os.system("cd / && cp -f " + piclogo + " " + pictmp)
+    system("cd / && cp -f " + piclogo + " " + pictmp)
 
 
 copy_poster()
 ntimeout = float(cfg.timeout.value)
-socket.setdefaulttimeout(10)
+socket.setdefaulttimeout(5)
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
 Path_Picons = str(cfg.pthpicon.value) + "/"
@@ -266,6 +258,7 @@ def check_port(tport):
         if len(urlsplit1[2].split(':')) > 1:
             port = urlsplit1[2].split(':')[1]
     host = "%s%s:%s" % (protocol, domain, port)
+    print('my_host: ', host)
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
     return url
@@ -398,6 +391,7 @@ class xc_home(Screen):
         self.keyNumberGlobalCB(self['text'].getSelectedIndex())
 
     def exitY(self):
+        Utils.ReloadBouquets()
         self.close()
 
     def Team(self):
@@ -533,7 +527,7 @@ class xc_config(Screen, ConfigListScreen):
         if answer is None:
             self.session.openWithCallback(self.ImportInfosServer, MessageBox, _("Import Server from /tmp/xc.tx?"))
         elif answer:
-            if os.path.isfile(xc_list) and os.stat(xc_list).st_size > 100:
+            if file_exists(xc_list) and os.stat(xc_list).st_size > 100:
                 with open(xc_list, 'r') as f:
                     chaine = f.readlines()
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
@@ -1377,10 +1371,12 @@ class xc_Main(Screen):
             self["info"].setText("")
             self["description"].setText("NO DESCRIPTIONS")
             try:
-                os.remove(pictmp)
-            except:
-                pass
-            piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
+                remove(pictmp)
+                print("% s removed successfully" % pictmp)
+            except OSError as error:
+                print(error)
+                print("File path can not be removed")
+            # piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
             self['poster'].instance.setPixmapFromFile(piclogo)
             selected_channel = self.channel_list[self.index]
             if selected_channel[2] is not None:
@@ -1721,7 +1717,7 @@ class xc_Main(Screen):
         if series is True and btnsearch == 1:
             if answer is None:
                 self.streamfile = '/tmp/streamfile.txt'
-                if os.path.isfile(self.streamfile) and os.stat(self.streamfile).st_size > 0:
+                if file_exists(self.streamfile) and os.stat(self.streamfile).st_size > 0:
                     self.session.openWithCallback(self.check_download_ser, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???"))
             elif answer:
                 self.icount = 0
@@ -1730,7 +1726,7 @@ class xc_Main(Screen):
                     # filename = Utils.cleantitle(STREAMS.playlistname)
                     Path_Movies2 = Path_Movies + titleserie + '/'
                     if not file_exists(Path_Movies2):
-                        os.system("mkdir " + Path_Movies2)
+                        system("mkdir " + Path_Movies2)
                     if Path_Movies2.endswith("//") is True:
                         Path_Movies2 = Path_Movies2[:-1]
                     f = open(self.streamfile, "r")
@@ -1807,7 +1803,7 @@ class xc_Main(Screen):
         if result:
             try:
                 self["state"].setText("Download MOVIE")
-                os.system('sleep 3')
+                system('sleep 3')
                 self.downloading = True
                 self.timerDownload = eTimer()
                 self.file_down = Path_Movies + self.filename
@@ -2548,7 +2544,7 @@ class xc_StreamTasks(Screen):
         global filelist, file1
         free = _('Free Space')
         folder = _('Movie Folder')
-        self.totalItem  = '0'
+        self.totalItem = '0'
         file1 = False
         filelist = ''
         self.pth = ''
@@ -2560,7 +2556,7 @@ class xc_StreamTasks(Screen):
                 filelist.sort()
                 count = 0
                 for filename in filelist:
-                    if os.path.isfile(Path_Movies + filename):
+                    if file_exists(Path_Movies + filename):
                         extension = filename.split('.')
                         extension = extension[-1].lower()
                         if extension in EXTENSIONS:
@@ -2597,7 +2593,7 @@ class xc_StreamTasks(Screen):
                 url = path + current[1]
                 name = current[1]
                 file1 = False
-                isFile = os.path.isfile(url)
+                isFile = file_exists(url)
                 if isFile:
                     self.session.open(M3uPlay2, name, url)
                 else:
@@ -2630,13 +2626,13 @@ class xc_StreamTasks(Screen):
                 if self.Timer:
                     self.Timer.stop()
                 cmd = 'rm -f ' + sel
-                os.system(cmd)
+                system(cmd)
                 self.session.open(MessageBox, sel + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             elif file_exists(sel2):
                 if self.Timer:
                     self.Timer.stop()
                 cmd = 'rm -f ' + sel2
-                os.system(cmd)
+                system(cmd)
                 self.session.open(MessageBox, sel2 + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             else:
                 self.session.open(MessageBox, _("The movie not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
@@ -2873,31 +2869,34 @@ class xc_maker(Screen):
         elif str(cfg.typelist.value) == "Multi Live/Single VOD":
             dom = "Multi Live/Single VOD"
             self.session.openWithCallback(self.createCfgxml, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
-
         elif str(cfg.typelist.value) == "Combined Live/VOD":
             dom = "Combined Live/VOD"
             self.session.openWithCallback(self.save_tv, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
         else:
-            return
+            pass
+        # Utils.ReloadBouquets()
 
     def save_tv(self, result):
         if result:
             save_old()
             self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            return
 
     def createCfgxml(self, result):
         if result:
             make_bouquet()
-            Utils.ReloadBouquets()
+            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            return
 
     def remove(self, answer=None):
         if answer is None:
             self.session.openWithCallback(self.remove, MessageBox, _("Remove Playlist from Bouquets?"))
         elif answer:
             uninstaller()
-            Utils.ReloadBouquets()
+            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
         else:
-            return
+            pass
+        # Utils.ReloadBouquets()
 
     def getabout(self):
         conthelp = _("GREEN BUTTON:\n ")
@@ -3101,11 +3100,14 @@ class OpenServer(Screen):
         if answer is None:
             self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s?") % nam)
         elif answer:
-            if file_exists(dom):
-                os.remove(dom)
+            try:
+                remove(dom)
+                print("% s removed successfully" % dom)
                 self.session.open(MessageBox, nam + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
-            else:
+            except OSError as error:
+                print(error)
+                print("File path can not be removed")
                 self.session.open(MessageBox, nam + _("   not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
             self["live"].setText(str(len(self.names)) + " Team")
             m3ulistxc(self.names, self["list"])
@@ -3292,7 +3294,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                 print('eserv ----++++++play channel nIPTVplayer 2+++++---', eserv)
                 if cfg.LivePlayer.value is True:
                     eserv = int(cfg.live.value)
-                if str(os.path.splitext(self.live_url)[-1]) == ".m3u8":
+                if str(splitext(self.live_url)[-1]) == ".m3u8":
                     if eserv == 1:
                         eserv = 4097
 
@@ -3488,12 +3490,15 @@ class xc_Play(Screen):
         if answer is None:
             self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s ?") % dom)
         elif answer:
-            if file_exists(dom):
-                os.remove(dom)
+            try:
+                remove(dom)
+                print("% s removed successfully" % dom)
                 self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]
                 self.refreshmylist()
-            else:
+            except OSError as error:
+                print(error)
+                print("File path can not be removed")
                 self.session.open(MessageBox, dom + _("   not exist!"), MessageBox.TYPE_INFO, timeout=5)
         else:
             return
@@ -3515,7 +3520,7 @@ class xc_Play(Screen):
                     self.pathm3u = Path_Movies + self.name_m3u + '.m3u'
                     if file_exists(self.pathm3u):
                         cmd = 'rm -f ' + self.pathm3u
-                        os.system(cmd)
+                        system(cmd)
                     try:
                         self.downloading = True
                         self.download = downloadWithProgress(self.m3u_url, self.pathm3u)
@@ -3579,8 +3584,8 @@ class xc_Play(Screen):
             xcname = "userbouquet.%s.tv" % namel.replace(".m3u", "").replace(" ", "")
             desk_tmp = ""
             in_bouquets = 0
-            if os.path.isfile("/etc/enigma2/%s" % xcname):
-                os.remove("/etc/enigma2/%s" % xcname)
+            if file_exists("/etc/enigma2/%s" % xcname):
+                remove("/etc/enigma2/%s" % xcname)
             with open("/etc/enigma2/%s" % xcname, "w") as outfile:
                 outfile.write("#NAME %s\r\n" % namel.replace(".m3u", "").replace(" ", "").capitalize())
                 for line in open("%s" % name):
@@ -3599,12 +3604,12 @@ class xc_Play(Screen):
                             desk_tmp = "%s\r\n" % line.split("<")[1].split(">")[1]
                 outfile.close()
                 self.mbox = self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
-            if os.path.isfile("/etc/enigma2/bouquets.tv"):
+            if file_exists("/etc/enigma2/bouquets.tv"):
                 for line in open("/etc/enigma2/bouquets.tv"):
                     if xcname in line:
                         in_bouquets = 1
                 if in_bouquets == 0:
-                    if os.path.isfile("/etc/enigma2/%s" % xcname) and os.path.isfile("/etc/enigma2/bouquets.tv"):
+                    if file_exists("/etc/enigma2/%s" % xcname) and file_exists("/etc/enigma2/bouquets.tv"):
                         Utils.remove_line("/etc/enigma2/bouquets.tv", xcname)
                         with open("/etc/enigma2/bouquets.tv", "a") as outfile:
                             outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
@@ -3892,7 +3897,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.servicetype = int(cfg.services.value)  # '4097'
         print('servicetype1: ', self.servicetype)
         url = str(self.url)
-        if str(os.path.splitext(self.url)[-1]) == ".m3u8":
+        if str(splitext(self.url)[-1]) == ".m3u8":
             if self.servicetype == "1":
                 self.servicetype = "4097"
         currentindex = 0
@@ -3930,8 +3935,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             self.doShow()
 
     def cancel(self):
-        if os.path.isfile('/tmp/hls.avi'):
-            os.remove('/tmp/hls.avi')
+        if file_exists('/tmp/hls.avi'):
+            remove('/tmp/hls.avi')
         self.session.nav.stopService()
         self.session.nav.playService(self.initialservice)
         if not self.new_aspect == self.init_aspect:
@@ -4142,13 +4147,13 @@ def uninstaller():
     try:
         for fname in listdir(enigma_path):
             if 'userbouquet.suls_iptv_' in fname:
-                os.remove(os.path.join(enigma_path, fname))
+                remove(os.path.join(enigma_path, fname))
             elif 'bouquets.tv.bak' in fname:
-                os.remove(os.path.join(enigma_path, fname))
+                remove(os.path.join(enigma_path, fname))
         if os.path.isdir(epgimport_path):
             for fname in listdir(epgimport_path):
                 if 'suls_iptv_' in fname:
-                    os.remove(os.path.join(epgimport_path, fname))
+                    remove(os.path.join(epgimport_path, fname))
         os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
         tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
         bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'))
@@ -4218,8 +4223,8 @@ def save_old():
     try:
         if cfg.typem3utv.value == 'MPEGTS to TV':
             xc2 = '&type=dreambox&output=mpegts'
-            if os.path.isfile('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)):
-                os.remove('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet))
+            if file_exists('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)):
+                remove('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet))
             try:
                 print('MPEGTS to TV: process file ')
                 urlX = xc12 + xc2
@@ -4234,8 +4239,8 @@ def save_old():
 
         else:
             xc2 = '&type=m3u_plus&output=ts'
-            if os.path.isfile(Path_Movies + namebouquet + ".m3u"):
-                os.remove(Path_Movies + namebouquet + ".m3u")
+            if file_exists(Path_Movies + namebouquet + ".m3u"):
+                remove(Path_Movies + namebouquet + ".m3u")
             try:
                 urlY = xc12 + xc2
                 localFile = '%s%s.m3u' % (Path_Movies, namebouquet)
@@ -4247,8 +4252,8 @@ def save_old():
 
             name = namebouquet.replace('.m3u', '')
             xcname = 'userbouquet.%s%s_.tv' % (tag, name)
-            if os.path.isfile('/etc/enigma2/%s' % xcname):
-                os.remove('/etc/enigma2/%s' % xcname)
+            if file_exists('/etc/enigma2/%s' % xcname):
+                remove('/etc/enigma2/%s' % xcname)
             with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
                 outfile.write('#NAME %s\r\n' % name.capitalize())
                 for line in open(Path_Movies + '%s.m3u' % name):
@@ -4287,9 +4292,9 @@ def save_old():
                     new_bouquet.write(line)
                 new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
                 new_bouquet.close()
-            os.system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
-            os.system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
-        Utils.ReloadBouquets()
+            system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
+            system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
+        # Utils.ReloadBouquets()
     except Exception as ex:
         print(ex)
 
@@ -4298,10 +4303,14 @@ def make_bouquet():
     global infoname
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
     if not file_exists("/etc/enigma2/e2m3u2bouquet"):
-        os.system("mkdir /etc/enigma2/e2m3u2bouquet")
+        system("mkdir /etc/enigma2/e2m3u2bouquet")
     configfilexml = ("/etc/enigma2/e2m3u2bouquet/config.xml")
-    if file_exists(configfilexml):
-        os.remove(configfilexml)
+    try:
+        remove(configfilexml)
+        print("% s removed successfully" % configfilexml)
+    except OSError as error:
+        print(error)
+        print("File path can not be removed")
     all_bouquet = "0"
     iptv_types = "0"
     multi_vod = "0"
@@ -4348,6 +4357,11 @@ def make_bouquet():
     dom = str(STREAMS.playlistname)
     com = ("python %s") % e2m3u2bouquet
     _session.open(Console, _("Conversion %s in progress: ") % dom, ["%s" % com], closeOnSuccess=True)
+    # from Components.Console import Console
+    # Console = Console()
+    # Console.ePopen("%s" % com)
+    # system('sleep 5')
+    # Utils.ReloadBouquets()
 
 
 def menu(menuid, **kwargs):
