@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*             28/04/2023               *
+*  update     02/07/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -60,6 +60,7 @@ from enigma import ePicLoad
 from enigma import gFont
 from enigma import iPlayableService
 from enigma import loadPNG
+from enigma import getDesktop
 from os import listdir, remove, system
 from os.path import splitext
 from os.path import exists as file_exists
@@ -86,7 +87,7 @@ version = "XC Forever V.2.3"
 
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 
-skin_path = os.path.join(plugin_path, 'skin/fhd')
+# skin_path = os.path.join(plugin_path, 'skin/fhd')
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
 
@@ -204,7 +205,18 @@ cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("inte
 cfg.fixedtime = ConfigClock(default=0)
 cfg.autoupdate = ConfigEnableDisable(default=False)
 
-if Utils.isFHD():
+screenwidth = getDesktop(0).size()
+if screenwidth.width() == 2560:
+# if Utils.isUHD():
+    CHANNEL_NUMBER = [3, 4, 120, 60, 0]
+    CHANNEL_NAME = [130, 4, 1800, 60, 1]
+    FONT_0 = ("Regular", 52)
+    FONT_1 = ("Regular", 52)
+    BLOCK_H = 80
+    skin_path = os.path.join(plugin_path, 'skin/uhd')
+    piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
+
+elif screenwidth.width() == 1920:
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
     FONT_0 = ("Regular", 32)
@@ -223,7 +235,7 @@ else:
 
 if Utils.DreamOS():
     skin_path = skin_path + '/dreamOs'
-
+print('skin path is: ', skin_path)
 
 def copy_poster():
     system("cd / && cp -f " + piclogo + " " + pictmp)
@@ -1371,8 +1383,9 @@ class xc_Main(Screen):
             self["info"].setText("")
             self["description"].setText("NO DESCRIPTIONS")
             try:
-                remove(pictmp)
-                print("% s removed successfully" % pictmp)
+                if file_exists(pictmp):
+                    remove(pictmp)
+                    print("% s removed successfully" % pictmp)
             except OSError as error:
                 print(error)
                 print("File path can not be removed")
@@ -3098,7 +3111,7 @@ class OpenServer(Screen):
         nam = Path_XML + self.names[idx]
         dom = Path_XML + self.urls[idx]
         if answer is None:
-            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s?") % nam)
+            self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove: %s?") % nam)
         elif answer:
             try:
                 remove(dom)
@@ -3488,7 +3501,7 @@ class xc_Play(Screen):
             return
         dom = self.Movies[idx]
         if answer is None:
-            self.session.openWithCallback(self.extnok, MessageBox, _("Do you want to remove: %s ?") % dom)
+            self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove: %s ?") % dom)
         elif answer:
             try:
                 remove(dom)
@@ -3962,11 +3975,16 @@ Panel_list = [
 
 
 def xcm3ulistEntry(name):
+    png0 = plugin_path + '/skin/uhd/xcselh.png'
     pngl = plugin_path + '/skin/fhd/xcselh.png'
     png2 = plugin_path + '/skin/hd/xcsel.png'
     res = [name]
     white = 16777215
-    if Utils.isFHD():
+    
+    if screenwidth.width() == 2560:
+        res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 4), size=(86, 54), png=loadPNG(png0)))
+        res.append(MultiContentEntryText(pos=(140, 0), size=(1800, 60), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))    
+    elif screenwidth.width() == 1920:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(70, 40), png=loadPNG(pngl)))
         res.append(MultiContentEntryText(pos=(80, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     else:
@@ -3988,7 +4006,10 @@ def m3ulistxc(data, list):
 class xcM3UList(MenuList):
     def __init__(self, list):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
-        if Utils.isFHD():
+        if screenwidth.width() == 2560:
+            self.l.setItemHeight(70)
+            self.l.setFont(0, gFont("Regular", 54))        
+        elif screenwidth.width() == 1920:
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
         else:

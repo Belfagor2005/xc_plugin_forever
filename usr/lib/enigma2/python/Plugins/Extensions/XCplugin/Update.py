@@ -24,6 +24,11 @@ def upd_done():
     import requests
     response = requests.head(xfile)
     if response.status_code == 200:
+        # if PY3:
+            # res = response.read().decode('utf-8')
+        # else:
+            # res = response.read()
+    
         fdest = "/tmp/xcforever.tar"
         # print("upd_done xfile =", xfile)
         downloadPage(xfile, fdest).addCallback(upd_last)
