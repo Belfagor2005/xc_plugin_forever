@@ -1,0 +1,16 @@
+<!-- ***** EPG MENU 1920x1080 ***** OK 15-05-2020 /-->
+<screen name="xcEPG" position="0,0" size="2560,1440" title="EPG" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
+	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="3" />
+	<eLabel text="EPG" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<eLabel position="294,160" size="1174,7" backgroundColor="#202020" zPosition="1" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="1067,47" size="400,107" font="Regular;40" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+	<widget source="text_clear" render="xcRunningText" position="294,207" size="1174,1067" font="Regular;36" foregroundColor="#ffffff" backgroundColor="#000000" halign="left" transparent="1" zPosition="2" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap" />
+	<!-- Buttons Colors -->
+	<eLabel position="294,1307" size="1174,7" backgroundColor="#202020" zPosition="1" />
+	<ePixmap position="294,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="360,1347" size="307,54" font="Regular;40" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="4" />
+</screen>

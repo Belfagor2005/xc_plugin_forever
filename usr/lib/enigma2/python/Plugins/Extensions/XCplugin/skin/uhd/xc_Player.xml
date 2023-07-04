@@ -1,0 +1,105 @@
+<!-- ***** XC PLAYER 1920x1080 ***** 15-05-2020 /-->
+<screen name="Xtream_Player" position="0,0" size="2560,1440" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="2554,391" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvbar.png" zPosition="-1" />
+	<ePixmap position="0,1067" size="2560,374" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/infobar.png" zPosition="-1" />
+	<ePixmap position="67,1243" size="167,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="5" />
+	<eLabel position="267,1254" size="2227,74" backgroundColor="#10202020" transparent="0" zPosition="1" />
+	<!--
+	<eLabel position="0,0" size="2560,442" backgroundColor="#10000000" transparent="0" zPosition="1" />
+	-->
+	<!-- Elapsed time -->
+	<widget source="session.CurrentService" render="Label" position="267,1254" size="227,74" font="Regular;54" halign="center" valign="center" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServicePosition">Position</convert>
+	</widget>
+	<eLabel position="494,1254" size="14,74" backgroundColor="#000000" transparent="0" zPosition="5"/>
+	<!-- Progressbar (movie position)-->
+	<widget source="session.CurrentService" render="Progress" position="507,1254" size="1720,74" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" backgroundColor="#10202020" zPosition="2">
+		<convert type="ServicePosition">Position</convert>
+	</widget>
+	<eLabel position="2227,1254" size="14,74" backgroundColor="#000000" transparent="0" zPosition="5"/>
+	<widget source="session.CurrentService" render="Label" position="520,1254" size="1654,74" font="Regular;54" valign="center" noWrap="1" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServiceName">Name</convert>
+	</widget>
+	<widget source="session.CurrentService" render="PositionGauge" position="507,1250" size="1680,8" transparent="1" zPosition="0">
+		<convert type="ServicePosition">Gauge</convert>
+	</widget>
+	<!-- Remaining time -->
+	<widget source="session.CurrentService" render="Label" position="2214,1254" size="307,74" font="Regular;54" halign="center" valign="center" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServicePosition">Remaining</convert>
+	</widget>
+	<!-- movie lenght Servicename -->
+	<widget source="session.CurrentService" render="Label" position="52,1070" size="1334,267" font="Regular;120" halign="left" foregroundColor="yellow" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServicePosition">Length</convert>
+	</widget>
+	<widget name="state" position="500,1154" size="667,80" font="Regular;80" halign="left" foregroundColor="#707070" backgroundColor="#10000000" transparent="1" zPosition="10"/>
+	<!-- Buttons Colors -->
+	<ePixmap position="84,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_red.png" alphatest="blend" zPosition="3" transparent="1"/>
+	<widget name="key_red" position="134,1354" size="311,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2"/>
+	<ePixmap position="480,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1"/>
+	<widget name="cont_play" position="535,1354" size="334,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2"/>
+	<ePixmap position="879,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/stop.png" alphatest="blend" zPosition="3" transparent="1"/>
+	<widget name="key_stop" position="932,1354" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2"/>
+	<ePixmap position="1250,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/rec.png" alphatest="blend" zPosition="3" transparent="1"/>
+	<widget name="key_record" position="1298,1354" size="334,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2"/>
+	<eLabel position="1707,1346" size="160,68" backgroundColor="#30000000" zPosition="2"/>
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/info.png" position="1723,1351" size="134,54" alphatest="blend" zPosition="3"/>
+	<widget name="programm" position="67,27" size="2427,406" font="Regular;40" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3"/>
+	<!-- Audio icon -->
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/ico_dolby_off.png" position="2074,560" size="191,67" alphatest="blend" zPosition="1"/>
+	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/ico_dolby_on.png" position="2074,560" size="191,67" alphatest="blend" zPosition="2">
+		<convert type="ServiceInfo">IsMultichannel</convert>
+		<convert type="ConditionalShowHide"/>
+	</widget>
+	<!-- HD icon -->
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/ico_hd_off.png" position="2307,560" size="187,67" alphatest="blend" zPosition="1"/>
+	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/ico_hd_on.png" position="2307,560" size="187,67" alphatest="blend" zPosition="2">
+		<convert type="ServiceInfo">VideoWidth</convert>
+		<convert type="ValueRange">721,1980</convert>
+		<convert type="ConditionalShowHide"/>
+	</widget>
+	<!-- Poster -->
+	<ePixmap position="2080,632" size="414,574" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/grid.png" alphatest="blend" zPosition="5"/>
+	<widget name="poster" position="2087,640" size="399,547" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" scale="1" zPosition="2" transparent="1"/>
+	<!-- PlayerKeys  FW -->
+	<ePixmap position="1420,1134" size="58,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/ff.png" zPosition="-1"/>
+	<eLabel text="  (+10s)" position="1507,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<eLabel text="  (+1m)" position="1707,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<eLabel text="  (+5m)" position="1894,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<eLabel text="3" position="1507,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="6" position="1707,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="9" position="1894,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<!-- PlayerKeys  RW -->
+	<ePixmap position="1420,1187" size="58,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/rw.png" zPosition="-1"/>
+	<eLabel text="1" position="1507,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="4" position="1707,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="7" position="1894,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="  (-10s)" position="1507,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<eLabel text="  (-1m)" position="1707,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<eLabel text="  (-5m)" position="1894,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
+	<!-- Video Resolution  -->
+	<widget source="session.CurrentService" render="Label" position="1960,1347" size="134,54" font="Regular;46" halign="right" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServiceInfo">VideoWidth</convert>
+	</widget>
+	<eLabel text="x" position="2096,1347" size="34,54" font="Regular;46" foregroundColor="#505050" backgroundColor="#10000000" transparent="1" zPosition="3"/>
+	<widget source="session.CurrentService" render="Label" position="2134,1347" size="134,54" font="Regular;46" halign="left" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
+		<convert type="ServiceInfo">VideoHeight</convert>
+	</widget>
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="2227,1347" size="267,47" font="Regular;46" halign="right" foregroundColor="#808080" backgroundColor="#10000000" transparent="1" zPosition="2">
+		<convert type="ClockToText">Format:%H:%M:%S</convert>
+	</widget>
+	
+
+	
+	<!-- progress 
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/progg.png" position="48,940" size="120,120" backgroundColor="black" zPosition="400" />
+	<widget pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/prog.png" orientation="orBottomToTop" position="51,936" render="Progress" size="120,120" backgroundColor="black" source="session.CurrentService" transparent="1" zPosition="402">
+		<convert type="EventTime">Progress</convert>
+	</widget>
+	<widget backgroundColor="black" font="Regular; 20" text="+9999" halign="center" position="68,974" render="Label" size="80,54" source="session.CurrentService" transparent="1" zPosition="402" noWrap="403" valign="center">
+		<convert type="EventTime">Remaining</convert>
+		<convert type="RemainingToText">OnlyMinutes</convert>
+	</widget>
+	-->
+
+</screen>

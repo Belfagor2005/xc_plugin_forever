@@ -1,0 +1,44 @@
+<!-- ***** Home Menu 1920x1080 ***** OK 26/03/2022 /-->
+<screen name="xc_Main" position="0,0" size="2560,1440" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/backb.png" zPosition="1" />
+	<ePixmap position="200,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="1" />
+	<widget name="playlist" position="480,40" size="1254,134" font="Regular;67" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" />
+	<eLabel position="200,160" size="2094,7" backgroundColor="#202020" zPosition="2" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="1760,40" size="534,107" font="Regular;46" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+	<widget name="feedlist" position="200,207" size="1127,1067" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
+	<widget name="poster" position="1880,207" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
+	<widget name="version" position="2024,783" size="267,40" halign="left" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<eLabel position="1347,820" size="944,7" backgroundColor="#202020" zPosition="1" />
+	<widget source="description" render="xcRunningText" position="1334,847" size="974,434" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
+
+	<!-- Description -->
+	<widget position="1040,2507" size="800,54" name="Text" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<widget position="1347,174" size="534,134" name="exp" font="Regular;35" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1347,307" size="534,67" name="max_connect" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1347,374" size="534,67" name="active_cons" font="Regular;38" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1347,440" size="534,67" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+    <widget position="1347,620" size="534,107" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1347,507" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
+	<widget position="1532,760" size="355,54" name="state" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1712,1455" size="454,54" name="key_text" font="Regular;43" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<ePixmap position="1347,754" size="150,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/epg.png" alphatest="blend" zPosition="10" />
+	<!-- Buttons Colors -->
+	<eLabel position="200,1320" size="2094,7" backgroundColor="#202020" zPosition="1" />
+	<ePixmap position="200,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="267,1347" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget name="green" alphatest="on" position="600,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_green.png" zPosition="3" transparent="1" />
+	<widget name="key_green" position="667,1347" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget name="yellow" alphatest="on" position="1054,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_yellow.png" zPosition="3" transparent="1" />
+	<widget name="key_yellow" position="1120,1347" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget name="blue" alphatest="on" position="1547,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_blue.png" zPosition="3" transparent="1" />
+	<widget name="key_blue" position="1614,1347" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="3" />
+	<!-- ePixmap position="2347,934"  size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/search.png" zPosition="3" alphatest="blend" transparent="1" /!-->
+ 	<ePixmap position="2347,1107" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/home.png" zPosition="3" alphatest="blend" transparent="1" />		
+	<ePixmap position="2347,1187" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/jobw.png" zPosition="3" alphatest="blend" transparent="1" />	
+	<ePixmap position="2347,1267" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/help.png" zPosition="3" alphatest="blend" transparent="1" />
+	<ePixmap position="2347,1347" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/info.png" zPosition="3" alphatest="blend" transparent="1" />
+	<widget name="info" position="352,1510" size="534,40" font="Regular;32" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
+</screen>

@@ -1,0 +1,30 @@
+<!-- ***** HELP MENU 1920x1080 ***** OK 26/03/2022 /-->
+<screen name="xcHelp" position="0,0" size="2560,1440" title="HELP" backgroundColor="#FF000000" flags="wfNoBorder">
+	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
+	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="3" />
+	<eLabel text="HELP" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<widget name="version" position="507,114" size="267,40" halign="right" font="Regular;32" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<eLabel position="294,160" size="1174,7" backgroundColor="#202020" zPosition="1" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="1067,47" size="400,107" font="Regular;40" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
+		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
+	</widget>
+	<!-- Poster -->
+	<ePixmap position="1054,187" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" scale="1" alphatest="blend" zPosition="1" />
+	<widget name="helpdesc" position="294,180" font="Regular;35" size="1004,1120" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<widget name="helpdesc2" position="298,727" font="Regular;40" size="1067,522" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />
+	<!-- Buttons Colors -->
+	<eLabel position="294,1254" size="1174,7" backgroundColor="#202020" zPosition="1" />
+   	<ePixmap position="294,1287" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_green" position="360,1280" size="400,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="294,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_red" position="360,1348" size="400,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+ 	<ePixmap position="1427,1287" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_blue" position="1000,1280" size="400,54" font="Regular;40" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="1427,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_yellow" position="1000,1347" size="400,54" font="Regular;40" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<ePixmap position="1930,210" size="208,100" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/PayPal.png" alphatest="on" />
+	<ePixmap position="1839,320" size="427,427" zPosition="2" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/qr-code.png" alphatest="on" />	
+	<widget name="paypal" position="1700,759" size="702,263" font="Regular;32" halign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<eLabel position="1694,188" size="720,852" backgroundColor="#80000000" cornerRadius="20" zPosition="1" />
+</screen>
