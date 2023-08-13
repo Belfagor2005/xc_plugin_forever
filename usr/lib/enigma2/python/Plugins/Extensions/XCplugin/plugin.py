@@ -82,15 +82,13 @@ try:
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
 
-global STREAMS, piclogo, pictmp, skin_path, Path_Movies, Path_Movies2, Path_XML
+global STREAMS, piclogo, pictmp, Path_Movies, Path_Movies2, Path_XML
 global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo
 
 _session = " "
 version = "XC Forever V.2.3"
 
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
-
-# skin_path = os.path.join(plugin_path, 'skin/fhd')
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
 
@@ -98,16 +96,19 @@ enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
 xc_list = "/tmp/xc.txt"
+
 iptv_list_tmp = []
 re_search = False
 pmovies = False
 series = False
 isStream = False
 ui = False
+
 btnsearch = 0
 next_request = 0
 stream_url = ""
 urlinfo = ""
+
 pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
 PY3 = False
@@ -1228,7 +1229,7 @@ class xc_Main(Screen):
         self["playlist"].setText(self.temp_playname)
         self.go()
         self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        self.scale = eAVSwitch().getFramebufferScale()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1445,7 +1446,7 @@ class xc_Main(Screen):
             if self["poster"].instance:
                 size = self['poster'].instance.size()
                 self.picload = ePicLoad()
-                self.scale = AVSwitch().getFramebufferScale()
+                self.scale = eAVSwitch().getFramebufferScale()
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
                 if Utils.DreamOS():
                     self.picload.startDecode(png, False)
@@ -2069,7 +2070,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["programm"] = Label("")
         self["poster"] = Pixmap()
         self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        self.scale = eAVSwitch().getFramebufferScale()
         try:
             self.picload.PictureData.get().append(self.setCover)
         except:
@@ -2124,7 +2125,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        return eAVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -2149,7 +2150,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -2196,7 +2197,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = AVSwitch().getFramebufferScale()
+        sc = eAVSwitch().getFramebufferScale()
         self.picload = ePicLoad()
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
@@ -3193,7 +3194,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self["programm"] = Label("")
         self["poster"] = Pixmap()
         self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        self.scale = eAVSwitch().getFramebufferScale()
         STREAMS.play_vod = False
         self.channel_list = iptv_list_tmp
         self.index = STREAMS.list_index
@@ -3225,7 +3226,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.onFirstExecBegin.append(self.play_channel)
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        return eAVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3250,7 +3251,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -3366,7 +3367,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = AVSwitch().getFramebufferScale()
+        sc = eAVSwitch().getFramebufferScale()
         self.picload = ePicLoad()
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
@@ -3859,7 +3860,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.onClose.append(self.cancel)
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        return eAVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3884,7 +3885,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
