@@ -208,7 +208,7 @@ cfg.last_update = ConfigText(default="Never")
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.fixedtime = ConfigClock(default=0)
 cfg.autoupdate = ConfigEnableDisable(default=False)
-
+global skin_path
 screenwidth = getDesktop(0).size()
 if screenwidth.width() == 2560:
 # if Utils.isUHD():
