@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     02/07/2023               *
+*  update     02/09/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -16,9 +16,9 @@ from . import _
 from . import Utils
 from . import html_conv
 try:
-    from Components.AVSwitch import eAVSwitch
+    from Components.AVSwitch import eAVSwitch as AVSwitch
 except Exception:
-    from Components.AVSwitch import iAVSwitch as eAVSwitch
+    from Components.AVSwitch import iAVSwitch as AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, ConfigYesNo
 from Components.config import ConfigEnableDisable
@@ -55,7 +55,7 @@ from Tools.Directories import resolveFilename
 from Tools.Downloader import downloadWithProgress
 from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
 from enigma import RT_HALIGN_LEFT
-from enigma import gPixmapPtr, eAVSwitch
+from enigma import gPixmapPtr
 from enigma import eTimer
 from enigma import eListboxPythonMultiContent
 from enigma import eServiceReference
@@ -82,13 +82,15 @@ try:
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
 
-global STREAMS, piclogo, pictmp, Path_Movies, Path_Movies2, Path_XML
+global STREAMS, piclogo, pictmp, skin_path, Path_Movies, Path_Movies2, Path_XML
 global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo
 
 _session = " "
 version = "XC Forever V.2.3"
 
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
+
+# skin_path = os.path.join(plugin_path, 'skin/fhd')
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
 
@@ -96,19 +98,16 @@ enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
 xc_list = "/tmp/xc.txt"
-
 iptv_list_tmp = []
 re_search = False
 pmovies = False
 series = False
 isStream = False
 ui = False
-
 btnsearch = 0
 next_request = 0
 stream_url = ""
 urlinfo = ""
-
 pythonVer = sys.version_info.major
 print("pythonVer = ", pythonVer)
 PY3 = False
@@ -156,7 +155,7 @@ if file_exists("/usr/bin/gstplayer"):
     modelive.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modelive.append(("5002", "Exteplayer3(5002)"))
-if Utils.DreamOS():
+if os.path.exists("/var/lib/dpkg/status"):
     modelive.append(("8193", "eServiceUri(8193)"))
 
 modemovie = [("4097", "IPTV(4097)")]
@@ -164,7 +163,7 @@ if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modemovie.append(("5002", "Exteplayer3(5002)"))
-if Utils.DreamOS():
+if os.path.exists("/var/lib/dpkg/status"):
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 
@@ -211,7 +210,6 @@ cfg.autoupdate = ConfigEnableDisable(default=False)
 global skin_path
 screenwidth = getDesktop(0).size()
 if screenwidth.width() == 2560:
-# if Utils.isUHD():
     CHANNEL_NUMBER = [3, 4, 120, 60, 0]
     CHANNEL_NAME = [130, 4, 1800, 60, 1]
     FONT_0 = ("Regular", 52)
@@ -237,7 +235,7 @@ else:
     skin_path = os.path.join(plugin_path, 'skin/hd')
     piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
-if Utils.DreamOS():
+if os.path.exists("/var/lib/dpkg/status"):
     skin_path = skin_path + '/dreamOs'
 print('skin path is: ', skin_path)
 
@@ -693,7 +691,7 @@ class xc_config(Screen, ConfigListScreen):
             self.openDirectoryBrowser(cfg.pthpicon.value, self.setting)
         else:
             pass
-        ConfigListScreen.keyOK(self)
+        # ConfigListScreen.keyOK(self)
 
     def openDirectoryBrowser(self, path, itemcfg):
         if file_exists("/usr/bin/apt-get"):
@@ -707,11 +705,10 @@ class xc_config(Screen, ConfigListScreen):
                     text=_("Choose directory"),
                     currDir=str(path),
                     bookmarks=config.movielist.videodirs,
-                    autoAdd=False,
+                    autoAdd=True,
                     editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
-                    minFree=15)
-
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
+                    # minFree=15)
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", ex)
         elif itemcfg == "pthxmlfile":
@@ -723,11 +720,10 @@ class xc_config(Screen, ConfigListScreen):
                     text=_("Choose directory"),
                     currDir=str(path),
                     bookmarks=config.movielist.videodirs,
-                    autoAdd=False,
+                    autoAdd=True,
                     editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
-                    minFree=15)
-
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
+                    # minFree=15)
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", ex)
         elif itemcfg == "pthpicon":
@@ -739,10 +735,10 @@ class xc_config(Screen, ConfigListScreen):
                     text=_("Choose directory"),
                     currDir=str(path),
                     bookmarks=config.movielist.videodirs,
-                    autoAdd=False,
+                    autoAdd=True,
                     editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"],
-                    minFree=15)
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
+                    # minFree=15)
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", ex)
         ConfigListScreen.keyOK(self)
@@ -1229,7 +1225,7 @@ class xc_Main(Screen):
         self["playlist"].setText(self.temp_playname)
         self.go()
         self.picload = ePicLoad()
-        self.scale = eAVSwitch().getFramebufferScale()
+        self.scale = AVSwitch().getFramebufferScale()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1446,9 +1442,9 @@ class xc_Main(Screen):
             if self["poster"].instance:
                 size = self['poster'].instance.size()
                 self.picload = ePicLoad()
-                self.scale = eAVSwitch().getFramebufferScale()
+                self.scale = AVSwitch().getFramebufferScale()
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-                if Utils.DreamOS():
+                if os.path.exists("/var/lib/dpkg/status"):
                     self.picload.startDecode(png, False)
                 else:
                     self.picload.startDecode(png, 0, 0, False)
@@ -2070,7 +2066,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["programm"] = Label("")
         self["poster"] = Pixmap()
         self.picload = ePicLoad()
-        self.scale = eAVSwitch().getFramebufferScale()
+        self.scale = AVSwitch().getFramebufferScale()
         try:
             self.picload.PictureData.get().append(self.setCover)
         except:
@@ -2125,7 +2121,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def getAspect(self):
-        return eAVSwitch().getAspectRatioSetting()
+        return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -2150,7 +2146,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            eAVSwitch().setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -2192,12 +2188,12 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             print("update COVER")
 
     def decodeImage(self, poster_path):
-        if Utils.DreamOS():
+        if os.path.exists("/var/lib/dpkg/status"):
             self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = eAVSwitch().getFramebufferScale()
+        sc = AVSwitch().getFramebufferScale()
         self.picload = ePicLoad()
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
@@ -3001,7 +2997,7 @@ class OpenServer(Screen):
 
     def selectlist(self):
         idx = self["list"].getSelectionIndex()
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         else:
             try:
@@ -3194,7 +3190,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self["programm"] = Label("")
         self["poster"] = Pixmap()
         self.picload = ePicLoad()
-        self.scale = eAVSwitch().getFramebufferScale()
+        self.scale = AVSwitch().getFramebufferScale()
         STREAMS.play_vod = False
         self.channel_list = iptv_list_tmp
         self.index = STREAMS.list_index
@@ -3226,7 +3222,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.onFirstExecBegin.append(self.play_channel)
 
     def getAspect(self):
-        return eAVSwitch().getAspectRatioSetting()
+        return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3251,7 +3247,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            eAVSwitch().setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -3362,12 +3358,12 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             show_more_infos(name, self.index)
 
     def decodeImage(self, poster_path):
-        if Utils.DreamOS():
+        if os.path.exists("/var/lib/dpkg/status"):
             self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = eAVSwitch().getFramebufferScale()
+        sc = AVSwitch().getFramebufferScale()
         self.picload = ePicLoad()
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
@@ -3860,7 +3856,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.onClose.append(self.cancel)
 
     def getAspect(self):
-        return eAVSwitch().getAspectRatioSetting()
+        return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3885,7 +3881,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            eAVSwitch().setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -3985,10 +3981,10 @@ def xcm3ulistEntry(name):
     png2 = plugin_path + '/skin/hd/xcsel.png'
     res = [name]
     white = 16777215
-    
+
     if screenwidth.width() == 2560:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 4), size=(86, 54), png=loadPNG(png0)))
-        res.append(MultiContentEntryText(pos=(140, 0), size=(1800, 60), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))    
+        res.append(MultiContentEntryText(pos=(140, 0), size=(1800, 60), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     elif screenwidth.width() == 1920:
         res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(70, 40), png=loadPNG(pngl)))
         res.append(MultiContentEntryText(pos=(80, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
@@ -4013,7 +4009,7 @@ class xcM3UList(MenuList):
         MenuList.__init__(self, list, False, eListboxPythonMultiContent)
         if screenwidth.width() == 2560:
             self.l.setItemHeight(70)
-            self.l.setFont(0, gFont("Regular", 54))        
+            self.l.setFont(0, gFont("Regular", 54))
         elif screenwidth.width() == 1920:
             self.l.setItemHeight(50)
             self.l.setFont(0, gFont("Regular", 32))
@@ -4138,7 +4134,7 @@ def nextAR():
         STREAMS.ar_id_player += 1
         if STREAMS.ar_id_player > 6:
             STREAMS.ar_id_player = 0
-        eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("nextAR ERROR", ex)
@@ -4149,7 +4145,7 @@ def prevAR():
         STREAMS.ar_id_player -= 1
         if STREAMS.ar_id_player == -1:
             STREAMS.ar_id_player = 6
-        eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("prevAR ERROR", ex)
