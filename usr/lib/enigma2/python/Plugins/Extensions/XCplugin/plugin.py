@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     02/09/2023               *
+*  update     02/07/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -15,10 +15,12 @@ from __future__ import print_function
 from . import _
 from . import Utils
 from . import html_conv
+import codecs
+from Components.AVSwitch import AVSwitch
 try:
-    from Components.AVSwitch import eAVSwitch as AVSwitch
-except Exception:
-    from Components.AVSwitch import iAVSwitch as AVSwitch
+    from Components.AVSwitch import iAVSwitch
+except:
+    from enigma import eAVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, ConfigYesNo
 from Components.config import ConfigEnableDisable
@@ -155,7 +157,7 @@ if file_exists("/usr/bin/gstplayer"):
     modelive.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modelive.append(("5002", "Exteplayer3(5002)"))
-if os.path.exists("/var/lib/dpkg/status"):
+if os.path.exists('/var/lib/dpkg/info'):
     modelive.append(("8193", "eServiceUri(8193)"))
 
 modemovie = [("4097", "IPTV(4097)")]
@@ -163,7 +165,7 @@ if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modemovie.append(("5002", "Exteplayer3(5002)"))
-if os.path.exists("/var/lib/dpkg/status"):
+if os.path.exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 
@@ -235,9 +237,10 @@ else:
     skin_path = os.path.join(plugin_path, 'skin/hd')
     piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
-if os.path.exists("/var/lib/dpkg/status"):
+if os.path.exists('/var/lib/dpkg/info'):
     skin_path = skin_path + '/dreamOs'
 print('skin path is: ', skin_path)
+
 
 def copy_poster():
     system("cd / && cp -f " + piclogo + " " + pictmp)
@@ -346,7 +349,7 @@ class xc_home(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_home.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('MAIN MENU')
         self.list = []
@@ -477,7 +480,7 @@ class xc_config(Screen, ConfigListScreen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_config.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.list = []
@@ -543,7 +546,7 @@ class xc_config(Screen, ConfigListScreen):
             self.session.openWithCallback(self.ImportInfosServer, MessageBox, _("Import Server from /tmp/xc.tx?"))
         elif answer:
             if file_exists(xc_list) and os.stat(xc_list).st_size > 100:
-                with open(xc_list, 'r') as f:
+                with codecs.open(xc_list, "r", encoding="utf-8") as f:
                     chaine = f.readlines()
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
                 port = chaine[1].replace("\n", "").replace("\t", "").replace("\r", "").replace(":", "_")
@@ -724,6 +727,7 @@ class xc_config(Screen, ConfigListScreen):
                     editDir=True,
                     inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
                     # minFree=15)
+
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", ex)
         elif itemcfg == "pthpicon":
@@ -788,9 +792,18 @@ class xc_config(Screen, ConfigListScreen):
                 filesave = filesave.replace(":", "_")
                 filesave = filesave.lower()
                 port = str(cfg.port.value)
-                with open(Path_XML + filesave, "w") as f:
-                    f.write(str('<?xml version="1.0" encoding="UTF-8" ?>\n' + '<items>\n' + '<plugin_version>' + version + '</plugin_version>\n' + '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n' + '<port>' + port + '</port>\n' + '<username>' + str(cfg.user.value) + '</username>\n' + '<password>' + str(cfg.passw.value) + '</password>\n' + '</items>'))
-                    f.close()
+                sourcefile = Path_XML + filesave
+                if not os.path.isfile(sourcefile) or os.stat(sourcefile).st_size == 0:
+                    with open(sourcefile, "w") as f:
+                        xml_str = '<?xml version="1.0" encoding="utf-8"?>\n'
+                        xml_str += '<items>\n'
+                        xml_str += '<plugin_version>' + version + '</plugin_version>\n'
+                        xml_str += '<xtream_e2portal_url><![CDATA[http://' + str(cfg.hostaddress.value) + ']]></xtream_e2portal_url>\n'
+                        xml_str += '<port>' + port + '</port>\n'
+                        xml_str += '<username>' + str(cfg.user.value) + '</username>\n'
+                        xml_str += '<password>' + str(cfg.passw.value) + '</password>\n'
+                        xml_str += '</items>'
+                        f.write(xml_str)
                 return
         except Exception as ex:
             print("xcConfig xml_plugin failed: ", ex)
@@ -1168,7 +1181,7 @@ class xc_Main(Screen):
         skin = os.path.join(skin_path, 'xc_Main.xml')
         if cfg.screenxl.value:
             skin = os.path.join(skin_path, 'xc_Mainxl.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.channel_list = STREAMS.iptv_list
@@ -1224,8 +1237,12 @@ class xc_Main(Screen):
         self["Text"].setText(infoname)
         self["playlist"].setText(self.temp_playname)
         self.go()
-        self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        # try:
+            # self.scale = iAVSwitch.getFramebufferScale()
+        # except:
+            # self.scale = eAVSwitch.getFramebufferScale()
+        # self.scale = AVSwitch().getFramebufferScale()
+        # self.picload = ePicLoad()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -1441,10 +1458,14 @@ class xc_Main(Screen):
         if file_exists(png):
             if self["poster"].instance:
                 size = self['poster'].instance.size()
-                self.picload = ePicLoad()
                 self.scale = AVSwitch().getFramebufferScale()
+                self.picload = ePicLoad()
+                try:
+                    iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+                except:
+                    eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-                if os.path.exists("/var/lib/dpkg/status"):
+                if os.path.exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
                 else:
                     self.picload.startDecode(png, 0, 0, False)
@@ -1718,16 +1739,6 @@ class xc_Main(Screen):
         global series
         global pmovies
         titleserie = str(STREAMS.playlistname)
-
-        # self.index = self.mlist.getSelectionIndex()
-        # selected_channel = iptv_list_tmp[self.index]
-        # if selected_channel:
-            # self.title = str(selected_channel[1])
-            # self.vod_url = selected_channel[4]
-            # self.desc = str(selected_channel[2])
-
-        # if self.temp_index > -1:
-            # self.index = self.temp_index
         if series is True and btnsearch == 1:
             if answer is None:
                 self.streamfile = '/tmp/streamfile.txt'
@@ -1737,42 +1748,42 @@ class xc_Main(Screen):
                 self.icount = 0
                 try:
                     self["state"].setText("Download SERIES")
-                    # filename = Utils.cleantitle(STREAMS.playlistname)
                     Path_Movies2 = Path_Movies + titleserie + '/'
                     if not file_exists(Path_Movies2):
                         system("mkdir " + Path_Movies2)
                     if Path_Movies2.endswith("//") is True:
                         Path_Movies2 = Path_Movies2[:-1]
-                    f = open(self.streamfile, "r")
-                    read_data = f.read()
-                    regexcat = ".*?,'(.*?)','(.*?)'.*?\\n"
-                    match = re.compile(regexcat, re.DOTALL).findall(read_data)
-                    f.close()
-                    for name, url in match:
-                        print(name + '\n' + url)
-                        if url.startswith('http'):
-                            ext = str(splitext(url)[-1])
-                            if ext not in EXTDOWN:
-                                ext = '.avi'
-                            self.title = Utils.cleantitle(name) + ext
-                            self.title = self.title.lower()
-                            self.icount += 1
-                            cmd = "wget -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
-                            if "https" in str(url):
-                                cmd = "wget --no-check-certificate -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
-                            print('cmd comand wget: ', cmd)
-                            try:
-                                ui = True
-                                JobManager.AddJob(downloadJob(self, cmd, Path_Movies2, self.title))
-                                self.downloading = True
-                                pmovies = True
-
-                            except Exception as e:
-                                print(e)
-                                pass
+                    read_data = ''
+                    with codecs.open(self.streamfile, "r", encoding="utf-8") as f:
+                        read_data = f.read()
+                    if read_data != "":
+                        try:
+                            regexcat = ".*?,'(.*?)','(.*?)'.*?\\n"
+                            match = re.compile(regexcat, re.DOTALL).findall(read_data)
+                            for name, url in match:
+                                print(name + '\n' + url)
+                                if url.startswith('http'):
+                                    ext = str(splitext(url)[-1])
+                                    if ext not in EXTDOWN:
+                                        ext = '.avi'
+                                    self.title = Utils.cleantitle(name) + ext
+                                    self.title = self.title.lower()
+                                    self.icount += 1
+                                    cmd = "wget -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
+                                    if "https" in str(url):
+                                        cmd = "wget --no-check-certificate -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
+                                    print('cmd comand wget: ', cmd)
+                                    ui = True
+                                    JobManager.AddJob(downloadJob(self, cmd, Path_Movies2, self.title))
+                                    self.downloading = True
+                                    pmovies = True
                             # self.createMetaFile(self.title, self.title)
-                        else:
-                            series = False
+                        except Exception as e:
+                            print(e)
+                            pass
+
+                    else:
+                        series = False
                     Utils.OnclearMem()
 
                 except Exception as ex:
@@ -2043,7 +2054,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         _session = session
         self.recorder_sref = None
         skin = os.path.join(skin_path, 'xc_Player.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
@@ -2065,8 +2076,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["key_stop"] = Label("Stop")
         self["programm"] = Label("")
         self["poster"] = Pixmap()
-        self.picload = ePicLoad()
         self.scale = AVSwitch().getFramebufferScale()
+        self.picload = ePicLoad()
         try:
             self.picload.PictureData.get().append(self.setCover)
         except:
@@ -2121,7 +2132,11 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        try:
+            aspect = iAVSwitch.getAspectRatioSetting()
+        except:
+            aspect = eAVSwitch.getAspectRatioSetting()
+        return aspect
 
     def getAspectString(self, aspectnum):
         return {
@@ -2146,9 +2161,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            iAVSwitch.setAspectRatio(aspect)
         except:
-            pass
+            eAVSwitch.setAspectRatio(aspect)
 
     def av(self):
         temp = int(self.getAspect())
@@ -2188,18 +2203,19 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             print("update COVER")
 
     def decodeImage(self, poster_path):
-        if os.path.exists("/var/lib/dpkg/status"):
+        self.scale = AVSwitch.getFramebufferScale()
+        self.picload = ePicLoad()
+        if os.path.exists('/var/lib/dpkg/info'):
             self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = AVSwitch().getFramebufferScale()
-        self.picload = ePicLoad()
+
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
                               size.height(),
-                              sc[0],
-                              sc[1],
+                              self.scale[0],
+                              self.scale[1],
                               False,
                               1,
                               '#FF000000'))
@@ -2495,7 +2511,7 @@ class xc_StreamTasks(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_StreamTasks.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self["movielist"] = List([])
@@ -2660,7 +2676,7 @@ class xc_help(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_help.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self["version"] = Label(version)
@@ -2819,7 +2835,7 @@ class xc_Epg(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_epg.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         text = text_clear
@@ -2840,7 +2856,7 @@ class xc_maker(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_maker.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.list = []
@@ -2939,7 +2955,7 @@ class OpenServer(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_OpenServer.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.list = []
@@ -3170,7 +3186,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         _session = session
         self.recorder_sref = None
         skin = os.path.join(skin_path, 'xc_iptv_player.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
@@ -3189,8 +3205,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self["channel_name"] = Label("")
         self["programm"] = Label("")
         self["poster"] = Pixmap()
-        self.picload = ePicLoad()
-        self.scale = AVSwitch().getFramebufferScale()
+        # self.scale = AVSwitch.getFramebufferScale()
+        # self.picload = ePicLoad()
         STREAMS.play_vod = False
         self.channel_list = iptv_list_tmp
         self.index = STREAMS.list_index
@@ -3222,7 +3238,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.onFirstExecBegin.append(self.play_channel)
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        try:
+            aspect = iAVSwitch.getAspectRatioSetting()
+        except:
+            aspect = eAVSwitch.getAspectRatioSetting()
+        return aspect
 
     def getAspectString(self, aspectnum):
         return {
@@ -3247,9 +3267,9 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            iAVSwitch.setAspectRatio(aspect)
         except:
-            pass
+            eAVSwitch.setAspectRatio(aspect)
 
     def av(self):
         temp = int(self.getAspect())
@@ -3358,18 +3378,19 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             show_more_infos(name, self.index)
 
     def decodeImage(self, poster_path):
-        if os.path.exists("/var/lib/dpkg/status"):
+        self.scale = AVSwitch.getFramebufferScale()
+        self.picload = ePicLoad()
+        if os.path.exists('/var/lib/dpkg/info'):
             self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-        sc = AVSwitch().getFramebufferScale()
-        self.picload = ePicLoad()
+
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
                               size.height(),
-                              sc[0],
-                              sc[1],
+                              self.scale[0],
+                              self.scale[1],
                               False,
                               1,
                               '#FF000000'))
@@ -3420,7 +3441,7 @@ class xc_Play(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_M3uLoader.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.list = []
@@ -3637,9 +3658,8 @@ class xc_M3uPlay(Screen):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
-        with open(skin, 'r') as f:
+        with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
-        print('self.skin: ', skin)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.name = name
@@ -3684,8 +3704,12 @@ class xc_M3uPlay(Screen):
             search = result
             try:
                 if file_exists(self.name):
-                    f1 = open(self.name, "r")
-                    fpage = f1.read()
+                    fpage = ''
+                    try:
+                        with codecs.open(str(self.name), "r", encoding="utf-8") as f:
+                            fpage = f.read()
+                    except:
+                        pass
                     regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for name, url in match:
@@ -3694,8 +3718,8 @@ class xc_M3uPlay(Screen):
                             search_ok = True
                             url = url.replace(" ", "")
                             url = url.replace("\\n", "")
-                            self.names.append(name)
-                            self.urls.append(url)
+                            self.names.append(str(name))
+                            self.urls.append(str(url))
                     if search_ok is True:
                         m3ulistxc(self.names, self["list"])
                         self["live"].setText(str(len(self.names)) + " Stream")
@@ -3716,8 +3740,12 @@ class xc_M3uPlay(Screen):
         pic = pictmp
         try:
             if file_exists(self.name):
-                f1 = open(self.name, 'r+')
-                fpage = f1.read()
+                fpage = ''
+                try:
+                    with codecs.open(str(self.name), "r", encoding="utf-8") as f:
+                        fpage = f.read()
+                except:
+                    pass
                 if "#EXTM3U" and 'tvg-logo' in fpage:
                     regexcat = 'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\\n(.*?)\\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -3725,9 +3753,9 @@ class xc_M3uPlay(Screen):
                         url = url.replace(' ', '')
                         url = url.replace('\\n', '')
                         pic = pic
-                        self.names.append(name)
-                        self.urls.append(url)
-                        self.pics.append(pic)
+                        self.names.append(str(name))
+                        self.urls.append(str(url))
+                        self.pics.append(str(pic))
                 else:
                     regexcat = '#EXTINF.*?,(.*?)\\n(.*?)\\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -3735,9 +3763,9 @@ class xc_M3uPlay(Screen):
                         url = url.replace(' ', '')
                         url = url.replace('\\n', '')
                         pic = pic
-                        self.names.append(name)
-                        self.urls.append(url)
-                        self.pics.append(pic)
+                        self.names.append(str(name))
+                        self.urls.append(str(url))
+                        self.pics.append(str(pic))
                 m3ulistxc(self.names, self['list'])
                 self["live"].setText('N.' + str(len(self.names)) + " Stream")
             else:
@@ -3856,7 +3884,11 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.onClose.append(self.cancel)
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        try:
+            aspect = iAVSwitch.getAspectRatioSetting()
+        except:
+            aspect = eAVSwitch.getAspectRatioSetting()
+        return aspect
 
     def getAspectString(self, aspectnum):
         return {
@@ -3881,9 +3913,9 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            iAVSwitch.setAspectRatio(aspect)
         except:
-            pass
+            eAVSwitch.setAspectRatio(aspect)
 
     def av(self):
         temp = int(self.getAspect())
@@ -4134,7 +4166,10 @@ def nextAR():
         STREAMS.ar_id_player += 1
         if STREAMS.ar_id_player > 6:
             STREAMS.ar_id_player = 0
-        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        try:
+            iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+        except:
+            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("nextAR ERROR", ex)
@@ -4145,7 +4180,10 @@ def prevAR():
         STREAMS.ar_id_player -= 1
         if STREAMS.ar_id_player == -1:
             STREAMS.ar_id_player = 6
-        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        try:
+            iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+        except:
+            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("prevAR ERROR", ex)
@@ -4178,7 +4216,7 @@ def uninstaller():
                     remove(os.path.join(epgimport_path, fname))
         os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
         tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
-        bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'))
+        bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+')
         for line in bakfile:
             if '.suls_iptv_' not in line:
                 tvfile.write(line)
