@@ -219,7 +219,6 @@ if screenwidth.width() == 2560:
     BLOCK_H = 80
     skin_path = os.path.join(plugin_path, 'skin/uhd')
     piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
-
 elif screenwidth.width() == 1920:
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
@@ -1133,7 +1132,7 @@ class iptv_streamse():
         if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
             TYPE_PLAYER = '/enigma2.php'
-            # TYPE_PLAYER= '/player_api.php'
+            TYPE_PLAYER2 = '/player_api.php'
             url = url.strip(" \t\n\r")
             print('my url striped ', url)
             if next_request == 1:
@@ -1143,20 +1142,20 @@ class iptv_streamse():
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
                 url = url
-
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
             print('next_request : ', next_request)
             print('my url final ', url)
             urlinfo = url
             try:
-                req = Request(urlinfo)
-                req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                response = urlopen(req, timeout=ntimeout)
-                if PY3:
-                    res = response.read().decode('utf-8')
-                else:
-                    res = response.read()
+                # req = Request(urlinfo)
+                res = Utils.checkGZIP(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, timeout=ntimeout)
+                # if PY3:
+                    # res = response.read().decode('utf-8')
+                # else:
+                    # res = response.read()
                 print("Here in client1 _request link =", res)
                 res = fromstring(res)
                 # response.close()
@@ -1237,12 +1236,6 @@ class xc_Main(Screen):
         self["Text"].setText(infoname)
         self["playlist"].setText(self.temp_playname)
         self.go()
-        # try:
-            # self.scale = iAVSwitch.getFramebufferScale()
-        # except:
-            # self.scale = eAVSwitch.getFramebufferScale()
-        # self.scale = AVSwitch().getFramebufferScale()
-        # self.picload = ePicLoad()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
             "home": self.exitY,
@@ -2410,7 +2403,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.restartVideo()
         else:
             self.session.open(MessageBox, "NO cont_play", type=MessageBox.TYPE_INFO, timeout=3)
-            return
+        return
 
     def __seekableStatusChanged(self):
         print("seekable status changed!")
@@ -3148,7 +3141,7 @@ class OpenServer(Screen):
         idx = self["list"].getSelectionIndex()
         dom = Path_XML + self.urls[idx]
         nam = Path_XML + self.names[idx]
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         else:
             if dom is None:
@@ -3205,8 +3198,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self["channel_name"] = Label("")
         self["programm"] = Label("")
         self["poster"] = Pixmap()
-        # self.scale = AVSwitch.getFramebufferScale()
-        # self.picload = ePicLoad()
         STREAMS.play_vod = False
         self.channel_list = iptv_list_tmp
         self.index = STREAMS.list_index
@@ -3385,7 +3376,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         else:
             self['poster'].instance.setPixmap(None)  # OPEN
         self['poster'].hide()
-
         size = self['poster'].instance.size()
         self.picload.setPara((size.width(),
                               size.height(),
@@ -3497,7 +3487,7 @@ class xc_Play(Screen):
         idx = self["list"].getSelectionIndex()
         if self.Movies:
             path = self.Movies[idx]
-            if idx == -1 or idx is None:
+            if idx < 0 or idx is None:
                 return
             else:
                 name = path
@@ -3519,7 +3509,7 @@ class xc_Play(Screen):
 
     def message1(self, answer=None):
         idx = self["list"].getSelectionIndex()
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         dom = self.Movies[idx]
         if answer is None:
@@ -3594,7 +3584,7 @@ class xc_Play(Screen):
         idx = self["list"].getSelectionIndex()
         dom = self.names[idx]
         name = self.Movies[idx]
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         if ".m3u" in name:
             idx = self["list"].getSelectionIndex()
@@ -3611,7 +3601,7 @@ class xc_Play(Screen):
 
     def convert_bouquet(self):
         idx = self["list"].getSelectionIndex()
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         else:
             name = Path_Movies + self.names[idx]
@@ -3775,7 +3765,7 @@ class xc_M3uPlay(Screen):
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
-        if idx == -1 or idx is None:
+        if idx < 0 or idx is None:
             return
         else:
             name = self.names[idx]
