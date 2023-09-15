@@ -15,6 +15,26 @@ try:
 except:
     isDreamOS = False
 
+
+def paypal():
+    conthelp = "If you like what I do you\n"
+    conthelp += "can contribute with a coffee\n"
+    conthelp += "scan the qr code and donate € 1.00"
+    return conthelp
+
+
+def wanStatus():
+    publicIp = ''
+    try:
+        file = os.popen('wget -qO - ifconfig.me')
+        public = file.read()
+        publicIp = "Wan %s" % (str(public))
+    except:
+        if os.path.exists("/tmp/currentip"):
+            os.remove("/tmp/currentip")
+    return publicIp
+
+
 def localeInit():
     if isDreamOS: 
         lang = language.getLanguage()[:2] 

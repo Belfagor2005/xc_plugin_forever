@@ -12,7 +12,7 @@
 #--------------------#
 '''
 from __future__ import print_function
-from . import _
+from . import _, paypal
 from . import Utils
 from . import html_conv
 import codecs
@@ -681,6 +681,7 @@ class xc_config(Screen, ConfigListScreen):
         self.showhide()
 
     def ok(self):
+        ConfigListScreen.keyOK(self)
         sel = self["config"].getCurrent()[1]
         if sel and sel == cfg.pthmovie:
             self.setting = "pthmovie"
@@ -693,11 +694,10 @@ class xc_config(Screen, ConfigListScreen):
             self.openDirectoryBrowser(cfg.pthpicon.value, self.setting)
         else:
             pass
-        # ConfigListScreen.keyOK(self)
 
     def openDirectoryBrowser(self, path, itemcfg):
-        if file_exists("/usr/bin/apt-get"):
-            path = None
+        # if file_exists("/usr/bin/apt-get"):
+            # path = None
         if itemcfg == "pthmovie":
             try:
                 self.session.openWithCallback(
@@ -744,7 +744,7 @@ class xc_config(Screen, ConfigListScreen):
                     # minFree=15)
             except Exception as ex:
                 print("openDirectoryBrowser get failed: ", ex)
-        ConfigListScreen.keyOK(self)
+        # ConfigListScreen.keyOK(self)
 
     def openDirectoryBrowserCB(self, path):
         if path is not None:
@@ -2692,16 +2692,10 @@ class xc_help(Screen):
     def finishLayout(self):
         helpdesc = self.homecontext()
         helpdesc2 = self.homecontext2()
-        paypal = self.paypal2()
-        self["paypal"].setText(paypal)
+        pay = paypal()
+        self["paypal"].setText(pay)
         self["helpdesc"].setText(helpdesc)
         self["helpdesc2"].setText(helpdesc2)
-
-    def paypal2(self):
-        conthelp = "If you like what I do you\n"
-        conthelp += "can contribute with a coffee\n\n"
-        conthelp += "scan the qr code and donate € 1.00"
-        return conthelp
 
     def homecontext(self):
         conthelp = "%s\n\n" % version
