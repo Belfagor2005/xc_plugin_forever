@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     02/09/2023               *
+*  update     17/09/2023               *
 *       Skin by MMark                  *
 ****************************************
 #--------------------#
@@ -66,7 +66,7 @@ from enigma import gFont
 from enigma import iPlayableService
 from enigma import loadPNG
 from enigma import getDesktop
-from os import listdir, remove, system
+from os import listdir, remove, system, isdir
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
@@ -89,17 +89,15 @@ global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, 
 
 _session = " "
 version = "XC Forever V.2.3"
-
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
-
 # skin_path = os.path.join(plugin_path, 'skin/fhd')
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
-
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
 xc_list = "/tmp/xc.txt"
+iptvsh = "/etc/enigma2/iptv.sh"
 iptv_list_tmp = []
 re_search = False
 pmovies = False
@@ -142,7 +140,6 @@ except:
     sslverify = False
 if sslverify:
     class SNIFactory(ssl.ClientContextFactory):
-
         def __init__(self, hostname=None):
             self.hostname = hostname
 
@@ -169,46 +166,56 @@ if os.path.exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 
+# kiddac solution
+def defaultMoviePath():
+    result = config.usage.default_path.value
+    if not isdir(result):
+        from Tools import Directories
+        return Directories.defaultRecordingLocation(config.usage.default_path.value)
+    return result
+
+
+if not isdir(config.movielist.last_videodir.value):
+    try:
+        config.movielist.last_videodir.value = defaultMoviePath()
+        config.movielist.last_videodir.save()
+    except:
+        pass
+
 config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
-cfg.data = ConfigYesNo(default=False)
-# cfg.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
-cfg.hostaddress = ConfigText(default="exampleserver.com")
-cfg.port = ConfigText(default="80")
-cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
-cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
-cfg.infoexp = ConfigYesNo(default=False)
-cfg.infoname = NoSave(ConfigText(default="myBouquet"))
-# cfg.showlive = ConfigEnableDisable(default=True)
-cfg.screenxl = ConfigEnableDisable(default=False)
-cfg.LivePlayer = ConfigEnableDisable(default=False)
-cfg.live = ConfigSelection(default='1', choices=modelive)
-cfg.services = ConfigSelection(default='4097', choices=modemovie)
-cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
-cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
-
-cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
-cfg.badcar = ConfigEnableDisable(default=False)
-cfg.picons = ConfigEnableDisable(default=False)
-cfg.pthpicon = ConfigDirectory(default="/media/hdd/picon")
-cfg.pthmovie = ConfigDirectory(default="/media/hdd/movie")
-try:
-    from Components.UsageConfig import defaultMoviePath
-    downloadpath = defaultMoviePath()
-    cfg.pthmovie = ConfigDirectory(default=downloadpath)
-except:
-    if file_exists("/usr/bin/apt-get"):
-        cfg.pthmovie = ConfigDirectory(default='/media/hdd/movie')
-cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct", "Requests"])
-cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
-cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
-cfg.strtmain = ConfigEnableDisable(default=True)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
-cfg.last_update = ConfigText(default="Never")
-cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
-cfg.fixedtime = ConfigClock(default=0)
 cfg.autoupdate = ConfigEnableDisable(default=False)
+cfg.badcar = ConfigEnableDisable(default=False)
+cfg.data = ConfigYesNo(default=False)
+cfg.infoexp = ConfigYesNo(default=False)
+cfg.LivePlayer = ConfigEnableDisable(default=False)
+cfg.picons = ConfigEnableDisable(default=False)
+cfg.screenxl = ConfigEnableDisable(default=False)
+cfg.strtmain = ConfigEnableDisable(default=True)
+# cfg.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
+# cfg.showlive = ConfigEnableDisable(default=True)
+cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
+cfg.fixedtime = ConfigClock(default=0)
+cfg.hostaddress = ConfigText(default="exampleserver.com")
+cfg.infoname = NoSave(ConfigText(default="myBouquet"))
+cfg.last_update = ConfigText(default="Never")
+cfg.live = ConfigSelection(default='1', choices=modelive)
+cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
+cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct", "Requests"])
+cfg.port = ConfigText(default="80")
+cfg.pthmovie = ConfigDirectory(default=config.movielist.last_videodir.value)
+cfg.pthpicon = ConfigDirectory(default="/media/hdd/picon")
+cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
+cfg.services = ConfigSelection(default='4097', choices=modemovie)
+cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
+cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
+cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
+cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
+cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
+cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
+
+
 global skin_path
 screenwidth = getDesktop(0).size()
 if screenwidth.width() == 2560:
@@ -235,10 +242,8 @@ else:
     BLOCK_H = 40
     skin_path = os.path.join(plugin_path, 'skin/hd')
     piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
-
 if os.path.exists('/var/lib/dpkg/info'):
     skin_path = skin_path + '/dreamOs'
-print('skin path is: ', skin_path)
 
 
 def copy_poster():
@@ -380,8 +385,6 @@ class xc_home(Screen):
     def check_dependencies(self):
         dependencies = True
         try:
-            # import requests
-            # from PIL import Image
             pythonFull = float(str(sys.version_info.major) + "." + str(sys.version_info.minor))
             print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
@@ -450,7 +453,6 @@ class xc_home(Screen):
             list.append(xcm3ulistEntry(x))
             self.menu_list.append(x)
         self['text'].setList(list)
-
         infoname = str(STREAMS.playlistname)
         if cfg.infoexp.value != 'myBouquet':
             infoname = str(cfg.infoname.value)
@@ -517,7 +519,6 @@ class xc_config(Screen, ConfigListScreen):
         if answer is None:
             self.session.openWithCallback(self.iptv_sh, MessageBox, _("Import Server from /ect/enigma2/iptv.sh?"))
         elif answer:
-            iptvsh = "/etc/enigma2/iptv.sh"
             if file_exists(iptvsh) and os.stat(iptvsh).st_size > 0:
                 with open(iptvsh, 'r') as f:
                     fpage = f.read()
@@ -533,10 +534,11 @@ class xc_config(Screen, ConfigListScreen):
                     cfg.passw.setValue(passwordsh)
                 self.xml_plugin()
                 filesave = "xc_" + str(cfg.user.value) + ".xml"
-                self.mbox = self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
                 self.ConfigText()
+                self.createSetup()
             else:
-                self.mbox = self.session.open(MessageBox, (_("Missing %s !") % iptvsh), MessageBox.TYPE_INFO, timeout=4)
+                self.session.open(MessageBox, (_("Missing %s !") % iptvsh), MessageBox.TYPE_INFO, timeout=4)
         else:
             return
 
@@ -544,7 +546,7 @@ class xc_config(Screen, ConfigListScreen):
         if answer is None:
             self.session.openWithCallback(self.ImportInfosServer, MessageBox, _("Import Server from /tmp/xc.tx?"))
         elif answer:
-            if file_exists(xc_list) and os.stat(xc_list).st_size > 100:
+            if file_exists(xc_list) and os.stat(xc_list).st_size > 0:
                 with codecs.open(xc_list, "r", encoding="utf-8") as f:
                     chaine = f.readlines()
                 url = chaine[0].replace("\n", "").replace("\t", "").replace("\r", "")
@@ -558,10 +560,11 @@ class xc_config(Screen, ConfigListScreen):
                 cfg.passw.setValue(pswrd)
                 self.xml_plugin()
                 filesave = "xc_" + str(cfg.user.value) + ".xml"
-                self.mbox = self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("File saved to %s !" % filesave), MessageBox.TYPE_INFO, timeout=5)
+                self.ConfigText()
                 self.createSetup()
             else:
-                self.mbox = self.session.open(MessageBox, _("File not found %s" % xc_list), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("File not found %s" % xc_list), MessageBox.TYPE_INFO, timeout=5)
         else:
             return
 
@@ -764,15 +767,15 @@ class xc_config(Screen, ConfigListScreen):
     def cfgok(self):
         if cfg.picons.value:
             if not file_exists(cfg.picons.value):
-                self.mbox = self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.picons.value), MessageBox.TYPE_INFO, timeout=4)
+                self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.picons.value), MessageBox.TYPE_INFO, timeout=4)
                 return
         if cfg.pthxmlfile.value:
             if not file_exists(cfg.pthxmlfile.value):
-                self.mbox = self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.pthxmlfile.value), MessageBox.TYPE_INFO, timeout=4)
+                self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.pthxmlfile.value), MessageBox.TYPE_INFO, timeout=4)
                 return
         if cfg.pthmovie.value:
             if not file_exists(cfg.pthmovie.value):
-                self.mbox = self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.pthmovie.value), MessageBox.TYPE_INFO, timeout=4)
+                self.session.open(MessageBox, _("%s NOT DETECTED!" % cfg.pthmovie.value), MessageBox.TYPE_INFO, timeout=4)
                 return
         self.save()
 
@@ -781,7 +784,7 @@ class xc_config(Screen, ConfigListScreen):
             for x in self["config"].list:
                 x[1].save()
             self.xml_plugin()
-            self.mbox = self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
     def xml_plugin(self):
@@ -1037,6 +1040,7 @@ class iptv_streamse():
                             name = str(name)
                         '''
                         name = html_conv.html_unescape(name)
+                        print('Name html_unescape: ', name)
 
                         if description != '':
                             try:
@@ -1083,26 +1087,36 @@ class iptv_streamse():
                             vodItems[(line.partition(": ")[0])] = (line.partition(": ")[-1])
                         if "NAME" in vodItems:
                             vodTitle = Utils.checkStr((vodItems["NAME"])).strip()
+                            print('vodTitle: ', vodTitle)
                         elif "O_NAME" in vodItems:
                             vodTitle = Utils.checkStr((vodItems["O_NAME"])).strip()
                         else:
                             vodTitle = name
+                        print('vodTitle: ', vodTitle)
+
                         if "COVER_BIG" in vodItems and vodItems["COVER_BIG"] and vodItems["COVER_BIG"] != "null":
                             piconname = str(vodItems["COVER_BIG"]).strip()
+                            print('piconname: ', piconname)
+
                         if "DESCRIPTION" in vodItems:
                             vodDescription = str(vodItems["DESCRIPTION"]).strip()
                         elif "PLOT" in vodItems:
                             vodDescription = str(vodItems["PLOT"]).strip()
                         else:
                             vodDescription = str('TRAMA')
+                        print('vodDescription: ', vodDescription)
+
                         if "DURATION" in vodItems:
                             vodDuration = str(vodItems["DURATION"]).strip()
                         else:
                             vodDuration = str('DURATION: -- --')
+                        print('vodDuration: ', vodDuration)
+
                         if "GENRE" in vodItems:
                             vodGenre = str(vodItems["GENRE"]).strip()
                         else:
                             vodGenre = str('GENRE: -- --')
+                        print('vodGenre: ', vodGenre)
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
                     chan_tulpe = (
@@ -1118,6 +1132,7 @@ class iptv_streamse():
                         str(nameepg),
                         )
                     iptv_list_tmp.append(chan_tulpe)
+
                     btnsearch = next_request
         except Exception as e:
             print('------------- get_list failed: ', e)
@@ -1148,23 +1163,42 @@ class iptv_streamse():
             print('my url final ', url)
             urlinfo = url
             try:
-                # req = Request(urlinfo)
-                res = Utils.checkGZIP(urlinfo)
-                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
-                # response = urlopen(req, timeout=ntimeout)
-                # if PY3:
-                    # res = response.read().decode('utf-8')
-                # else:
-                    # res = response.read()
+                res = self.checkGZIP(urlinfo)
                 print("Here in client1 _request link =", res)
                 res = fromstring(res)
-                # response.close()
                 return res
             except Exception as e:
-                print('error requests ------------------------------------- ', e)
+                print('error requests -----------> ', e)
         else:
             res = None
             return res
+
+
+    def checkGZIP(self, url):
+        from io import StringIO
+        import gzip
+        hdr = {"User-Agent": "Enigma2 - Plugin"}
+        response = None
+        request = Request(url, headers=hdr)
+        try:
+            response = urlopen(request, timeout=20)
+            if response.info().get('Content-Encoding') == 'gzip':
+                buffer = StringIO(response.read())
+                deflatedContent = gzip.GzipFile(fileobj=buffer)
+                if PY3:
+                    return deflatedContent.read().decode('utf-8')
+                else:
+                    return deflatedContent.read()
+            else:
+                if PY3:
+                    return response.read().decode('utf-8')
+                else:
+                    return response.read()
+            print(response)
+            print(type(response))
+        except Exception as e:
+            print(e)
+            return None
 
 
 class xc_Main(Screen):
@@ -1576,8 +1610,6 @@ class xc_Main(Screen):
         self.decodeImage(piclogo)
         global infoname
         infoname = self.temp_playname
-        # if cfg.infoexp.getValue():
-            # infoname = str(cfg.infoname.value)
         self["playlist"].setText(infoname)
 
     def exitY(self):
@@ -1783,7 +1815,7 @@ class xc_Main(Screen):
                     print(ex)
                     series = False
         else:
-            self.mbox = self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
 
     def check_download_vod(self):
         self.index = self.mlist.getSelectionIndex()
@@ -1812,10 +1844,10 @@ class xc_Main(Screen):
                     self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?"), type=MessageBox.TYPE_YESNO, timeout=5)
                 else:
                     if cfg.LivePlayer.value is True:
-                        self.mbox = self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
+                        self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
                         return
             else:
-                self.mbox = self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
 
     def download_vod(self, result):
         if result:
@@ -2896,13 +2928,13 @@ class xc_maker(Screen):
     def save_tv(self, result):
         if result:
             save_old()
-            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
             return
 
     def createCfgxml(self, result):
         if result:
             make_bouquet()
-            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
             return
 
     def remove(self, answer=None):
@@ -2910,7 +2942,7 @@ class xc_maker(Screen):
             self.session.openWithCallback(self.remove, MessageBox, _("Remove Playlist from Bouquets?"))
         elif answer:
             uninstaller()
-            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
         else:
             pass
         # Utils.ReloadBouquets()
@@ -3201,11 +3233,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.descr = self.channely[2]
         self.cover = self.channely[3]
         self.pixim = self.channely[7]
-        # print('live url=', self.live_url)
-        # print('titlex url=', self.titlex)
-        # print('descr url=', self.descr)
-        # print('cover url=', self.cover)
-        # print('pixim url=', self.pixim)
         self.service = None
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
@@ -3622,7 +3649,7 @@ class xc_Play(Screen):
                         else:
                             desk_tmp = "%s\r\n" % line.split("<")[1].split(">")[1]
                 outfile.close()
-                self.mbox = self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
             if file_exists("/etc/enigma2/bouquets.tv"):
                 for line in open("/etc/enigma2/bouquets.tv"):
                     if xcname in line:
@@ -3633,7 +3660,7 @@ class xc_Play(Screen):
                         with open("/etc/enigma2/bouquets.tv", "a") as outfile:
                             outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
                 outfile.close()
-            self.mbox = self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
             Utils.ReloadBouquets()
 
 
