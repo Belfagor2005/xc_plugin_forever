@@ -2158,9 +2158,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def getAspect(self):
         try:
-            aspect = iAVSwitch.getAspectRatioSetting()
+            aspect = iAVSwitch().getAspectRatioSetting()
         except:
-            aspect = eAVSwitch.getAspectRatioSetting()
+            aspect = eAVSwitch().getAspectRatioSetting()
         return aspect
 
     def getAspectString(self, aspectnum):
@@ -3251,9 +3251,9 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def getAspect(self):
         try:
-            aspect = iAVSwitch.getAspectRatioSetting()
+            aspect = iAVSwitch().getAspectRatioSetting()
         except:
-            aspect = eAVSwitch.getAspectRatioSetting()
+            aspect = eAVSwitch().getAspectRatioSetting()
         return aspect
 
     def getAspectString(self, aspectnum):
@@ -3896,9 +3896,9 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def getAspect(self):
         try:
-            aspect = iAVSwitch.getAspectRatioSetting()
+            aspect = iAVSwitch().getAspectRatioSetting()
         except:
-            aspect = eAVSwitch.getAspectRatioSetting()
+            aspect = eAVSwitch().getAspectRatioSetting()
         return aspect
 
     def getAspectString(self, aspectnum):
