@@ -66,7 +66,7 @@ from enigma import gFont
 from enigma import iPlayableService
 from enigma import loadPNG
 from enigma import getDesktop
-from os import listdir, remove, system, isdir
+from os import listdir, remove, system
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
@@ -169,13 +169,13 @@ if os.path.exists('/var/lib/dpkg/info'):
 # kiddac solution
 def defaultMoviePath():
     result = config.usage.default_path.value
-    if not isdir(result):
+    if not os.path.isdir(result):
         from Tools import Directories
         return Directories.defaultRecordingLocation(config.usage.default_path.value)
     return result
 
 
-if not isdir(config.movielist.last_videodir.value):
+if not os.path.isdir(config.movielist.last_videodir.value):
     try:
         config.movielist.last_videodir.value = defaultMoviePath()
         config.movielist.last_videodir.save()
@@ -203,7 +203,7 @@ cfg.last_update = ConfigText(default="Never")
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
 cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct", "Requests"])
-cfg.port = ConfigText(default="80")
+cfg.port = ConfigText(default="80", fixed_size=False)
 cfg.pthmovie = ConfigDirectory(default=config.movielist.last_videodir.value)
 cfg.pthpicon = ConfigDirectory(default="/media/hdd/picon")
 cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
