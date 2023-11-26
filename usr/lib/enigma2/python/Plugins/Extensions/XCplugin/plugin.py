@@ -689,14 +689,14 @@ class xc_config(Screen, ConfigListScreen):
         self.showhide()
 
     def ok(self):
-        ConfigListScreen.keyOK(self)
+        # ConfigListScreen.keyOK(self)
         sel = self["config"].getCurrent()[1]
         if sel and sel == cfg.pthmovie:
             self.setting = "pthmovie"
             self.openDirectoryBrowser(cfg.pthmovie.value, self.setting)
         if sel and sel == cfg.pthxmlfile:
             self.setting = "pthxmlfile"
-            self.openDirectoryBrowser(cfg.pthxmlfile.value, self.setting)
+            self.openDirectoryBrowser(Path_XML, self.setting)
         if sel and sel == cfg.pthpicon:
             self.setting = "pthpicon"
             self.openDirectoryBrowser(cfg.pthpicon.value, self.setting)
@@ -1496,7 +1496,7 @@ class xc_Main(Screen):
                     iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
                 except:
                     eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
-                self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+                self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if os.path.exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
                 else:
