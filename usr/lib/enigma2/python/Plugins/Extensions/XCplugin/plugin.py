@@ -21,7 +21,6 @@ try:
     from Components.AVSwitch import iAVSwitch
 except Exception as e:
     print(e)
-
 try:
     from enigma import eAVSwitch
 except Exception as e:
@@ -159,7 +158,7 @@ if file_exists("/usr/bin/gstplayer"):
     modelive.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modelive.append(("5002", "Exteplayer3(5002)"))
-if os.path.exists('/var/lib/dpkg/info'):
+if file_exists('/var/lib/dpkg/info'):
     modelive.append(("8193", "eServiceUri(8193)"))
 
 modemovie = [("4097", "IPTV(4097)")]
@@ -167,7 +166,7 @@ if file_exists("/usr/bin/gstplayer"):
     modemovie.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
     modemovie.append(("5002", "Exteplayer3(5002)"))
-if os.path.exists('/var/lib/dpkg/info'):
+if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 
@@ -247,7 +246,8 @@ else:
     BLOCK_H = 40
     skin_path = os.path.join(plugin_path, 'skin/hd')
     piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
-if os.path.exists('/var/lib/dpkg/info'):
+
+if file_exists('/var/lib/dpkg/info'):
     skin_path = skin_path + '/dreamOs'
 
 
@@ -284,7 +284,6 @@ def check_port(tport):
         if len(urlsplit1[2].split(':')) > 1:
             port = urlsplit1[2].split(':')[1]
     host = "%s%s:%s" % (protocol, domain, port)
-    print('my_host: ', host)
     if not url.startswith(host):
         url = str(url.replace(protocol + domain, host))
     return url
@@ -689,7 +688,6 @@ class xc_config(Screen, ConfigListScreen):
         self.showhide()
 
     def ok(self):
-        # ConfigListScreen.keyOK(self)
         sel = self["config"].getCurrent()[1]
         if sel and sel == cfg.pthmovie:
             self.setting = "pthmovie"
@@ -1045,7 +1043,7 @@ class iptv_streamse():
                             name = str(name)
                         '''
                         name = html_conv.html_unescape(name)
-                        print('Name html_unescape: ', name)
+                        # print('Name html_unescape: ', name)
 
                         if description != '':
                             try:
@@ -1092,16 +1090,16 @@ class iptv_streamse():
                             vodItems[(line.partition(": ")[0])] = (line.partition(": ")[-1])
                         if "NAME" in vodItems:
                             vodTitle = Utils.checkStr((vodItems["NAME"])).strip()
-                            print('vodTitle: ', vodTitle)
+                            # print('vodTitle: ', vodTitle)
                         elif "O_NAME" in vodItems:
                             vodTitle = Utils.checkStr((vodItems["O_NAME"])).strip()
                         else:
                             vodTitle = name
-                        print('vodTitle: ', vodTitle)
+                        # print('vodTitle: ', vodTitle)
 
                         if "COVER_BIG" in vodItems and vodItems["COVER_BIG"] and vodItems["COVER_BIG"] != "null":
                             piconname = str(vodItems["COVER_BIG"]).strip()
-                            print('piconname: ', piconname)
+                            # print('piconname: ', piconname)
 
                         if "DESCRIPTION" in vodItems:
                             vodDescription = str(vodItems["DESCRIPTION"]).strip()
@@ -1109,19 +1107,19 @@ class iptv_streamse():
                             vodDescription = str(vodItems["PLOT"]).strip()
                         else:
                             vodDescription = str('TRAMA')
-                        print('vodDescription: ', vodDescription)
+                        # print('vodDescription: ', vodDescription)
 
                         if "DURATION" in vodItems:
                             vodDuration = str(vodItems["DURATION"]).strip()
                         else:
                             vodDuration = str('DURATION: -- --')
-                        print('vodDuration: ', vodDuration)
+                        # print('vodDuration: ', vodDuration)
 
                         if "GENRE" in vodItems:
                             vodGenre = str(vodItems["GENRE"]).strip()
                         else:
                             vodGenre = str('GENRE: -- --')
-                        print('vodGenre: ', vodGenre)
+                        # print('vodGenre: ', vodGenre)
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
                     chan_tulpe = (
@@ -1169,6 +1167,13 @@ class iptv_streamse():
             urlinfo = url
             try:
                 res = self.checkGZIP(urlinfo)
+                # req = Request(urlinfo)
+                # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
+                # response = urlopen(req, timeout=ntimeout)
+                # if PY3:
+                    # res = response.read().decode('utf-8')
+                # else:
+                    # res = response.read()
                 print("Here in client1 _request link =", res)
                 res = fromstring(res)
                 return res
@@ -1234,13 +1239,13 @@ class xc_Main(Screen):
         self.pin = False
         self.icount = 0
         self.errcount = 0
+        self.passwd_ok = False
         self.temp_index = 0
         self.temp_channel_list = None
         self.temp_playlistname = None
         self.temp_playname = str(STREAMS.playlistname)
         self.url_tmp = None
         self.video_back = False
-        self.passwd_ok = False
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1345,17 +1350,16 @@ class xc_Main(Screen):
         self.ok_checked()
 
     def ok_checked(self):
-        global stream_tmp, title
+        global title
         try:
             if self.temp_index > -1:
                 self.index = self.temp_index
             selected_channel = STREAMS.iptv_list[self.index]
-            stream_tmp = selected_channel[4]
             playlist_url = selected_channel[5]
             if playlist_url is not None:
                 STREAMS.get_list(playlist_url)
                 self.update_channellist()
-            elif stream_tmp is not None:
+            elif selected_channel[4] is not None:
                 self.set_tmp_list()
                 STREAMS.video_status = True
                 STREAMS.play_vod = False
@@ -1366,10 +1370,8 @@ class xc_Main(Screen):
 
     def Entered(self):
         self.pin = True
-        STREAMS.video_status = True
         if stream_live is True:
-        # if stream_url:
-            # STREAMS.video_status = True
+            STREAMS.video_status = True
             STREAMS.play_vod = False
             print("------------------------ LIVE ------------------")
             if cfg.LivePlayer.value is False:
@@ -1377,7 +1379,7 @@ class xc_Main(Screen):
             else:
                 self.session.openWithCallback(self.check_standby, nIPTVplayer)  # live
         else:
-            # STREAMS.video_status = True
+            STREAMS.video_status = True
             STREAMS.play_vod = True
             print("----------------------- MOVIE ------------------")
             self.session.openWithCallback(self.check_standby, xc_Player)
@@ -1439,7 +1441,6 @@ class xc_Main(Screen):
             except OSError as error:
                 print(error)
                 print("File path can not be removed")
-            # piclogo = resolveFilename(SCOPE_PLUGINS, "Extensions/{}/skin/fhd/iptvlogo.jpg".format('XCplugin'))
             self['poster'].instance.setPixmapFromFile(piclogo)
             selected_channel = self.channel_list[self.index]
             if selected_channel[2] is not None:
@@ -1497,7 +1498,7 @@ class xc_Main(Screen):
                 except:
                     eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
-                if os.path.exists('/var/lib/dpkg/info'):
+                if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
                 else:
                     self.picload.startDecode(png, 0, 0, False)
@@ -1513,9 +1514,24 @@ class xc_Main(Screen):
         try:
             if self["poster"].instance:
                 self["poster"].instance.setPixmapFromFile(piclogo)
-            print('error download: ', error)
         except Exception as e:
             print('error poster', e)
+    # def update_channellist(self):
+        # print '--------------------- UPDATE CHANNEL LIST ----------------------------------------'
+        # if STREAMS.xml_error != '':
+            # print '### update_channellist ######URL#############'
+            # print STREAMS.clear_url
+            # error_text = 'PLAYLIST ERROR:\n%s\n\nURL:\n%s' % (STREAMS.xml_error, STREAMS.clear_url.encode('utf-8'))
+            # self.session.open(MessageBox, error_text, type=MessageBox.TYPE_ERROR, timeout=30)
+        # self['chminus'].setText('')
+        # self['chplus'].setText('')
+        # self['stop'].setText('')
+        # self.channel_list = STREAMS.iptv_list
+        # self.update_desc = False
+        # self.mlist.setList(map(channelEntryIPTVplaylist, self.channel_list))
+        # self.mlist.moveToIndex(0)
+        # self.update_desc = True
+        # self.update_description(
 
     def update_channellist(self):
         if not len(iptv_list_tmp):
@@ -1534,8 +1550,12 @@ class xc_Main(Screen):
                 f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
                 f.write('\n')
                 f.close()
-        self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
+        print('self index is :  ', self.index)
         self.mlist.moveToIndex(0)
+        self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
+        # self.mlist.moveToIndex(self.index)
+        # add
+        # self.index = self.mlist.getSelectionIndex()
         self.update_description()
         self.button_updater()
 
@@ -1548,10 +1568,14 @@ class xc_Main(Screen):
                 self["feedlist"].moveToIndex(0)
             else:
                 self.channel_list = STREAMS.iptv_list
-            # self.mlist.moveToIndex(0)
-            self.mlist.moveToIndex(self.index)
+            print('2 self index is :  ', self.index)
+            self.mlist.moveToIndex(0)
+            print('3 self index is :  ', self.index)
+            # self.mlist.moveToIndex(self.index)
             self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.selectionEnabled(1)
+            # add
+            # self.index = self.mlist.getSelectionIndex()
             self.button_updater()
         except Exception as ex:
             print(ex)
@@ -2162,11 +2186,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def getAspect(self):
-        try:
-            aspect = iAVSwitch().getAspectRatioSetting()
-        except:
-            aspect = eAVSwitch().getAspectRatioSetting()
-        return aspect
+        return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -2191,9 +2211,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            iAVSwitch.setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
         except:
-            eAVSwitch.setAspectRatio(aspect)
+            pass
 
     def av(self):
         temp = int(self.getAspect())
@@ -2208,60 +2228,76 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self.channelx = iptv_list_tmp[STREAMS.list_index]
             self['poster'].instance.setPixmapFromFile(piclogo)
             self.pixim = str(self.channelx[7])
-            try:
-                if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
-                    if self.pixim.find('http') == -1:
-                        self.downloadError()
-                    else:
-                        # if PY3:
-                        self.pixim = six.ensure_binary(self.pixim)
-                        if self.pixim.startswith("https") and sslverify:
-                            parsed_uri = urlparse(self.pixim)
-                            domain = parsed_uri.hostname
-                            sniFactory = SNIFactory(domain)
-                            downloadPage(self.pixim, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
-                        else:
-                            downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+            if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
+                # if self.pixim.find('http') == -1:
+                    # self.downloadError()
+                # else:
+                if PY3:
+                    self.pixim = six.ensure_binary(self.pixim)
+                if self.pixim.startswith(b"https") and sslverify:
+                    parsed_uri = urlparse(self.pixim)
+                    domain = parsed_uri.hostname
+                    sniFactory = SNIFactory(domain)
+                    downloadPage(self.pixim, pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
                 else:
-                    self.downloadError()
-                    print("setCover err")
-            except Exception as ex:
-                print(ex)
+                    downloadPage(self.pixim, pictmp).addCallback(self.image_downloaded, pictmp).addErrback(self.downloadError)
+            else:
+                self.downloadError()
+                print("setCover err")
         except Exception as ex:
             print(ex)
             self.downloadError()
             print("update COVER")
 
-    def decodeImage(self, poster_path):
-        self.scale = AVSwitch.getFramebufferScale()
-        self.picload = ePicLoad()
-        if os.path.exists('/var/lib/dpkg/info'):
-            self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
-        else:
-            self['poster'].instance.setPixmap(None)  # OPEN
-        self['poster'].hide()
+    # def decodeImage(self, poster_path):
+        # self.scale = AVSwitch.getFramebufferScale()
+        # self.picload = ePicLoad()
+        # if file_exists('/var/lib/dpkg/info'):
+            # self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
+        # else:
+            # self['poster'].instance.setPixmap(None)  # OPEN
+        # self['poster'].hide()
 
-        size = self['poster'].instance.size()
-        self.picload.setPara((size.width(),
-                              size.height(),
-                              self.scale[0],
-                              self.scale[1],
-                              False,
-                              1,
-                              '#FF000000'))
-        if not Utils.DreamOS():
-            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  # OPEN
-                ptr = self.picload.getData()
-                if ptr is not None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
-            return
-        else:
-            if self.picload.startDecode(poster_path, False) == 0:  # CVS
-                ptr = self.picload.getData()
-                if ptr is not None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
+        # size = self['poster'].instance.size()
+        # self.picload.setPara((size.width(),
+                              # size.height(),
+                              # self.scale[0],
+                              # self.scale[1],
+                              # False,
+                              # 1,
+                              # '#FF000000'))
+        # if not Utils.DreamOS():
+            # if self.picload.startDecode(poster_path, 0, 0, False) == 0:  # OPEN
+                # ptr = self.picload.getData()
+                # if ptr is not None:
+                    # self['poster'].instance.setPixmap(ptr)
+                    # self['poster'].show()
+            # return
+        # else:
+            # if self.picload.startDecode(poster_path, False) == 0:  # CVS
+                # ptr = self.picload.getData()
+                # if ptr is not None:
+                    # self['poster'].instance.setPixmap(ptr)
+                    # self['poster'].show()
+            # return
+
+    def decodeImage(self, png):
+        self["poster"].hide()
+        if file_exists(png):
+            size = self['poster'].instance.size()
+            self.picload = ePicLoad()
+            self.scale = AVSwitch().getFramebufferScale()
+            self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            # _l = self.picload.PictureData.get()
+            # del self.picload
+            if file_exists("/var/lib/dpkg/status"):
+                self.picload.startDecode(png, False)
+            else:
+                self.picload.startDecode(png, 0, 0, False)
+            ptr = self.picload.getData()
+            if ptr is not None:
+                self['poster'].instance.setPixmap(ptr)
+                self['poster'].show()
             return
 
     def image_downloaded(self, data, pictmp):
@@ -2270,9 +2306,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self.decodeImage(pictmp)
             except Exception as ex:
                 print("* error ** %s" % ex)
-                pass
-            except:
-                pass
 
     def downloadError(self, error=""):
         try:
@@ -2280,7 +2313,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self["poster"].instance.setPixmapFromFile(piclogo)
             print('error download: ', error)
         except Exception as e:
-            print('error poster', e)
+            print('error downloadError poster', e)
 
     def showAfterSeek(self):
         if isinstance(self, IPTVInfoBarShowHide):
@@ -2439,8 +2472,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         if self.cont_play:
             self.restartVideo()
         else:
-            self.session.open(MessageBox, "NO cont_play", type=MessageBox.TYPE_INFO, timeout=3)
-        return
+            # self.session.open(MessageBox, "NO cont_play", type=MessageBox.TYPE_INFO, timeout=3)
+            return
 
     def __seekableStatusChanged(self):
         print("seekable status changed!")
@@ -3256,10 +3289,12 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def getAspect(self):
         try:
-            aspect = iAVSwitch().getAspectRatioSetting()
+            return AVSwitch().getAspectRatioSetting()
+            # aspect = iAVSwitch().getAspectRatioSetting()
         except:
-            aspect = eAVSwitch().getAspectRatioSetting()
-        return aspect
+            # aspect = eAVSwitch().getAspectRatioSetting()
+            pass
+        # return aspect
 
     def getAspectString(self, aspectnum):
         return {
@@ -3283,10 +3318,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             6: '16_9_letterbox'
         }
         config.av.aspectratio.setValue(map[aspect])
+        # try:
+            # iAVSwitch.setAspectRatio(aspect)
+        # except:
+            # eAVSwitch.setAspectRatio(aspect)
         try:
-            iAVSwitch.setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
         except:
-            eAVSwitch.setAspectRatio(aspect)
+            pass
 
     def av(self):
         temp = int(self.getAspect())
@@ -3322,7 +3361,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             self.live_url = self.channely[4]
             text_clear = ""
             eserv = 4097
-            if self.descr != '' or self.descr is None:
+            if self.descr != '' or self.descr is not None:
                 text_clear = str(self.descr)
             self["programm"].setText(text_clear)
             try:
@@ -3354,7 +3393,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                     sref = eServiceReference(eserv, 0, self.live_url)
                     sref.setName(str(self.titlex))
                     try:
-                        print('sref: ', sref)
                         self.session.nav.playService(sref)
                     except Exception as ex:
                         print(ex)
@@ -3394,45 +3432,55 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             name = str(self.titlex)
             show_more_infos(name, self.index)
 
-    def decodeImage(self, poster_path):
-        self.scale = AVSwitch.getFramebufferScale()
-        self.picload = ePicLoad()
-        if os.path.exists('/var/lib/dpkg/info'):
-            self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
-        else:
-            self['poster'].instance.setPixmap(None)  # OPEN
-        self['poster'].hide()
-        size = self['poster'].instance.size()
-        self.picload.setPara((size.width(),
-                              size.height(),
-                              self.scale[0],
-                              self.scale[1],
-                              False,
-                              1,
-                              '#FF000000'))
-        if not Utils.DreamOS():
-            if self.picload.startDecode(poster_path, 0, 0, False) == 0:  # OPEN
-                ptr = self.picload.getData()
-                if ptr is not None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
-            return
-        else:
-            if self.picload.startDecode(poster_path, False) == 0:  # CVS
-                ptr = self.picload.getData()
-                if ptr is not None:
-                    self['poster'].instance.setPixmap(ptr)
-                    self['poster'].show()
-            return
+    # def decodeImage(self, poster_path):
+        # self.scale = AVSwitch.getFramebufferScale()
+        # self.picload = ePicLoad()
+        # if file_exists('/var/lib/dpkg/info'):
+            # self['poster'].instance.setPixmap(gPixmapPtr())  # CVS
+        # else:
+            # self['poster'].instance.setPixmap(None)  # OPEN
+        # self['poster'].hide()
+        # size = self['poster'].instance.size()
+        # self.picload.setPara((size.width(),
+                              # size.height(),
+                              # self.scale[0],
+                              # self.scale[1],
+                              # False,
+                              # 1,
+                              # '#FF000000'))
+        # if not Utils.DreamOS():
+            # if self.picload.startDecode(poster_path, 0, 0, False) == 0:  # OPEN
+                # ptr = self.picload.getData()
+                # if ptr is not None:
+                    # self['poster'].instance.setPixmap(ptr)
+                    # self['poster'].show()
+            # return
+        # else:
+            # if self.picload.startDecode(poster_path, False) == 0:  # CVS
+                # ptr = self.picload.getData()
+                # if ptr is not None:
+                    # self['poster'].instance.setPixmap(ptr)
+                    # self['poster'].show()
+            # return
 
-    def showImage(self, picInfo=None):
-        try:
+    def decodeImage(self, png):
+        self["poster"].hide()
+        if file_exists(png):
+            size = self['poster'].instance.size()
+            self.picload = ePicLoad()
+            self.scale = AVSwitch().getFramebufferScale()
+            self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
+            # _l = self.picload.PictureData.get()
+            # del _l[:]
+            if file_exists("/var/lib/dpkg/status"):
+                self.picload.startDecode(png, False)
+            else:
+                self.picload.startDecode(png, 0, 0, False)
             ptr = self.picload.getData()
             if ptr is not None:
-                self["poster"].instance.setPixmap(ptr.__deref__())
-                self["poster"].instance.show()
-        except Exception as err:
-            print("[xc] ERROR showImage:", err)
+                self['poster'].instance.setPixmap(ptr)
+                self['poster'].show()
+            return
 
     def image_downloaded(self, data, pictmp):
         if file_exists(pictmp):
@@ -3900,11 +3948,12 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.onClose.append(self.cancel)
 
     def getAspect(self):
-        try:
-            aspect = iAVSwitch().getAspectRatioSetting()
-        except:
-            aspect = eAVSwitch().getAspectRatioSetting()
-        return aspect
+        # try:
+            # aspect = iAVSwitch().getAspectRatioSetting()
+        # except:
+            # aspect = eAVSwitch().getAspectRatioSetting()
+        # return aspect
+        return AVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3929,9 +3978,11 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            iAVSwitch.setAspectRatio(aspect)
+            AVSwitch().setAspectRatio(aspect)
+            # iAVSwitch.setAspectRatio(aspect)
         except:
-            eAVSwitch.setAspectRatio(aspect)
+            pass
+            # eAVSwitch.setAspectRatio(aspect)
 
     def av(self):
         temp = int(self.getAspect())
@@ -4183,9 +4234,11 @@ def nextAR():
         if STREAMS.ar_id_player > 6:
             STREAMS.ar_id_player = 0
         try:
-            iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+            AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            # iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
         except:
-            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            pass
+            # eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("nextAR ERROR", ex)
@@ -4197,9 +4250,11 @@ def prevAR():
         if STREAMS.ar_id_player == -1:
             STREAMS.ar_id_player = 6
         try:
-            iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+            AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            # iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
         except:
-            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            pass
+            # eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as ex:
         print("prevAR ERROR", ex)
