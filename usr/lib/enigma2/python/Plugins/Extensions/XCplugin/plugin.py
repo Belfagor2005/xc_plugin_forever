@@ -3848,11 +3848,12 @@ class xc_M3uPlay(Screen):
     def runRec(self, answer=None):
         idx = self["list"].getSelectionIndex()
         self.namem3u = self.names[idx]
-        self.urlm3u = self.urls[idx]
-        pth = urlparse(self.urlm3u).path
+        urlm3u = self.urls[idx]
+        pth = urlparse(urlm3u).path
         ext = splitext(pth)[1]
         if ext not in EXTDOWN:
             ext = '.avi'
+        self.urlm3u = Utils.decodeUrl(urlm3u)
         # print('select file name: ', self.namem3u)
         # print('select file url: ', self.urlm3u)
         if ext in EXTDOWN or ext == '.avi':
