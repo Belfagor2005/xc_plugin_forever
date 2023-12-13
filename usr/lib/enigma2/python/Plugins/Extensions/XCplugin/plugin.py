@@ -88,11 +88,11 @@ try:
 except ImportError:
     from xml.etree.ElementTree import ElementTree, fromstring
 
-global STREAMS, piclogo, pictmp, skin_path, Path_Movies, Path_Movies2, Path_XML
-global isStream, btnsearch, eserv, infoname, tport, re_search, pmovies, series, urlinfo
+global STREAMS, piclogo, pictmp, skin_path
+global isStream, btnsearch, eserv, tport, re_search, pmovies, series, urlinfo
 
 _session = " "
-version = "XC Forever V.2.3"
+version = "XC Forever V.2.4"
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
@@ -252,8 +252,10 @@ if file_exists('/var/lib/dpkg/info'):
 def copy_poster():
     system("cd / && cp -f " + piclogo + " " + pictmp)
 
-
-copy_poster()
+global Path_XML
+global Path_Movies
+global Path_Movies2
+global infoname
 ntimeout = float(cfg.timeout.value)
 socket.setdefaulttimeout(5)
 eserv = int(cfg.services.value)
@@ -262,7 +264,7 @@ Path_Picons = str(cfg.pthpicon.value) + "/"
 Path_Movies = str(cfg.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
 Path_XML = str(cfg.pthxmlfile.value) + "/"
-
+copy_poster()
 
 def check_port(tport):
     url = tport
@@ -456,8 +458,9 @@ class xc_home(Screen):
             self.menu_list.append(x)
         self['text'].setList(list)
         infoname = str(STREAMS.playlistname)
-        if cfg.infoexp.value != 'myBouquet':
-            infoname = str(cfg.infoname.value)
+        if cfg.infoexp.getValue:
+            if str(cfg.infoname.value) != 'myBouquet':
+                infoname = str(cfg.infoname.value)
         self["Text"].setText(infoname)
 
     def keyNumberGlobalCB(self, idx):
@@ -700,8 +703,8 @@ class xc_config(Screen, ConfigListScreen):
             pass
 
     def openDirectoryBrowser(self, path, itemcfg):
-        # if file_exists("/usr/bin/apt-get"):
-            # path = None
+        if file_exists("/usr/bin/apt-get"):
+            path = None
         if itemcfg == "pthmovie":
             try:
                 self.session.openWithCallback(
@@ -3043,14 +3046,12 @@ class OpenServer(Screen):
             for name in files:
                 if ".xml" not in name:
                     continue
-                    pass
                 url = name
                 name = name.replace('.xml', '').replace('_', ' ').upper()
                 self.names.append(name)
                 self.urls.append(url)
         m3ulistxc(self.names, self["list"])
         self["live"].setText(str(len(self.names)) + " Team")
-
         global infoname
         if cfg.infoexp.getValue():
             infoname = str(cfg.infoname.value)
@@ -3068,32 +3069,32 @@ class OpenServer(Screen):
 
     def selectlist(self):
         idx = self["list"].getSelectionIndex()
-        if idx < 0 or idx is None:
-            return
-        else:
-            try:
-                idx = self["list"].getSelectionIndex()
-                dom = Path_XML + self.urls[idx]
-                tree = ElementTree()
-                xml = tree.parse(dom)
-                host = xml.findtext("xtream_e2portal_url")
-                host = host.replace("http://", "")
-                self.port = xml.findtext("port")
-                self.username = ''
-                self.password = ''
-                username = xml.findtext("username")
-                if username and username != "":
-                    self.username = username
-                password = xml.findtext("password")
-                if password and password != "":
-                    self.password = password
-                cfg.hostaddress.setValue(host)
-                cfg.port.setValue(self.port)
-                cfg.user.setValue(self.username)
-                cfg.passw.setValue(self.password)
-                self.Start_iptv_player()
-            except IOError as ex:
-                print(ex)
+        # if idx < 0 or idx is None:
+            # return
+        # else:
+        try:
+            idx = self["list"].getSelectionIndex()
+            dom = Path_XML + self.urls[idx]
+            tree = ElementTree()
+            xml = tree.parse(dom)
+            host = xml.findtext("xtream_e2portal_url")
+            host = host.replace("http://", "")
+            self.port = xml.findtext("port")
+            self.username = ''
+            self.password = ''
+            username = xml.findtext("username")
+            if username and username != "":
+                self.username = username
+            password = xml.findtext("password")
+            if password and password != "":
+                self.password = password
+            cfg.hostaddress.setValue(host)
+            cfg.port.setValue(self.port)
+            cfg.user.setValue(self.username)
+            cfg.passw.setValue(self.password)
+            self.Start_iptv_player()
+        except IOError as ex:
+            print(ex)
 
     def infoxc(self):
         try:
@@ -4276,19 +4277,19 @@ def uninstaller():
     """
     try:
         for fname in listdir(enigma_path):
-            if 'userbouquet.suls_iptv_' in fname:
+            if 'userbouquet.xc_' in fname:
                 remove(os.path.join(enigma_path, fname))
             elif 'bouquets.tv.bak' in fname:
                 remove(os.path.join(enigma_path, fname))
         if os.path.isdir(epgimport_path):
             for fname in listdir(epgimport_path):
-                if 'suls_iptv_' in fname:
+                if 'xc_' in fname:
                     remove(os.path.join(epgimport_path, fname))
         os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
         tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
         bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+')
         for line in bakfile:
-            if '.suls_iptv_' not in line:
+            if '.xc_' not in line:
                 tvfile.write(line)
 
         bakfile.close()
@@ -4333,7 +4334,7 @@ def show_more_infos(name, index):
 def save_old():
     fldbouquet = "/etc/enigma2/bouquets.tv"
     namebouquet = STREAMS.playlistname.lower()
-    tag = "suls_iptv_"
+    tag = "xc_"
     xc12 = urlinfo.replace("enigma2.php", "get.php")
     # print('xc12 url final', xc12)
     in_bouquets = 0

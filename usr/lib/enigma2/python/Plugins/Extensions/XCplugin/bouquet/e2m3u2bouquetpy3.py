@@ -133,7 +133,7 @@ def uninstaller():
         # Bouquets
         print('Removing old IPTV bouquets...')
         for fname in os.listdir(ENIGMAPATH):
-            if 'userbouquet.suls_iptv_' in fname:
+            if 'userbouquet.xc_' in fname:
                 os.remove(os.path.join(ENIGMAPATH, fname))
             elif 'bouquets.tv.bak' in fname:
                 os.remove(os.path.join(ENIGMAPATH, fname))
@@ -141,7 +141,7 @@ def uninstaller():
         print('Removing IPTV custom channels...')
         if os.path.isdir(EPGIMPORTPATH):
             for fname in os.listdir(EPGIMPORTPATH):
-                if 'suls_iptv_' in fname:
+                if 'xc_' in fname:
                     os.remove(os.path.join(EPGIMPORTPATH, fname))
         # bouquets.tv
         print('Removing IPTV bouquets from bouquets.tv...')
@@ -149,7 +149,7 @@ def uninstaller():
         tvfile = open(os.path.join(ENIGMAPATH, 'bouquets.tv'), 'w+')
         bakfile = open(os.path.join(ENIGMAPATH, 'bouquets.tv.bak'))
         for line in bakfile:
-            if '.suls_iptv_' not in line:
+            if '.xc_' not in line:
                 tvfile.write(line)
         bakfile.close()
         tvfile.close()
@@ -585,7 +585,7 @@ class Provider:
             f.write('{}\n'.format(PLACEHOLDER_SERVICE))
 
     def _get_bouquet_index_name(self, cat_filename, provider_filename):
-        return ('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.suls_iptv_{}_{}.tv" ORDER BY bouquet\n'
+        return ('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.xc_{}_{}.tv" ORDER BY bouquet\n'
                 .format(provider_filename, cat_filename))
 
     def _save_bouquet_index_entries(self, iptv_bouquets):
@@ -618,7 +618,7 @@ class Provider:
                 if line.startswith('#NAME'):
                     continue
                 else:
-                    if not '.suls_iptv_{}'.format(self._get_safe_provider_filename()) in line:
+                    if not '.xc_{}'.format(self._get_safe_provider_filename()) in line:
                         current_bouquets_indexes.append(line)
         return current_bouquets_indexes
 
@@ -634,7 +634,7 @@ class Provider:
         cat_filename = get_safe_filename(bouquet_name)
 
         # create file
-        bouquet_filepath = os.path.join(ENIGMAPATH, 'userbouquet.suls_iptv_{}_{}.tv'
+        bouquet_filepath = os.path.join(ENIGMAPATH, 'userbouquet.xc_{}_{}.tv'
                                         .format(provider_filename, cat_filename))
         if DEBUG:
             print("Creating: {}".format(bouquet_filepath))
@@ -679,10 +679,10 @@ class Provider:
         provider_safe_filename = self._get_safe_provider_filename()
         source_name = '{} - {}'.format(provider_safe_filename, group) if group else provider_safe_filename
 
-        channels_filename = os.path.join(EPGIMPORTPATH, 'suls_iptv_{}_channels.xml'.format(provider_safe_filename))
+        channels_filename = os.path.join(EPGIMPORTPATH, 'xc_{}_channels.xml'.format(provider_safe_filename))
 
         # write providers epg feed
-        source_filename = os.path.join(EPGIMPORTPATH, 'suls_iptv_{}.sources.xml'
+        source_filename = os.path.join(EPGIMPORTPATH, 'xc_{}.sources.xml'
                                        .format(get_safe_filename(source_name)))
 
         with open(os.path.join(EPGIMPORTPATH, source_filename), "w+") as f:
@@ -1250,7 +1250,7 @@ class Provider:
         # clean old bouquets before writing new
         if self._dictchannels:
             for fname in os.listdir(ENIGMAPATH):
-                if 'userbouquet.suls_iptv_{}'.format(self._get_safe_provider_filename()) in fname:
+                if 'userbouquet.xc_{}'.format(self._get_safe_provider_filename()) in fname:
                     os.remove(os.path.join(ENIGMAPATH, fname))
         iptv_bouquet_list = []
 
@@ -1278,7 +1278,7 @@ class Provider:
                 if cat in vod_categories and not self.config.multi_vod:
                     cat_filename = "VOD"
 
-                bouquet_filepath = os.path.join(ENIGMAPATH, 'userbouquet.suls_iptv_{}_{}.tv'
+                bouquet_filepath = os.path.join(ENIGMAPATH, 'userbouquet.xc_{}_{}.tv'
                                                 .format(provider_filename, cat_filename))
                 if DEBUG:
                     print("Creating: {}".format(bouquet_filepath))
@@ -1364,7 +1364,7 @@ class Provider:
         except OSError as e:  # race condition guard
             if e.errno != errno.EEXIST:
                 raise
-        channels_filename = os.path.join(EPGIMPORTPATH, 'suls_iptv_{}_channels.xml'.format(self._get_safe_provider_filename()))
+        channels_filename = os.path.join(EPGIMPORTPATH, 'xc_{}_channels.xml'.format(self._get_safe_provider_filename()))
 
         if self._dictchannels:
             with open(channels_filename, "w+") as f:
