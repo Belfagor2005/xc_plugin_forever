@@ -1166,7 +1166,8 @@ class iptv_streamse():
             # print('my url final ', url)
             urlinfo = url
             try:
-                res = self.checkGZIP(urlinfo)
+                # res = self.checkGZIP(urlinfo)
+                res = self.make_request(urlinfo)
                 # req = Request(urlinfo)
                 # req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')
                 # response = urlopen(req, timeout=ntimeout)
@@ -1183,6 +1184,21 @@ class iptv_streamse():
             res = None
             return res
 
+    def make_request(self, url):
+        try:
+            import requests
+            response = requests.get(url, verify=False)
+            if response.status_code == 200:
+                link = requests.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=15, verify=False, stream=True ).text
+            return link
+        except ImportError:
+            req = Request(url)
+            req.add_header('User-Agent', 'E2 Plugin Vhannibal')
+            response = urlopen(req, None, 10)
+            link = response.read().decode('utf-8')
+            response.close()
+            return link
+        return
 
     def checkGZIP(self, url):
         from io import StringIO
