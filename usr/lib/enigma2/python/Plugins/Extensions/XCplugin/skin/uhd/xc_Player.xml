@@ -65,14 +65,14 @@
 	<eLabel text="  (+10s)" position="1507,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
 	<eLabel text="  (+1m)" position="1707,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
 	<eLabel text="  (+5m)" position="1894,1130" size="200,47" font="Regular;43" foregroundColor="#ffff00" backgroundColor="#10000000" transparent="1" zPosition="1"/>
-	<eLabel text="3" position="1507,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
-	<eLabel text="6" position="1707,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
-	<eLabel text="9" position="1894,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="3" position="1492,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6" />
+	<eLabel text="6" position="1692,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6" />
+	<eLabel text="9" position="1879,1130" size="200,47" font="Regular;43" foregroundColor="green" backgroundColor="#10000000" transparent="1" zPosition="6" />
 	<!-- PlayerKeys  RW -->
 	<ePixmap position="1420,1187" size="58,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/rw.png" zPosition="-1"/>
-	<eLabel text="1" position="1507,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
-	<eLabel text="4" position="1707,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
-	<eLabel text="7" position="1894,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6"/>
+	<eLabel text="1" position="1492,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6" />
+	<eLabel text="4" position="1692,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6" />
+	<eLabel text="7" position="1879,1183" size="200,47" font="Regular;43" foregroundColor="red" backgroundColor="#10000000" transparent="1" zPosition="6" />
 	<eLabel text="  (-10s)" position="1507,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
 	<eLabel text="  (-1m)" position="1707,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
 	<eLabel text="  (-5m)" position="1894,1183" size="200,47" font="Regular;43" foregroundColor="#5483fe" backgroundColor="#10000000" transparent="1" zPosition="1"/>
