@@ -1285,7 +1285,7 @@ class xc_Main(Screen):
         self["exp"] = Label("")
         self["max_connect"] = Label("")
         self["active_cons"] = Label("")
-        self["server_protocol"] = Label("")
+        # self["server_protocol"] = Label("")
         self["created_at"] = Label("")
         self["timezone"] = Label("")
         self["info"] = Label()
@@ -1757,7 +1757,7 @@ class xc_Main(Screen):
             self["active_cons"].setText("User Active: 0")
             self["exp"].setText("- ? -")
             self["created_at"].setText("- ? -")
-            self["server_protocol"].setText("Protocol: - ? -")
+            # self["server_protocol"].setText("Protocol: - ? -")
             self["timezone"].setText("Timezone: - ? -")
             status = created_at = exp_date = active_cons = max_connections = host = '- ? -'
             auth = 'Not Authorised'
@@ -1812,8 +1812,8 @@ class xc_Main(Screen):
                                         self["exp"].setText("Server Not Responding" + str(exp_date))
                                     self["max_connect"].setText("Max Connect: " + str(max_connections))
                                     self["active_cons"].setText("User Active: " + str(active_cons))
-                                server_protocol = (y["server_info"]["server_protocol"])
-                                self["server_protocol"].setText("Protocol: " + str(server_protocol))
+                                # server_protocol = (y["server_info"]["server_protocol"])
+                                # self["server_protocol"].setText("Protocol: " + str(server_protocol))
                                 timezone = (y["server_info"]["timezone"])
                                 self["timezone"].setText("Timezone: " + str(timezone))
                             except Exception as e:

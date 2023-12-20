@@ -10,20 +10,20 @@
 	</widget>
 	<widget name="feedlist" position="211,207" size="1522,684" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1820,200" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
-	<widget name="version" position="1959,163" size="267,40" halign="right" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="1964,780" size="267,40" halign="right" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="204,903" size="2087,11" backgroundColor="#202020" zPosition="1" />
 	<widget source="description" render="xcRunningText" position="204,923" size="1535,371" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 
 	<!-- Description -->
 	<widget position="1040,2507" size="800,54" name="Text" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<widget position="1755,770" size="534,134" name="exp" font="Regular;35" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1755,915" size="534,54" name="max_connect" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1755,968" size="534,54" name="active_cons" font="Regular;38" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1755,1022" size="534,54" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
-    <widget position="1755,1075" size="534,67" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1755,1142" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
-	<widget position="1934,1259" size="355,54" name="state" font="Regular;38" halign="right" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
-	<widget position="1712,1455" size="454,54" name="key_text" font="Regular;43" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<widget position="1755,1025" size="534,134" name="exp" font="Regular;35" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1755,1155" size="534,54" name="max_connect" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1755,1208" size="534,54" name="active_cons" font="Regular;38" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<!-- <widget position="1755,1022" size="534,54" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" /> -->
+    <widget position="1755,1260" size="534,67" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1755,912" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
+	<widget position="1829,834" size="355,54" name="state" font="Regular;38" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1715,1460" size="454,54" name="key_text" font="Regular;43" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
 	<ePixmap position="1914,1343" size="150,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
 	<eLabel position="200,1320" size="2094,7" backgroundColor="#202020" zPosition="1" />
