@@ -1801,7 +1801,7 @@ class xc_Main(Screen):
                                     exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                 if str(auth) == "1":
                                     if str(status) == "Active":
-                                        self["exp"].setText("Active\nExp date: " + str(exp_date))
+                                        self["exp"].setText("(Active) Exp date:\n" + str(exp_date))
                                     elif str(status) == "Banned":
                                         self["exp"].setText("Banned")
                                     elif str(status) == "Disabled":
@@ -3176,7 +3176,7 @@ class OpenServer(Screen):
                                         exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                     if str(auth) == "1":  # force for message popup
                                         if str(status) == "Active":
-                                            auth = "Active\nExp date: " + str(exp_date)
+                                            auth = "(Active) Exp date:\n" + str(exp_date)
                                         elif str(status) == "Banned":
                                             auth = "Banned"
                                         elif str(status) == "Disabled":
