@@ -16,11 +16,11 @@
 
 	<!-- Description -->
 	<widget position="780,1880" size="600,40" name="Text" font="Regular;36" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<widget position="1316,777" size="400,100" name="exp" font="Regular;26" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1316,851" size="400,40" name="max_connect" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1316,891" size="400,40" name="active_cons" font="Regular;28" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1316,767" size="400,100" name="exp" font="Regular;26" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1316,861" size="400,40" name="max_connect" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1316,901" size="400,40" name="active_cons" font="Regular;28" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<!-- <widget position="1316,766" size="400,40" name="server_protocol" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" /> -->
-    <widget position="1316,931" size="400,50" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+    <widget position="1316,941" size="400,50" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1316,691" size="400,85" name="created_at" font="Regular;32" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
 	<widget position="1375,629" size="266,40" name="state" font="Regular;28" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1284,1091" size="340,40" name="key_text" font="Regular;32" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
@@ -40,5 +40,5 @@
 	<ePixmap position="1760,890" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/jobw.png" zPosition="3" alphatest="blend" transparent="1" />	
 	<ePixmap position="1760,950" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/help.png" zPosition="3" alphatest="blend" transparent="1" />
 	<ePixmap position="1760,1010" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" zPosition="3" alphatest="blend" transparent="1" />
-	<widget name="info" position="264,1132" size="400,30" font="Regular;24" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
+	<widget name="info" position="858,1098" size="400,30" font="Regular;24" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
 </screen>

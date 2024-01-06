@@ -73,7 +73,7 @@ from enigma import iPlayableService
 from enigma import loadPNG
 from enigma import getDesktop
 from os import listdir, remove, system
-from os.path import splitext
+from os.path import splitext, isdir
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
 import base64
@@ -181,13 +181,13 @@ def clear_caches():
 # kiddac solution
 def defaultMoviePath():
     result = config.usage.default_path.value
-    if not os.path.isdir(result):
+    if not isdir(result):
         from Tools import Directories
         return Directories.defaultRecordingLocation(config.usage.default_path.value)
     return result
 
 
-if not os.path.isdir(config.movielist.last_videodir.value):
+if not isdir(config.movielist.last_videodir.value):
     try:
         config.movielist.last_videodir.value = defaultMoviePath()
         config.movielist.last_videodir.save()
@@ -2669,7 +2669,7 @@ class xc_StreamTasks(Screen):
         filelist = ''
         self.pth = ''
         freeSize = "-?-"
-        if os.path.isdir(cfg.pthmovie.value):
+        if isdir(cfg.pthmovie.value):
             filelist = listdir(cfg.pthmovie.value)
             if filelist is not None:
                 file1 = True
@@ -4292,7 +4292,7 @@ def uninstaller():
                 remove(os.path.join(enigma_path, fname))
             elif 'bouquets.tv.bak' in fname:
                 remove(os.path.join(enigma_path, fname))
-        if os.path.isdir(epgimport_path):
+        if isdir(epgimport_path):
             for fname in listdir(epgimport_path):
                 if 'xc_' in fname:
                     remove(os.path.join(epgimport_path, fname))
