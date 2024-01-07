@@ -1548,23 +1548,6 @@ class xc_Main(Screen):
         except Exception as e:
             print('error poster', e)
 
-    # def update_channellist(self):
-        # print '--------------------- UPDATE CHANNEL LIST ----------------------------------------'
-        # if STREAMS.xml_error != '':
-            # print '### update_channellist ######URL#############'
-            # print STREAMS.clear_url
-            # error_text = 'PLAYLIST ERROR:\n%s\n\nURL:\n%s' % (STREAMS.xml_error, STREAMS.clear_url.encode('utf-8'))
-            # self.session.open(MessageBox, error_text, type=MessageBox.TYPE_ERROR, timeout=30)
-        # self['chminus'].setText('')
-        # self['chplus'].setText('')
-        # self['stop'].setText('')
-        # self.channel_list = STREAMS.iptv_list
-        # self.update_desc = False
-        # self.mlist.setList(map(channelEntryIPTVplaylist, self.channel_list))
-        # self.mlist.moveToIndex(0)
-        # self.update_desc = True
-        # self.update_description(
-
     def update_channellist(self):
         if not len(iptv_list_tmp):
             return
