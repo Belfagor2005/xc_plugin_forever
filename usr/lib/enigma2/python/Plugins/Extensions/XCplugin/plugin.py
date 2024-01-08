@@ -4023,7 +4023,7 @@ Panel_list = [
             ('PLAYLIST'),
             ('MAKER BOUQUET'),
             ('MOVIE'),
-            ('PLAYER UTILITY '),
+            ('PLAYER UTILITY'),
             ('ABOUT & HELP'),
             ]
 

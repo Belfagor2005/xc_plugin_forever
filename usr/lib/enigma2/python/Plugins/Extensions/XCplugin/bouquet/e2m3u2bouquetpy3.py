@@ -583,6 +583,7 @@ class Provider:
             f.write("#DESCRIPTION {}\n".format(six.ensure_str(get_service_title(channel))))
         else:
             f.write('{}\n'.format(PLACEHOLDER_SERVICE))
+            # pass
 
     def _get_bouquet_index_name(self, cat_filename, provider_filename):
         return ('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.xc_{}_{}.tv" ORDER BY bouquet\n'
@@ -983,6 +984,7 @@ class Provider:
                         num += 1
                     else:
                         x['serviceRef'] = PLACEHOLDER_SERVICE
+                        # pass
 
         vod_index = None
         if "VOD" in self._category_order:
@@ -1307,10 +1309,10 @@ class Provider:
                             if x.get('enabled') or x['stream-name'].startswith('placeholder_'):
                                 self._save_bouquet_entry(f, x)
                             channel_num += 1
-
-                        while (channel_num % 100) != 0:
-                            f.write('{}\n'.format(PLACEHOLDER_SERVICE))
-                            channel_num += 1
+                        # this bug... make channel empty  # lululla
+                        # while (channel_num % 100) != 0:
+                            # f.write('{}\n'.format(PLACEHOLDER_SERVICE))
+                            # channel_num += 1
                 elif not vod_category_output and not self.config.multi_vod:
                     # not multivod - output all the vod services in one file
                     with open(bouquet_filepath, "w+") as f:
