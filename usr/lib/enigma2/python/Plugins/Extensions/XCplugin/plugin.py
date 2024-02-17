@@ -32,7 +32,7 @@ from Components.config import ConfigEnableDisable
 from Components.config import ConfigSelectionNumber, ConfigClock
 from Components.config import ConfigSelection, getConfigListEntry, NoSave
 from Components.config import ConfigText, ConfigDirectory
-from Components.config import ConfigPassword  # , configfile
+from Components.config import ConfigPassword, configfile
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -800,6 +800,9 @@ class xc_config(Screen, ConfigListScreen):
             for x in self["config"].list:
                 x[1].save()
             self.xml_plugin()
+            cfg.save()
+            configfile.save()
+            
             self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
 
@@ -811,7 +814,7 @@ class xc_config(Screen, ConfigListScreen):
                 filesave = filesave.lower()
                 port = str(cfg.port.value)
                 sourcefile = Path_XML + filesave
-                if not os.path.isfile(sourcefile) or os.stat(sourcefile).st_size == 0:
+                if not file_exists(sourcefile) or os.stat(sourcefile).st_size == 0:
                     with open(sourcefile, "w") as f:
                         xml_str = '<?xml version="1.0" encoding="utf-8"?>\n'
                         xml_str += '<items>\n'
@@ -937,7 +940,7 @@ class iptv_streamse():
             elif "_get" in self.url:
                 next_request = 2
             xml = self._request(self.url)
-            if xml:
+            if xml != None:
                 self.playlistname = ""
                 self.category_title = ""
                 self.category_id = ""
@@ -1144,6 +1147,7 @@ class iptv_streamse():
         return
 
     def _request(self, url):
+        res = None
         if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
 
@@ -1176,7 +1180,6 @@ class iptv_streamse():
             except Exception as e:
                 print('error requests -----------> ', e)
         else:
-            res = None
             return res
 
     def make_request(self, url):
@@ -1822,9 +1825,9 @@ class xc_Main(Screen):
                                     self.title = Utils.cleantitle(name) + ext
                                     self.title = self.title.lower()
                                     self.icount += 1
-                                    cmd = "wget -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
+                                    cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
                                     if "https" in str(url):
-                                        cmd = "wget --no-check-certificate -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
+                                        cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
                                     # print('cmd comand wget: ', cmd)
                                     ui = True
                                     JobManager.AddJob(downloadJob(self, cmd, Path_Movies2, self.title))
@@ -1923,9 +1926,9 @@ class xc_Main(Screen):
             return
 
     def downloadx(self):
-        cmd = "wget -U '%s' -c '%s' -O '%s'" % ('Enigma2 XC Forever Plugin', str(self.vod_url), str(self.file_down))
+        cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s' --post-data='action=purge'" % ('Enigma2 XC Forever Plugin', str(self.vod_url), str(self.file_down))
         if "https" in str(self.vod_url):
-            cmd = "wget --no-check-certificate -U '%s' -c '%s' -O '%s'" % ('Enigma2 - XC Forever Plugin', str(self.vod_url), str(self.file_down))
+            cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', str(self.vod_url), str(self.file_down))
         self.downloading = False
         pmovies = False
         try:
@@ -2411,9 +2414,9 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                         ext = '.avi'
                     filename = filename + ext
                     self.filename = filename.lower()  # + ext
-                    cmd = "wget -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), self.filename)
+                    cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), self.filename)
                     if "https" in str(self.vod_url):
-                        cmd = "wget --no-check-certificate -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), self.filename)
+                        cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(Path_Movies), self.filename)
                     self.timeshift_url = Path_Movies + self.filename
                     ui = True
                     JobManager.AddJob(downloadJob(self, cmd, self.timeshift_url, self.titlex))
@@ -2988,7 +2991,7 @@ class xc_maker(Screen):
         conthelp += _("    Removes all the bouquets that have been\n")
         conthelp += _("    created with XCplugin\n\n")
         conthelp += _("HELP BUTTON:\n")
-        conthelp += _("    Go to Help info plugin\n\n\n\n")
+        conthelp += _("    Go to Help info plugin\n\n\n")
         conthelp += "        ___________________________________\n\n"
         conthelp += "Config Folder file xml %s\n" % cfg.pthxmlfile.value
         conthelp += "Config Media Folder %s/\n" % cfg.pthmovie.value
