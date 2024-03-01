@@ -15,17 +15,16 @@ from __future__ import print_function
 from . import _, paypal
 from . import Utils
 from . import html_conv
-import codecs
 from Components.AVSwitch import AVSwitch
 try:
-    from Components.AVSwitch import iAVSwitch
+    from Components.AVSwitch import iAVSwitch as AVSwitch
 except Exception as e:
     print(e)
-
+    
 try:
-    from enigma import eAVSwitch
+    from enigma import eAVSwitch as AVSwitch
 except Exception:
-    from enigma import eAVControl as eAVSwitch
+    from enigma import eAVControl as AVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, ConfigYesNo
 from Components.config import ConfigEnableDisable
