@@ -2121,6 +2121,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
+        self.orig_aspect = int(self.getAspect())
         try:
             self.init_aspect = int(self.getAspect())
         except:
@@ -2200,6 +2201,14 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
+
+    def exit(self):
+        if STREAMS.playhack == "":
+            STREAMS.play_vod = False
+            self.video_back = False
+
+        self.setAspect(self.orig_aspect)
+        self.close()
 
     def getAspectString(self, aspectnum):
         return {
@@ -2499,12 +2508,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def power_off(self):
         self.close(1)
-
-    def exit(self):
-        if STREAMS.playhack == "":
-            STREAMS.play_vod = False
-            self.video_back = False
-        self.close()
 
     def nextAR(self):
         message = nextAR()
@@ -3243,6 +3246,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
+        self.orig_aspect = int(self.getAspect())
         try:
             self.init_aspect = int(self.getAspect())
         except:
@@ -3333,6 +3337,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
     def exit(self):
         self.session.nav.stopService()
         self.session.nav.playService(self.initialservice)
+        self.setAspect(self.orig_aspect)
         self.close()
 
     def power_off(self):
@@ -3879,6 +3884,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         IPTVInfoBarShowHide.__init__(self)
         InfoBarSubtitleSupport.__init__(self)
         InfoBarAudioSelection.__init__(self)
+        self.orig_aspect = int(self.getAspect())
         try:
             self.init_aspect = int(self.getAspect())
         except:
@@ -4008,9 +4014,9 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             remove('/tmp/hls.avi')
         self.session.nav.stopService()
         self.session.nav.playService(self.initialservice)
-        if not self.new_aspect == self.init_aspect:
+        if not self.new_aspect == self.orig_aspect:
             try:
-                self.setAspect(self.init_aspect)
+                self.setAspect(self.orig_aspect)
             except:
                 pass
         self.close()
