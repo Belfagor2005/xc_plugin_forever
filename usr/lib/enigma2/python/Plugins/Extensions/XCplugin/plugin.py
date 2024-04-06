@@ -16,15 +16,12 @@ from . import _, paypal
 from . import Utils
 from . import html_conv
 import codecs
-from Components.AVSwitch import AVSwitch
-try:
-    from Components.AVSwitch import iAVSwitch
-except Exception as e:
-    print(e)
+    
 try:
     from enigma import eAVSwitch
-except Exception as e:
-    print(e)
+except Exception:
+    from enigma import eAVControl as eAVSwitch
+    
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import ConfigSubsection, config, ConfigYesNo
 from Components.config import ConfigEnableDisable
@@ -1507,10 +1504,10 @@ class xc_Main(Screen):
         if file_exists(png):
             if self["poster"].instance:
                 size = self['poster'].instance.size()
-                self.scale = AVSwitch().getFramebufferScale()
+                self.scale = eAVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
                 try:
-                    iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
+                    eAVSwitch.setAspectRatio(STREAMS.ar_id_player)
                 except:
                     eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
@@ -2148,7 +2145,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["key_stop"] = Label("Stop")
         self["programm"] = Label("")
         self["poster"] = Pixmap()
-        self.scale = AVSwitch().getFramebufferScale()
+        self.scale = eAVSwitch().getFramebufferScale()
         self.picload = ePicLoad()
         try:
             self.picload.PictureData.get().append(self.setCover)
@@ -2204,7 +2201,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        return eAVSwitch().getAspectRatioSetting()
 
     def exit(self):
         if STREAMS.playhack == "":
@@ -2236,7 +2233,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -2275,7 +2272,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         if file_exists(png):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
-            self.scale = AVSwitch().getFramebufferScale()
+            self.scale = eAVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
             # _l = self.picload.PictureData.get()
             # del self.picload
@@ -3267,7 +3264,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def getAspect(self):
         try:
-            return AVSwitch().getAspectRatioSetting()
+            return eAVSwitch().getAspectRatioSetting()
         except:
             pass
 
@@ -3294,7 +3291,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -3409,7 +3406,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         if file_exists(png):
             size = self['poster'].instance.size()
             self.picload = ePicLoad()
-            self.scale = AVSwitch().getFramebufferScale()
+            self.scale = eAVSwitch().getFramebufferScale()
             self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
             # _l = self.picload.PictureData.get()
             # del _l[:]
@@ -3892,7 +3889,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.onClose.append(self.cancel)
 
     def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
+        return eAVSwitch().getAspectRatioSetting()
 
     def getAspectString(self, aspectnum):
         return {
@@ -3917,7 +3914,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         }
         config.av.aspectratio.setValue(map[aspect])
         try:
-            AVSwitch().setAspectRatio(aspect)
+            eAVSwitch().setAspectRatio(aspect)
         except:
             pass
 
@@ -4165,13 +4162,14 @@ VIDEO_ASPECT_RATIO_MAP = {
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
+
 def nextAR():
     try:
         STREAMS.ar_id_player += 1
         if STREAMS.ar_id_player > 6:
             STREAMS.ar_id_player = 0
         try:
-            AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         except:
             pass
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
@@ -4185,7 +4183,7 @@ def prevAR():
         if STREAMS.ar_id_player == -1:
             STREAMS.ar_id_player = 6
         try:
-            AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+            eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         except:
             pass
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
