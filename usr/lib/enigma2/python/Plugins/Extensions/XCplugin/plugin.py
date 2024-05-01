@@ -94,7 +94,7 @@ global STREAMS, piclogo, pictmp, skin_path
 global isStream, btnsearch, eserv, tport, re_search, pmovies, series, urlinfo
 
 _session = " "
-version = "XC Forever V.2.4"
+version = "XC Forever V.2.5"
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
