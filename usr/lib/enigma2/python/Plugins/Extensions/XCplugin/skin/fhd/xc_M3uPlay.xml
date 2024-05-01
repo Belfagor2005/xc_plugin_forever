@@ -17,13 +17,13 @@
 	<widget source="progresstext" render="Label" position="160,930" size="1570,40"  font="Regular;30" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
    	<widget name="version" position="1636,1113" size="200,30" halign="left" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<!-- Buttons Colors -->
-	<eLabel position="160,990" size="1570,5" backgroundColor="#202020" zPosition="1" />
-	<ePixmap position="220,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_red" position="270,1010" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<ePixmap position="500,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_green" position="550,1010" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<ePixmap position="780,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_yellow" position="830,1010" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
- 	<ePixmap position="1036,1015" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_blue" position="1076,1010" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<eLabel position="150,990" size="1570,5" backgroundColor="#202020" zPosition="1" />
+	<eLabel backgroundColor="#00ff0000" position="154,1004" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#0000ff00" position="457,1004" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#00ffff00" position="757,1004" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#000000ff" position="1057,1004" size="300,6" zPosition="12" />
+	<widget name="key_red" render="Label" position="154,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_green" render="Label" position="457,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_yellow" render="Label" position="757,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_blue" render="Label" position="1057,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 </screen>

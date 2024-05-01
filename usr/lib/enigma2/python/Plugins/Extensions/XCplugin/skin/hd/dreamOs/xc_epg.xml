@@ -10,8 +10,8 @@
 	</widget>
     	<widget source="text_clear" render="xcRunningText" position="146,103" size="586,533" font="Regular;18" foregroundColor="#ffffff" backgroundColor="#000000" halign="left" transparent="1" zPosition="2" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap" />
 	<!-- Buttons Colors -->
-	<eLabel position="146,653" size="586,3" backgroundColor="#202020" zPosition="1" />
-    	<ePixmap position="146,676" size="20,20" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_red" position="180,673" size="153,26" font="Regular;20" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="4" />
+	<eLabel position="146,626" size="586,3" backgroundColor="#202020" zPosition="1" />
+	<eLabel backgroundColor="#00ff0000" position="147,631" size="200,6" zPosition="12" />
+	<widget name="key_red" render="Label" position="147,635" size="200,40" zPosition="11" font="Regular; 20" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 </screen>
 
