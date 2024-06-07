@@ -1,7 +1,7 @@
 <!-- ***** PLAYLIST FOLDER 1920x1080 ***** 26/03/2022 /-->
 <screen name="nStreamTasksScreen" position="0,0" size="1280,720" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/backc.png" zPosition="1" />
-	<ePixmap position="106,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
+	<ePixmap position="106,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<eLabel position="106,80" size="1046,3" backgroundColor="#202020" zPosition="2" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="890,20" size="266,53" font="Regular;22" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">

@@ -2,22 +2,17 @@
 <screen name="nStreamTasksScreen" position="0,0" size="1920,1080" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<eLabel text="MovieList" position="320,30" size="500,100" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backc.png" zPosition="1" />
-	<ePixmap position="160,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/xc.png" alphatest="blend" zPosition="1" />
+	<ePixmap position="160,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="1" />
 	<eLabel position="160,120" size="1570,5" backgroundColor="#202020" zPosition="2" />
 	<eLabel position="160,980" size="1570,5" backgroundColor="#202020" zPosition="1" />	
-
 	<widget name="totalItem" position="1291,1013" size="425,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
-	<widget name="label2" position="840,1013" size="420,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
-
-
-
+	<widget name="label2" position="785,1013" size="475,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1335,30" size="400,80" font="Regular;34" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
 	<!-- Movie List -->
-	<widget source="movielist" render="Listbox" position="160,155" size="1570,800" scrollbarMode="showOnDemand" transparent="1" zPosition="2"  
-		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" >
+	<widget source="movielist" render="Listbox" position="160,155" size="1570,800" scrollbarMode="showOnDemand" transparent="1" zPosition="2" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png">
 		<convert type="TemplatedMultiContent">
 			{"template": [
 				MultiContentEntryText(pos = (10, 5),       size = (920, 50), font=1, flags = RT_HALIGN_LEFT, text = 1),                  # index 1 is the name
@@ -34,6 +29,6 @@
 	<eLabel position="150,990" size="1570,5" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="154,1004" size="300,6" zPosition="12" />
 	<eLabel backgroundColor="#0000ff00" position="457,1004" size="300,6" zPosition="12" />
-	<widget name="key_red" render="Label" position="154,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
-	<widget name="key_green" render="Label" position="457,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_red" position="154,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_green" position="457,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 </screen>

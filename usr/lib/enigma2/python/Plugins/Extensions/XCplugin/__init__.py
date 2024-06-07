@@ -36,12 +36,12 @@ def wanStatus():
 
 
 def localeInit():
-    if isDreamOS: 
-        lang = language.getLanguage()[:2] 
-        os_environ["LANGUAGE"] = lang 
+    if isDreamOS:
+        lang = language.getLanguage()[:2]
+        os_environ["LANGUAGE"] = lang
     gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 
-           
+
 if isDreamOS:  # check if DreamOS image
     _ = lambda txt: gettext.dgettext(PluginLanguageDomain, txt) if txt else ""
     localeInit()

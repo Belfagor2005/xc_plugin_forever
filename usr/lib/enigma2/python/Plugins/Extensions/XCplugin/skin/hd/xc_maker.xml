@@ -1,9 +1,9 @@
 <!-- ***** Home Menu 1280 ***** OK 26/03/2022 /-->
 <screen name="xc_maker" position="0,0" size="1280,720" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
-	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="3" />
+	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<widget name="Text" position="240,20" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
-	<widget name="version" position="362,56" size="133,20" halign="right" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="252,57" size="250,20" halign="left" font="Regular;16" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="146,80" size="586,3" backgroundColor="#202020" zPosition="1" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="533,23" size="200,53" font="Regular;20" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">

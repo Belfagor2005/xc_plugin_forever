@@ -2,7 +2,7 @@
 <screen name="xc_iptv_player" position="0,0" size="1280,720" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1280,178" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,533" size="1280,186" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/infobar.png" zPosition="-1" />
-	<ePixmap position="33,621" size="83,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/xc.png" alphatest="blend" zPosition="1" />
+	<ePixmap position="33,621" size="83,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="1" />
 	<eLabel position="133,626" size="1113,43" backgroundColor="#10202020" transparent="0" zPosition="1" />
 	<eLabel position="0,0" size="1280,106" backgroundColor="#10000000" transparent="0" zPosition="1" />
 	<widget name="programm" position="11,13" size="1248,159" font="Regular;20" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" />  

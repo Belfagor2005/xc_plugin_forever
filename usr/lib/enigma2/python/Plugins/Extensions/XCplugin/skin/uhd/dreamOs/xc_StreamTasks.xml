@@ -2,15 +2,11 @@
 <screen name="nStreamTasksScreen" position="0,0" size="2560,1440" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<eLabel text="MovieList" position="427,40" size="667,134" font="Regular;64" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/backc.png" zPosition="1" />
-	<ePixmap position="214,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="1" />
+	<ePixmap position="214,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="1" />
 	<eLabel position="214,160" size="2094,7" backgroundColor="#202020" zPosition="2" />
 	<eLabel position="214,1307" size="2094,7" backgroundColor="#202020" zPosition="1" />	
-
 	<widget name="totalItem" position="1722,1351" size="567,54" font="Regular;40" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
-	<widget name="label2" position="1120,1351" size="560,54" font="Regular;40" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
-
-
-
+	<widget name="label2" position="904,1351" size="776,54" font="Regular;40" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1780,40" size="534,107" font="Regular;46" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
@@ -34,6 +30,6 @@
 	<eLabel position="209,1274" size="2094,7" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="275,1334" size="300,6" zPosition="12" />
 	<eLabel backgroundColor="#0000ff00" position="575,1334" size="300,6" zPosition="12" />
-	<widget name="key_red" render="Label" position="275,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
-	<widget name="key_green" render="Label" position="575,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_red" position="275,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_green" position="575,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 </screen>

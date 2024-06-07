@@ -1,7 +1,7 @@
 <!-- ***** Home Menu 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="xc_Main" position="0,0" size="2560,1440" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/backb.png" zPosition="1" />
-	<ePixmap position="200,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="3" />
+	<ePixmap position="200,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="3" />
 	<widget name="playlist" position="480,40" size="1254,134" font="Regular;60" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" />
 	<eLabel position="200,160" size="2094,7" backgroundColor="#202020" zPosition="2" />
 	<!-- Clock -->
@@ -10,7 +10,7 @@
 	</widget>
 	<widget name="feedlist" position="211,207" size="1522,684" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1820,200" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
-	<widget name="version" position="1964,780" size="267,40" halign="right" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="1828,778" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="204,903" size="2087,11" backgroundColor="#202020" zPosition="1" />
 	<widget source="description" render="xcRunningText" position="204,923" size="1535,371" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 
@@ -22,7 +22,7 @@
 	<!-- <widget position="1755,1022" size="534,54" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" /> -->
     <widget position="1755,1260" size="534,67" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1755,912" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
-	<widget position="1829,834" size="355,54" name="state" font="Regular;38" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1829,834" size="401,54" name="state" font="Regular;38" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1715,1460" size="454,54" name="key_text" font="Regular;43" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
 	<ePixmap position="1914,1343" size="150,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
@@ -42,5 +42,5 @@
 	<ePixmap position="2347,1187" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/jobw.png" zPosition="3" alphatest="blend" transparent="1" />	
 	<ePixmap position="2347,1267" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/help.png" zPosition="3" alphatest="blend" transparent="1" />
 	<ePixmap position="2347,1347" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/info.png" zPosition="3" alphatest="blend" transparent="1" />
-	<widget name="info" position="352,1510" size="534,40" font="Regular;32" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
+	<widget name="info" position="354,1510" size="534,40" font="Regular;32" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
 </screen>

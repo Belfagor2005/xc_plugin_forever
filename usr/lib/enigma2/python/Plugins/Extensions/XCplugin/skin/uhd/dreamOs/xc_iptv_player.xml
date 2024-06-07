@@ -2,7 +2,7 @@
 <screen name="Xtream_Player" position="0,0" size="2560,1440" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="2554,391" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,1067" size="2560,374" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/infobar.png" zPosition="-1" />
-	<ePixmap position="67,1243" size="167,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/xc.png" alphatest="blend" zPosition="5" />
+	<ePixmap position="67,1243" size="167,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="5" />
 	<eLabel position="267,1254" size="2227,74" backgroundColor="#10202020" transparent="0" zPosition="1" />
 	<!--
 	<eLabel position="0,0" size="2560,442" backgroundColor="#10000000" transparent="0" zPosition="1" />
