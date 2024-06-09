@@ -4473,7 +4473,7 @@ class AutoStartTimer:
         except:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
         self.timer.start(100, 1)
-        self.update()
+        # self.update()
 
     def runUpdate(self):
         print("*** running update ***")
