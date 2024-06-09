@@ -196,30 +196,28 @@ if not os.path.isdir(config.movielist.last_videodir.value):
 
 config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
+cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
 cfg.autoupdate = ConfigEnableDisable(default=False)
 cfg.badcar = ConfigEnableDisable(default=False)
-cfg.data = ConfigYesNo(default=False)
-cfg.infoexp = ConfigYesNo(default=False)
-cfg.LivePlayer = ConfigEnableDisable(default=False)
-cfg.picons = ConfigEnableDisable(default=False)
-cfg.screenxl = ConfigEnableDisable(default=False)
-cfg.strtmain = ConfigEnableDisable(default=True)
-# cfg.panel = ConfigSelection(default = "player_api", choices = [("player_api", _("player_api")), ("panel_api", _("panel_api"))])
-# cfg.showlive = ConfigEnableDisable(default=True)
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
+cfg.data = ConfigYesNo(default=False)
 cfg.fixedtime = ConfigClock(default=0)
 cfg.hostaddress = ConfigText(default="exampleserver.com")
+cfg.infoexp = ConfigYesNo(default=False)
 cfg.infoname = NoSave(ConfigText(default="myBouquet"))
 cfg.last_update = ConfigText(default="Never")
 cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.passw = ConfigPassword(default="******", fixed_size=False, censor="*")
 cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct", "Requests"])
+cfg.picons = ConfigEnableDisable(default=False)
 cfg.port = ConfigText(default="80", fixed_size=False)
 cfg.pthmovie = ConfigDirectory(default=config.movielist.last_videodir.value)
 cfg.pthpicon = ConfigDirectory(default="/media/hdd/picon")
 cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
+cfg.screenxl = ConfigEnableDisable(default=False)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
+cfg.strtmain = ConfigEnableDisable(default=True)
 cfg.timeout = ConfigSelectionNumber(default=10, min=5, max=80, stepwidth=5)
 cfg.timetype = ConfigSelection(default="interval", choices=[("interval", _("interval")), ("fixed time", _("fixed time"))])
 cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live & VOD", "Multi Live/Single VOD", "Combined Live/VOD"])
@@ -265,15 +263,15 @@ def copy_poster():
 global Path_Movies
 global Path_Movies2
 global infoname
-ntimeout = float(cfg.timeout.value)
-socket.setdefaulttimeout(5)
+copy_poster()
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
-Path_Picons = str(cfg.pthpicon.value) + "/"
+ntimeout = float(cfg.timeout.value)
+socket.setdefaulttimeout(5)
 Path_Movies = str(cfg.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
+Path_Picons = str(cfg.pthpicon.value) + "/"
 Path_XML = str(cfg.pthxmlfile.value) + "/"
-copy_poster()
 
 
 def check_port(url):
@@ -2185,7 +2183,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 
     def av(self):
         temp = int(self.getAspect())
-        temp = temp + 1
+        temp += 1
         if temp > 6:
             temp = 0
         self.new_aspect = temp
@@ -3312,7 +3310,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def av(self):
         temp = int(self.getAspect())
-        temp = temp + 1
+        temp += 1
         if temp > 6:
             temp = 0
         self.new_aspect = temp
@@ -4008,6 +4006,12 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.openPlay(self.servicetype, url)
 
     def doEofInternal(self, playing):
+        if not self.execing:
+            return
+        if not playing:
+            return
+        print("doEofInternal EXIT OR NEXT")
+        self.session.open(MessageBox, "NO VIDEOSTREAM FOUND", type=MessageBox.TYPE_INFO, timeout=3)
         self.close()
 
     def __evEOF(self):
