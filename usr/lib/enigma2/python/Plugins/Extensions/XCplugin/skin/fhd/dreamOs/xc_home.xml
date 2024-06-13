@@ -1,16 +1,16 @@
-<!-- ***** Home Menu 1920x1080 ***** OK 15-05-2020 /-->
+<!-- ***** Home Menu 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="xc_home" position="0,0" size="1920,1080" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
-   	<!-- widget name="info" position="350,25" size="700,100"  font="Regular;70" halign="left" valign="center" foregroundColor="#c77e01" backgroundColor="#101010" transparent="1" zPosition="20" /-->		
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/back.png" />
 	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<widget name="Text" position="360,30" size="600,60" font="Regular;50" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<widget name="Text" position="360,30" size="600,60" font="Regular;50" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="1" />
 	<widget name="version" position="380,85" size="400,30" halign="left" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="220,120" size="880,5" backgroundColor="#202020" zPosition="1" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="800,35" size="300,80" font="Regular;30" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
-	<widget name="text" position="220,155" size="880,600" itemHeight="50" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
+	<!-- List -->
+	<widget name="text" position="220,155" size="880,600" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
 	<!-- Buttons Colors -->
 	<eLabel position="220,940" size="880,5" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="219,954" size="300,6" zPosition="12" />

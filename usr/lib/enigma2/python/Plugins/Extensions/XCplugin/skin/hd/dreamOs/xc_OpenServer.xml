@@ -11,7 +11,7 @@
 	</widget>	
 	<eLabel position="146,80" size="586,3" backgroundColor="#202020" zPosition="1" />
 	<!-- List -->
-   	<widget name="list" position="146,103" size="586,457" itemHeight="30" foregroundColor="#a0a0a0" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="#01388f" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
+   	<widget name="list" position="146,103" size="586,457" foregroundColor="#a0a0a0" backgroundColor="#000000" foregroundColorSelected="#ffffff" backgroundColorSelected="#01388f" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" enableWrapAround="1" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
 	<widget name="playlist" position="240,20" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="3" />	
 	
 	<!-- Buttons Colors -->

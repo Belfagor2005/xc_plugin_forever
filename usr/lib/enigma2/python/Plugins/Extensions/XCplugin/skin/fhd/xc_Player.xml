@@ -1,12 +1,9 @@
-<!-- ***** XC PLAYER 1920x1080 ***** 15-05-2020 /-->
+<!-- ***** XC PLAYER 1920 ***** 15-05-2020 /-->
 <screen name="Xtream_Player" position="0,0" size="1920,1080" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1915,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1" />
+	<ePixmap position="0,0" size="1920,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1" />
-	<ePixmap position="16,950" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="5" />
+	<ePixmap position="16,950" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="5"/>
 	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1" />
-	<!--
-	<eLabel position="0,0" size="1920,331" backgroundColor="#10000000" transparent="0" zPosition="1" />
-	-->
 	<!-- Elapsed time -->
 	<widget source="session.CurrentService" render="Label" position="200,940" size="170,55" font="Regular;40" halign="center" valign="center" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServicePosition">Position</convert>
@@ -88,15 +85,4 @@
 	<widget source="global.CurrentTime" render="Label" position="1670,1010" size="200,35" font="Regular;34" halign="right" foregroundColor="#808080" backgroundColor="#10000000" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format:%H:%M:%S</convert>
 	</widget>
-
-	<!-- progress 
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/progg.png" position="36,705" size="90,90" backgroundColor="black" zPosition="400" />
-	<widget pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/prog.png" orientation="orBottomToTop" position="38,702" render="Progress" size="90,90" backgroundColor="black" source="session.CurrentService" transparent="1" zPosition="402">
-		<convert type="EventTime">Progress</convert>
-	</widget>
-	<widget backgroundColor="black" font="Regular; 15" text="+9999" halign="center" position="51,730" render="Label" size="60,40" source="session.CurrentService" transparent="1" zPosition="402" noWrap="403" valign="center">
-		<convert type="EventTime">Remaining</convert>
-		<convert type="RemainingToText">OnlyMinutes</convert>
-	</widget>
-	-->
 </screen>

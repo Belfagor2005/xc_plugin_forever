@@ -2,7 +2,7 @@
 <screen name="xcEPG" position="0,0" size="2560,1440" title="EPG" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
 	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<eLabel text="EPG" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />
+	<eLabel text="EPG" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="1" />
 	<eLabel position="294,160" size="1174,7" backgroundColor="#202020" zPosition="1" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1067,47" size="400,107" font="Regular;40" halign="right" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="1">
@@ -13,5 +13,4 @@
 	<eLabel position="294,1269" size="1174,7" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="275,1334" size="300,6" zPosition="12" />
 	<widget name="key_red" position="275,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
-
 </screen>

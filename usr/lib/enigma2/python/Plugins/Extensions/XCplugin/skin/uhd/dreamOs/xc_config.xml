@@ -3,11 +3,11 @@
    	<!-- widget name="info" position="467,34" size="934,134"  font="Regular;94" halign="left" valign="center" foregroundColor="#c77e01" backgroundColor="#101010" transparent="1" zPosition="20" /-->		
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
 	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<widget name="playlist" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<widget name="playlist" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="1" />
 	<eLabel position="294,160" size="1174,7" backgroundColor="#202020" zPosition="1" />
 	<widget name="version" position="507,114" size="400,40" halign="left" font="Regular;32" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
         <!-- Config -->
-	<widget name="config" position="294,207" size="1174,764" itemHeight="70" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="1" />
+	<widget name="config" position="294,207" size="1174,800" itemHeight="70" foregroundColor="#a0a0a0" backgroundColor="#0b2049" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="1" />
 	<widget name="description" position="294,1026" size="1176,147" font="Regular;48" halign="center" foregroundColor="#009900" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<widget name="statusbar" position="294,1174" size="1176,80" font="Regular;43" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />
 	<!-- Buttons Colors -->

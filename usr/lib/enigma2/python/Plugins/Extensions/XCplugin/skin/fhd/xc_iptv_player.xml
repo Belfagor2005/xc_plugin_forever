@@ -1,15 +1,12 @@
 <!-- ***** IPTV Player 1920x1080 ***** OK 15-05-2020 /-->
 <screen name="xc_iptv_player" position="0,0" size="1920,1080" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1920,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1" />
-	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1" />
-	<ePixmap position="40,937" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1" />
-	<eLabel position="0,0" size="1920,160" backgroundColor="#10000000" transparent="0" zPosition="1" />
-	<widget name="programm" position="50,20" size="1820,273" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" />  
-   	<!-- <widget source="programm" render="xcRunningText" position="50,30" size="1820,250" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" -->
-    		<!-- options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap"  /> -->
-   	<widget name="poster" position="40,937" size="160,100" backgroundColor="#41000000" zPosition="3" scale="1" />
-    	<!-- movie lenght Servicename -->
+	<ePixmap position="0,0" size="1920,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1"/>
+	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1"/>
+	<ePixmap position="16,950" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="5"/>
+	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1"/>
+	<eLabel position="0,0" size="1920,160" backgroundColor="#10000000" transparent="0" zPosition="1"/>
+	<widget name="programm" position="50,20" size="1820,273" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3"/>
+	<widget name="poster" position="16,950" size="160,100" backgroundColor="#41000000" zPosition="3" scale="1"/>
 	<widget source="session.CurrentService" render="Label" position="38,806" size="1000,200" font="Regular;90" halign="left" foregroundColor="yellow" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServicePosition">Position</convert>
 	</widget>
@@ -18,24 +15,24 @@
 		<convert type="ServiceName">Name</convert>
 	</widget>
 	<!-- Canale -->
-	<widget name="channel_name" position="562,947" size="1078,40" font="Regular;34" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="5" />
-	<!-- Clock -->
-	<widget source="global.CurrentTime" render="Label" position="1675,945" size="190,40" font="Regular;36" halign="right" foregroundColor="#808080" backgroundColor="#10000000" transparent="1" zPosition="2">
-		<convert type="ClockToText">Format:%H:%M:%S</convert>
+	<widget name="channel_name" position="562,947" size="1078,40" font="Regular;34" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="5"/>
+	<eLabel text="x" position="1587,1010" size="25,40" font="Regular;34" foregroundColor="#505050" backgroundColor="#10000000" transparent="1" zPosition="3"/>
+	<!-- HD icon -->
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_hd_off.png" position="1730,1005" size="140,50" alphatest="blend" zPosition="1"/>
+	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_hd_on.png" position="1730,1005" size="140,50" zPosition="2" alphatest="blend">
+		<convert type="ServiceInfo">VideoWidth</convert>
+		<convert type="ValueRange">721,1980</convert>
+		<convert type="ConditionalShowHide"/>
 	</widget>
 	<!-- Video Resolution  -->
 	<widget source="session.CurrentService" render="Label" position="1480,1010" size="100,40" font="Regular;34" halign="right" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
 		<convert type="ServiceInfo">VideoWidth</convert>
 	</widget>
-	<eLabel text="x" position="1587,1010" size="25,40" font="Regular;34" foregroundColor="#505050" backgroundColor="#10000000" transparent="1" zPosition="3" />
 	<widget source="session.CurrentService" render="Label" position="1610,1010" size="100,40" font="Regular;34" halign="left" foregroundColor="#ffffff" backgroundColor="#10000000" transparent="1" zPosition="3">
-		<convert type="ServiceInfo">VideoHeight</convert>	
+		<convert type="ServiceInfo">VideoHeight</convert>
 	</widget>
-	<!-- HD icon -->
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_hd_off.png" position="1730,1005" size="140,50" alphatest="blend" zPosition="1" />
-	<widget source="session.CurrentService" render="Pixmap" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_hd_on.png" position="1730,1005" size="140,50" zPosition="2" alphatest="blend">
-		<convert type="ServiceInfo">VideoWidth</convert>
-		<convert type="ValueRange">721,1980</convert>
-		<convert type="ConditionalShowHide" />
+	<!-- Clock -->
+	<widget source="global.CurrentTime" render="Label" position="1675,945" size="190,40" font="Regular;36" halign="right" foregroundColor="#808080" backgroundColor="#10000000" transparent="1" zPosition="2">
+		<convert type="ClockToText">Format:%H:%M:%S</convert>
 	</widget>
- </screen>
+</screen>

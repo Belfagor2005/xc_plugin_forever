@@ -2,7 +2,7 @@
 <screen name="xc_Main" position="0,0" size="2560,1440" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/backb.png" zPosition="1" />
 	<ePixmap position="200,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<widget name="playlist" position="480,40" size="1254,134" font="Regular;60" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" />
+	<widget name="playlist" position="480,40" size="1254,134" font="Regular;60" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="2" />
 	<eLabel position="200,160" size="2094,7" backgroundColor="#202020" zPosition="2" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1760,40" size="534,107" font="Regular;46" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
@@ -10,9 +10,9 @@
 	</widget>
 	<widget name="feedlist" position="200,207" size="1127,1067" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1880,207" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
-	<widget name="version" position="1886,779" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="1884,777" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="1347,820" size="944,7" backgroundColor="#202020" zPosition="1" />
-	<widget source="description" render="xcRunningText" position="1334,847" size="974,434" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
+	<widget source="description" render="xcRunningText" position="1336,847" size="974,434" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 
 	<!-- Description -->
 	<widget position="1040,2507" size="800,54" name="Text" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
