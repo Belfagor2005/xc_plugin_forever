@@ -2,7 +2,7 @@
 <screen name="nStreamTasksScreen" position="0,0" size="2560,1440" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<eLabel text="MovieList" position="427,40" size="667,134" font="Regular;64" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/backc.png" zPosition="1" />
-	<ePixmap position="214,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="1" />
+	<ePixmap position="214,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="1" />
 	<eLabel position="214,160" size="2094,7" backgroundColor="#202020" zPosition="2" />
 	<eLabel position="214,1307" size="2094,7" backgroundColor="#202020" zPosition="1" />	
 	<widget name="totalItem" position="1722,1351" size="567,54" font="Regular;40" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />

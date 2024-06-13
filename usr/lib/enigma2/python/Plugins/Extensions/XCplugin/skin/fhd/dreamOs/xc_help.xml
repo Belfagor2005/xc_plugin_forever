@@ -1,7 +1,7 @@
 <!-- ***** HELP MENU 1920x1080 ***** OK 15/05/2020 /-->
 <screen name="xcHelp" position="0,0" size="1920,1080" title="HELP" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/back.png" />
-	<ePixmap position="220,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="3" />
+	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<eLabel text="HELP" position="360,30" size="600,60" font="Regular;50" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<widget name="version" position="380,85" size="400,30" halign="left" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="220,120" size="880,5" backgroundColor="#202020" zPosition="1" />

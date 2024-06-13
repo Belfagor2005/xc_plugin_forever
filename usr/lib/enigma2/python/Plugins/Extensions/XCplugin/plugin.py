@@ -153,19 +153,15 @@ if sslverify:
             return ctx
 
 modelive = [("1", "Dvb(1)"), ("4097", "IPTV(4097)")]
-if file_exists("/usr/bin/gstplayer"):
-    modelive.append(("5001", "Gstreamer(5001)"))
-if file_exists("/usr/bin/exteplayer3"):
-    modelive.append(("5002", "Exteplayer3(5002)"))
-if file_exists('/var/lib/dpkg/info'):
-    modelive.append(("8193", "eServiceUri(8193)"))
-
 modemovie = [("4097", "IPTV(4097)")]
 if file_exists("/usr/bin/gstplayer"):
+    modelive.append(("5001", "Gstreamer(5001)"))
     modemovie.append(("5001", "Gstreamer(5001)"))
 if file_exists("/usr/bin/exteplayer3"):
+    modelive.append(("5002", "Exteplayer3(5002)"))
     modemovie.append(("5002", "Exteplayer3(5002)"))
 if file_exists('/var/lib/dpkg/info'):
+    modelive.append(("8193", "eServiceUri(8193)"))
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 

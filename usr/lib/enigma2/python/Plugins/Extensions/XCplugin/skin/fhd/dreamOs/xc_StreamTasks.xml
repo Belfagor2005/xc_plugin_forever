@@ -2,11 +2,11 @@
 <screen name="nStreamTasksScreen" position="0,0" size="1920,1080" title="Video Download List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<eLabel text="MovieList" position="320,30" size="500,100" font="Regular;48" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backc.png" zPosition="1" />
-	<ePixmap position="160,35" size="120,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="1" />
+	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="1" />
 	<eLabel position="160,120" size="1570,5" backgroundColor="#202020" zPosition="2" />
 	<eLabel position="160,980" size="1570,5" backgroundColor="#202020" zPosition="1" />	
-	<widget name="totalItem" position="1291,1013" size="425,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
-	<widget name="label2" position="785,1013" size="475,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+	<widget name="totalItem" position="380,70" size="930,50" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
+	<widget name="label2" position="380,20" size="930,50" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1335,30" size="400,80" font="Regular;34" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>

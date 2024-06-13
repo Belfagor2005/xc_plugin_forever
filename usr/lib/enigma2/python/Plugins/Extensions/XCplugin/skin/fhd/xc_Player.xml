@@ -2,7 +2,7 @@
 <screen name="Xtream_Player" position="0,0" size="1920,1080" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1915,293" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvbar.png" zPosition="-1" />
 	<ePixmap position="0,800" size="1920,280" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/infobar.png" zPosition="-1" />
-	<ePixmap position="50,932" size="125,75" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" alphatest="blend" zPosition="5" />
+	<ePixmap position="16,950" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="5" />
 	<eLabel position="200,940" size="1670,55" backgroundColor="#10202020" transparent="0" zPosition="1" />
 	<!--
 	<eLabel position="0,0" size="1920,331" backgroundColor="#10000000" transparent="0" zPosition="1" />
@@ -33,16 +33,16 @@
 	</widget>
 	<widget name="state" position="375,865" size="500,60" font="Regular;60" halign="left" foregroundColor="#707070" backgroundColor="#10000000" transparent="1" zPosition="10" />
 	<!-- Buttons Colors -->
-	<eLabel backgroundColor="#00ff0000" position="60,1020" size="30,30" zPosition="12" />
-    <eLabel backgroundColor="#000000ff" position="361,1020" size="30,30" zPosition="12" />
-	<widget name="key_red" position="100,1015" size="233,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget name="cont_play" position="401,1015" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<ePixmap position="659,1020" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/stop.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_stop" position="699,1015" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<ePixmap position="937,1020" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/rec.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_record" position="973,1015" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<eLabel position="1280,1009" size="120,51" backgroundColor="#30000000" zPosition="2" />
-	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" position="1292,1013" size="100,40" alphatest="blend" zPosition="3" />
+	<eLabel backgroundColor="#00ff0000" position="190,1020" size="30,30" zPosition="12" />
+    <eLabel backgroundColor="#000000ff" position="476,1020" size="30,30" zPosition="12" />
+	<widget name="key_red" position="230,1015" size="233,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget name="cont_play" position="516,1015" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<ePixmap position="779,1020" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/stop.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_stop" position="814,1015" size="200,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<ePixmap position="1027,1020" size="30,30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/rec.png" alphatest="blend" zPosition="3" transparent="1" />
+	<widget name="key_record" position="1065,1015" size="250,40" font="Regular;30" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<eLabel position="1325,1009" size="120,51" backgroundColor="#30000000" zPosition="2" />
+	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" position="1337,1013" size="100,40" alphatest="blend" zPosition="3" />
 	<widget name="programm" position="50,20" size="1820,304" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="3" />
 	<!-- Audio icon -->
 	<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/ico_dolby_off.png" position="1555,420" size="143,50" alphatest="blend" zPosition="1" />
