@@ -2,7 +2,7 @@
 <screen name="xc_M3uLoader" position="0,0" size="2560,1440" title="Player List" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
 	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="2" />
-	<widget name="Text" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="1" />	
+	<widget name="Text" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="1" />
 	<widget name="version" position="507,114" size="400,40" halign="left" font="Regular;32" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="294,160" size="1174,7" backgroundColor="#202020" zPosition="1" />
 	<!-- Clock -->
@@ -27,15 +27,4 @@
 	<widget name="key_green" render="Label" position="575,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 	<widget name="key_yellow" render="Label" position="874,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 	<widget name="key_blue" render="Label" position="1175,1345" size="300,50" zPosition="11" font="Regular; 34" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
-
-	<!-- 
-   	<ePixmap position="294,1287" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_green.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_green" position="360,1280" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<ePixmap position="294,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_red.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_red" position="360,1348" size="267,54" font="Regular;40" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
- 	<ePixmap position="1427,1287" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_blue.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_blue" position="1134,1280" size="267,54" font="Regular;40" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<ePixmap position="1427,1354" size="40,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/key_yellow.png" alphatest="blend" zPosition="3" transparent="1" />
-	<widget name="key_yellow" position="1134,1347" size="267,54" font="Regular;40" halign="right" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	-->
 </screen>

@@ -84,10 +84,6 @@ import sys
 import time
 
 
-# try:
-    # from xml.etree.cElementTree import ElementTree, fromstring
-# except ImportError:
-    # from xml.etree.ElementTree import ElementTree, fromstring
 try:
     from xml.etree.cElementTree import fromstring
 except ImportError:
@@ -625,7 +621,7 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Place IPTV bouquets at "), cfg.bouquettop, (_("Configure to place the bouquets of the converted lists"))))
 
         self.list.append(getConfigListEntry(_("Automatic bouquet update (schedule):"), cfg.autobouquetupdate, (_("Active Automatic Bouquet Update"))))
-        if cfg.autobouquetupdate.getValue():
+        if cfg.autobouquetupdate.value is True:
             self.list.append(getConfigListEntry(indent + (_("Schedule type:")), cfg.timetype, (_("At an interval of hours or at a fixed time"))))
             if cfg.timetype.value == "interval":
                 self.list.append(getConfigListEntry(2 * indent + (_("Update interval (hours):")), cfg.updateinterval, (_("Configure every interval of hours from now"))))
@@ -4458,7 +4454,10 @@ def main(session, **kwargs):
 _session = None
 autoStartTimer = None
 _firstStart = True
-
+try:
+    from . import Update
+except ImportError:
+    prit('error import update')
 
 class AutoStartTimer:
     def __init__(self, session):
@@ -4472,21 +4471,21 @@ class AutoStartTimer:
             self.timer.callback.append(self.on_timer)
         except:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
-        self.timer.start(100, 1)
-        # self.update()
+        self.timer.start(100, True)
+        self.update()
 
     def runUpdate(self):
         print("*** running update ***")
         global _firstStart
         try:
-            from . import Update
+            # from . import Update
             Update.upd_done()
             _firstStart = False
         except Exception as e:
             print('error Fxy', e)
 
     def get_wake_time(self):
-        if cfg.autobouquetupdate.value:
+        if cfg.autobouquetupdate.value is True:
             if cfg.timetype.value == "interval":
                 interval = int(cfg.updateinterval.value)
                 nowt = time.time()
@@ -4508,40 +4507,48 @@ class AutoStartTimer:
             return -1
 
     def update(self, constant=0):
-        self.timer.stop()
-        wake = self.get_wake_time()
-        nowt = time.time()
-        now = int(nowt)
-        if wake > 0:
-            if wake < now + constant:
-                if cfg.timetype.value == "interval":
-                    interval = int(cfg.updateinterval.value)
-                    wake += interval * 60 * 60
-                elif cfg.timetype.value == "fixed time":
-                    wake += 86400
-            next = wake - now
-            self.timer.startLongTimer(next)
-        else:
-            wake = -1
-        return wake
+        if cfg.autobouquetupdate.value is True:
+            self.timer.stop()
+            wake = self.get_wake_time()
+            nowt = time.time()
+            now = int(nowt)
+            if wake > 0:
+                if wake < now + constant:
+                    if cfg.timetype.value == "interval":
+                        interval = int(cfg.updateinterval.value)
+                        wake += interval * 60 * 60
+                    elif cfg.timetype.value == "fixed time":
+                        wake += 86400
+                next = wake - int(nowt)
+                if next > 3600:
+                    next = 3600
+                if next <= 0:
+                    next = 60
+                self.timer.startLongTimer(next)
+            else:
+                wake = -1
+            return wake
 
     def on_timer(self):
-        self.timer.stop()
-        now = int(time.time())
-        wake = now
-        constant = 0
-        if cfg.timetype.value == "fixed time":
-            wake = self.get_wake_time()
-        if wake - now < 60:
-            try:
-                self.startMain()
-                self.update()
-                localtime = time.asctime(time.localtime(time.time()))
-                cfg.last_update.value = localtime
-                cfg.last_update.save()
-            except Exception as e:
-                print(e)
-        self.update(constant)
+        if cfg.autobouquetupdate.value is True:
+            self.timer.stop()
+            now = int(time.time())
+            wake = now
+            constant = 0
+            if cfg.timetype.value == "fixed time":
+                wake = self.get_wake_time()
+            # if wake - now < 60:
+            if abs(wake - now) < 60:
+                try:
+                    self.startMain()
+                    constant = 60
+                    # self.update()  # ??
+                    localtime = time.asctime(time.localtime(time.time()))
+                    cfg.last_update.value = localtime
+                    cfg.last_update.save()
+                except Exception as e:
+                    print(e)
+            self.update(constant)
 
     def startMain(self):
         from Plugins.Extensions.XCplugin.plugin import iptv_streamse
