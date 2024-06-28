@@ -32,7 +32,7 @@ from Components.config import ConfigEnableDisable
 from Components.config import ConfigSelectionNumber, ConfigClock
 from Components.config import ConfigSelection, getConfigListEntry, NoSave
 from Components.config import ConfigText, ConfigDirectory
-from Components.config import ConfigPassword  # , configfile
+from Components.config import ConfigPassword, configfile
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
@@ -784,6 +784,12 @@ class xc_config(Screen, ConfigListScreen):
         if self["config"].isChanged():
             for x in self["config"].list:
                 x[1].save()
+
+            cfg.hostaddress.save()
+            cfg.port.save()
+            cfg.user.save()
+            cfg.passw.save()
+            configfile.save()
             self.xml_plugin()
             self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
         self.close()
