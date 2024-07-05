@@ -3670,6 +3670,7 @@ class xc_M3uPlay(Screen):
         skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
+        # print('skin:', self.skin)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.name = name
@@ -4463,7 +4464,7 @@ _firstStart = True
 try:
     from . import Update
 except ImportError:
-    prit('error import update')
+    print('error import update')
 
 class AutoStartTimer:
     def __init__(self, session):
