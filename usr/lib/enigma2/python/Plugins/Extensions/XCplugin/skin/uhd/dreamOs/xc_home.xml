@@ -1,7 +1,7 @@
 <!-- ***** Home Menu 1920x1080 ***** OK 15-05-2020 /-->
 <screen name="xc_home" position="0,0" size="2560,1440" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
    	<!-- widget name="info" position="467,34" size="934,134"  font="Regular;94" halign="left" valign="center" foregroundColor="#c77e01" backgroundColor="#101010" transparent="1" zPosition="20" /-->		
-	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" />
+	<ePixmap position="0,0" size="2560,1440" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/back.png" scale="stretch" />
 	<ePixmap position="294,47" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<widget name="Text" position="480,40" size="800,80" font="Regular;67" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="1" />	
 	<widget name="version" position="507,114" size="400,40" halign="left" font="Regular;32" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />

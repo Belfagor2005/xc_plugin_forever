@@ -1,6 +1,6 @@
 <!-- ***** Home Menu 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="xc_Main" position="0,0" size="1920,1080" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backb.png" zPosition="1" />
+	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backb.png" scale="stretch" zPosition="1" />
 	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<widget name="playlist" position="360,30" size="940,100" font="Regular;50" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" />
 	<eLabel position="150,120" size="1570,5" backgroundColor="#202020" zPosition="2" />

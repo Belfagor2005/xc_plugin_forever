@@ -1,6 +1,6 @@
 <!-- ***** XC OpenTeam 1920x1080 ***** OK 26/03/2022 /-->
 <screen name="XC_OPENSERVER" position="0,0" size="1280,720" title="Xtream-Team" backgroundColor="#FF000000" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" />
+	<ePixmap position="0,0" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/back.png" scale="stretch" />
 	<ePixmap position="146,23" size="80,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
 	<widget name="Text" position="148,586" size="400,40" font="Regular;33" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="3" />	
    	<widget name="live" position="349,643" size="400,66" font="Regular; 26" halign="left" valign="center" foregroundColor="yellow" backgroundColor="#101010" transparent="1" zPosition="3" />        
