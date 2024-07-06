@@ -15,29 +15,27 @@ from __future__ import print_function
 from . import _, paypal
 from . import Utils
 from . import html_conv
-import codecs
-from Components.AVSwitch import AVSwitch
-try:
-    from Components.AVSwitch import iAVSwitch
-except Exception as e:
-    print(e)
 
-try:
-    from enigma import eAVSwitch
-except Exception:
-    from enigma import eAVControl as eAVSwitch
 from Components.ActionMap import ActionMap, HelpableActionMap
-from Components.config import ConfigSubsection, config, ConfigYesNo
-from Components.config import ConfigEnableDisable
-from Components.config import ConfigSelectionNumber, ConfigClock
-from Components.config import ConfigSelection, getConfigListEntry, NoSave
-from Components.config import ConfigText, ConfigDirectory
-from Components.config import ConfigPassword, configfile
+from Components.config import (
+    ConfigSubsection,
+    config,
+    ConfigYesNo,
+    ConfigEnableDisable,
+    ConfigSelectionNumber,
+    ConfigClock,
+    ConfigSelection,
+    getConfigListEntry,
+    ConfigText,
+    NoSave,
+    ConfigDirectory,
+    ConfigPassword,
+    configfile,
+)
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.MenuList import MenuList
-from Components.MultiContent import MultiContentEntryText
-from Components.MultiContent import MultiContentEntryPixmapAlphaTest
+from Components.MultiContent import (MultiContentEntryText, MultiContentEntryPixmapAlphaTest)
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
@@ -48,49 +46,62 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.Console import Console
 # from Screens.InfoBar import MoviePlayer
 from Screens.Standby import Standby
-from Screens.InfoBarGenerics import InfoBarSubtitleSupport, \
-    InfoBarMenu, InfoBarSeek, InfoBarNotifications, \
-    InfoBarAudioSelection
+from Screens.InfoBarGenerics import (
+    InfoBarSubtitleSupport,
+    InfoBarMenu, InfoBarSeek,
+    InfoBarNotifications,
+    InfoBarAudioSelection,
+)
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from Tools.Directories import SCOPE_PLUGINS
-from Tools.Directories import resolveFilename
+from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from Tools.Downloader import downloadWithProgress
-from enigma import RT_HALIGN_CENTER, RT_VALIGN_CENTER
-from enigma import RT_HALIGN_LEFT
-# from enigma import gPixmapPtr
-from enigma import eTimer
-from enigma import eListboxPythonMultiContent
-from enigma import eServiceReference
-from enigma import ePicLoad
-from enigma import gFont
-from enigma import iPlayableService
-from enigma import loadPNG
-from enigma import getDesktop
-from os import listdir, remove, system
+from enigma import (
+    RT_HALIGN_CENTER,
+    RT_VALIGN_CENTER,
+    RT_HALIGN_LEFT,
+    eTimer,
+    eListboxPythonMultiContent,
+    eServiceReference,
+    ePicLoad,
+    gFont,
+    iPlayableService,
+    loadPNG,
+    getDesktop,
+)
+from os import (listdir, remove, system)
 from os.path import splitext
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
 import base64
+import codecs
 import os
 import re
 import six
 import socket
 import sys
 import time
-
-
+from Components.AVSwitch import AVSwitch
+try:
+    from enigma import eAVSwitch
+except Exception:
+    from enigma import eAVControl as eAVSwitch
 try:
     from xml.etree.cElementTree import fromstring
 except ImportError:
     from xml.etree.ElementTree import fromstring
+
 global STREAMS, piclogo, pictmp, skin_path
 global isStream, btnsearch, eserv, re_search
 global series, urlinfo
+global Path_Movies
+global Path_Movies2
+global infoname
+
 _session = " "
 version = "XC Forever V.3.0"
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
@@ -109,6 +120,7 @@ btnsearch = 0
 next_request = 0
 stream_url = ""
 urlinfo = ""
+socket.setdefaulttimeout(5)
 pythonVer = sys.version_info.major
 PY3 = False
 if pythonVer == 3:
@@ -252,14 +264,10 @@ def copy_poster():
     system("cd / && cp -f " + piclogo + " " + pictmp)
 
 
-global Path_Movies
-global Path_Movies2
-global infoname
 copy_poster()
 eserv = int(cfg.services.value)
 infoname = str(cfg.infoname.value)
 ntimeout = float(cfg.timeout.value)
-socket.setdefaulttimeout(5)
 Path_Movies = str(cfg.pthmovie.value) + "/"
 Path_Movies2 = Path_Movies
 Path_Picons = str(cfg.pthpicon.value) + "/"
@@ -307,10 +315,6 @@ def returnIMDB(text_clear):
         except Exception as e:
             print("[XCF] imdb: ", e)
         return True
-    # else:
-        # text_clear = html_conv.html_unescape(text_clear)
-        # _session.open(MessageBox, text_clear, MessageBox.TYPE_INFO)
-        # return True
     return False
 
 
@@ -700,12 +704,16 @@ class xc_config(Screen, ConfigListScreen):
             pass
 
     def openDirectoryBrowser(self, path, itemcfg):
-        if file_exists("/usr/bin/apt-get"):
-            path = None
-        if itemcfg == "pthmovie":
-            try:
+        try:
+            callback_map = {
+                "pthmovie": self.openDirectoryBrowserCB(cfg.pthmovie),
+                "pthxmlfile": self.openDirectoryBrowserCB(cfg.pthxmlfile),
+                "pthpicon": self.openDirectoryBrowserCB(cfg.pthpicon)
+            }
+
+            if itemcfg in callback_map:
                 self.session.openWithCallback(
-                    self.openDirectoryBrowserCB,
+                    callback_map[itemcfg],
                     LocationBox,
                     windowTitle=_("Choose Directory:"),
                     text=_("Choose directory"),
@@ -713,57 +721,16 @@ class xc_config(Screen, ConfigListScreen):
                     bookmarks=config.movielist.videodirs,
                     autoAdd=True,
                     editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
-                    # minFree=15)
-            except Exception as e:
-                print("openDirectoryBrowser get failed: ", e)
-        elif itemcfg == "pthxmlfile":
-            try:
-                self.session.openWithCallback(
-                    self.openDirectoryBrowserCD,
-                    LocationBox,
-                    windowTitle=_("Choose Directory:"),
-                    text=_("Choose directory"),
-                    currDir=str(path),
-                    bookmarks=config.movielist.videodirs,
-                    autoAdd=True,
-                    editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
-                    # minFree=15)
+                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/usr", "/var"]
+                )
+        except Exception as e:
+            print(e)
 
-            except Exception as e:
-                print("openDirectoryBrowser get failed: ", e)
-        elif itemcfg == "pthpicon":
-            try:
-                self.session.openWithCallback(
-                    self.openDirectoryBrowserCE,
-                    LocationBox,
-                    windowTitle=_("Choose Directory:"),
-                    text=_("Choose directory"),
-                    currDir=str(path),
-                    bookmarks=config.movielist.videodirs,
-                    autoAdd=True,
-                    editDir=True,
-                    inhibitDirs=["/bin", "/boot", "/dev", "/home", "/lib", "/proc", "/run", "/sbin", "/sys", "/var"])
-                    # minFree=15)
-            except Exception as e:
-                print("openDirectoryBrowser get failed: ", e)
-        # ConfigListScreen.keyOK(self)
-
-    def openDirectoryBrowserCB(self, path):
-        if path is not None:
-            cfg.pthmovie.setValue(path)
-        return
-
-    def openDirectoryBrowserCD(self, path):
-        if path is not None:
-            cfg.pthxmlfile.setValue(path)
-        return
-
-    def openDirectoryBrowserCE(self, path):
-        if path is not None:
-            cfg.pthpicon.setValue(path)
-        return
+    def openDirectoryBrowserCB(self, config_entry):
+        def callback(path):
+            if path is not None:
+                config_entry.setValue(path)
+        return callback
 
     def cfgok(self):
         if cfg.picons.value:
@@ -1483,10 +1450,8 @@ class xc_Main(Screen):
                 size = self['poster'].instance.size()
                 self.scale = AVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
-                try:
-                    iAVSwitch.setAspectRatio(STREAMS.ar_id_player)
-                except:
-                    eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+                eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+                return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
