@@ -90,7 +90,8 @@ sleep 2
 # wget https://github.com/Belfagor2005/XCplugin/archive/refs/heads/main.tar.gz
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz'
 tar -xzf main.tar.gz
-cp -r 'XCplugin-main/usr' '/'
+cp -r 'xc_plugin_forever-main/usr' '/'
+cp -r 'xc_plugin_forever-main/etc' '/'
 set +e
 cd
 sleep 2
