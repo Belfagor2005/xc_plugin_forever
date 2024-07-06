@@ -1010,11 +1010,8 @@ class iptv_streamse():
                         name = html_conv.html_unescape(name)
                         # print('Name html_unescape: ', name)
                         if description != '':
-                            # try:
                             timematch = re.findall(r'\[(\d\d:\d\d)\]', description)
                             titlematch = re.findall(r'\[\d\d:\d\d\](.*)', description)
-                            # print('=============timematch: ', timematch)
-                            # print('=============titlematch: ', titlematch)
                             descriptionmatch = re.findall(r'\n(?s)\((.*?)\)', description)
                             if timematch:
                                 if len(timematch) > 0:
@@ -1035,12 +1032,6 @@ class iptv_streamse():
                             description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                             description = html_conv.html_unescape(description1)
                             description2 = html_conv.html_unescape(description2)
-                            # except Exception as e:
-                                # description = html_conv.html_unescape(description)
-                                # print('------------- description failed: ', e)
-                    # if isStream and ("get_vod" or "get_series") in str(stream_url):
-                    # elif isStream and ("/movie/" or "/series/") in str(stream_url):
-                    # if isStream and ("/movie/") in str(stream_url):
                     elif stream_url and ("/movie/" or "/series/") in str(stream_url):
                         stream_live = False
                         vodItems = {}
@@ -1109,7 +1100,7 @@ class iptv_streamse():
         if "exampleserver" not in str(cfg.hostaddress.value):
             global urlinfo, next_request
             TYPE_PLAYER = '/enigma2.php'
-            TYPE_PLAYER2 = '/player_api.php'
+            # TYPE_PLAYER2 = '/player_api.php'
             url = url.strip(" \t\n\r")
             if next_request == 1:
                 # url = check_port(url)
@@ -1420,10 +1411,6 @@ class xc_Main(Screen):
                     self["description"].setText(description)
                     # print('------------------------------------------ else desc', description)
                 pixim = six.ensure_binary(selected_channel[7])
-                # if PY3:
-                    # pixim = pixim.decode('utf-8') #.encode()
-                # print('self pixim   ', str(pixim))
-                # if (pixim != "" or pixim != "n/A" or pixim is not None or pixim != "null"):
                 if pixim != "":
                     parsed = urlparse(pixim)
                     domain = parsed.hostname
@@ -1451,7 +1438,7 @@ class xc_Main(Screen):
                 self.scale = AVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
                 eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
-                return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
+                # return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
@@ -2930,7 +2917,7 @@ class OpenServer(Screen):
     def selOn(self, host, port, username, password, png=None):
         try:
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
-            auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
+            auth = status = created_at = exp_date = '- ? -'  # = active_cons = max_connections = server_protocol = timezone
             # url_info = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
             # urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
             urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
@@ -3747,14 +3734,6 @@ class xc_M3uPlay(Screen):
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
-        # ln = 0
-        # for x in self.list:
-            # ln +=1
-        # ln = ln
-        # ln = len(self.xxd([0],[0]))
-        # listsx = self.list
-        # listsx = [channel for channel in m3ulistxc if idx > 0]
-        # print('lnnnnn =', str(ln))
         if idx < 0 or idx is None:
             return
         else:
@@ -3861,41 +3840,14 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                                      'InfobarShowHideActions', 'InfobarActions', 'DirectionActions', 'InfobarSeekActions'], {
                                     'leavePlayer': self.cancel,
                                     'epg': self.showIMDB,
-                                    # 'info': self.showIMDB,
                                     'info': self.cicleStreamType,
                                     'tv': self.cicleStreamType,
                                     'stop': self.leavePlayer,
                                     'cancel': self.cancel,
-                                    # 'channelDown': self.previousitem,
-                                    # 'channelUp': self.nextitem,
-                                    # 'down': self.previousitem,
-                                    # 'up': self.nextitem,
                                     'back': self.cancel}, -1)
 
         self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
-
-    # def nextitem(self):
-        # currentindex = int(self.index) + 1
-        # if currentindex == self.itemscount:
-            # currentindex = 0
-        # self.currentindex = currentindex
-        # i = self.currentindex
-        # item = self.list[i][0]
-        # self.name = item[0]
-        # self.url = item[1]
-        # self.cicleStreamType()
-
-    # def previousitem(self):
-        # currentindex = int(self.currentindex) - 1
-        # if currentindex < 0:
-            # currentindex = self.itemscount - 1
-        # self.currentindex = currentindex
-        # i = self.currentindex
-        # item = self.list[i][0]
-        # self.name = item[0]
-        # self.url = item[1]
-        # self.cicleStreamType()
 
     def getAspect(self):
         return AVSwitch().getAspectRatioSetting()
@@ -4015,16 +3967,6 @@ Panel_list = [('CONFIG'), ('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
 def xcm3ulistEntry(name):
     png0 = plugin_path + '/skin/pic/xcselh.png'
     pngl = plugin_path + '/skin/pic/xcon.png'
-    # png2 = plugin_path + '/skin/hd/xcselh.png'
-    # png0 = LoadPixmap(cached=True,
-                      # path=resolveFilename(SCOPE_PLUGINS,
-                                           # "Extensions/XCplugin/skin/uhd/{}".format('xcselh.png')))
-    # png1 = LoadPixmap(cached=True,
-                      # path=resolveFilename(SCOPE_PLUGINS,
-                                           # "Extensions/XCplugin/skin/fhd/{}".format('xcselh.png')))
-    # png2 = LoadPixmap(cached=True,
-                      # path=resolveFilename(SCOPE_PLUGINS,
-                                           # "Extensions/XCplugin/skin/hd/{}".format('xcselh.png')))
     res = [name]
     white = 16777215
 
@@ -4430,6 +4372,7 @@ try:
     from . import Update
 except ImportError:
     print('error import update')
+
 
 class AutoStartTimer:
     def __init__(self, session):
