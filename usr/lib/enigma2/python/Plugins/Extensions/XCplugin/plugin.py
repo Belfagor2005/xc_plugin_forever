@@ -1142,7 +1142,7 @@ class iptv_streamse():
                 link = requests.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=15, verify=False, stream=True).text
         except ImportError:
             req = Request(url)
-            req.add_header('User-Agent', 'E2 Plugin Vhannibal')
+            req.add_header('User-Agent', 'E2 Plugin XCForever')
             response = urlopen(req, None, 10)
             link = response.read().decode('utf-8')
             response.close()
@@ -1637,6 +1637,25 @@ class xc_Main(Screen):
             name = str(selected_channel[1])
             show_more_infos(name, self.index)
 
+    def retTest(self, url):
+        try:
+            import requests
+            from requests.adapters import HTTPAdapter, Retry
+            retries = Retry(total=1, backoff_factor=1)
+            adapter = HTTPAdapter(max_retries=retries)
+            http = requests.Session()
+            http.mount("http://", adapter)
+            http.mount("https://", adapter)
+            r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
+            r.raise_for_status()
+            if r.status_code == requests.codes.ok:
+                print('r.status code: ', r.status_code)
+                self.ycse = r  # .json()
+                return True
+        except Exception as e:
+            return False
+            print('error requests -----------> ', e)
+
     def checkinf(self):
         try:
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
@@ -1658,18 +1677,23 @@ class xc_Main(Screen):
                 passw = cfg.passw.value
             # urlinfo = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
             urlinfo = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
-            import requests
-            from requests.adapters import HTTPAdapter
-            hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
-            r = ""
-            adapter = HTTPAdapter()
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(urlinfo, headers=hdr, timeout=ntimeout, verify=False, stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                y = r.json()
+            '''
+            # import requests
+            # from requests.adapters import HTTPAdapter
+            # hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
+            # r = ""
+            # adapter = HTTPAdapter()
+            # http = requests.Session()
+            # http.mount("http://", adapter)
+            # http.mount("https://", adapter)
+            # r = http.get(urlinfo, headers=hdr, timeout=ntimeout, verify=False, stream=True)
+            # r.raise_for_status()
+            # if r.status_code == requests.codes.ok:
+                # y = r.json()
+            '''
+            if self.retTest(urlinfo):
+                y = self.ycse.json()  # r.json()
+
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
@@ -2914,26 +2938,38 @@ class OpenServer(Screen):
         self.onLayoutFinish.append(self.openList)
         # self.onShow.append(self.openList)
 
-    def selOn(self, host, port, username, password, png=None):
+    def retTest(self, url):
         try:
-            TIME_GMT = '%d-%m-%Y %H:%M:%S'
-            auth = status = created_at = exp_date = '- ? -'  # = active_cons = max_connections = server_protocol = timezone
-            # url_info = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
-            # urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
-            urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             import requests
-            from requests.adapters import HTTPAdapter
-            hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
-            r = ""
-            adapter = HTTPAdapter()
+            from requests.adapters import HTTPAdapter, Retry
+            retries = Retry(total=1, backoff_factor=1)
+            adapter = HTTPAdapter(max_retries=retries)
             http = requests.Session()
             http.mount("http://", adapter)
             http.mount("https://", adapter)
-            r = http.get(urlinfo, headers=hdr, timeout=15, verify=False, stream=True)
+            r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
             r.raise_for_status()
             if r.status_code == requests.codes.ok:
                 print('r.status code: ', r.status_code)
-                y = r.json()
+                self.ycse = r  # .json()
+                return True
+        except Exception as e:
+            return False
+            print('error requests -----------> ', e)
+
+    def selOn(self, host, port, username, password):  # , png=None):
+        try:
+            TIME_GMT = '%d-%m-%Y %H:%M:%S'
+            auth = status = created_at = exp_date = '- ? -'
+            # auth = "Server Not Responding"
+            # status = 'N/A'
+            # created_at =  '- ? -'
+            # exp_date =   '- ? -'
+            # url_info = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
+            # urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
+            urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
+            if self.retTest(urlinfo):
+                y = self.ycse.json()  # r.json()
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
@@ -2941,63 +2977,57 @@ class OpenServer(Screen):
                             status = (y["user_info"]["status"])
                             created_at = (y["user_info"]["created_at"])
                             exp_date = (y["user_info"]["exp_date"])
-                            # active_cons = (y["user_info"]["active_cons"])
-                            # max_connections = (y["user_info"]["max_connections"])
-                            # server_protocol = (y["server_info"]["server_protocol"])
-                            # timezone = (y["server_info"]["timezone"])
                             if created_at:
                                 created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                             if exp_date:
                                 exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                            if str(auth) == "1":  # force for message popup
-                                if str(status) == "Active":
-                                    auth = "Active\nExp date: " + str(exp_date)
-                                elif str(status) == "Banned":
-                                    auth = "Banned"
-                                elif str(status) == "Disabled":
-                                    auth = "Disabled"
-                                elif str(status) == "Expired":
-                                    auth = "Expired"
-                                elif str(status) == "None":
-                                    auth = "N/A"
-                                    status = 'N/A'
-                                elif status is None:
-                                    auth = "N/A"
-                                    status = 'N/A'
-                                else:
-                                    auth = "Server Not Responding" + str(exp_date)
-                                    status = 'N/A'
-                                print('auth=', auth)
-                                print('status=', str(status))
-                                # active_cons = "User Active Now: " + str(active_cons)
-                                # max_connections = "Max Connect: " + str(max_connections)
-                                # server_protocol = "Protocol: " + str(server_protocol)
-                                # timezone = "Timezone: " + str(timezone)
-                                return str(status)
+                            if str(status) == "Active":
+                                auth = "Active\nExp date: " + str(exp_date)
+                            elif str(status) == "Banned":
+                                auth = "Banned"
+                            elif str(status) == "Disabled":
+                                auth = "Disabled"
+                            elif str(status) == "Expired":
+                                auth = "Expired"
+                            elif str(status) == "None":
+                                auth = "N/A"
+                                status = 'N/A'
+                            elif status is None:
+                                auth = "N/A"
+                                status = 'N/A'
+                            else:
+                                auth = "Server Not Responding" + str(exp_date)
+                                status = 'N/A'
+                            print('auth=', auth)
+                            print('status=', str(status))
+                            return str(status)
+                else:
+                    return str(status)
+            else:
+                status = 'N/A'
+                return str(status)
         except Exception as e:
             status = 'N/A'
-            message = ("Error %s") % (e)
+            message = ("Error Exception %s") % (e)
             print(str(message))
 
     def openList(self):
         self.names = []
         self.urls = []
-        # self.pics = []
         if os.path.exists(Path_XML + '/xclink.txt'):
             with codecs.open(Path_XML + '/xclink.txt', "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 f.seek(0)
                 name = ''
-                # host = ''
+                host = ''
                 port = ''
                 username = ''
-                # password = ''
+                password = ''
                 # listtype = ''
                 for line in lines:
                     if line.startswith('#'):
                         continue
                     elif line.startswith('http'):
-                        print('line is:', line)
                         # Estrai l'host, la porta, l'username, la password e il tipo dalla linea
                         pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
                         match = re.match(pattern, line)
@@ -3013,11 +3043,8 @@ class OpenServer(Screen):
                             if namelx == 'None' or namelx is None:
                                 namelx = 'N/A'
                             name = '(' + str(namelx) + ')' + ' xc_' + str(username)
-                            print(str(name))
                             self.names.append(name)
                             self.urls.append(line)
-                            # self.pics.append(pngd)
-
                         m3ulistxc(self.names, self["list"])
         self["live"].setText(str(len(self.names)) + " Team")
         global infoname
@@ -3063,11 +3090,19 @@ class OpenServer(Screen):
             print('link dom:', dom)
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
             auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
+            # auth = "Server Not Responding"
+            # status = 'N/A'
+            # created_at =  '- ? -'
+            # exp_date =   '- ? -'
+            # active_cons = "User Active Now: "
+            # max_connections = "Max Connect: "
+            # server_protocol = "Protocol: "
+            # timezone = "Timezone: "
             host = ''
             username = ''
             password = ''
             port = '80'
-            pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
+            pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
             match = re.match(pattern, dom)
             if match:
                 host = match.group(1)
@@ -3082,19 +3117,9 @@ class OpenServer(Screen):
             # url_info = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
             # urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
             urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-            print('urlinfo:', urlinfo)
-            import requests
-            from requests.adapters import HTTPAdapter
-            hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
-            r = ""
-            adapter = HTTPAdapter()
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(urlinfo, headers=hdr, timeout=15, verify=False, stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                y = r.json()
+            if self.retTest(urlinfo):
+                y = self.ycse.json()  # r.json()
+
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
@@ -3129,6 +3154,10 @@ class OpenServer(Screen):
                             print(str(message))
                             self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
         except Exception as e:
+            status = 'N/A'
+            message = ("Error Exception %s") % (e)
+            print(str(message))
+        except Exception as e:
             message = ("Error %s") % (e)
             print(str(message))
             self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
@@ -3151,7 +3180,7 @@ class OpenServer(Screen):
                         f.write(line)
                     self.session.open(MessageBox, nam + _(" has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                     del self.names[idx]
-                    # self.openList()
+                    del self.urls[idx]
             except OSError as error:
                 print(error)
                 self.session.open(MessageBox, nam + _(" not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
@@ -3161,7 +3190,6 @@ class OpenServer(Screen):
             return
 
     def helpx(self):
-        # self.session.open(xc_help)
         self.session.open(MessageBox, _("Put your lines to the %s/xclink.txt'.\nFormat type:\n\nhttp://YOUR_HOST/get.php?username=USERNAME&password=PASSWORD&type=m3u\n\nhttp://YOUR_HOST:YOUR_PORT/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus'\n\nSelect list from Menulist" % Path_XML), MessageBox.TYPE_INFO, timeout=5)
 
 
