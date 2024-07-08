@@ -15,7 +15,7 @@ from __future__ import print_function
 from . import _, paypal
 from . import Utils
 from . import html_conv
-
+from .Console import Console
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
     ConfigSubsection,
@@ -43,7 +43,7 @@ from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Components.Task import Task, Condition, Job, job_manager as JobManager
 from Plugins.Plugin import PluginDescriptor
-from Screens.Console import Console
+# from Screens.Console import Console
 # from Screens.InfoBar import MoviePlayer
 from Screens.Standby import Standby
 from Screens.InfoBarGenerics import (
@@ -85,6 +85,8 @@ import six
 import socket
 import sys
 import time
+import json
+from datetime import datetime
 from Components.AVSwitch import AVSwitch
 try:
     from enigma import eAVSwitch
@@ -103,10 +105,13 @@ global Path_Movies2
 global infoname
 
 _session = " "
-version = "XC Forever V.3.0"
+currversion = '3.1'
+version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
 filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
+installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
+developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 pictmp = "/tmp/poster.jpg"
@@ -2646,6 +2651,7 @@ class xc_help(Screen):
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
+        self.Update = False
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label(_("Config"))
@@ -2654,14 +2660,83 @@ class xc_help(Screen):
         self["helpdesc"] = Label()
         self["helpdesc2"] = Label()
         self["paypal"] = Label()
-        self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {
-            "red": self.exitx,
-            "green": self.green,
-            "yellow": self.yellow,
-            "blue": self.blue,
-            "ok": self.exitx,
-            "cancel": self.exitx}, -1)
+        self['actions'] = ActionMap(['OkCancelActions',
+                                     'ColorActions',
+                                     'DirectionActions',
+                                     'HotkeyActions',
+                                     'InfobarEPGActions',
+                                     'ChannelSelectBaseActions'], {'ok': self.exitx,
+                                                                   'back': self.exitx,
+                                                                   'cancel': self.exitx,
+                                                                   'yellow': self.yellow,
+                                                                   'green': self.green,
+                                                                   'blue': self.blue,
+                                                                   'yellow_long': self.update_dev,
+                                                                   'info_long': self.update_dev,
+                                                                   'infolong': self.update_dev,
+                                                                   'showEventInfoPlugin': self.update_dev,
+                                                                   'red': self.exitx}, -1)
+        self.timer = eTimer()
+        if os.path.exists('/var/lib/dpkg/status'):
+            self.timer_conn = self.timer.timeout.connect(self.check_vers)
+        else:
+            self.timer.callback.append(self.check_vers)
+        self.timer.start(500, 1)
         self.onLayoutFinish.append(self.finishLayout)
+
+    def check_vers(self):
+        remote_version = '0.0'
+        remote_changelog = ''
+        req = Utils.Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        page = Utils.urlopen(req).read()
+        if PY3:
+            data = page.decode("utf-8")
+        else:
+            data = page.encode("utf-8")
+        if data:
+            lines = data.split("\n")
+            for line in lines:
+                if line.startswith("version"):
+                    remote_version = line.split("=")
+                    remote_version = line.split("'")[1]
+                if line.startswith("changelog"):
+                    remote_changelog = line.split("=")
+                    remote_changelog = line.split("'")[1]
+                    break
+        self.new_version = remote_version
+        self.new_changelog = remote_changelog
+        # if float(currversion) < float(remote_version):
+        if currversion < remote_version:
+            self.Update = True
+            self['key_yellow'].show()
+            self['key_green'].show()
+            self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
+        # self.update_me()
+
+    def update_me(self):
+        if self.Update is True:
+            self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog), MessageBox.TYPE_YESNO)
+        else:
+            self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+
+    def update_dev(self):
+        req = Utils.Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+        page = Utils.urlopen(req).read()
+        data = json.loads(page)
+        remote_date = data['pushed_at']
+        strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+        remote_date = strp_remote_date.strftime('%Y-%m-%d')
+        self.session.openWithCallback(self.install_update, MessageBox, _("Do you want to install update ( %s ) now?") % (remote_date), MessageBox.TYPE_YESNO)
+
+    def install_update(self, answer=False):
+        if answer:
+            self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
+        else:
+            self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+
+    def myCallback(self, result=None):
+        print('result:', result)
+        return
 
     def finishLayout(self):
         helpdesc = self.homecontext()
@@ -2681,9 +2756,8 @@ class xc_help(Screen):
         conthelp += "Corvoboys - linuxsat-support\n\n"
         conthelp += "*************************************\n\n"
         conthelp += "Special thanks to:\n"
-        conthelp += "MMark, Pcd, KiddaC\n"
-        conthelp += "aime_jeux, Support, Enigma1969, linuxsat-support.com\n"
-        conthelp += "and all those i forgot to mention.\n\n"
+        conthelp += "MMark, Pcd, KiddaC\n\n"
+        conthelp += "FOR UPDATE PLUGIN PRESS INFO_LONG\n"
         return conthelp
 
     def homecontext2(self):
@@ -4395,20 +4469,20 @@ def main(session, **kwargs):
 
 _session = None
 autoStartTimer = None
-_firstStart = True
-try:
-    from . import Update
-except ImportError:
-    print('error import update')
+# _firstStart = True
+# try:
+    # from . import Update
+# except ImportError:
+    # print('error import update')
 
 
 class AutoStartTimer:
     def __init__(self, session):
         print("*** running AutoStartTimerFxy ***")
         self.session = session
-        if _firstStart:
-            if cfg.autoupdate.value is True:
-                self.runUpdate()
+        # if _firstStart:
+            # if cfg.autoupdate.value is True:
+                # self.runUpdate()
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.on_timer)
@@ -4417,15 +4491,15 @@ class AutoStartTimer:
         self.timer.start(100, True)
         self.update()
 
-    def runUpdate(self):
-        print("*** running update ***")
-        global _firstStart
-        try:
-            # from . import Update
-            Update.upd_done()
-            _firstStart = False
-        except Exception as e:
-            print('error Fxy', e)
+    # def runUpdate(self):
+        # print("*** running update ***")
+        # global _firstStart
+        # try:
+            # # from . import Update
+            # # Update.upd_done()
+            # _firstStart = False
+        # except Exception as e:
+            # print('error Fxy', e)
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value is True:
@@ -4517,12 +4591,12 @@ def check_configuring():
 
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
-    global _firstStart
+    # global _firstStart
     global _session
     if reason == 0 and _session is None:
         if session is not None:
             _session = session
-            _firstStart = True
+            # _firstStart = True
             if autoStartTimer is None:
                 autoStartTimer = AutoStartTimer(session)
     return
