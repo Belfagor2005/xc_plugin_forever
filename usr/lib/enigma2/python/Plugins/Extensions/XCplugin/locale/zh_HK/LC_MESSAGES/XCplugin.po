@@ -1,0 +1,920 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: XC Forever by Lululla\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-28 20:22+0200\n"
+"PO-Revision-Date: 2024-05-02 13:12+0800\n"
+"Language-Team: LANGUAGE <lululla@.cc>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Last-Translator: \n"
+"Language: zh_CN\n"
+"X-Poedit-SearchPath-0: plugin.py\n"
+
+#: plugin.py:203
+msgid "interval"
+msgstr "间隔"
+
+#: plugin.py:203
+msgid "fixed time"
+msgstr "固定时间"
+
+#: plugin.py:348
+msgid "Exit"
+msgstr "退出"
+
+#: plugin.py:349
+msgid "Select"
+msgstr "选择"
+
+#: plugin.py:350
+msgid "Movie"
+msgstr "电影"
+
+#: plugin.py:351
+msgid "Loader M3U"
+msgstr "装载M3U"
+
+#: plugin.py:429
+msgid "First Select the list or enter it in Config"
+msgstr "首先，选择列表或在 Config 中输入它"
+
+#: plugin.py:481 plugin.py:1212 plugin.py:2657 plugin.py:2816 plugin.py:2840
+#: plugin.py:2939 plugin.py:3412 plugin.py:3623
+msgid "Back"
+msgstr "返回"
+
+#: plugin.py:482
+msgid "Save"
+msgstr "保存"
+
+#: plugin.py:483 plugin.py:484
+msgid "Import"
+msgstr "导入"
+
+#: plugin.py:507
+msgid "Import Server from /ect/enigma2/iptv.sh?"
+msgstr "从/ect/enigma2/iptv.sh导入服务器？"
+
+#: plugin.py:525 plugin.py:550
+#, python-format
+msgid "File saved to %s !"
+msgstr "文件已保存至 %s！"
+
+#: plugin.py:528
+#, python-format
+msgid "Missing %s !"
+msgstr "缺少%s！"
+
+#: plugin.py:534
+msgid "Import Server from /tmp/xc.tx?"
+msgstr "从 /tmp/xc.tx 导入服务器？"
+
+#: plugin.py:553
+#, python-format
+msgid "File not found %s"
+msgstr "未找到文件 %s"
+
+#: plugin.py:559
+#, python-format
+msgid "Last channel update: %s"
+msgstr "上次频道更新：%s"
+
+#: plugin.py:572
+msgid "Data Server Configuration:"
+msgstr "数据服务器配置："
+
+#: plugin.py:572
+msgid "Your Server Login and data input"
+msgstr "您的服务器登录名和数据输入"
+
+#: plugin.py:575
+msgid "Server URL"
+msgstr "服务器 URL"
+
+#: plugin.py:575
+msgid "Enter Server Url without 'http://' your_domine"
+msgstr "输入不带“http://”your_domine的服务器 URL"
+
+#: plugin.py:576
+msgid "Server PORT"
+msgstr "服务器端口"
+
+#: plugin.py:576
+msgid "Enter Server Port '8080'"
+msgstr "输入服务器端口“8080”"
+
+#: plugin.py:577
+msgid "Server Username"
+msgstr "服务器用户名"
+
+#: plugin.py:577
+msgid "Enter Username"
+msgstr "输入用户名"
+
+#: plugin.py:578
+msgid "Server Password"
+msgstr "服务器密码"
+
+#: plugin.py:578
+msgid "Enter Password"
+msgstr "输入密码"
+
+#: plugin.py:579
+msgid "Server Timeout"
+msgstr "服务器超时"
+
+#: plugin.py:579
+msgid "Timeout Server (sec)"
+msgstr "超时服务器（秒）"
+
+#: plugin.py:581
+msgid "Folder user file .xml"
+msgstr "文件夹用户文件.xml"
+
+#: plugin.py:581
+msgid ""
+"Configure folder containing .xml files\n"
+"Press 'OK' to change location."
+msgstr ""
+"配置包含.xml文件的文件夹\n"
+"按“确定”更改位置。"
+
+#: plugin.py:582
+msgid "Media Folder "
+msgstr "媒体文件夹 "
+
+#: plugin.py:582
+msgid ""
+"Configure folder containing movie/media files\n"
+"Press 'OK' to change location."
+msgstr ""
+"配置包含电影/媒体文件的文件夹\n"
+"按“确定”更改位置。"
+
+#: plugin.py:586
+msgid "Type Main Screen XL"
+msgstr "类型 主屏幕 XL"
+
+#: plugin.py:586
+msgid "Active Screen Main Large"
+msgstr "活动屏幕主大"
+
+#: plugin.py:587
+msgid "LivePlayer Active "
+msgstr "启动直播播放器 "
+
+#: plugin.py:587
+msgid "Live Player for Stream .ts: set No for Record Live"
+msgstr "直播播放器 流.ts：为录制直播设置否"
+
+#: plugin.py:589
+msgid "Live Services Type"
+msgstr "直播服务类型"
+
+#: plugin.py:589
+msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
+msgstr "配置服务参考 Dvb-Iptv-Gstreamer-Exteplayer3"
+
+#: plugin.py:591
+msgid "Download Type "
+msgstr "下载类型 "
+
+#: plugin.py:591
+msgid "Configure type of download movie: JobManager/Direct."
+msgstr "配置下载影片类型：JobManager/Direct。"
+
+#: plugin.py:593
+msgid "Filter Bad Tag"
+msgstr "过滤错误标记"
+
+#: plugin.py:595
+msgid "Bouquet style "
+msgstr "频道组类型 "
+
+#: plugin.py:595
+msgid "Configure the type of conversion in the favorite list"
+msgstr "在收藏夹列表中配置转换类型"
+
+#: plugin.py:597
+msgid "Conversion type Output "
+msgstr "转换类型输出 "
+
+#: plugin.py:597
+msgid "Configure type of stream to be downloaded by conversion"
+msgstr "配置要通过转换下载的流类型"
+
+#: plugin.py:599
+msgid "Vod Services Type"
+msgstr "点播服务类型"
+
+#: plugin.py:599
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr "配置服务参考 Iptv-Gstreamer-Exteplayer3"
+
+#: plugin.py:601
+msgid "Name Bouquet Configuration:"
+msgstr "名称频道分组配置："
+
+#: plugin.py:601
+msgid "Set Name for MakerBouquet"
+msgstr "为制作频道分组设置名称"
+
+#: plugin.py:603
+msgid "Name Bouquet Export"
+msgstr "名称频道分组导出"
+
+#: plugin.py:603
+msgid "Configure name of exported bouquet. Default is myBouquet"
+msgstr "配置导出频道分组的名称。默认值为我的频道分组"
+
+#: plugin.py:605
+msgid "Place IPTV bouquets at "
+msgstr "将IPTV花束放在 "
+
+#: plugin.py:605
+msgid "Configure to place the bouquets of the converted lists"
+msgstr "配置放置转换后的列表的频道分组"
+
+#: plugin.py:607
+msgid "Automatic bouquet update (schedule):"
+msgstr "自动花束更新（时间表）："
+
+#: plugin.py:607
+msgid "Active Automatic Bouquet Update"
+msgstr "启动动自动花束更新"
+
+#: plugin.py:609
+msgid "Schedule type:"
+msgstr "时间表类型："
+
+#: plugin.py:609
+msgid "At an interval of hours or at a fixed time"
+msgstr "每隔几小时或固定时间"
+
+#: plugin.py:611
+msgid "Update interval (hours):"
+msgstr "更新间隔(小时):"
+
+#: plugin.py:611
+msgid "Configure every interval of hours from now"
+msgstr "从现在开始配置每个小时间隔"
+
+#: plugin.py:613
+msgid "Time to start update:"
+msgstr "开始更新的时间："
+
+#: plugin.py:613
+msgid "Configure at a fixed time"
+msgstr "在固定时间配置"
+
+#: plugin.py:614
+msgid "Picons IPTV "
+msgstr "网络电视图标"
+
+#: plugin.py:614
+msgid "Download Picons ?"
+msgstr "下载图标 ？"
+
+#: plugin.py:616
+msgid "Picons IPTV bouquets to "
+msgstr "IPTV图标导到频道组"
+
+#: plugin.py:616
+msgid ""
+"Configure folder containing picons files\n"
+"Press 'OK' to change location."
+msgstr ""
+"配置包含图标文件的文件夹\n"
+"按“确定”更改位置。"
+
+#: plugin.py:617
+msgid "Auto Update Plugin  "
+msgstr "自动更新插件"
+
+#: plugin.py:617
+msgid "Auto Update Plugin"
+msgstr "自动更新插件"
+
+#: plugin.py:618
+msgid "Link in Main Menu  "
+msgstr "主菜单中的链接  "
+
+#: plugin.py:618
+msgid "Display XCplugin in Main Menu"
+msgstr "在主菜单中显示 XCplugin"
+
+#: plugin.py:630
+msgid "SELECT YOUR CHOICE"
+msgstr "选择您的选择"
+
+#: plugin.py:695 plugin.py:711 plugin.py:727
+msgid "Choose Directory:"
+msgstr "选择目录:"
+
+#: plugin.py:696 plugin.py:712 plugin.py:728
+msgid "Choose directory"
+msgstr "选择目录"
+
+#: plugin.py:757 plugin.py:761 plugin.py:765
+#, python-format
+msgid "%s NOT DETECTED!"
+msgstr "%s未检测到！"
+
+#: plugin.py:774
+msgid "Settings saved successfully !"
+msgstr "设置已成功保存！"
+
+#: plugin.py:804
+msgid "Really close without saving settings?"
+msgstr "真的关闭而不保存设置吗？"
+
+#: plugin.py:1213
+msgid "Rec Movie"
+msgstr "录制电影"
+
+#: plugin.py:1214
+msgid "Rec Series"
+msgstr "休闲系列"
+
+#: plugin.py:1215 plugin.py:3626
+msgid "Search"
+msgstr "搜索"
+
+#: plugin.py:1254
+msgid "No data or playlist not compatible with XCplugin."
+msgstr "没有与XCplugin不兼容的数据或播放列表。"
+
+#: plugin.py:1291
+msgid "Please enter the parental control pin code"
+msgstr "请输入家长控制pin码"
+
+#: plugin.py:1291
+msgid "Enter pin code"
+msgstr "输入PIN码"
+
+#: plugin.py:1296
+msgid "The pin code you entered is wrong."
+msgstr "PIN 码输入错误。"
+
+#: plugin.py:1508
+msgid "Filter this category..."
+msgstr "筛选此类别..."
+
+#: plugin.py:1613
+msgid ""
+"The MediaPlayer plugin is not installed!\n"
+"Please install it."
+msgstr ""
+"媒体播放器插件未安装!\n"
+"请先安装。"
+
+#: plugin.py:1733
+#, python-format
+msgid ""
+"ATTENTION!!!\n"
+"DOWNLOAD ALL EPISODES SERIES %s\n"
+"SURE???\n"
+"?"
+msgstr ""
+"注意！！！\n"
+"下载所有剧集系列%s\n"
+"确定？？？\n"
+"?"
+
+#: plugin.py:1784
+msgid "Only Series Episodes Allowed!!!"
+msgstr "只允许连续剧剧集!!"
+
+#: plugin.py:1807 plugin.py:3741
+#, python-format
+msgid ""
+"DOWNLOAD VIDEO?\n"
+"%s"
+msgstr ""
+"下载视频?\n"
+"%s"
+
+#: plugin.py:1810
+msgid "Live Player Active in Setting: set No for Record Live"
+msgstr "实时播放器在设置中处于活动状态：为“实时录制”设置“否”"
+
+#: plugin.py:1813
+msgid "No Video to Download/Record!!"
+msgstr "没有视频可供下载/录制！"
+
+#: plugin.py:1847
+msgid ""
+"Download Failed\n"
+"\n"
+msgstr ""
+"下载失败\n"
+"\n"
+
+#: plugin.py:2497 plugin.py:2842 plugin.py:2941 plugin.py:3413
+msgid "Remove"
+msgstr "删除"
+
+#: plugin.py:2498
+msgid "Close"
+msgstr "关闭"
+
+#: plugin.py:2554
+msgid "Free Space"
+msgstr "剩余空间"
+
+#: plugin.py:2555
+msgid "Movie Folder"
+msgstr "影片文件夹"
+
+#: plugin.py:2583
+msgid "Finished"
+msgstr "已完成"
+
+#: plugin.py:2604
+msgid "Is Directory or file not exist"
+msgstr "目录或文件是否不存在"
+
+#: plugin.py:2627
+#, python-format
+msgid "Do you want to remove %s ?"
+msgstr "是否要删除: %s ?"
+
+#: plugin.py:2634 plugin.py:2640
+msgid ""
+" Movie has been successfully deleted\n"
+"wait time to refresh the list..."
+msgstr ""
+" 影片已成功删除\n"
+"等待时间刷新列表..."
+
+#: plugin.py:2642
+msgid ""
+"The movie not exist!\n"
+"wait time to refresh the list..."
+msgstr ""
+"这部电影不存在！\n"
+"等待时间刷新列表..."
+
+#: plugin.py:2658
+msgid "Config"
+msgstr "配置"
+
+#: plugin.py:2659
+msgid "Main"
+msgstr "主菜单"
+
+#: plugin.py:2660
+msgid "Player"
+msgstr "播放"
+
+#: plugin.py:2707 plugin.py:2917
+#, python-format
+msgid ""
+"Current configuration for creating the bouquet\n"
+"    > %s Conversion %s\n"
+"\n"
+msgstr ""
+"用于创建花束的当前配置\n"
+"    > %s转换%s\n"
+"\n"
+
+#: plugin.py:2720
+msgid "    (MENU BUTTON):\n"
+msgstr ""
+"    (菜单按钮):\n"
+"\n"
+
+#: plugin.py:2721
+msgid "            Config Setup Options\n"
+msgstr "            配置设置选项\n"
+
+#: plugin.py:2722
+msgid "    (5 BUTTON):\n"
+msgstr "    (5 按钮):\n"
+
+#: plugin.py:2723
+msgid "            MediaPlayer\n"
+msgstr "            媒体播放器\n"
+
+#: plugin.py:2724
+msgid "    (9/Help BUTTON):\n"
+msgstr "    (9/帮助按钮):\n"
+
+#: plugin.py:2725
+msgid "            Help\n"
+msgstr "            帮助\n"
+
+#: plugin.py:2726
+msgid "    (PVR/FILELIST/2 BUTTON):\n"
+msgstr "    (PVR/文件列表/2 按钮):\n"
+
+#: plugin.py:2727
+msgid "            Open Movie Folder\n"
+msgstr "            打开电影文件夹\n"
+
+#: plugin.py:2728
+msgid "    (EPG/INFO/0 BUTTON):\n"
+msgstr "    (EPG/信息/0 按钮):\n"
+
+#: plugin.py:2729
+msgid "            Epg guide or imdb/tmdb\n"
+msgstr "            Epg 指南或 imdb/tmdb\n"
+
+#: plugin.py:2730
+msgid ""
+"    (GREEN BUTTON):\n"
+" "
+msgstr ""
+"    (绿色按钮):\n"
+" "
+
+#: plugin.py:2731
+msgid "            Start Download or Record Selected Channel:\n"
+msgstr "            开始下载或录制所选频道:\n"
+
+#: plugin.py:2732
+msgid "            Set 'Live Player Active' in Setting:\n"
+msgstr "            Set 'Live Player Active' in Setting:\n"
+
+#: plugin.py:2733
+msgid "            Set 'No' for Record Live\n"
+msgstr "将“否”设置为“实时录制”\n"
+
+#: plugin.py:2734 plugin.py:2748 plugin.py:2789
+msgid "    (YELLOW BUTTON):\n"
+msgstr ""
+"    (黄色按钮):\n"
+"\n"
+
+#: plugin.py:2735
+msgid "            Start Download All Episodes Series\n"
+msgstr "            开始下载所有剧集系列\n"
+
+#: plugin.py:2736
+msgid "    (BLUE BUTTON): Search LIve/Movie"
+msgstr "    (蓝色按钮): 搜索 直播/电影"
+
+#: plugin.py:2749 plugin.py:2757
+msgid "            If you have a file format:\n"
+msgstr "            如果您有文件格式:\n"
+
+#: plugin.py:2750
+msgid "            /etc/enigma2/iptv.sh\n"
+msgstr "            /etc/enigma2/iptv.sh\n"
+
+#: plugin.py:2751
+msgid "            USERNAME='xxxxxxxxxx'\n"
+msgstr "            用户名='xxxxxx'\n"
+
+#: plugin.py:2752
+msgid "            PASSWORD='yyyyyyyyy'\n"
+msgstr "            密码='yyyyy'\n"
+
+#: plugin.py:2753
+msgid "            url='http://server:port/xxyyzz'\n"
+msgstr "            网址='http://服务器:端口/xxyyzz'\n"
+
+#: plugin.py:2754
+msgid ""
+"            Import with Yellow Button this file\n"
+"\n"
+msgstr ""
+"            使用黄色按钮导入此文件\n"
+"\n"
+
+#: plugin.py:2756 plugin.py:2779 plugin.py:2791
+msgid "    (BLUE BUTTON):\n"
+msgstr "    (蓝色按钮):\n"
+
+#: plugin.py:2758
+msgid "            /tmp/xc.txt\n"
+msgstr "            /tmp/xc.txt\n"
+
+#: plugin.py:2759
+msgid "            host\t(host without http:// )\n"
+msgstr "            host\t(host不带http:// )\n"
+
+#: plugin.py:2760
+msgid "            port\n"
+msgstr "            端口\n"
+
+#: plugin.py:2761
+msgid "            user\n"
+msgstr "            用户\n"
+
+#: plugin.py:2762
+msgid "            password\n"
+msgstr "            密码\n"
+
+#: plugin.py:2763
+msgid "            Import with Blue Button this file"
+msgstr "            使用蓝色按钮导入此文件"
+
+#: plugin.py:2777
+msgid "    (RED BUTTON):\n"
+msgstr "    (红色按钮):\n"
+
+#: plugin.py:2778
+msgid "            Return to Channels List\n"
+msgstr "            返回频道列表\n"
+
+#: plugin.py:2780
+msgid "            Init Continue Play\n"
+msgstr "            初始化继续播放\n"
+
+#: plugin.py:2781
+msgid "    (REC BUTTON):\n"
+msgstr ""
+"    (录制按钮):\n"
+"\n"
+
+#: plugin.py:2782
+msgid "            Download Video \n"
+msgstr "            下载视频 \n"
+
+#: plugin.py:2783
+msgid "    (STOP BUTTON):\n"
+msgstr ""
+"    (停止按钮):\n"
+"\n"
+
+#: plugin.py:2784
+msgid "            Close/Stop Movie/Live\n"
+msgstr "            关闭/停止电影/直播\n"
+
+#: plugin.py:2787
+msgid "    (GREEN BUTTON):\n"
+msgstr ""
+"    (绿色按钮):\n"
+"\n"
+
+#: plugin.py:2788
+msgid "            Remove file from list\n"
+msgstr "            从列表中删除文件\n"
+
+#: plugin.py:2790
+msgid "            Export file m3u to Bouquet .tv\n"
+msgstr "            将文件 m3u 导出到Bouquet .tv\n"
+
+#: plugin.py:2792
+msgid ""
+"            Download file m3u from current server\n"
+"\n"
+msgstr ""
+"            从当前服务器下载文件 m3u\n"
+"\n"
+
+#: plugin.py:2793
+msgid "UTILITY PLAYER M3U\\OPEN FILE:\n"
+msgstr "直播程序播放器 M3U\\打开文件:\n"
+
+#: plugin.py:2794
+msgid "    When opening an .m3u file instead:\n"
+msgstr "    当打开 .m3u 文件时:\n"
+
+#: plugin.py:2795
+msgid "   (GREEN BUTTON):\n"
+msgstr "   (绿色按钮):\n"
+
+#: plugin.py:2796
+msgid "           Reload List\n"
+msgstr "           重新加载列表\n"
+
+#: plugin.py:2797
+msgid "   (YELLOW BUTTON):\n"
+msgstr ""
+"   (黄色按钮):\n"
+"\n"
+
+#: plugin.py:2798
+msgid "           Download VOD selected channel\n"
+msgstr "           下载点播所选频道\n"
+
+#: plugin.py:2799
+msgid "   (BLUE BUTTON):\n"
+msgstr "    (蓝色按钮):\n"
+
+#: plugin.py:2800
+msgid "           Search for a title in the list\n"
+msgstr "           在列表中搜索标题\n"
+
+#: plugin.py:2841
+msgid "Make"
+msgstr "制作"
+
+#: plugin.py:2872 plugin.py:2875 plugin.py:2879
+#, python-format
+msgid "Convert Playlist to: %s ?"
+msgstr "将播放列表转换为: %s ?"
+
+#: plugin.py:2886 plugin.py:3602
+msgid "Reload Playlists in progress..."
+msgstr "正在重新加载播放列表..."
+
+#: plugin.py:2886 plugin.py:3602
+msgid "wait please..."
+msgstr "请稍等..."
+
+#: plugin.py:2895
+msgid "Remove Playlist from Bouquets?"
+msgstr "从分组列表中删除播放列表？"
+
+#: plugin.py:2903
+msgid ""
+"GREEN BUTTON:\n"
+" "
+msgstr ""
+"绿色按钮:\n"
+" "
+
+#: plugin.py:2904
+msgid "   Create XC Live/VOD Bouquets\n"
+msgstr "   创建 XC直播/点播分组列表\n"
+
+#: plugin.py:2905
+msgid "    You need to configure the type of output\n"
+msgstr "    您需要配置输出类型\n"
+
+#: plugin.py:2906
+msgid ""
+"    in the config menu\n"
+"\n"
+msgstr ""
+"   在配置菜单中\n"
+"\n"
+
+#: plugin.py:2907
+msgid "YELLOW BUTTON:\n"
+msgstr "黄色按钮\n"
+
+#: plugin.py:2908
+msgid "    Removes all the bouquets that have been\n"
+msgstr "    移除所有已放置的花束\n"
+
+#: plugin.py:2909
+msgid ""
+"    created with XCplugin\n"
+"\n"
+msgstr ""
+"    使用XCplugin创建\n"
+"\n"
+
+#: plugin.py:2910
+msgid "HELP BUTTON:\n"
+msgstr "帮助按钮\n"
+
+#: plugin.py:2911
+msgid ""
+"    Go to Help info plugin\n"
+"\n"
+"\n"
+"\n"
+msgstr ""
+"    转到帮助信息插件\n"
+"\n"
+"\n"
+"\n"
+
+#: plugin.py:2940
+msgid "Rename"
+msgstr "重命名"
+
+#: plugin.py:2942
+msgid "Info"
+msgstr "信息"
+
+#: plugin.py:3094 plugin.py:3475
+#, python-format
+msgid "Do you want to remove: %s ?"
+msgstr "是否要删除: %s ?"
+
+#: plugin.py:3101 plugin.py:3483
+msgid ""
+"   has been successfully deleted\n"
+"wait time to refresh the list..."
+msgstr ""
+"   已成功删除\n"
+"等待时间刷新列表..."
+
+#: plugin.py:3104
+msgid ""
+"   not exist!\n"
+"wait time to refresh the list..."
+msgstr ""
+"   不存在！\n"
+"等待时间刷新列表..."
+
+#: plugin.py:3131
+#, python-format
+msgid "XCplugin Console Rename: %s"
+msgstr "XCplugin控制台重命名：%s"
+
+#: plugin.py:3405
+#, python-format
+msgid "Put .m3u Files in Folder %s"
+msgstr "将.m3u文件放入文件夹%s"
+
+#: plugin.py:3414
+msgid "Export"
+msgstr "导出"
+
+#: plugin.py:3414
+msgid " Bouquet"
+msgstr "   频道分组列表"
+
+#: plugin.py:3415 plugin.py:3625
+msgid "Download"
+msgstr "下载"
+
+#: plugin.py:3415
+msgid " M3u"
+msgstr " M3u"
+
+#: plugin.py:3487
+msgid "   not exist!"
+msgstr "   不存在！"
+
+#: plugin.py:3494
+msgid "Wait... downloading in progress ..."
+msgstr "等待...正在下载..."
+
+#: plugin.py:3497
+msgid "Download M3u File?"
+msgstr "下载M3u文件？"
+
+#: plugin.py:3517
+msgid "No Server Configured to Download!!!"
+msgstr "没有配置为下载的服务器!!"
+
+#: plugin.py:3540 plugin.py:3770
+msgid "Download Failed!!!"
+msgstr "下载失败!!"
+
+#: plugin.py:3551
+#, python-format
+msgid "Do you want to Convert %s to favorite .tv ?"
+msgstr "您想将 %s 转换为最喜爱的 .tv 吗？"
+
+#: plugin.py:3591
+msgid "Check on favorites lists..."
+msgstr "查看收藏夹列表..."
+
+#: plugin.py:3624
+msgid "Reload"
+msgstr "重新加载"
+
+#: plugin.py:3715
+msgid "File Unknow!!!"
+msgstr "文件未知!!"
+
+#: plugin.py:3753
+msgid "Only VOD Movie allowed!!!"
+msgstr "只允许点播电影!!"
+
+#: plugin.py:4013 plugin.py:4014 plugin.py:4015 plugin.py:4016 plugin.py:4017
+msgid "MOVIE DOWNLOAD FAILED!"
+msgstr "电影下载失败！"
+
+#: plugin.py:4013
+msgid "DOWNLOADED FILE CORRUPTED:"
+msgstr "下载的文件已损坏："
+
+#: plugin.py:4014
+msgid "COULD NOT READ RTMP PACKET:"
+msgstr "无法读取RTMP数据包："
+
+#: plugin.py:4015
+msgid "SEGMENTATION FAULT:"
+msgstr "分段故障："
+
+#: plugin.py:4016
+msgid "SERVER RETURNED ERROR:"
+msgstr "服务器返回错误："
+
+#: plugin.py:4017
+msgid "UNKNOWN ERROR:"
+msgstr "未知错误："
+
+#: plugin.py:4198
+msgid ""
+"Please enter correct server parameters in Config\n"
+" no valid list "
+msgstr ""
+"请在配置中输入正确的服务器参数\n"
+" 没有有效的列表 "
+
+#: plugin.py:4342
+#, python-format
+msgid "Conversion %s in progress: "
+msgstr "转换%s正在进行中："
