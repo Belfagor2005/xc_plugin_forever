@@ -3516,7 +3516,8 @@ class xc_Play(Screen):
         self.name = Path_Movies
         self["path"] = Label(_("Put .m3u Files in Folder %s") % Path_Movies)
         self["version"] = Label(version)
-        self["Text"] = Label("M3u Utility")
+        self["Text"] = Label()
+        self["Text"].setText("M3u Utility")
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
@@ -3661,6 +3662,7 @@ class xc_Play(Screen):
         if idx < 0 or idx is None:
             return
         if ".m3u" in name:
+            idx = self["list"].getSelectionIndex()
             self.session.openWithCallback(self.convert, MessageBox, _("Do you want to Convert %s to favorite .tv ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=True)
         else:
             return
@@ -3723,7 +3725,6 @@ class xc_M3uPlay(Screen):
         skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
-        # print('skin:', self.skin)
         self.setup_title = ('XCplugin Forever')
         self.list = []
         self.name = name
