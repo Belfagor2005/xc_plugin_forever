@@ -2974,8 +2974,7 @@ class xc_maker(Screen):
         conthelp += "Config Media Folder %s/\n" % cfg.pthmovie.value
         conthelp += "LivePlayer Active %s\n" % cfg.LivePlayer.value
         conthelp += "Current Service Type: %s\n" % cfg.services.value
-        conthelp += _("Current configuration for creating the bouquet\n    > %s Conversion %s\n\n") % (cfg.typem3utv.getValue(), cfg.typelist.getValue())
-        conthelp += "        ___________________________________\n\n"
+        conthelp += _("Current configuration for creating the bouquet\n%s Conversion %s\n\n") % (cfg.typem3utv.getValue(), cfg.typelist.getValue())
         conthelp += "Time is what we want most,\n"
         conthelp += "    but what we use worst.(William Penn)"
         return conthelp
