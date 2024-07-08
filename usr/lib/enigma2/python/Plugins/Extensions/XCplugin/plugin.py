@@ -207,7 +207,7 @@ config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
 cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-cfg.autoupdate = ConfigEnableDisable(default=False)
+# cfg.autoupdate = ConfigEnableDisable(default=False)
 cfg.badcar = ConfigEnableDisable(default=False)
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.data = ConfigYesNo(default=False)
@@ -639,7 +639,7 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Picons IPTV "), cfg.picons, (_("Download Picons ?"))))
         if cfg.picons.value:
             self.list.append(getConfigListEntry(indent + (_("Picons IPTV bouquets to ")), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
-        self.list.append(getConfigListEntry(_("Auto Update Plugin "), cfg.autoupdate, (_("Set ON for Auto Update Plugin"))))
+        # self.list.append(getConfigListEntry(_("Auto Update Plugin "), cfg.autoupdate, (_("Set ON for Auto Update Plugin"))))
         self.list.append(getConfigListEntry(_("Link in Main Menu "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
 
         self["config"].list = self.list
