@@ -97,7 +97,7 @@ try:
 except ImportError:
     from xml.etree.ElementTree import fromstring
 
-global STREAMS, piclogo, pictmp, skin_path
+global STREAMS, piclogo, pictmp
 global isStream, btnsearch, eserv, re_search
 global series, urlinfo
 global Path_Movies
@@ -2730,7 +2730,8 @@ class xc_help(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            self.session.open(Console, 'Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False)
+            #def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
+            self.session.open(Console, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
