@@ -1,11 +1,9 @@
 #!/bin/bash
-##setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
-
-######### Only This 2 lines to edit with new version ######
+# setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
+# Only This 2 lines to edit with new version ######
 version='3.1'
 changelog='Fix Upgrade'
-##############################################################
-
+#
 TMPPATH=/tmp/XCplugin-main
 FILEPATH=/tmp/main.tar.gz
 
@@ -64,6 +62,7 @@ else
 	elif [ $PYTHON = "PY2" ]; then
 		opkg update && opkg install python-requests
 	fi
+
 fi
 echo ""
 
@@ -91,7 +90,7 @@ sleep 2
 	# opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
 # fi
 
-# wget https://github.com/Belfagor2005/XCplugin/archive/refs/heads/main.tar.gz
+# wget https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz'
 tar -xzf main.tar.gz
 cp -r 'xc_plugin_forever-main/usr' '/'
