@@ -1,9 +1,9 @@
 #!/bin/bash
-# setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
-# Only This 2 lines to edit with new version ######
+## setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
+## Only This 2 lines to edit with new version ######
 version='3.1'
 changelog='Fix Upgrade'
-#
+###
 TMPPATH=/tmp/XCplugin-main
 FILEPATH=/tmp/main.tar.gz
 OSTYPE=Dream
@@ -23,7 +23,7 @@ fi
 ## Remove old plugin directory
 [ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
 
-# check depends packges
+## check depends packges
 if [ -f /var/lib/dpkg/status ]; then
    STATUS=/var/lib/dpkg/status
    OSTYPE=DreamOs
@@ -69,8 +69,8 @@ else
 fi
 echo ""
 
-# Download and install plugin
-# check depends packges
+## Download and install plugin
+## check depends packges
 mkdir -p $TMPPATH
 cd $TMPPATH
 set -e
@@ -90,12 +90,12 @@ sleep 2
 wget --no-check-certificate --no-cache --no-dns-cache 'https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz'
 tar -xzf main.tar.gz
 cp -r 'xc_plugin_forever-main/usr' '/'
-# cp -r 'xc_plugin_forever-main/etc' '/'
+## cp -r 'xc_plugin_forever-main/etc' '/'
 set +e
 cd
 sleep 2
 
-### Check if plugin installed correctly
+## Check if plugin installed correctly
 if [ ! -d $PLUGINPATH ]; then
 	echo "Some thing wrong .. Plugin not installed"
 	exit 1
