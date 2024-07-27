@@ -16,6 +16,7 @@ from . import _, paypal
 from . import Utils
 from . import html_conv
 from .Console import Console
+from .downloader import downloadWithProgress
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
     ConfigSubsection,
@@ -38,10 +39,15 @@ from Components.MenuList import MenuList
 from Components.MultiContent import (MultiContentEntryText, MultiContentEntryPixmapAlphaTest)
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
-from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
+from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
-from Components.Task import Task, Condition, Job, job_manager as JobManager
+from Components.Task import (
+    Task,
+    Condition,
+    Job,
+    job_manager as JobManager,
+)
 from Plugins.Plugin import PluginDescriptor
 # from Screens.Console import Console
 # from Screens.InfoBar import MoviePlayer
@@ -59,7 +65,6 @@ from Screens.Screen import Screen
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from Tools.Downloader import downloadWithProgress
 from enigma import (
     RT_HALIGN_CENTER,
     RT_VALIGN_CENTER,

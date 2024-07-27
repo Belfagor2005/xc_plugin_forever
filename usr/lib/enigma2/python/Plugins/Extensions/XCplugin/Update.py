@@ -11,8 +11,8 @@ def upd_done():
     installUrl = 'https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh'
     cmd00 = 'wget -q "--no-check-certificate" ' + installUrl + ' -O - | /bin/sh'
 
-    # cmd01 = "wget --no-cache --no-dns-cache http://patbuweb.com/xcplugin/xcforever.tar -O /tmp/xcforever.tar --post-data='action=purge';tar -xvf /tmp/xcforever.tar -C /"
-    # cmd02 = "wget --no-check-certificate --no-cache --no-dns-cache -U 'Enigma2 - xcforever Plugin' -c 'http://patbuweb.com/xcplugin/xcforever.tar' -O '/tmp/xcforever.tar' --post-data='action=purge';tar -xvf /tmp/xcforever.tar -C /"
+    # cmd01 = "wget http://patbuweb.com/xcplugin/xcforever.tar -O /tmp/xcforever.tar --post-data='action=purge';tar -xvf /tmp/xcforever.tar -C /"
+    # cmd02 = "wget --no-check-certificate -U 'Enigma2 - xcforever Plugin' -c 'http://patbuweb.com/xcplugin/xcforever.tar' -O '/tmp/xcforever.tar' --post-data='action=purge';tar -xvf /tmp/xcforever.tar -C /"
     # cmd22 = 'find /usr/bin -name "wget"'
     # res = popen(cmd22).read()
     # if 'wget' not in res.lower():

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XC Forever by Lululla\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-08 15:49+0200\n"
+"POT-Creation-Date: 2024-07-27 16:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <lululla@.cc>\n"
@@ -48,8 +48,8 @@ msgstr ""
 msgid "First Select the list or enter it in Config"
 msgstr ""
 
-#: plugin.py:506 plugin.py:1238 plugin.py:2656 plugin.py:2881 plugin.py:2898
-#: plugin.py:2997 plugin.py:3523 plugin.py:3736
+#: plugin.py:506 plugin.py:1238 plugin.py:2656 plugin.py:2882 plugin.py:2899
+#: plugin.py:2998 plugin.py:3525 plugin.py:3738
 msgid "Back"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Rec Series"
 msgstr ""
 
-#: plugin.py:1241 plugin.py:3739
+#: plugin.py:1241 plugin.py:3741
 msgid "Search"
 msgstr ""
 
@@ -390,7 +390,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: plugin.py:2493 plugin.py:2900 plugin.py:2999 plugin.py:3524
+#: plugin.py:2493 plugin.py:2901 plugin.py:3000 plugin.py:3526
 msgid "Remove"
 msgstr ""
 
@@ -472,11 +472,11 @@ msgstr ""
 msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
-#: plugin.py:2735
+#: plugin.py:2736
 msgid "Update Aborted!"
 msgstr ""
 
-#: plugin.py:2768
+#: plugin.py:2769
 #, python-format
 msgid ""
 "Current configuration for creating the bouquet\n"
@@ -484,279 +484,279 @@ msgid ""
 "\n"
 msgstr ""
 
-#: plugin.py:2781
+#: plugin.py:2782
 msgid "    (MENU BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2782
+#: plugin.py:2783
 msgid "            Config Setup Options\n"
 msgstr ""
 
-#: plugin.py:2783
+#: plugin.py:2784
 msgid "    (5 BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2784
+#: plugin.py:2785
 msgid "            MediaPlayer\n"
 msgstr ""
 
-#: plugin.py:2785
+#: plugin.py:2786
 msgid "    (9/Help BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2786
+#: plugin.py:2787
 msgid "            Help\n"
 msgstr ""
 
-#: plugin.py:2787
+#: plugin.py:2788
 msgid "    (PVR/FILELIST/2 BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2788
+#: plugin.py:2789
 msgid "            Open Movie Folder\n"
 msgstr ""
 
-#: plugin.py:2789
+#: plugin.py:2790
 msgid "    (EPG/INFO/0 BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2790
+#: plugin.py:2791
 msgid "            Epg guide or imdb/tmdb\n"
 msgstr ""
 
-#: plugin.py:2791
+#: plugin.py:2792
 msgid ""
 "    (GREEN BUTTON):\n"
 " "
 msgstr ""
 
-#: plugin.py:2792
+#: plugin.py:2793
 msgid "            Start Download or Record Selected Channel:\n"
 msgstr ""
 
-#: plugin.py:2793
+#: plugin.py:2794
 msgid "            Set 'Live Player Active' in Setting:\n"
 msgstr ""
 
-#: plugin.py:2794
+#: plugin.py:2795
 msgid "            Set 'No' for Record Live\n"
 msgstr ""
 
-#: plugin.py:2795 plugin.py:2809 plugin.py:2850
+#: plugin.py:2796 plugin.py:2810 plugin.py:2851
 msgid "    (YELLOW BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2796
+#: plugin.py:2797
 msgid "            Start Download All Episodes Series\n"
 msgstr ""
 
-#: plugin.py:2797
+#: plugin.py:2798
 msgid "    (BLUE BUTTON): Search LIve/Movie"
 msgstr ""
 
-#: plugin.py:2810 plugin.py:2818
+#: plugin.py:2811 plugin.py:2819
 msgid "            If you have a file format:\n"
 msgstr ""
 
-#: plugin.py:2811
+#: plugin.py:2812
 msgid "            /etc/enigma2/iptv.sh\n"
 msgstr ""
 
-#: plugin.py:2812
+#: plugin.py:2813
 msgid "            USERNAME='xxxxxxxxxx'\n"
 msgstr ""
 
-#: plugin.py:2813
+#: plugin.py:2814
 msgid "            PASSWORD='yyyyyyyyy'\n"
 msgstr ""
 
-#: plugin.py:2814
+#: plugin.py:2815
 msgid "            url='http://server:port/xxyyzz'\n"
 msgstr ""
 
-#: plugin.py:2815
+#: plugin.py:2816
 msgid ""
 "            Import with Yellow Button this file\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2817 plugin.py:2840 plugin.py:2852
+#: plugin.py:2818 plugin.py:2841 plugin.py:2853
 msgid "    (BLUE BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2819
+#: plugin.py:2820
 msgid "            /tmp/xc.txt\n"
 msgstr ""
 
-#: plugin.py:2820
+#: plugin.py:2821
 msgid "            host\t(host without http:// )\n"
 msgstr ""
 
-#: plugin.py:2821
+#: plugin.py:2822
 msgid "            port\n"
 msgstr ""
 
-#: plugin.py:2822
+#: plugin.py:2823
 msgid "            user\n"
 msgstr ""
 
-#: plugin.py:2823
+#: plugin.py:2824
 msgid "            password\n"
 msgstr ""
 
-#: plugin.py:2824
+#: plugin.py:2825
 msgid "            Import with Blue Button this file"
 msgstr ""
 
-#: plugin.py:2838
+#: plugin.py:2839
 msgid "    (RED BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2839
+#: plugin.py:2840
 msgid "            Return to Channels List\n"
 msgstr ""
 
-#: plugin.py:2841
+#: plugin.py:2842
 msgid "            Init Continue Play\n"
 msgstr ""
 
-#: plugin.py:2842
+#: plugin.py:2843
 msgid "    (REC BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2843
+#: plugin.py:2844
 msgid "            Download Video \n"
 msgstr ""
 
-#: plugin.py:2844
+#: plugin.py:2845
 msgid "    (STOP BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2845
+#: plugin.py:2846
 msgid "            Close/Stop Movie/Live\n"
 msgstr ""
 
-#: plugin.py:2847
+#: plugin.py:2848
 msgid "UTILITY PLAYER M3U\n"
 msgstr ""
 
-#: plugin.py:2848
+#: plugin.py:2849
 msgid "    (GREEN BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2849
+#: plugin.py:2850
 msgid "            Remove file from list\n"
 msgstr ""
 
-#: plugin.py:2851
+#: plugin.py:2852
 msgid "            Export file m3u to Bouquet .tv\n"
 msgstr ""
 
-#: plugin.py:2853
+#: plugin.py:2854
 msgid ""
 "            Download file m3u from current server\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2854
+#: plugin.py:2855
 msgid "UTILITY PLAYER M3U - OPEN FILE:\n"
 msgstr ""
 
-#: plugin.py:2855
+#: plugin.py:2856
 msgid "    When opening an .m3u file instead:\n"
 msgstr ""
 
-#: plugin.py:2856
+#: plugin.py:2857
 msgid "   (GREEN BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2857
+#: plugin.py:2858
 msgid "           Reload List\n"
 msgstr ""
 
-#: plugin.py:2858
+#: plugin.py:2859
 msgid "   (YELLOW BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2859
+#: plugin.py:2860
 msgid "           Download VOD selected channel\n"
 msgstr ""
 
-#: plugin.py:2860
+#: plugin.py:2861
 msgid "   (BLUE BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2861
+#: plugin.py:2862
 msgid "           Search for a title in the list\n"
 msgstr ""
 
-#: plugin.py:2899
+#: plugin.py:2900
 msgid "Make"
 msgstr ""
 
-#: plugin.py:2930 plugin.py:2933 plugin.py:2936
+#: plugin.py:2931 plugin.py:2934 plugin.py:2937
 #, python-format
 msgid "Convert Playlist to: %s ?"
 msgstr ""
 
-#: plugin.py:2944 plugin.py:2950 plugin.py:2958 plugin.py:3715
+#: plugin.py:2945 plugin.py:2951 plugin.py:2959 plugin.py:3718
 msgid "Reload Playlists in progress..."
 msgstr ""
 
-#: plugin.py:2944 plugin.py:2950 plugin.py:2958 plugin.py:3715
+#: plugin.py:2945 plugin.py:2951 plugin.py:2959 plugin.py:3718
 msgid "wait please..."
 msgstr ""
 
-#: plugin.py:2955
+#: plugin.py:2956
 msgid "Remove Playlist from Bouquets?"
 msgstr ""
 
-#: plugin.py:2963
+#: plugin.py:2964
 msgid ""
 "GREEN BUTTON:\n"
 " "
 msgstr ""
 
-#: plugin.py:2964
+#: plugin.py:2965
 msgid "   Create XC Live/VOD Bouquets\n"
 msgstr ""
 
-#: plugin.py:2965
+#: plugin.py:2966
 msgid "    You need to configure the type of output\n"
 msgstr ""
 
-#: plugin.py:2966
+#: plugin.py:2967
 msgid ""
 "    in the config menu\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2967
+#: plugin.py:2968
 msgid "YELLOW BUTTON:\n"
 msgstr ""
 
-#: plugin.py:2968
+#: plugin.py:2969
 msgid "    Removes all the bouquets that have been\n"
 msgstr ""
 
-#: plugin.py:2969
+#: plugin.py:2970
 msgid ""
 "    created with XCplugin\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2970
+#: plugin.py:2971
 msgid "HELP BUTTON:\n"
 msgstr ""
 
-#: plugin.py:2971
+#: plugin.py:2972
 msgid ""
 "    Go to Help info plugin\n"
 "\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2977
+#: plugin.py:2978
 #, python-format
 msgid ""
 "Current configuration for creating the bouquet\n"
@@ -764,28 +764,28 @@ msgid ""
 "\n"
 msgstr ""
 
-#: plugin.py:3000
+#: plugin.py:3001
 msgid "Info"
 msgstr ""
 
-#: plugin.py:3243
+#: plugin.py:3244
 #, python-format
 msgid "Do you want to remove: %s?"
 msgstr ""
 
-#: plugin.py:3254
+#: plugin.py:3255
 msgid ""
 " has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:3259
+#: plugin.py:3260
 msgid ""
 " not exist!\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:3266
+#: plugin.py:3267
 #, python-format
 msgid ""
 "Put your lines to the %s/xclink.txt'.\n"
@@ -798,121 +798,121 @@ msgid ""
 "Select list from Menulist"
 msgstr ""
 
-#: plugin.py:3517
+#: plugin.py:3518
 #, python-format
 msgid "Put .m3u Files in Folder %s"
 msgstr ""
 
-#: plugin.py:3525
+#: plugin.py:3527
 msgid "Export"
 msgstr ""
 
-#: plugin.py:3525
+#: plugin.py:3527
 msgid " Bouquet"
 msgstr ""
 
-#: plugin.py:3526 plugin.py:3738
+#: plugin.py:3528 plugin.py:3740
 msgid "Download"
 msgstr ""
 
-#: plugin.py:3526
+#: plugin.py:3528
 msgid " M3u"
 msgstr ""
 
-#: plugin.py:3590
+#: plugin.py:3592
 #, python-format
 msgid "Do you want to remove: %s ?"
 msgstr ""
 
-#: plugin.py:3595
+#: plugin.py:3597
 msgid ""
 "   has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:3601
+#: plugin.py:3603
 msgid "   not exist!"
 msgstr ""
 
-#: plugin.py:3608
+#: plugin.py:3610
 msgid "Wait... downloading in progress ..."
 msgstr ""
 
-#: plugin.py:3611
+#: plugin.py:3613
 msgid "Download M3u File?"
 msgstr ""
 
-#: plugin.py:3631
+#: plugin.py:3633
 msgid "No Server Configured to Download!!!"
 msgstr ""
 
-#: plugin.py:3654 plugin.py:3886
+#: plugin.py:3656 plugin.py:3888
 msgid "Download Failed!!!"
 msgstr ""
 
-#: plugin.py:3664
+#: plugin.py:3667
 #, python-format
 msgid "Do you want to Convert %s to favorite .tv ?"
 msgstr ""
 
-#: plugin.py:3704
+#: plugin.py:3707
 msgid "Check on favorites lists..."
 msgstr ""
 
-#: plugin.py:3737
+#: plugin.py:3739
 msgid "Reload"
 msgstr ""
 
-#: plugin.py:3832
+#: plugin.py:3834
 msgid "File Unknow!!!"
 msgstr ""
 
-#: plugin.py:3857
+#: plugin.py:3859
 #, python-format
 msgid ""
 "DOWNLOAD VIDEO?\n"
 "%s"
 msgstr ""
 
-#: plugin.py:3869
+#: plugin.py:3871
 msgid "Only VOD Movie allowed!!!"
 msgstr ""
 
-#: plugin.py:4139 plugin.py:4140 plugin.py:4141 plugin.py:4142 plugin.py:4143
+#: plugin.py:4141 plugin.py:4142 plugin.py:4143 plugin.py:4144 plugin.py:4145
 msgid "MOVIE DOWNLOAD FAILED!"
 msgstr ""
 
-#: plugin.py:4139
+#: plugin.py:4141
 msgid "DOWNLOADED FILE CORRUPTED:"
 msgstr ""
 
-#: plugin.py:4140
+#: plugin.py:4142
 msgid "COULD NOT READ RTMP PACKET:"
 msgstr ""
 
-#: plugin.py:4141
+#: plugin.py:4143
 msgid "SEGMENTATION FAULT:"
 msgstr ""
 
-#: plugin.py:4142
+#: plugin.py:4144
 msgid "SERVER RETURNED ERROR:"
 msgstr ""
 
-#: plugin.py:4143
+#: plugin.py:4145
 msgid "UNKNOWN ERROR:"
 msgstr ""
 
-#: plugin.py:4223 plugin.py:4235
+#: plugin.py:4225 plugin.py:4237
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:4307
+#: plugin.py:4309
 msgid ""
 "Please enter correct server parameters in Config\n"
 " no valid list "
 msgstr ""
 
-#: plugin.py:4448
+#: plugin.py:4450
 #, python-format
 msgid "Conversion %s in progress: "
 msgstr ""
