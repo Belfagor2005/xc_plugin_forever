@@ -109,7 +109,6 @@ global Path_Movies
 global Path_Movies2
 global infoname
 
-_session = " "
 currversion = '3.1'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
@@ -131,16 +130,24 @@ next_request = 0
 stream_url = ""
 urlinfo = ""
 socket.setdefaulttimeout(5)
-pythonVer = sys.version_info.major
-PY3 = False
-if pythonVer == 3:
-    PY3 = True
-if PY3:
-    from urllib.request import urlopen, Request
-    from urllib.parse import urlparse
-else:
-    from urllib2 import urlopen, Request
-    from urlparse import urlparse
+_session = None
+autoStartTimer = None
+
+import six
+from six.moves import urllib_request, urllib_error
+from six.moves import xrange
+from six.moves.html_parser import HTMLParser
+from six.moves.urllib.parse import urlparse, quote_plus
+if six.PY3:
+    unicode = str
+    import http.cookiejar as cookielib
+    from urllib.request import ProxyHandler
+    from urllib.request import (urlopen, Request)
+elif six.PY2:
+    import cookielib
+    from urllib2 import ProxyHandler
+    from urllib2 import (urlopen, Request)
+
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -170,6 +177,7 @@ if sslverify:
                 ClientTLSOptions(self.hostname, ctx)
             return ctx
 
+
 modelive = [("1", "Dvb(1)"), ("4097", "IPTV(4097)")]
 modemovie = [("4097", "IPTV(4097)")]
 if file_exists("/usr/bin/gstplayer"):
@@ -183,16 +191,6 @@ if file_exists('/var/lib/dpkg/info'):
     modemovie.append(("8193", "eServiceUri(8193)"))
 
 
-def clear_caches():
-    try:
-        os.system("echo 1 > /proc/sys/vm/drop_caches")
-        os.system("echo 2 > /proc/sys/vm/drop_caches")
-        os.system("echo 3 > /proc/sys/vm/drop_caches")
-    except:
-        pass
-
-
-# kiddac solution
 def defaultMoviePath():
     result = config.usage.default_path.value
     if not os.path.isdir(result):
@@ -207,6 +205,7 @@ if not os.path.isdir(config.movielist.last_videodir.value):
         config.movielist.last_videodir.save()
     except:
         pass
+
 
 config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
@@ -239,6 +238,14 @@ cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "M
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 
+eserv = int(cfg.services.value)
+infoname = str(cfg.infoname.value)
+ntimeout = float(cfg.timeout.value)
+Path_Movies = str(cfg.pthmovie.value) + "/"
+Path_Movies2 = Path_Movies
+Path_Picons = str(cfg.pthpicon.value) + "/"
+Path_XML = str(cfg.pthxmlfile.value) + "/"
+
 
 screenwidth = getDesktop(0).size()
 if screenwidth.width() == 2560:
@@ -249,6 +256,7 @@ if screenwidth.width() == 2560:
     BLOCK_H = 80
     skin_path = os.path.join(plugin_path, 'skin/uhd')
     piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
+
 elif screenwidth.width() == 1920:
     CHANNEL_NUMBER = [3, 0, 100, 50, 0]
     CHANNEL_NAME = [110, 0, 1200, 50, 1]
@@ -257,6 +265,7 @@ elif screenwidth.width() == 1920:
     BLOCK_H = 50
     skin_path = os.path.join(plugin_path, 'skin/fhd')
     piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
+
 else:
     CHANNEL_NUMBER = [3, 0, 50, 40, 0]
     CHANNEL_NAME = [75, 0, 900, 40, 1]
@@ -270,18 +279,21 @@ if file_exists('/var/lib/dpkg/info'):
     skin_path = skin_path + '/dreamOs'
 
 
-def copy_poster():
-    system("cd / && cp -f " + piclogo + " " + pictmp)
+try:
+    def copy_poster():
+        system("cd / && cp -f " + piclogo + " " + pictmp)
+    copy_poster()
+except:
+    pass
 
 
-copy_poster()
-eserv = int(cfg.services.value)
-infoname = str(cfg.infoname.value)
-ntimeout = float(cfg.timeout.value)
-Path_Movies = str(cfg.pthmovie.value) + "/"
-Path_Movies2 = Path_Movies
-Path_Picons = str(cfg.pthpicon.value) + "/"
-Path_XML = str(cfg.pthxmlfile.value) + "/"
+def clear_caches():
+    try:
+        os.system("echo 1 > /proc/sys/vm/drop_caches")
+        os.system("echo 2 > /proc/sys/vm/drop_caches")
+        os.system("echo 3 > /proc/sys/vm/drop_caches")
+    except:
+        pass
 
 
 def check_port(url):
@@ -985,7 +997,7 @@ class iptv_streamse():
                     if desc_image and desc_image != "n/A" and desc_image != "":
                         if desc_image.startswith("https"):
                             desc_image = desc_image.replace("https", "http")
-                    # if PY3:
+                    # if six.PY3:
                         # desc_image = desc_image.encode()
                     # epgnowtitle = ''
                     # #####################
@@ -1171,12 +1183,12 @@ class iptv_streamse():
             if response.info().get('Content-Encoding') == 'gzip':
                 buffer = StringIO(response.read())
                 deflatedContent = gzip.GzipFile(fileobj=buffer)
-                if PY3:
+                if six.PY3:
                     return deflatedContent.read().decode('utf-8')
                 else:
                     return deflatedContent.read()
             else:
-                if PY3:
+                if six.PY3:
                     return response.read().decode('utf-8')
                 else:
                     return response.read()
@@ -2179,7 +2191,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self['poster'].instance.setPixmapFromFile(piclogo)
             self.pixim = str(self.channelx[7])
             if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
-                if PY3:
+                if six.PY3:
                     self.pixim = six.ensure_binary(self.pixim)
                 if self.pixim.startswith(b"https") and sslverify:
                     parsed_uri = urlparse(self.pixim)
@@ -2694,7 +2706,7 @@ class xc_help(Screen):
         remote_changelog = ''
         req = Utils.Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
         page = Utils.urlopen(req).read()
-        if PY3:
+        if six.PY3:
             data = page.decode("utf-8")
         else:
             data = page.encode("utf-8")
@@ -3407,7 +3419,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                     if self.cover.find("http") == -1:
                         self.downloadError()
                     else:
-                        # if PY3:
+                        # if six.PY3:
                         self.cover = six.ensure_binary(self.cover)
                         if self.cover.startswith(b"https") and sslverify:
                             parsed_uri = urlparse(self.cover)
@@ -3685,42 +3697,52 @@ class xc_Play(Screen):
         if idx < 0 or idx is None:
             return
         else:
-            name = Path_Movies + self.names[idx]
+            name = os.path.join(Path_Movies, self.names[idx])
             namel = self.names[idx]
             xcname = "userbouquet.%s.tv" % namel.replace(".m3u", "").replace(" ", "")
             desk_tmp = ""
-            in_bouquets = 0
-            if file_exists("/etc/enigma2/%s" % xcname):
-                remove("/etc/enigma2/%s" % xcname)
-            with open("/etc/enigma2/%s" % xcname, "w") as outfile:
+            in_bouquets = False
+
+            # Rimuove il file del bouquet se esiste
+            bouquet_path = "/etc/enigma2/%s" % xcname
+            if os.path.exists(bouquet_path):
+                os.remove(bouquet_path)
+
+            # Crea il nuovo file del bouquet
+            with open(bouquet_path, "w") as outfile:
                 outfile.write("#NAME %s\r\n" % namel.replace(".m3u", "").replace(" ", "").capitalize())
-                for line in open("%s" % name):
-                    if line.startswith("http://") or line.startswith("https://"):
-                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s' % line.replace(':', '%3a'))
-                        outfile.write("#DESCRIPTION %s" % desk_tmp)
-                    elif line.startswith("#EXTINF"):
-                        desk_tmp = "%s" % line.split(",")[-1]
-                    elif "<stream_url><![CDATA" in line:
-                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.split("[")[-1].split("]")[0].replace(":", "%3a"))
-                        outfile.write("#DESCRIPTION %s\r\n" % desk_tmp)
-                    elif "<title>" in line:
-                        if "<![CDATA[" in line:
-                            desk_tmp = "%s\r\n" % line.split("[")[-1].split("]")[0]
-                        else:
-                            desk_tmp = "%s\r\n" % line.split("<")[1].split(">")[1]
-                outfile.close()
-                self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
-            if file_exists("/etc/enigma2/bouquets.tv"):
-                for line in open("/etc/enigma2/bouquets.tv"):
+                with open(name, "r") as infile:
+                    for line in infile:
+                        if line.startswith("http://") or line.startswith("https://"):
+                            outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.replace(':', '%3a'))
+                            outfile.write("#DESCRIPTION %s\r\n" % desk_tmp)
+                        elif line.startswith("#EXTINF"):
+                            desk_tmp = line.split(",")[-1].strip()
+                        elif "<stream_url><![CDATA" in line:
+                            stream_url = line.split("[")[-1].split("]")[0].replace(":", "%3a")
+                            outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % stream_url)
+                            outfile.write("#DESCRIPTION %s\r\n" % desk_tmp)
+                        elif "<title>" in line:
+                            if "<![CDATA[" in line:
+                                desk_tmp = line.split("[")[-1].split("]")[0].strip()
+                            else:
+                                desk_tmp = line.split("<")[1].split(">")[1].strip()
+
+            self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
+
+            # Controlla se il bouquet è già nella lista dei bouquets
+            with open("/etc/enigma2/bouquets.tv", "r") as bouquets_file:
+                for line in bouquets_file:
                     if xcname in line:
-                        in_bouquets = 1
-                if in_bouquets == 0:
-                    if file_exists("/etc/enigma2/%s" % xcname) and file_exists("/etc/enigma2/bouquets.tv"):
-                        Utils.remove_line("/etc/enigma2/bouquets.tv", xcname)
-                        with open("/etc/enigma2/bouquets.tv", "a") as outfile:
-                            outfile.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
-                outfile.close()
-            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=8)
+                        in_bouquets = True
+                        break
+
+            # Aggiunge il bouquet alla lista dei bouquets se non è già presente
+            if not in_bouquets:
+                with open("/etc/enigma2/bouquets.tv", "a") as bouquets_file:
+                    bouquets_file.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
+
+            self.session.open(MessageBox, _("Reload Playlists in progress...") + "\n\n\n" + _("wait please..."), MessageBox.TYPE_INFO, timeout=5)
             Utils.ReloadBouquets()
 
 
@@ -3809,36 +3831,40 @@ class xc_M3uPlay(Screen):
         self.pics = []
         pic = pictmp
         try:
-            if file_exists(self.name):
+            if os.path.exists(self.name):  # Verifica se il file esiste
                 fpage = ''
                 try:
-                    with codecs.open(str(self.name), "r", encoding="utf-8") as f:
+                    with codecs.open(self.name, "r", encoding="utf-8") as f:
                         fpage = f.read()
-                except:
-                    pass
-                if "#EXTM3U" and 'tvg-logo' in fpage:
-                    regexcat = 'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\\n(.*?)\\n'
+                except Exception as e:
+                    print("Errore durante la lettura del file:", e)
+                    return  # Esce dalla funzione se c'è un problema con la lettura del file
+
+                # Verifica la presenza delle stringhe nel contenuto del file
+                if "#EXTM3U" in fpage and 'tvg-logo' in fpage:
+                    regexcat = r'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\n(.*?)\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for pic, name, url in match:
-                        url = url.replace(' ', '').replace('\\n', '')
-                        self.names.append(str(name))
-                        self.urls.append(str(url))
-                        self.pics.append(str(pic))
+                        url = url.replace(' ', '').replace('\n', '')
+                        self.names.append(name)
+                        self.urls.append(url)
+                        self.pics.append(pic)
                 else:
-                    regexcat = '#EXTINF.*?,(.*?)\\n(.*?)\\n'
+                    regexcat = r'#EXTINF.*?,(.*?)\n(.*?)\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for name, url in match:
-                        url = url.replace(' ', '').replace('\\n', '')
-                        self.names.append(str(name))
-                        self.urls.append(str(url))
-                        self.pics.append(str(pic))
-                m3ulistxc(self.names, self['list'])
-                # self.xxd = m3ulistxc
+                        url = url.replace(' ', '').replace('\n', '')
+                        self.names.append(name)
+                        self.urls.append(url)
+                        self.pics.append(pic)  # Aggiunto per evitare errori se non ci sono immagini
+
+                m3ulistxc(self.names, self['list'])  # Aggiorna la lista con i nomi e gli URL
                 self["live"].setText('N.' + str(len(self.names)) + " Stream")
             else:
                 self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
-            print('error exception: ', e)
+            print('Errore durante l\'elaborazione del file M3U:', e)
+
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
@@ -4152,7 +4178,7 @@ class downloadTaskPostcondition(Condition):
 
 
 class downloadTask(Task):
-    if PY3:
+    if six.PY3:
         ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
     else:
         ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
@@ -4172,7 +4198,7 @@ class downloadTask(Task):
 
     def processOutput(self, data):
         global ui
-        if PY3:
+        if six.PY3:
             data = str(data)
         try:
             if data.find("%") != -1:
@@ -4255,30 +4281,35 @@ def debug(obj, text=""):
 
 
 def uninstaller():
-    """Clean up routine to remove any previously made changes
-    """
+    """Routine di pulizia per rimuovere eventuali modifiche precedenti"""
     try:
-        for fname in listdir(enigma_path):
-            if 'userbouquet.xc_' in fname:
-                remove(os.path.join(enigma_path, fname))
-            elif 'bouquets.tv.bak' in fname:
-                remove(os.path.join(enigma_path, fname))
-        if os.path.isdir(epgimport_path):
-            for fname in listdir(epgimport_path):
-                if 'xc_' in fname:
-                    remove(os.path.join(epgimport_path, fname))
-        os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
-        tvfile = open(os.path.join(enigma_path, 'bouquets.tv'), 'w+')
-        bakfile = open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+')
-        for line in bakfile:
-            if '.xc_' not in line:
-                tvfile.write(line)
+        # Rimuovi file specifici da enigma_path
+        for fname in os.listdir(enigma_path):
+            file_path = os.path.join(enigma_path, fname)
+            if 'userbouquet.xc_' in fname or 'bouquets.tv.bak' in fname:
+                os.remove(file_path)
 
-        bakfile.close()
-        tvfile.close()
+        # Rimuovi file specifici da epgimport_path se esiste
+        if os.path.isdir(epgimport_path):
+            for fname in os.listdir(epgimport_path):
+                if 'xc_' in fname:
+                    os.remove(os.path.join(epgimport_path, fname))
+
+        # Rinominare bouquets.tv in bouquets.tv.bak
+        os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
+
+        # Pulizia del file bouquets.tv
+        with open(os.path.join(enigma_path, 'bouquets.tv'), 'w+') as tvfile, \
+             open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+') as bakfile:
+            
+            for line in bakfile:
+                if '.xc_' not in line:
+                    tvfile.write(line)
+
     except Exception as e:
-        print(e)
+        print("Errore durante il processo di disinstallazione: ", e)
         raise
+
 
 
 # chan_counter,
@@ -4295,6 +4326,8 @@ def uninstaller():
 # self.vod_url = selected_channel[4]
 # self.desc = str(selected_channel[2])
 # returnIMDB = False
+
+
 def show_more_infos(name, index):
     text_clear = name
     if "exampleserver.com" not in STREAMS.xtream_e2portal_url:
@@ -4321,75 +4354,98 @@ def save_old():
     tag = "xc_"
     xc12 = urlinfo.replace("enigma2.php", "get.php") + '&type=dreambox&output=mpegts'
     xc13 = urlinfo.replace("enigma2.php", "get.php") + '&type=m3u_plus&output=ts'
-    in_bouquets = 0
+    in_bouquets = False
     desk_tmp = xcname = ''
     try:
+
         if cfg.typem3utv.value == 'MPEGTS to TV':
-            # xc2 = '&type=dreambox&output=mpegts'
-            if file_exists('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)):
-                remove('%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet))
+            file_path = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
+
+            # Controlla se il file esiste e lo rimuove se necessario
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
             try:
-                localFile = '%suserbouquet.%s%s_.tv' % (enigma_path, tag, namebouquet)  # ' #resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tvaddon'))
-                r = Utils.getUrl(xc12)
+                localFile = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
+                r = Utils.getUrl(xc12)  # Supponendo che `xc12` contenga l'URL o il contenuto da scrivere
                 with open(localFile, 'w') as f:
                     f.write(r)
             except Exception as e:
-                print('touch one: ', e)
+                print('Errore durante il download o la scrittura del file TV: ', e)
+
             xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
 
         else:
-            if file_exists(Path_Movies + namebouquet + ".m3u"):
-                remove(Path_Movies + namebouquet + ".m3u")
+            # Controlla se il file esiste e lo rimuove se necessario
+            if os.path.exists(os.path.join(Path_Movies, namebouquet + ".m3u")):
+                os.remove(os.path.join(Path_Movies, namebouquet + ".m3u"))
+
             try:
-                localFile = '%s%s.m3u' % (Path_Movies, namebouquet)
+                localFile = os.path.join(Path_Movies, '%s.m3u' % namebouquet)
                 r = Utils.getUrl(xc13)
                 with open(localFile, 'w') as f:
                     f.write(r)
             except Exception as e:
-                print('touch two: ', e)
+                print('Errore durante il download o la scrittura del file m3u: ', e)
 
+            # Creazione del nome per il bouquet
             name = namebouquet.replace('.m3u', '')
             xcname = 'userbouquet.%s%s_.tv' % (tag, name)
-            if file_exists('/etc/enigma2/%s' % xcname):
-                remove('/etc/enigma2/%s' % xcname)
-            with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
-                outfile.write('#NAME %s\r\n' % name.capitalize())
-                for line in open(Path_Movies + '%s.m3u' % name):
-                    if line.startswith('http://') or line.startswith('https://'):
-                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s' % line.replace(':', '%3a'))
-                        outfile.write('#DESCRIPTION %s' % desk_tmp)
-                    elif line.startswith('#EXTINF'):
-                        desk_tmp = '%s' % line.split(',')[-1]
-                    elif '<stream_url><![CDATA' in line:
-                        outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.split('[')[-1].split(']')[0].replace(':', '%3a'))
-                        outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
-                    elif '<title>' in line:
-                        if '<![CDATA[' in line:
-                            desk_tmp = '%s\r\n' % line.split('[')[-1].split(']')[0]
-                        else:
-                            desk_tmp = '%s\r\n' % line.split('<')[1].split('>')[1]
-                outfile.close()
+
+            # Controlla se il file esiste e lo rimuove se necessario
+            if os.path.exists('/etc/enigma2/%s' % xcname):
+                os.remove('/etc/enigma2/%s' % xcname)
+
+            try:
+                with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
+                    outfile.write('#NAME %s\r\n' % name.capitalize())
+                    desk_tmp = ""  # Variabile temporanea per la descrizione
+
+                    with open(os.path.join(Path_Movies, '%s.m3u' % name)) as infile:
+                        for line in infile:
+                            if line.startswith('http://') or line.startswith('https://'):
+                                outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.strip().replace(':', '%3a'))
+                                outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                            elif line.startswith('#EXTINF'):
+                                desk_tmp = '%s' % line.split(',')[-1].strip()
+                            elif '<stream_url><![CDATA' in line:
+                                outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.split('[')[-1].split(']')[0].strip().replace(':', '%3a'))
+                                outfile.write('#DESCRIPTION %s\r\n' % desk_tmp)
+                            elif '<title>' in line:
+                                if '<![CDATA[' in line:
+                                    desk_tmp = '%s' % line.split('[')[-1].split(']')[0].strip()
+                                else:
+                                    desk_tmp = '%s' % line.split('<')[1].split('>')[1].strip()
+            except Exception as e:
+                print('Errore durante la creazione del bouquet: ', e)
+
 
         # print('-----check in bouquet.tv')
         for line in open(fldbouquet):
             if xcname in line:
-                in_bouquets = 1
-        if in_bouquets == 0:
-            new_bouquet = open("/etc/enigma2/new_bouquets.tv", "w")
-            file_read = open(fldbouquet).readlines()
-            if cfg.bouquettop.value == "Top":
-                new_bouquet.write('#NAME User - bouquets (TV)\n')
-                new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
-                for line in file_read:
-                    if line.startswith("#NAME"):
-                        continue
-                    new_bouquet.write(line)
-                new_bouquet.close()
-            else:
-                for line in file_read:
-                    new_bouquet.write(line)
-                new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
-                new_bouquet.close()
+                in_bouquets = True
+        if in_bouquets == False:
+
+            try:
+                with open("/etc/enigma2/new_bouquets.tv", "w") as new_bouquet:
+                    # Legge tutte le righe del file di origine
+                    with open(fldbouquet, "r") as f:
+                        file_read = f.readlines()
+                    
+                    if cfg.bouquettop.value == "Top":
+                        new_bouquet.write('#NAME User - bouquets (TV)\n')
+                        new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\r\n'.format(xcname))
+                        # Scrive tutte le righe eccetto quelle che iniziano con "#NAME"
+                        new_bouquet.writelines(line for line in file_read if not line.startswith("#NAME"))
+                    else:
+                        # Scrive tutte le righe dal file originale
+                        new_bouquet.writelines(file_read)
+                        # Aggiunge il nuovo servizio in fondo
+                        new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\r\n'.format(xcname))
+            except IOError as e:
+                # Compatibilità con Python 2 e 3 per la stampa degli errori
+                print("Si è verificato un errore durante l'accesso al file: {}".format(e))
+                
             system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
     except Exception as e:
@@ -4473,8 +4529,6 @@ def main(session, **kwargs):
         session.open(xc_home)
 
 
-_session = None
-autoStartTimer = None
 # _firstStart = True
 # try:
     # from . import Update
