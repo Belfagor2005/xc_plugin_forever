@@ -79,7 +79,7 @@ class Console(Screen):
         self.container = eConsoleAppContainer()
         self.run = 0
         self.finished = False
-        try:  # DreamOS By RAED
+        try:
             self.container.appClosed.append(self.runFinished)
             self.container.dataAvail.append(self.dataAvail)
         except:
@@ -142,7 +142,7 @@ class Console(Screen):
     def cancelCallback(self, ret=None):
         self.cancel_msg = None
         if ret:
-            try:  # DreamOS By RAED
+            try:
                 self.container.appClosed.remove(self.runFinished)
                 self.container.dataAvail.remove(self.dataAvail)
             except:
@@ -153,7 +153,7 @@ class Console(Screen):
 
     def closeConsole(self):
         if self.finished:
-            try:  # DreamOS By RAED
+            try:
                 self.container.appClosed.remove(self.runFinished)
                 self.container.dataAvail.remove(self.dataAvail)
             except:

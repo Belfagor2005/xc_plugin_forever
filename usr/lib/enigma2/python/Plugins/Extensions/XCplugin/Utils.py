@@ -1356,7 +1356,6 @@ conversion = {
 }
 
 
-
 def cyr2lat(text):
     i = 0
     text = text.strip(' \t\n\r')

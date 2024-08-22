@@ -2678,7 +2678,6 @@ class xc_help(Screen):
         self["helpdesc2"] = Label()
         self["paypal"] = Label()
         self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
                                      'DirectionActions',
                                      'HotkeyActions',
                                      'InfobarEPGActions',
