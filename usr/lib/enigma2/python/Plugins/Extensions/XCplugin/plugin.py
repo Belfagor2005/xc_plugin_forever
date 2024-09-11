@@ -321,10 +321,10 @@ def check_port(url):
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
+    text = html_conv.html_unescape(text_clear)
     if file_exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
-            text = html_conv.html_unescape(text_clear)
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
             print("[XCF] Tmdb: ", e)
@@ -332,11 +332,12 @@ def returnIMDB(text_clear):
     elif file_exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
-            text = html_conv.html_unescape(text_clear)
             imdb(_session, text)
         except Exception as e:
             print("[XCF] imdb: ", e)
         return True
+    else:
+        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
     return False
 
 
