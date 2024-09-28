@@ -276,7 +276,7 @@ else:
     piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
 if file_exists('/var/lib/dpkg/info'):
-    skin_path = skin_path + '/dreamOs'
+    skin_path = os.path.join(skin_path, 'dreamOs')
 
 
 try:
