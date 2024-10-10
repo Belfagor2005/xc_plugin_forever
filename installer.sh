@@ -2,8 +2,8 @@
 
 ## setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
 ## Only This 2 lines to edit with new version ######
-version='3.1'
-changelog='Fix Upgrade'
+version='3.2'
+changelog='Fix Aspect on Exit\nFix Downloaded Name for moviebrowser poster'
 ##
 TMPPATH=/tmp/XCplugin-main
 FILEPATH=/tmp/main.tar.gz

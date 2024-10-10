@@ -17,6 +17,7 @@ from . import Utils
 from . import html_conv
 from .Console import Console
 from .downloader import downloadWithProgress
+
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
     ConfigSubsection,
@@ -49,8 +50,6 @@ from Components.Task import (
     job_manager as JobManager,
 )
 from Plugins.Plugin import PluginDescriptor
-# from Screens.Console import Console
-# from Screens.InfoBar import MoviePlayer
 from Screens.Standby import Standby
 from Screens.InfoBarGenerics import (
     InfoBarSubtitleSupport,
@@ -92,15 +91,24 @@ import sys
 import time
 import json
 from datetime import datetime
-from Components.AVSwitch import AVSwitch
 try:
-    from enigma import eAVSwitch
-except Exception:
-    from enigma import eAVControl as eAVSwitch
+    from Components.AVSwitch import AVSwitch
+except ImportError:
+    from Components.AVSwitch import eAVControl as AVSwitch
+
+
 try:
     from xml.etree.cElementTree import fromstring
 except ImportError:
     from xml.etree.ElementTree import fromstring
+
+from six.moves.urllib.parse import urlparse
+if six.PY3:
+    unicode = str
+    from urllib.request import (urlopen, Request)
+elif six.PY2:
+    from urllib2 import (urlopen, Request)
+
 
 global STREAMS, piclogo, pictmp
 global isStream, btnsearch, eserv, re_search
@@ -109,7 +117,8 @@ global Path_Movies
 global Path_Movies2
 global infoname
 
-currversion = '3.1'
+
+currversion = '3.2'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
@@ -132,21 +141,6 @@ urlinfo = ""
 socket.setdefaulttimeout(5)
 _session = None
 autoStartTimer = None
-
-import six
-from six.moves import urllib_request, urllib_error
-from six.moves import xrange
-from six.moves.html_parser import HTMLParser
-from six.moves.urllib.parse import urlparse, quote_plus
-if six.PY3:
-    unicode = str
-    import http.cookiejar as cookielib
-    from urllib.request import ProxyHandler
-    from urllib.request import (urlopen, Request)
-elif six.PY2:
-    import cookielib
-    from urllib2 import ProxyHandler
-    from urllib2 import (urlopen, Request)
 
 
 try:
@@ -203,6 +197,39 @@ if not os.path.isdir(config.movielist.last_videodir.value):
     try:
         config.movielist.last_videodir.value = defaultMoviePath()
         config.movielist.last_videodir.save()
+    except:
+        pass
+
+
+def getAspect():
+    return AVSwitch().getAspectRatioSetting()
+
+
+def getAspectString(aspectnum):
+    return {
+        0: '4:3 Letterbox',
+        1: '4:3 PanScan',
+        2: '16:9',
+        3: '16:9 always',
+        4: '16:10 Letterbox',
+        5: '16:10 PanScan',
+        6: '16:9 Letterbox'
+    }[aspectnum]
+
+
+def setAspect(aspect):
+    map = {
+        0: '4_3_letterbox',
+        1: '4_3_panscan',
+        2: '16_9',
+        3: '16_9_always',
+        4: '16_10_letterbox',
+        5: '16_10_panscan',
+        6: '16_9_letterbox'
+    }
+    config.av.aspectratio.setValue(map[aspect])
+    try:
+        AVSwitch().setAspectRatio(aspect)
     except:
         pass
 
@@ -901,7 +928,6 @@ class iptv_streamse():
             if password and password != "" and 'Enter' not in password:
                 self.password = password
                 print('ok password')
-            # plugin_version = version
             print("-----------CONFIG NEW END----------")
         except Exception as e:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
@@ -1285,7 +1311,6 @@ class xc_Main(Screen):
             "power": self.power}, -1)
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self.onFirstExecBegin.append(self.checkinf)
-        # self.onShown.append(self.show_all)
         self.onLayoutFinish.append(self.show_all)
         # self.onShown.append(self.show_all)
 
@@ -1460,8 +1485,7 @@ class xc_Main(Screen):
                 size = self['poster'].instance.size()
                 self.scale = AVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
-                eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
-                # return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
+                AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
@@ -1490,8 +1514,6 @@ class xc_Main(Screen):
             self.channel_list = iptv_list_tmp
 
         if 'season' or 'series' in str(stream_url).lower():
-            # if '.mp4' or '.mkv' or 'avi' or '.flv' or '.m3u8' in str(stream_url):
-            # if ext in EXTDOWN:
             global series
             series = True
             streamfile = '/tmp/streamfile.txt'
@@ -1783,8 +1805,13 @@ class xc_Main(Screen):
                                     ext = str(splitext(url)[-1])
                                     if ext not in EXTDOWN:
                                         ext = '.avi'
-                                    self.title = Utils.cleantitle(name) + ext
-                                    self.title = self.title.lower()
+                                    # self.title = Utils.cleantitle(name) + ext
+                                    self.title = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(name))
+                                    cleanName = re.sub(r"   ", " ", self.title)
+                                    cleanName = re.sub(r"  ", " ", cleanName)
+                                    # cleanName = re.sub(r" ", "-", cleanName)
+                                    cleanName = re.sub(r"---", "-", cleanName)
+                                    self.title = cleanName.strip().lower()
                                     self.icount += 1
                                     cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', url, str(Path_Movies2), self.title)
                                     if "https" in str(url):
@@ -1817,7 +1844,11 @@ class xc_Main(Screen):
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
                 if ext != '.ts':
-                    filename = Utils.cleantitle(self.title)
+                    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(self.title))
+                    cleanName = re.sub(r"   ", " ", cleanName)
+                    cleanName = re.sub(r"  ", " ", cleanName)
+                    cleanName = re.sub(r"---", "-", cleanName)
+                    filename = cleanName.strip()
                     if ext not in EXTDOWN:
                         ext = '.avi'
                     filename = filename + ext
@@ -2063,9 +2094,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
-        # self.orig_aspect = int(self.getAspect())
         try:
-            self.init_aspect = int(self.getAspect())
+            self.init_aspect = int(getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
@@ -2141,50 +2171,16 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.onPlayStateChanged.append(self.__playStateChanged)
         return
 
-    def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
-
     def exitx(self):
         if STREAMS.playhack == "":
             STREAMS.play_vod = False
             self.video_back = False
-        # self.setAspect(self.orig_aspect)
+        if self.new_aspect != self.init_aspect:
+            try:
+                setAspect(self.init_aspect)
+            except:
+                pass
         self.close()
-
-    def getAspectString(self, aspectnum):
-        return {
-            0: '4:3 Letterbox',
-            1: '4:3 PanScan',
-            2: '16:9',
-            3: '16:9 always',
-            4: '16:10 Letterbox',
-            5: '16:10 PanScan',
-            6: '16:9 Letterbox'
-        }[aspectnum]
-
-    def setAspect(self, aspect):
-        map = {
-            0: '4_3_letterbox',
-            1: '4_3_panscan',
-            2: '16_9',
-            3: '16_9_always',
-            4: '16_10_letterbox',
-            5: '16_10_panscan',
-            6: '16_9_letterbox'
-        }
-        config.av.aspectratio.setValue(map[aspect])
-        try:
-            AVSwitch().setAspectRatio(aspect)
-        except:
-            pass
-
-    def av(self):
-        temp = int(self.getAspect())
-        temp += 1
-        if temp > 6:
-            temp = 0
-        self.new_aspect = temp
-        self.setAspect(temp)
 
     def setCover(self):
         try:
@@ -2747,7 +2743,7 @@ class xc_help(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            #def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
+            # def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
             self.session.open(Console, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
@@ -2954,7 +2950,6 @@ class xc_maker(Screen):
             self.session.openWithCallback(self.save_tv, MessageBox, _("Convert Playlist to: %s ?") % dom, MessageBox.TYPE_YESNO, timeout=10)  # default=False)
         else:
             pass
-        # Utils.ReloadBouquets()
 
     def save_tv(self, result):
         if result:
@@ -3019,7 +3014,6 @@ class OpenServer(Screen):
         self["live"] = Label("")
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "ok": self.selectlist,
-
             "home": self.close,
             "cancel": self.close,
             "yellow": self.message1,
@@ -3027,7 +3021,6 @@ class OpenServer(Screen):
             "info": self.helpx,
             "help": self.helpx}, -1)
         self.onLayoutFinish.append(self.openList)
-        # self.onShow.append(self.openList)
 
     def retTest(self, url):
         try:
@@ -3307,13 +3300,11 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
-        # self.orig_aspect = int(self.getAspect())
         try:
-            self.init_aspect = int(self.getAspect())
+            self.init_aspect = int(getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
-
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self["channel_name"] = Label("")
         self["programm"] = Label("")
@@ -3344,47 +3335,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             "power": self.power_off}, -1)
         self.onFirstExecBegin.append(self.play_channel)
 
-    def getAspect(self):
-        try:
-            return AVSwitch().getAspectRatioSetting()
-        except:
-            pass
-
-    def getAspectString(self, aspectnum):
-        return {
-            0: '4:3 Letterbox',
-            1: '4:3 PanScan',
-            2: '16:9',
-            3: '16:9 always',
-            4: '16:10 Letterbox',
-            5: '16:10 PanScan',
-            6: '16:9 Letterbox'
-        }[aspectnum]
-
-    def setAspect(self, aspect):
-        map = {
-            0: '4_3_letterbox',
-            1: '4_3_panscan',
-            2: '16_9',
-            3: '16_9_always',
-            4: '16_10_letterbox',
-            5: '16_10_panscan',
-            6: '16_9_letterbox'
-        }
-        config.av.aspectratio.setValue(map[aspect])
-        try:
-            AVSwitch().setAspectRatio(aspect)
-        except:
-            pass
-
-    def av(self):
-        temp = int(self.getAspect())
-        temp += 1
-        if temp > 6:
-            temp = 0
-        self.new_aspect = temp
-        self.setAspect(temp)
-
     def nextAR(self):
         message = nextAR()
         self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=3)
@@ -3396,7 +3346,8 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
     def exitx(self):
         self.session.nav.stopService()
         self.session.nav.playService(self.initialservice)
-        # self.setAspect(self.orig_aspect)
+        if self.new_aspect != self.init_aspect:
+            setAspect(self.init_aspect)
         self.close()
 
     def power_off(self):
@@ -3419,7 +3370,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                     if self.cover.find("http") == -1:
                         self.downloadError()
                     else:
-                        # if six.PY3:
                         self.cover = six.ensure_binary(self.cover)
                         if self.cover.startswith(b"https") and sslverify:
                             parsed_uri = urlparse(self.cover)
@@ -3702,13 +3652,9 @@ class xc_Play(Screen):
             xcname = "userbouquet.%s.tv" % namel.replace(".m3u", "").replace(" ", "")
             desk_tmp = ""
             in_bouquets = False
-
-            # Rimuove il file del bouquet se esiste
             bouquet_path = "/etc/enigma2/%s" % xcname
             if os.path.exists(bouquet_path):
                 os.remove(bouquet_path)
-
-            # Crea il nuovo file del bouquet
             with open(bouquet_path, "w") as outfile:
                 outfile.write("#NAME %s\r\n" % namel.replace(".m3u", "").replace(" ", "").capitalize())
                 with open(name, "r") as infile:
@@ -3729,15 +3675,11 @@ class xc_Play(Screen):
                                 desk_tmp = line.split("<")[1].split(">")[1].strip()
 
             self.session.open(MessageBox, _("Check on favorites lists..."), MessageBox.TYPE_INFO, timeout=5)
-
-            # Controlla se il bouquet è già nella lista dei bouquets
             with open("/etc/enigma2/bouquets.tv", "r") as bouquets_file:
                 for line in bouquets_file:
                     if xcname in line:
                         in_bouquets = True
                         break
-
-            # Aggiunge il bouquet alla lista dei bouquets se non è già presente
             if not in_bouquets:
                 with open("/etc/enigma2/bouquets.tv", "a") as bouquets_file:
                     bouquets_file.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "%s" ORDER BY bouquet\r\n' % xcname)
@@ -3831,16 +3773,14 @@ class xc_M3uPlay(Screen):
         self.pics = []
         pic = pictmp
         try:
-            if os.path.exists(self.name):  # Verifica se il file esiste
+            if os.path.exists(self.name):
                 fpage = ''
                 try:
                     with codecs.open(self.name, "r", encoding="utf-8") as f:
                         fpage = f.read()
                 except Exception as e:
                     print("Errore durante la lettura del file:", e)
-                    return  # Esce dalla funzione se c'è un problema con la lettura del file
-
-                # Verifica la presenza delle stringhe nel contenuto del file
+                    return
                 if "#EXTM3U" in fpage and 'tvg-logo' in fpage:
                     regexcat = r'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\n(.*?)\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
@@ -3856,15 +3796,13 @@ class xc_M3uPlay(Screen):
                         url = url.replace(' ', '').replace('\n', '')
                         self.names.append(name)
                         self.urls.append(url)
-                        self.pics.append(pic)  # Aggiunto per evitare errori se non ci sono immagini
-
-                m3ulistxc(self.names, self['list'])  # Aggiorna la lista con i nomi e gli URL
+                        self.pics.append(pic)
+                m3ulistxc(self.names, self['list'])
                 self["live"].setText('N.' + str(len(self.names)) + " Stream")
             else:
                 self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
             print('Errore durante l\'elaborazione del file M3U:', e)
-
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
@@ -3890,7 +3828,14 @@ class xc_M3uPlay(Screen):
                 self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.namem3u)
             elif answer:
                 filename = Utils.cleantitle(self.namem3u)
-                filename = filename + ext
+
+                cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(self.namem3u))
+                cleanName = re.sub(r"   ", " ", cleanName)
+                cleanName = re.sub(r"  ", " ", cleanName)
+                # cleanName = re.sub(r" ", "-", cleanName)
+                cleanName = re.sub(r"---", "-", cleanName)
+                filename = cleanName.strip() + ext
+
                 self.in_tmp = Path_Movies + filename.lower()
                 self.downloading = True
                 self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
@@ -3950,9 +3895,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         InfoBarSubtitleSupport.__init__(self)
         InfoBarSeek.__init__(self, actionmap='InfobarSeekActions')
         InfoBarAudioSelection.__init__(self)
-        # self.orig_aspect = int(self.getAspect())
         try:
-            self.init_aspect = int(self.getAspect())
+            self.init_aspect = int(getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
@@ -3960,13 +3904,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         url = url.replace(':', '%3a')
         self.url = url
         self.name = name
-
-        # self.index = idx
-        # self.list = listsx
-
-        # self.itemscount = len(self.list())
-
-        # ln = len(self.xxd([0,0]))
 
         self.state = self.STATE_PLAYING
         self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions',
@@ -3982,41 +3919,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
         self.onFirstExecBegin.append(self.cicleStreamType)
         self.onClose.append(self.cancel)
-
-    def getAspect(self):
-        return AVSwitch().getAspectRatioSetting()
-
-    def getAspectString(self, aspectnum):
-        return {0: '4:3 Letterbox',
-                1: '4:3 PanScan',
-                2: '16:9',
-                3: '16:9 always',
-                4: '16:10 Letterbox',
-                5: '16:10 PanScan',
-                6: '16:9 Letterbox'}[aspectnum]
-
-    def setAspect(self, aspect):
-        map = {0: '4_3_letterbox',
-               1: '4_3_panscan',
-               2: '16_9',
-               3: '16_9_always',
-               4: '16_10_letterbox',
-               5: '16_10_panscan',
-               6: '16_9_letterbox'}
-
-        config.av.aspectratio.setValue(map[aspect])
-        try:
-            AVSwitch().setAspectRatio(aspect)
-        except:
-            pass
-
-    def av(self):
-        temp = int(self.getAspect())
-        temp = temp + 1
-        if temp > 6:
-            temp = 0
-        self.new_aspect = temp
-        self.setAspect(temp)
 
     def showIMDB(self):
         text_clear = self.name
@@ -4052,7 +3954,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
                 break
         nextStreamType = islice(cycle(streamtypelist), currentindex + 1, None)
         self.servicetype = int(next(nextStreamType))
-        # print('servicetype2: ', self.servicetype)
         self.openPlay(self.servicetype, url)
 
     def doEofInternal(self, playing):
@@ -4083,9 +3984,9 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             remove('/tmp/hls.avi')
         self.session.nav.stopService()
         self.session.nav.playService(self.initialservice)
-        if not self.new_aspect == self.init_aspect:
+        if self.new_aspect != self.init_aspect:
             try:
-                self.setAspect(self.init_aspect)
+                setAspect(self.init_aspect)
             except:
                 pass
         self.close()
@@ -4249,7 +4150,7 @@ def nextAR():
     if STREAMS.ar_id_player > 6:
         STREAMS.ar_id_player = 0
     try:
-        eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as e:
         print(e)
@@ -4261,7 +4162,7 @@ def prevAR():
     if STREAMS.ar_id_player == -1:
         STREAMS.ar_id_player = 6
     try:
-        eAVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
+        AVSwitch.getInstance().setAspectRatio(STREAMS.ar_id_player)
         return VIDEO_ASPECT_RATIO_MAP[STREAMS.ar_id_player]
     except Exception as e:
         print(e)
@@ -4301,7 +4202,7 @@ def uninstaller():
         # Pulizia del file bouquets.tv
         with open(os.path.join(enigma_path, 'bouquets.tv'), 'w+') as tvfile, \
              open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+') as bakfile:
-            
+
             for line in bakfile:
                 if '.xc_' not in line:
                     tvfile.write(line)
@@ -4309,7 +4210,6 @@ def uninstaller():
     except Exception as e:
         print("Errore durante il processo di disinstallazione: ", e)
         raise
-
 
 
 # chan_counter,
@@ -4335,7 +4235,6 @@ def show_more_infos(name, index):
         if selected_channel:
             if stream_live is True:
                 text_clear = selected_channel[9]
-                # print('text_clear: ', str(text_clear))
             if returnIMDB(text_clear):
                 print('show imdb/tmdb')
             else:
@@ -4357,29 +4256,21 @@ def save_old():
     in_bouquets = False
     desk_tmp = xcname = ''
     try:
-
         if cfg.typem3utv.value == 'MPEGTS to TV':
             file_path = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
-
-            # Controlla se il file esiste e lo rimuove se necessario
             if os.path.exists(file_path):
                 os.remove(file_path)
-
             try:
                 localFile = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
-                r = Utils.getUrl(xc12)  # Supponendo che `xc12` contenga l'URL o il contenuto da scrivere
+                r = Utils.getUrl(xc12)
                 with open(localFile, 'w') as f:
                     f.write(r)
             except Exception as e:
                 print('Errore durante il download o la scrittura del file TV: ', e)
-
             xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
-
         else:
-            # Controlla se il file esiste e lo rimuove se necessario
             if os.path.exists(os.path.join(Path_Movies, namebouquet + ".m3u")):
                 os.remove(os.path.join(Path_Movies, namebouquet + ".m3u"))
-
             try:
                 localFile = os.path.join(Path_Movies, '%s.m3u' % namebouquet)
                 r = Utils.getUrl(xc13)
@@ -4387,20 +4278,14 @@ def save_old():
                     f.write(r)
             except Exception as e:
                 print('Errore durante il download o la scrittura del file m3u: ', e)
-
-            # Creazione del nome per il bouquet
             name = namebouquet.replace('.m3u', '')
             xcname = 'userbouquet.%s%s_.tv' % (tag, name)
-
-            # Controlla se il file esiste e lo rimuove se necessario
             if os.path.exists('/etc/enigma2/%s' % xcname):
                 os.remove('/etc/enigma2/%s' % xcname)
-
             try:
                 with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
                     outfile.write('#NAME %s\r\n' % name.capitalize())
-                    desk_tmp = ""  # Variabile temporanea per la descrizione
-
+                    desk_tmp = ""
                     with open(os.path.join(Path_Movies, '%s.m3u' % name)) as infile:
                         for line in infile:
                             if line.startswith('http://') or line.startswith('https://'):
@@ -4419,33 +4304,24 @@ def save_old():
             except Exception as e:
                 print('Errore durante la creazione del bouquet: ', e)
 
-
-        # print('-----check in bouquet.tv')
         for line in open(fldbouquet):
             if xcname in line:
                 in_bouquets = True
-        if in_bouquets == False:
-
+        if in_bouquets is False:
             try:
                 with open("/etc/enigma2/new_bouquets.tv", "w") as new_bouquet:
-                    # Legge tutte le righe del file di origine
                     with open(fldbouquet, "r") as f:
                         file_read = f.readlines()
-                    
+
                     if cfg.bouquettop.value == "Top":
                         new_bouquet.write('#NAME User - bouquets (TV)\n')
                         new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\r\n'.format(xcname))
-                        # Scrive tutte le righe eccetto quelle che iniziano con "#NAME"
                         new_bouquet.writelines(line for line in file_read if not line.startswith("#NAME"))
                     else:
-                        # Scrive tutte le righe dal file originale
                         new_bouquet.writelines(file_read)
-                        # Aggiunge il nuovo servizio in fondo
                         new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\r\n'.format(xcname))
             except IOError as e:
-                # Compatibilità con Python 2 e 3 per la stampa degli errori
                 print("Si è verificato un errore durante l'accesso al file: {}".format(e))
-                
             system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
     except Exception as e:
@@ -4529,20 +4405,10 @@ def main(session, **kwargs):
         session.open(xc_home)
 
 
-# _firstStart = True
-# try:
-    # from . import Update
-# except ImportError:
-    # print('error import update')
-
-
 class AutoStartTimer:
     def __init__(self, session):
         print("*** running AutoStartTimerFxy ***")
         self.session = session
-        # if _firstStart:
-            # if cfg.autoupdate.value is True:
-                # self.runUpdate()
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.on_timer)
@@ -4550,16 +4416,6 @@ class AutoStartTimer:
             self.timer_conn = self.timer.timeout.connect(self.on_timer)
         self.timer.start(100, True)
         self.update()
-
-    # def runUpdate(self):
-        # print("*** running update ***")
-        # global _firstStart
-        # try:
-            # # from . import Update
-            # # Update.upd_done()
-            # _firstStart = False
-        # except Exception as e:
-            # print('error Fxy', e)
 
     def get_wake_time(self):
         if cfg.autobouquetupdate.value is True:
@@ -4614,12 +4470,10 @@ class AutoStartTimer:
             constant = 0
             if cfg.timetype.value == "fixed time":
                 wake = self.get_wake_time()
-            # if wake - now < 60:
             if abs(wake - now) < 60:
                 try:
                     self.startMain()
                     constant = 60
-                    # self.update()  # ??
                     localtime = time.asctime(time.localtime(time.time()))
                     cfg.last_update.value = localtime
                     cfg.last_update.save()
@@ -4651,12 +4505,10 @@ def check_configuring():
 
 def autostart(reason, session=None, **kwargs):
     global autoStartTimer
-    # global _firstStart
     global _session
     if reason == 0 and _session is None:
         if session is not None:
             _session = session
-            # _firstStart = True
             if autoStartTimer is None:
                 autoStartTimer = AutoStartTimer(session)
     return
