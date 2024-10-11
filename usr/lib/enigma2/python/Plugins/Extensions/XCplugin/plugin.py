@@ -245,6 +245,7 @@ cfg.data = ConfigYesNo(default=False)
 cfg.fixedtime = ConfigClock(default=0)
 cfg.hostaddress = ConfigText(default="exampleserver.com")
 cfg.infoexp = ConfigYesNo(default=False)
+cfg.stoplayer = ConfigYesNo(default=True)
 cfg.infoname = NoSave(ConfigText(default="myBouquet"))
 cfg.last_update = ConfigText(default="Never")
 cfg.live = ConfigSelection(default='1', choices=modelive)
@@ -668,6 +669,8 @@ class xc_config(Screen, ConfigListScreen):
 
         self.list.append(getConfigListEntry(_("Vod Services Type"), cfg.services, (_("Configure service Reference Iptv-Gstreamer-Exteplayer3"))))
 
+        self.list.append(getConfigListEntry(_("Sop Player on Exit"), cfg.stoplayer, (_("If player active STOP player riproduction on exit"))))
+
         self.list.append(getConfigListEntry(_("Name Bouquet Configuration:"), cfg.infoexp, (_("Set Name for MakerBouquet"))))
         if cfg.infoexp.getValue():
             self.list.append(getConfigListEntry(indent + (_("Name Bouquet Export")), cfg.infoname, (_("Configure name of exported bouquet. Default is myBouquet"))))
@@ -880,7 +883,6 @@ class iptv_streamse():
         self.trial = ""
         self.banned_text = ""
         self.systems = ""
-        self.playhack = ""
         self.url_tmp = ""
         self.next_page_url_tmp = ""
         self.next_page_text_tmp = ""
@@ -1260,7 +1262,6 @@ class xc_Main(Screen):
         self.temp_playlistname = None
         self.temp_playname = str(STREAMS.playlistname)
         self.url_tmp = None
-        self.video_back = False
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1384,7 +1385,7 @@ class xc_Main(Screen):
         self.pin = True
         if stream_live is True:
             STREAMS.video_status = True
-            STREAMS.play_vod = False
+            STREAMS.play_vod = True
             print("------------------------ LIVE ------------------")
             if cfg.LivePlayer.value is False:
                 self.session.openWithCallback(self.check_standby, xc_Player)  # vod
@@ -1594,7 +1595,6 @@ class xc_Main(Screen):
         self.temp_channel_list = None
         # self.temp_playlistname = None
         self.url_tmp = None
-        self.video_back = False
         STREAMS.video_status = False
         iptv_list_tmp = channel_list2
         STREAMS.iptv_list = channel_list2
@@ -1607,17 +1607,6 @@ class xc_Main(Screen):
 
     def exitY(self):
         global btnsearch
-        '''
-        print('btnsearch = ',btnsearch)
-        print('next_request = ',next_request)
-        print('re_search = ',re_search)
-        print('isStream = ',isStream)
-        print('STREAM VIDEO STATUS : ', str(STREAMS.video_status))
-        print('STREAM VIDEO BACK : ', str(self.video_back))
-        if STREAMS.video_status and self.video_back == False:
-            self.video_back = True
-            self.back_to_video()
-        '''
         try:
             # if next_request == 1 and btnsearch == 1:
             # print('btttnsearch ', btnsearch)
@@ -1642,6 +1631,10 @@ class xc_Main(Screen):
                 # self["key_yellow"].hide()
                 # self.mmark()
             else:
+                if cfg.stoplayer.value is True:
+                    STREAMS.play_vod = False
+                    self.session.nav.stopService()
+                    self.session.nav.playService(self.initialservice)
                 self.close()
         except Exception as e:
             print('error on exit: ', e)
@@ -1965,7 +1958,6 @@ class xc_Main(Screen):
 
     def back_to_video(self):
         try:
-            self.video_back = False
             self.load_from_tmp()
             self.channel_list = STREAMS.iptv_list
             self.session.open(xc_Player)
@@ -2160,8 +2152,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                                                   "instantRecord": self.record,
                                                   "rec": self.record,
                                                   "blue": self.timeshift_autoplay,
-                                                  "tv": self.stopnew,
-                                                  "stop": self.stopnew,
+                                                  "tv": self.exitx,
+                                                  "stop": self.exitx,
                                                   "2": self.restartVideo,
                                                   "help": self.helpx,
                                                   "power": self.power_off}, -1)
@@ -2172,9 +2164,10 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         return
 
     def exitx(self):
-        if STREAMS.playhack == "":
+        if cfg.stoplayer.value is True:
             STREAMS.play_vod = False
-            self.video_back = False
+            self.session.nav.stopService()
+            self.session.nav.playService(self.initialservice)
         if self.new_aspect != self.init_aspect:
             try:
                 setAspect(self.init_aspect)
@@ -2425,15 +2418,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.session.open(MessageBox, "NO VIDEOSTREAM FOUND", type=MessageBox.TYPE_INFO, timeout=3)
         self.close()
 
-    def stopnew(self):
-        if STREAMS.playhack == "":
-            self.session.nav.stopService()
-            STREAMS.play_vod = False
-            self.recorder = False
-            self.video_back = False
-            self.session.nav.playService(self.initialservice)
-        self.exitx()
-
     def power_off(self):
         self.close(1)
 
@@ -2478,6 +2462,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             if self.vod_url is not None:
                 print("------------------------ MOVIE ------------------")
                 print('--->' + self.vod_url + '<------')
+                STREAMS.play_vod = True
                 self.session.nav.stopService()
                 eserv = int(cfg.services.value)
                 self.reference = eServiceReference(eserv, 0, self.vod_url)
@@ -2488,8 +2473,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self.session.open(MessageBox, self.error_message, type=MessageBox.TYPE_INFO, timeout=3)
                 else:
                     self.session.open(MessageBox, "NO VIDEOSTREAM FOUND", type=MessageBox.TYPE_INFO, timeout=3)
-
-                self.video_back = False
                 self.close()
         except Exception as e:
             print(e)
@@ -2503,6 +2486,11 @@ class xc_StreamTasks(Screen):
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
+        try:
+            self.init_aspect = int(getAspect())
+        except:
+            self.init_aspect = 0
+        self.new_aspect = self.init_aspect
         self["movielist"] = List([])
         self["key_green"] = Label(_("Remove"))
         self["key_red"] = Label(_("Close"))
@@ -2625,9 +2613,15 @@ class xc_StreamTasks(Screen):
         pass
 
     def keyClose(self):
-        if STREAMS.playhack == "":
+        if cfg.stoplayer.value is True:
+            STREAMS.play_vod = False
             self.session.nav.stopService()
             self.session.nav.playService(self.initialservice)
+        if self.new_aspect != self.init_aspect:
+            try:
+                setAspect(self.init_aspect)
+            except:
+                pass
         self.close()
 
     def message1(self, answer=None):
@@ -3344,10 +3338,15 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=3)
 
     def exitx(self):
-        self.session.nav.stopService()
-        self.session.nav.playService(self.initialservice)
+        if cfg.stoplayer.value is True:
+            STREAMS.play_vod = False
+            self.session.nav.stopService()
+            self.session.nav.playService(self.initialservice)
         if self.new_aspect != self.init_aspect:
-            setAspect(self.init_aspect)
+            try:
+                setAspect(self.init_aspect)
+            except:
+                pass
         self.close()
 
     def power_off(self):
@@ -3393,6 +3392,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                     sref = eServiceReference(eserv, 0, self.live_url)
                     sref.setName(str(self.titlex))
                     try:
+                        STREAMS.play_vod = True
                         self.session.nav.playService(sref)
                     except Exception as e:
                         print(e)
@@ -3544,8 +3544,15 @@ class xc_Play(Screen):
                     self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
 
     def backToIntialService(self, ret=None):
-        self.session.nav.stopService()
-        self.session.nav.playService(self.initialservice)
+        if cfg.stoplayer.value is True:
+            STREAMS.play_vod = False
+            self.session.nav.stopService()
+            self.session.nav.playService(self.initialservice)
+        if self.new_aspect != self.init_aspect:
+            try:
+                setAspect(self.init_aspect)
+            except:
+                pass
 
     def cancel(self):
         self.close()
@@ -3929,6 +3936,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         name = self.name
         ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
         sref = eServiceReference(ref)
+        STREAMS.play_vod = True
         sref.setName(self.name)
         self.session.nav.stopService()
         self.session.nav.playService(sref)
@@ -3982,8 +3990,10 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
     def cancel(self):
         if file_exists('/tmp/hls.avi'):
             remove('/tmp/hls.avi')
-        self.session.nav.stopService()
-        self.session.nav.playService(self.initialservice)
+        if cfg.stoplayer.value is True:
+            STREAMS.play_vod = False
+            self.session.nav.stopService()
+            self.session.nav.playService(self.initialservice)
         if self.new_aspect != self.init_aspect:
             try:
                 setAspect(self.init_aspect)
