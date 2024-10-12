@@ -92,7 +92,7 @@ import socket
 import sys
 import time
 import json
-import html
+# import html
 from datetime import datetime
 try:
     from Components.AVSwitch import AVSwitch
@@ -1051,7 +1051,8 @@ class iptv_streamse():
                         epgnexttitle = ''
                         epgnexttime = ''
                         epgnextdescription = ''
-                        name = html.unescape(name)  # Usa 'html.unescape' per Python 3
+                        # name = html.unescape(name)  # Usa 'html.unescape' per Python 3
+                        name = html_conv.html_unescape(name)  # Usa 'html.unescape' per Python 3
                         if description != '':
                             # Cattura i tempi e titoli EPG
                             timematch = re.findall(r'\[(\d{2}:\d{2})\]', description)
@@ -1078,9 +1079,11 @@ class iptv_streamse():
 
                             # Componi la descrizione
                             description = epgnowtime + ' ' + name + '\n' + epgnowdescription
-                            description = html.unescape(description)  # Usa 'html.unescape' per decodificare HTML
+                            # description = html.unescape(description)
+                            description = html_conv.html_unescape(description)
                             description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
-                            description2 = html.unescape(description2)
+                            # description2 = html.unescape(description2)
+                            description2 = html_conv.html_unescape(description2)
                             # print("EPG Current Description:", description)
                             # print("EPG Next Description:", description2)
                     elif ("/movie/" or "/series/") in stream_url:
