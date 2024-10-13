@@ -15,6 +15,7 @@
 	<widget name="progress" position="160,930" size="1570,40" foregroundColor="#104c8c" backgroundColor="#202020" zPosition="2" />	
 	<widget source="progresstext" render="Label" position="160,930" size="1570,40" font="Regular;30" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="1" zPosition="3" />
    	<widget name="version" position="1519,1018" size="200,30" halign="right" font="Regular;24" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="status" position="502,881" size="880,70" transparent="1" font="Regular; 22" foregroundColor="#00f8f8f8" backgroundColor="#050c101b" valign="center" halign="center" noWrap="1" zPosition="4" />
 	<!-- Buttons Colors -->
 	<eLabel position="150,990" size="1570,5" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="154,1004" size="300,6" zPosition="12" />

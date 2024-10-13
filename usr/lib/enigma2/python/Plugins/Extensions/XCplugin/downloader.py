@@ -116,12 +116,12 @@ class DownloadWithProgress:
         self.userAgent = userAgent
 
     def addErrback(self, errorCallback):  # Temporary supprt for deprecated callbacks.
-        print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
+        # print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
         self.errorCallback = errorCallback
         return self
 
     def addCallback(self, endCallback):  # Temporary supprt for deprecated callbacks.
-        print("[Downloader] Warning: DownloadWithProgress 'addCallback' is deprecated use 'addEnd' instead!")
+        # print("[Downloader] Warning: DownloadWithProgress 'addCallback' is deprecated use 'addEnd' instead!")
         self.endCallback = endCallback
         return self
 

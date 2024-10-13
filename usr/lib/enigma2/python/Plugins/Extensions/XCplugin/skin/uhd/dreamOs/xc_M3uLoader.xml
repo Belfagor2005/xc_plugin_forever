@@ -10,6 +10,7 @@
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
  	<!-- List -->
+	<widget name="status" position="581,1161" size="585,50" transparent="1" font="Regular; 26" foregroundColor="#00f8f8f8" backgroundColor="#050c101b" valign="center" halign="center" noWrap="1" zPosition="4" />
 	<widget name="path" position="294,1098" size="1174,67" font="Regular;40" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#202020" transparent="0" zPosition="3" />
  	<!-- List -->
 	<eLabel position="294,1200" size="1174,7" backgroundColor="#202020" zPosition="1" />

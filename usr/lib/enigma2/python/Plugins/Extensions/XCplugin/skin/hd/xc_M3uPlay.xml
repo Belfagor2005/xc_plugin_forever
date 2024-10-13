@@ -9,6 +9,7 @@
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
  	<!-- List -->
+	<widget name="status" position="330,595" size="585,30" transparent="1" font="Regular; 22" foregroundColor="#00f8f8f8" backgroundColor="#050c101b" valign="center" halign="center" noWrap="1" zPosition="4" />
 	<widget name="list" position="106,103" size="1046,480" itemHeight="50" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" foregroundColor="#808080" backgroundColor="#000000" scrollbarMode="showOnDemand" transparent="1" zPosition="5" />
 	<eLabel position="106,620" size="1046,26" backgroundColor="#202020" zPosition="1" />
 	<eLabel position="106,600" size="1046,3" backgroundColor="#202020" zPosition="1" />
