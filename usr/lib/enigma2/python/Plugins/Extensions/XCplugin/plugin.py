@@ -9,7 +9,6 @@
 *  update     12/10/2024               *
 *       Skin by MMark                  *
 ****************************************
-#--------------------#
 '''
 from __future__ import print_function
 from . import _, paypal, make_request, b64decoder, isDreamOS
@@ -149,7 +148,6 @@ currversion = '3.4'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
-# filterlist = os.path.join(plugin_path, 'cfg/filterlist.txt')
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
 enigma_path = '/etc/enigma2/'
@@ -222,7 +220,6 @@ config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
 cfg.LivePlayer = ConfigEnableDisable(default=False)
 cfg.autobouquetupdate = ConfigEnableDisable(default=False)
-# cfg.autoupdate = ConfigEnableDisable(default=False)
 cfg.badcar = ConfigEnableDisable(default=False)
 cfg.bouquettop = ConfigSelection(default="Bottom", choices=["Bottom", "Top"])
 cfg.data = ConfigYesNo(default=False)
@@ -250,6 +247,7 @@ cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "M
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 
+# global fixed
 globalsxp.eserv = int(cfg.services.value)
 globalsxp.infoname = str(cfg.infoname.value)
 globalsxp.Path_Movies = str(cfg.pthmovie.value) # + "/"
@@ -466,12 +464,10 @@ class xc_home(Screen):
         dependencies = True
         try:
             pythonFull = float(str(sys.version_info.major) + "." + str(sys.version_info.minor))
-            print("***** python version *** %s" % pythonFull)
             if pythonFull < 3.9:
-                print("*** checking multiprocessing ***")
+                print("*** checking python version ***", pythonFull)
         except Exception as e:
-            print("**** missing dependencies ***")
-            print(e)
+            print("**** missing dependencies ***, e")
             dependencies = False
 
         if dependencies is False:
@@ -658,7 +654,6 @@ class xc_config(Screen, ConfigListScreen):
 
         self.list.append(getConfigListEntry(_("Data Server Configuration:"), cfg.data, (_("Your Server Login and data input"))))
         if cfg.data.getValue():
-            # self.list.append(getConfigListEntry(_("Old/New panel"), cfg.panel, (_("Select Panel used"))))
             self.list.append(getConfigListEntry(indent + (_("Server URL")), cfg.hostaddress, (_("Enter Server Url without 'http://' your_domine"))))
             self.list.append(getConfigListEntry(indent + (_("Server PORT")), cfg.port, (_("Enter Server Port Eg.:'8080'"))))
             self.list.append(getConfigListEntry(indent + (_("Server Username")), cfg.user, (_("Enter Username"))))
@@ -666,8 +661,7 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Server Timeout"), cfg.timeout, (_("Timeout Server (sec)"))))
         self.list.append(getConfigListEntry(_("Folder user file .xml"), cfg.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
         self.list.append(getConfigListEntry(_("Media Folder "), cfg.pthmovie, (_("Configure folder containing movie/media files\nPress 'OK' to change location."))))
-        # self.list.append(getConfigListEntry(_("Show/Hide Live Channel "), cfg.showlive, (_("Show/Hide Live Channel"))))
-        # if cfg.showlive.value is True:
+
         self.list.append(getConfigListEntry(_("Main Screen XL"), cfg.screenxl, (_("Active Main Screen Large"))))
         self.list.append(getConfigListEntry(_("LivePlayer Active "), cfg.LivePlayer, (_("Live Player for Stream .ts: set No for Record Live"))))
         if cfg.LivePlayer.value is True:
@@ -701,7 +695,6 @@ class xc_config(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_("Picons IPTV "), cfg.picons, (_("Download Picons ?"))))
         if cfg.picons.value:
             self.list.append(getConfigListEntry(indent + (_("Picons IPTV bouquets to ")), cfg.pthpicon, (_("Configure folder containing picons files\nPress 'OK' to change location."))))
-        # self.list.append(getConfigListEntry(_("Auto Update Plugin "), cfg.autoupdate, (_("Set ON for Auto Update Plugin"))))
         self.list.append(getConfigListEntry(_("Link in Main Menu "), cfg.strtmain, (_("Display XCplugin in Main Menu"))))
 
         self["config"].list = self.list
@@ -829,7 +822,7 @@ class xc_config(Screen, ConfigListScreen):
 
     def xml_plugin(self):
         try:
-            if str(cfg.user.value) != 'Enter_Username':
+            if str(cfg.hostaddress.value) != 'exampleserver.com':
                 usernames = 'None'
                 if os.path.exists(Path_XML + '/xclink.txt'):
                     with codecs.open(Path_XML + '/xclink.txt', "r+", encoding="utf-8") as f:
@@ -845,12 +838,10 @@ class xc_config(Screen, ConfigListScreen):
                                     usernames = match.group(3)
 
                         if str(usernames) in str(cfg.user.value) and str(usernames) != 'None':
-                            print('===>>', str(usernames))
                             print('Line Exist in playlist lines')
                         else:
                             linecode = 'http://' + str(cfg.hostaddress.value) + ':' + str(cfg.port.value) + '/get.php?username=' + str(cfg.user.value) + '&password=' + str(cfg.passw.value) + '&type=m3u_plus'
                             f.write('\n' + str(linecode) + '\n')
-                            print('<<===', str(linecode))
                             self.session.open(MessageBox, _("Line Append to playlist"), type=MessageBox.TYPE_WARNING, timeout=5)
                 return
         except Exception as e:
@@ -936,11 +927,9 @@ class iptv_streamse():
             username = self.username
             if username and username != "" and 'Enter' not in username:
                 self.username = username
-                print('ok user')
             password = str(cfg.passw.value)
             if password and password != "" and 'Enter' not in password:
                 self.password = password
-                print('ok password')
             print("-----------CONFIG NEW END----------")
         except Exception as e:
             print("++++++++++ERROR READ CONFIG+++++++++++++ ")
@@ -965,10 +954,9 @@ class iptv_streamse():
         nameepg = ''
         description2 = ''
         description3 = ''
-
         chan_counter = 0
         try:
-            print("!!!!!!!!-------------------- URL %s" % self.url)
+            # print("!!!!!!!!-------------------- URL %s" % self.url)
             if '&type' in self.url:
                 globalsxp.next_request = 1
             elif "_get" in self.url:
@@ -1000,10 +988,6 @@ class iptv_streamse():
                 prev_page_url = root.find("prev_page_url")
                 if prev_page_url is not None:
                     self.prev_page_url = prev_page_url.attrib.get("text")
-
-                # print('Playlist Name:', self.playlistname)
-                # print('Next Page URL:', self.next_page_url)
-                # print('Previous Page URL:', self.prev_page_url)
 
                 for channel in root.findall('.//channel'):
                     chan_counter += 1
@@ -1097,8 +1081,7 @@ class iptv_streamse():
                             description2 = epgnexttime + ' ' + epgnexttitle + '\n' + epgnextdescription
                             # description2 = html.unescape(description2)
                             description2 = html_conv.html_unescape(description2)
-                            # print("EPG Current Description:", description)
-                            # print("EPG Next Description:", description2)
+
                     elif ("/movie/" or "/series/") in globalsxp.stream_url:
                         globalsxp.stream_live = False
                         vodItems = {}
@@ -1139,6 +1122,7 @@ class iptv_streamse():
                         # print('vodGenre: ', vodGenre)
                         description3 = str(vodTitle) + '\n' + str(vodGenre) + '\nDuration: ' + str(vodDuration) + '\n' + str(vodDescription)
                         description = html_conv.html_unescape(description3)
+
                     chan_tulpe = (str(chan_counter),
                                   str(name),
                                   str(description),
@@ -1153,10 +1137,11 @@ class iptv_streamse():
                     globalsxp.btnsearch = globalsxp.next_request
         except Exception as e:
             print('----- get_list failed: ', e)
+
         if len(globalsxp.iptv_list_tmp):
             self.iptv_list = globalsxp.iptv_list_tmp
             globalsxp.iptv_list_tmp = self.iptv_list
-        print("IPTV_LIST_LEN = %s" % len(globalsxp.iptv_list_tmp))
+        # print("IPTV_LIST_LEN = %s" % len(globalsxp.iptv_list_tmp))
         return
 
     def _request(self, url):
@@ -1164,8 +1149,7 @@ class iptv_streamse():
             TYPE_PLAYER = '/enigma2.php'
             # TYPE_PLAYER2 = '/player_api.php'
             url = url.strip(" \t\n\r")
-            print('url 1 request=', url)
-            print('self.url=', self.url)
+            # print('url 1 request=', url)
             if globalsxp.next_request == 1:
                 url = check_port(url)
                 if not url.find(":"):
@@ -1173,10 +1157,10 @@ class iptv_streamse():
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
                 url = url
-                print('url 1 request urlinfo =', url)
+                # print('url 1 request urlinfo =', url)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
-                print('url 2 request urlinfo =', url)
+                # print('url 2 request urlinfo =', url)
             globalsxp.urlinfo = url
             try:
                 res = make_request(globalsxp.urlinfo)
@@ -1276,6 +1260,7 @@ class xc_Main(Screen):
         if not len(globalsxp.iptv_list_tmp):
             self.session.open(MessageBox, _("No data or playlist not compatible with XCplugin."), type=MessageBox.TYPE_WARNING, timeout=5)
             return
+
         self.index = self.mlist.getSelectionIndex()
         selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
         globalsxp.STREAMS.list_index = self.mlist.getSelectionIndex()
@@ -1293,11 +1278,13 @@ class xc_Main(Screen):
             selected_channel[7],
             selected_channel[8],
             selected_channel[9])
+
         globalsxp.STREAMS.iptv_list_history.append(selected_channel_history)
         self.temp_index = -1
         if selected_channel[9] is not None:
             self.temp_index = self.index
         self.pin = True
+
         if config.ParentalControl.configured.value:
             a = '+18', 'adult', 'hot', 'porn', 'sex', 'xxx'
             if any(s in str(selected_channel[1] or selected_channel[4] or selected_channel[5] or selected_channel[6]).lower() for s in a):
@@ -1340,19 +1327,18 @@ class xc_Main(Screen):
 
     def Entered(self):
         self.pin = True
-        print('azz d streamlive =', globalsxp.stream_live)
         if globalsxp.stream_live is True:
+            print("------------------------ LIVE ------------------")
             globalsxp.STREAMS.video_status = True
             globalsxp.STREAMS.play_vod = True
-            print("------------------------ LIVE ------------------")
             if cfg.LivePlayer.value is False:
                 self.session.openWithCallback(self.check_standby, xc_Player)  # vod
             else:
                 self.session.openWithCallback(self.check_standby, nIPTVplayer)  # live
         else:
+            print("----------------------- MOVIE ------------------")
             globalsxp.STREAMS.video_status = True
             globalsxp.STREAMS.play_vod = True
-            print("----------------------- MOVIE ------------------")
             self.session.openWithCallback(self.check_standby, xc_Player)
 
     def go(self):
@@ -1408,14 +1394,12 @@ class xc_Main(Screen):
                     description_3 = description3.split(" #-# ")
                     descall = str(description) + '\n\n' + str(description2)
                     self["description"].setText(descall)
-                    # print('------------------------------------------ descall desc', descall)
                     if description_3:
                         if len(description_3) > 1:
                             self["info"].setText(str(description_3[1]))
                 else:
                     description = str(selected_channel[2])
                     self["description"].setText(description)
-                    # print('------------------------------------------ else desc', description)
                 pixim = six.ensure_binary(selected_channel[7])
                 if pixim != "":
                     parsed = urlparse(pixim)
@@ -1441,9 +1425,9 @@ class xc_Main(Screen):
         if file_exists(png):
             if self["poster"].instance:
                 size = self['poster'].instance.size()
-                self.scale = AVSwitch().getFramebufferScale()  # Accesso diretto all'istanza di AVSwitch
+                self.scale = AVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
-                AVSwitch().setAspectRatio(globalsxp.STREAMS.ar_id_player)  # Accesso diretto all'istanza di AVSwitch
+                AVSwitch().setAspectRatio(globalsxp.STREAMS.ar_id_player)
                 self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
@@ -1699,7 +1683,6 @@ class xc_Main(Screen):
             print('checkinf: ', e)
 
     def check_download_ser(self, answer=None):
-        # global series
         globalsxp.ui = True
         titleserie = str(globalsxp.STREAMS.playlistname)
         if globalsxp.series is True and globalsxp.btnsearch == 1:
@@ -1824,7 +1807,6 @@ class xc_Main(Screen):
             return
 
     def downloadx(self):
-        # cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s' --post-data='action=purge'" % ('Enigma2 XC Forever Plugin', str(self.vod_url), str(self.file_down))
         cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s'" % ('Enigma2 XC Forever Plugin', str(self.vod_url), str(self.file_down))
         if "https" in str(self.vod_url):
             cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s'" % ('Enigma2 - XC Forever Plugin', str(self.vod_url), str(self.file_down))
@@ -1869,20 +1851,12 @@ class xc_Main(Screen):
             globalsxp.STREAMS.iptv_list_tmp = globalsxp.STREAMS.iptv_list
         globalsxp.STREAMS.playlistname_tmp = globalsxp.STREAMS.playlistname
         globalsxp.STREAMS.url_tmp = globalsxp.STREAMS.url
-        globalsxp.STREAMS.next_page_url_tmp = globalsxp.STREAMS.next_page_url
-        globalsxp.STREAMS.next_page_text_tmp = globalsxp.STREAMS.next_page_text
-        globalsxp.STREAMS.prev_page_url_tmp = globalsxp.STREAMS.prev_page_url
-        globalsxp.STREAMS.prev_page_text_tmp = globalsxp.STREAMS.prev_page_text
 
     def load_from_tmp(self):
         globalsxp.STREAMS.iptv_list = globalsxp.STREAMS.iptv_list_tmp
         globalsxp.STREAMS.list_index = globalsxp.STREAMS.list_index_tmp
         globalsxp.STREAMS.playlistname = globalsxp.STREAMS.playlistname_tmp
         globalsxp.STREAMS.url = globalsxp.STREAMS.url_tmp
-        globalsxp.STREAMS.next_page_url = globalsxp.STREAMS.next_page_url_tmp
-        globalsxp.STREAMS.next_page_text = globalsxp.STREAMS.next_page_text_tmp
-        globalsxp.STREAMS.prev_page_url = globalsxp.STREAMS.prev_page_url_tmp
-        globalsxp.STREAMS.prev_page_text = globalsxp.STREAMS.prev_page_text_tmp
         self.index = globalsxp.STREAMS.list_index
 
     def back_to_video(self):
@@ -2048,7 +2022,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         else:
             self.index = globalsxp.STREAMS.list_index
         self.channelx = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
-        # print('self.channelx =',self.channelx)
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
         self.descr = self.channelx[2]
@@ -2292,8 +2265,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             with open('%s/%s.meta' % (globalsxp.Path_Movies, filename), 'w') as f:
                 f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), filmtitle, "", time.time()))
         except Exception as e:
-            print(e)
-            print('ERROR metaFile')
+            print('ERROR metaFile', e)
 
     def LastJobView(self):
         currentjob = None
@@ -2386,8 +2358,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             self["programm"].setText(text_clear)
         try:
             if self.vod_url is not None:
-                print("------------------------ MOVIE ------------------")
-                print('--->' + self.vod_url + '<------')
+                print('MOVIE --->', self.vod_url)
                 globalsxp.STREAMS.play_vod = True
                 self.session.nav.stopService()
                 globalsxp.eserv = int(cfg.services.value)
@@ -2556,26 +2527,25 @@ class xc_StreamTasks(Screen):
             return
         self.sel = globalsxp.Path_Movies + current[1]
         self.sel2 = self.pth + current[1]
-        print("Trying to remove file:", self.sel)
         if answer is None:
             self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove %s ?") % self.sel)
         elif answer:
             if file_exists(self.sel):
-                print("File exists:", self.sel)
+                # print("File exists:", self.sel)
                 if self.Timer:
                     self.Timer.stop()
                 self.removeFiles(self.sel)
                 self.session.open(MessageBox, _("Movie has been successfully deleted"), MessageBox.TYPE_INFO, timeout=5)
                 self.rebuildMovieList()
             elif file_exists(self.sel2):
-                print("File exists:", self.sel2)
+                # print("File exists:", self.sel2)
                 if self.Timer:
                     self.Timer.stop()
                 self.removeFiles(self.sel2)
                 self.session.open(MessageBox, _("Movie has been successfully deleted"), MessageBox.TYPE_INFO, timeout=5)
                 self.rebuildMovieList()
             else:
-                print("File not found:", self.sel, "or", self.sel2)  # Stampa di debug
+                # print("File not found:", self.sel, "or", self.sel2)  # Stampa di debug
                 self.session.open(MessageBox, _("The movie does not exist!"), MessageBox.TYPE_INFO, timeout=5)
                 self.onShown.append(self.rebuildMovieList)
         else:
@@ -2585,14 +2555,14 @@ class xc_StreamTasks(Screen):
         if os.path.isfile(targetfile):
             try:
                 remove(targetfile)
-                print("%s removed successfully" % targetfile)
+                # print("%s removed successfully" % targetfile)
                 self.session.open(MessageBox, targetfile + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 self.onShown.append(self.rebuildMovieList)
             except OSError as e:
                 print("Error removing file:", e)
                 self.session.open(MessageBox, _("Error deleting the file: ") + str(e), MessageBox.TYPE_INFO, timeout=5)
         else:
-            print("File not found:", targetfile)
+            # print("File not found:", targetfile)
             self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO, timeout=5)
 
 
@@ -2664,7 +2634,6 @@ class xc_help(Screen):
             self['key_yellow'].show()
             self['key_green'].show()
             self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
-        # self.update_me()
 
     def update_me(self):
         if self.Update is True:
@@ -2683,7 +2652,6 @@ class xc_help(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            # def __init__(self, session, title='Console', cmdlist=None, finishedCallback=None, closeOnSuccess=False, showStartStopText=True, skin=None
             self.session.open(Console, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
@@ -2971,12 +2939,12 @@ class OpenServer(Screen):
             r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
             r.raise_for_status()
             if r.status_code == requests.codes.ok:
-                print('r.status code: ', r.status_code)
+                # print('r.status code: ', r.status_code)
                 self.ycse = r
                 return True
         except Exception as e:
-            return False
             print('error requests -----------> ', e)
+            return False
 
     def selOn(self, host, port, username, password):  # , png=None):
         try:
@@ -3013,8 +2981,6 @@ class OpenServer(Screen):
                             else:
                                 auth = "Server Not Responding" + str(exp_date)
                                 status = 'N/A'
-                            print('auth=', auth)
-                            print('status=', str(status))
                             return str(status)
                 else:
                     return str(status)
@@ -3024,7 +2990,7 @@ class OpenServer(Screen):
         except Exception as e:
             status = 'N/A'
             message = ("Error Exception %s") % (e)
-            print(str(message))
+            print(message)
 
     def openList(self):
         self.names = []
@@ -3042,12 +3008,12 @@ class OpenServer(Screen):
                     if line.startswith('#'):
                         continue
                     elif line.startswith('http'):
-                        pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
+                        pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
                         match = re.match(pattern, line)
                         if match:
                             host = match.group(1)
                             if match.group(2):
-                                port = match.group(2)  # or 80
+                                port = match.group(2)
                             username = match.group(3)
                             password = match.group(4)
                             namelx = self.selOn(str(host), str(port), str(username), str(password))
@@ -3095,7 +3061,6 @@ class OpenServer(Screen):
         try:
             idx = self["list"].getSelectionIndex()
             dom = self.urls[idx]
-            print('link dom:', dom)
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
             auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
             host = ''
@@ -3108,8 +3073,6 @@ class OpenServer(Screen):
                 host = match.group(1)
                 if match.group(2):
                     port = match.group(2)
-                else:
-                    port = '80'
                 username = match.group(3)
                 password = match.group(4)
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
@@ -3130,7 +3093,7 @@ class OpenServer(Screen):
                                 created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                             if exp_date:
                                 exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                            if str(auth) == "1":  # force for message popup
+                            if str(auth) == "1":
                                 if str(status) == "Active":
                                     auth = "Active\nExp date: " + str(exp_date)
                                 elif str(status) == "Banned":
@@ -3297,7 +3260,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             except Exception as e:
                 print(e)
             try:
-                print('globalsxp.eserv ----++++++play channel nIPTVplayer 2+++++---')
+                # print('globalsxp.eserv ----++++++play channel nIPTVplayer 2+++++---')
                 if cfg.LivePlayer.value is True:
                     globalsxp.eserv = int(cfg.live.value)
                 if str(splitext(self.live_url)[-1]) == ".m3u8":
@@ -3439,7 +3402,6 @@ class xc_Play(Screen):
                     if x not in name:
                         continue
                     self.names.append(name)
-                    # self.Movies.append(root + name)
                     self.Movies.append(root + name)
         m3ulistxc(self.names, self['list'])
 
@@ -3484,24 +3446,22 @@ class xc_Play(Screen):
 
     def message1(self, answer=None):
         idx = self["list"].getSelectionIndex()
-        print("Selected index:", idx)
         if idx < 0 or idx is None:
             return
         dom = self.Movies[idx]
-        print("Attempting to remove file:", dom)
+        # print("Attempting to remove file:", dom)
         if answer is None:
             self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove: %s ?") % dom)
         elif answer:
             try:
                 remove(dom)
-                print("% s removed successfully" % dom)
+                # print("% s removed successfully" % dom)
                 self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 del self.names[idx]  # Verifica se self.Movies invece di self.names
                 self.refreshmylist()
             except OSError as error:
-                print(error)
-                print("File path can not be removed")
-                self.session.open(MessageBox, dom + _("   not exist!"), MessageBox.TYPE_INFO, timeout=5)
+                print("File path can not be removed", error)
+                self.session.open(MessageBox, dom + _(" not exist!"), MessageBox.TYPE_INFO, timeout=5)
         else:
             return
 
@@ -3788,7 +3748,7 @@ class xc_M3uPlay(Screen):
             else:
                 self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
         except Exception as e:
-            print('Errore durante l\'elaborazione del file M3U:', e)
+            print('Error processing M3U file:', e)
 
     def runChannel(self):
         idx = self["list"].getSelectionIndex()
@@ -3829,12 +3789,12 @@ class xc_M3uPlay(Screen):
                         system(cmd)
                     if cfg.pdownmovie.value == "Direct":
                         self.downloading = True
-                        print("Direct download mode")
+                        # print("Direct download mode")
                         self.downloadz()
                     else:
                         try:
                             self.downloading = True
-                            print("Starting download with progress for:", self.urlm3u)
+                            # print("Starting download with progress for:", self.urlm3u)
                             self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
                             self.download.addProgress(self.downloadProgress)
                             self.download.start().addCallback(self.check).addErrback(self.showError)  # Usare le nuove funzioni
@@ -3850,12 +3810,11 @@ class xc_M3uPlay(Screen):
         if self.downloading:
             from .downloader2 import imagedownloadScreen
             Utils.OnclearMem()
-            print("Opening image download screen")
             self.session.open(imagedownloadScreen, self.name_m3u, self.in_tmp, self.urlm3u)
         else:
             print("Download not started")
             return
-        
+
         self.downloading = False
         self.refreshmylist()
 
@@ -4251,22 +4210,6 @@ def uninstaller():
         raise
 
 
-# chan_counter,
-# str(name),
-# str(description),
-# piconname,
-# stream_url,
-# playlist_url,
-# str(category_id),
-# desc_image,
-# str(description2),
-# nameepg)
-# self.title = str(selected_channel[1])
-# self.vod_url = selected_channel[4]
-# self.desc = str(selected_channel[2])
-# returnIMDB = False
-
-
 def show_more_infos(name, index):
     text_clear = name
     if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
@@ -4305,7 +4248,7 @@ def save_old():
                 with open(localFile, 'w') as f:
                     f.write(r)
             except Exception as e:
-                print('Errore durante il download o la scrittura del file TV: ', e)
+                print('Error downloading or writing TV file: ', e)
             xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
         else:
             if os.path.exists(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u")):
@@ -4316,7 +4259,7 @@ def save_old():
                 with open(localFile, 'w') as f:
                     f.write(r)
             except Exception as e:
-                print('Errore durante il download o la scrittura del file m3u: ', e)
+                print('Error downloading or writing TV file: ', e)
             name = namebouquet.replace('.m3u', '')
             xcname = 'userbouquet.%s%s_.tv' % (tag, name)
             if os.path.exists('/etc/enigma2/%s' % xcname):
@@ -4341,7 +4284,7 @@ def save_old():
                                 else:
                                     desk_tmp = '%s' % line.split('<')[1].split('>')[1].strip()
             except Exception as e:
-                print('Errore durante la creazione del bouquet: ', e)
+                print('Error creating bouquet: ', e)
 
         for line in open(fldbouquet):
             if xcname in line:
@@ -4360,7 +4303,7 @@ def save_old():
                         new_bouquet.writelines(file_read)
                         new_bouquet.write('#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "{}" ORDER BY bouquet\r\n'.format(xcname))
             except IOError as e:
-                print("Si è verificato un errore durante l'accesso al file: {}".format(e))
+                print("An error occurred while accessing the file: {}".format(e))
             system('cp -rf /etc/enigma2/bouquets.tv /etc/enigma2/backup_bouquets.tv')
             system('mv -f /etc/enigma2/new_bouquets.tv /etc/enigma2/bouquets.tv')
     except Exception as e:
@@ -4434,7 +4377,6 @@ def menu(menuid, **kwargs):
 
 
 def main(session, **kwargs):
-    # global STREAMS
     globalsxp.STREAMS = iptv_streamse()
     globalsxp.STREAMS.read_config()
     if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
@@ -4446,7 +4388,7 @@ def main(session, **kwargs):
 
 class AutoStartTimer:
     def __init__(self, session):
-        print("*** running AutoStartTimerFxy ***")
+        print("*** running AutoStartTimer XC-Forever ***")
         self.session = session
         self.timer = eTimer()
         try:
@@ -4522,7 +4464,6 @@ class AutoStartTimer:
 
     def startMain(self):
         from Plugins.Extensions.XCplugin.plugin import iptv_streamse
-        # global STREAMS
         globalsxp.STREAMS = iptv_streamse()
         globalsxp.STREAMS.read_config()
         globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
@@ -4536,14 +4477,12 @@ def check_configuring():
     if cfg.autobouquetupdate.value is True:
         """Check for new config values for auto start
         """
-        # global autoStartTimer
         if globalsxp.autoStartTimer is not None:
             globalsxp.autoStartTimer.update()
         return
 
 
 def autostart(reason, session=None, **kwargs):
-    # global autoStartTimer
     global _session
     if reason == 0 and _session is None:
         if session is not None:
