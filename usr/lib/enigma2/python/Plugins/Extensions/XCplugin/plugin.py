@@ -101,9 +101,10 @@ except ImportError:
     from Components.AVSwitch import eAVControl as AVSwitch
 
 try:
-    from xml.etree.cElementTree import fromstring
+    from xml.etree.cElementTree import fromstring, tostring  # , ElementTree as ET
 except ImportError:
-    from xml.etree.ElementTree import fromstring
+    from xml.etree.ElementTree import fromstring, tostring  # , ElementTree as ET
+
 
 from six.moves.urllib.parse import urlparse
 if six.PY3:
@@ -141,6 +142,7 @@ globalsxp = SimpleNamespace(
     stream_url=None,
     ui=True,
     urlinfo=None,
+    url_tmp=None,
 )
 
 
@@ -250,7 +252,7 @@ cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=Fal
 # global fixed
 globalsxp.eserv = int(cfg.services.value)
 globalsxp.infoname = str(cfg.infoname.value)
-globalsxp.Path_Movies = str(cfg.pthmovie.value) # + "/"
+globalsxp.Path_Movies = str(cfg.pthmovie.value)  # + "/"
 globalsxp.Path_Movies2 = globalsxp.Path_Movies
 globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
 globalsxp.pictmp = "/tmp/poster.jpg"
@@ -467,7 +469,7 @@ class xc_home(Screen):
             if pythonFull < 3.9:
                 print("*** checking python version ***", pythonFull)
         except Exception as e:
-            print("**** missing dependencies ***, e")
+            print("**** missing dependencies ***", e)
             dependencies = False
 
         if dependencies is False:
@@ -885,7 +887,7 @@ class iptv_streamse():
         self.trial = ""
         self.banned_text = ""
         self.systems = ""
-        self.url_tmp = ""
+        # self.url_tmp = ""
         self.next_page_url_tmp = ""
         self.next_page_text_tmp = ""
         self.prev_page_url_tmp = ""
@@ -907,10 +909,9 @@ class iptv_streamse():
         self.img_loader = False
         self.cont_play = False
         self.disable_audioselector = False
-        self.hostaddress = str(cfg.hostaddress.value)
+        self.host = str(cfg.hostaddress.value)
         self.port = str(cfg.port.value)
-        self.hosts = "http://" + str(cfg.hostaddress.value)
-        self.xtream_e2portal_url = self.hosts + ':' + self.port
+        self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
         self.username = str(cfg.user.value)
         self.password = str(cfg.passw.value)
 
@@ -923,17 +924,22 @@ class iptv_streamse():
 
     def read_config(self):
         try:
-            print("-----------CONFIG NEW START----------")
-            username = self.username
+            print("-----------CONFIG START----------")
+            host = str(cfg.hostaddress.value)
+            self.port = str(cfg.port.value)
+            username = str(cfg.user.value)
+            password = str(cfg.passw.value)
+            if host and host != 'exampleserver.com':
+                self.host = host
             if username and username != "" and 'Enter' not in username:
                 self.username = username
-            password = str(cfg.passw.value)
             if password and password != "" and 'Enter' not in password:
                 self.password = password
-            print("-----------CONFIG NEW END----------")
+            self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
+            print('Host: %s\nUsername: %s\nPassword:%s\n' % (self.xtream_e2portal_url, self.username, self.password))
+            print("-----------CONFIG END----------")
         except Exception as e:
-            print("++++++++++ERROR READ CONFIG+++++++++++++ ")
-            print(e)
+            print("++++++++++ERROR READ CONFIG+++++++++++++ ", e)
 
     def get_list(self, url=None):
         globalsxp.stream_live = False
@@ -1165,6 +1171,13 @@ class iptv_streamse():
             try:
                 res = make_request(globalsxp.urlinfo)
                 res = fromstring(res)
+                if res is not None:
+                    res_string = tostring(res, encoding='utf-8', method='xml').decode('utf-8')
+                    file_path = os.path.join('/tmp', 'canali_temp.xml')
+                    with open(file_path, 'w') as temp_file:
+                        temp_file.write(res_string)
+                        temp_file.flush()
+                        globalsxp.temp_prev_list = res_string
                 return res
             except Exception as e:
                 res = None
@@ -1199,10 +1212,10 @@ class xc_Main(Screen):
         self.errcount = 0
         self.passwd_ok = False
         self.temp_index = 0
-        self.temp_channel_list = None
+        # self.temp_channel_list = None
         self.temp_playlistname = None
         self.temp_playname = str(globalsxp.STREAMS.playlistname)
-        self.url_tmp = None
+        # self.url_tmp = None
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1263,25 +1276,28 @@ class xc_Main(Screen):
 
         self.index = self.mlist.getSelectionIndex()
         selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
+        # print('select channels =', selected_channel)
         globalsxp.STREAMS.list_index = self.mlist.getSelectionIndex()
-        title = selected_channel[1]
-        if selected_channel[0] != "[H]":
-            title = ("[-]   ") + selected_channel[1]
-        selected_channel_history = (
-            "[H]",
-            title,
-            selected_channel[2],
-            selected_channel[3],
-            selected_channel[4],
-            selected_channel[5],
-            selected_channel[6],
-            selected_channel[7],
-            selected_channel[8],
-            selected_channel[9])
+        '''
+        # title = selected_channel[1]
+        # if selected_channel[0] != "[H]":
+            # title = ("[-]   ") + selected_channel[1]
+        # selected_channel_history = (
+            # "[H]",
+            # title,
+            # selected_channel[2],
+            # selected_channel[3],
+            # selected_channel[4],
+            # selected_channel[5],
+            # selected_channel[6],
+            # selected_channel[7],
+            # selected_channel[8],
+            # selected_channel[9])
 
-        globalsxp.STREAMS.iptv_list_history.append(selected_channel_history)
+        # globalsxp.STREAMS.iptv_list_history.append(selected_channel_history)
+        '''
         self.temp_index = -1
-        if selected_channel[9] is not None:
+        if selected_channel[9] is not None:  # epg ?
             self.temp_index = self.index
         self.pin = True
 
@@ -1317,11 +1333,12 @@ class xc_Main(Screen):
                 self.update_channellist()
 
             elif selected_channel[4] is not None:  # and globalsxp.stream_live is True:
-                self.set_tmp_list()
+                # self.set_tmp_list()
                 globalsxp.STREAMS.video_status = True
                 globalsxp.STREAMS.play_vod = False
                 # title = str(selected_channel[2])
                 self.Entered()
+            # self.set_tmp_list()
         except Exception as e:
             print(e)
 
@@ -1410,6 +1427,7 @@ class xc_Main(Screen):
                         downloadPage(pixim, globalsxp.pictmp, sniFactory, timeout=ntimeout).addCallback(self.image_downloaded, globalsxp.pictmp).addErrback(self.downloadError)
                     else:
                         downloadPage(pixim, globalsxp.pictmp).addCallback(self.image_downloaded, globalsxp.pictmp).addErrback(self.downloadError)
+            self.button_updater()
         except Exception as e:
             print(e)
 
@@ -1465,7 +1483,7 @@ class xc_Main(Screen):
         self.mlist.moveToIndex(0)
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.update_description()
-        self.button_updater()
+        # self.button_updater()
 
     def show_all(self):
         try:
@@ -1500,26 +1518,64 @@ class xc_Main(Screen):
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self.index = self.mlist.getSelectionIndex()
                 self["feedlist"] = self.mlist
-                self.button_updater()
+                # self.button_updater()
             else:
                 self.resetSearch()
+            self.button_updater()
 
     def resetSearch(self):
         globalsxp.re_search = False
         self.filter_search = []
 
+    def set_tmp_list(self):
+        self.index = self.mlist.getSelectionIndex()
+        globalsxp.STREAMS.list_index = self.index
+        globalsxp.STREAMS.list_index_tmp = globalsxp.STREAMS.list_index
+        if globalsxp.re_search is True:
+            globalsxp.STREAMS.iptv_list_tmp = globalsxp.iptv_list_tmp
+            self.channel_list = globalsxp.iptv_list_tmp
+        else:
+            globalsxp.STREAMS.iptv_list_tmp = globalsxp.STREAMS.iptv_list
+            self.channel_list = globalsxp.STREAMS.iptv_list
+        globalsxp.STREAMS.playlistname_tmp = globalsxp.STREAMS.playlistname
+        # globalsxp.STREAMS.url_tmp = globalsxp.STREAMS.url
+        file_path = os.path.join('/tmp', 'set_tmp_list.xml')
+        with open(file_path, 'w') as temp_file:
+            for item in self.channel_list:
+                temp_file.write(", ".join(map(str, item)) + "\n")
+            temp_file.flush()
+        return
+
+    def load_from_tmp(self):
+        file_pathx = os.path.join('/tmp', 'set_tmp_list.xml')
+        with open(file_pathx, 'r') as temp_file:
+            temp_list = temp_file.readlines()
+            self.channel_list = [line.strip().split(", ") for line in temp_list]
+            globalsxp.iptv_list_tmp = [line.strip().split(", ") for line in temp_list]
+
+        globalsxp.STREAMS.iptv_list = globalsxp.iptv_list_tmp
+        globalsxp.STREAMS.list_index = globalsxp.STREAMS.list_index_tmp
+        globalsxp.STREAMS.playlistname = globalsxp.STREAMS.playlistname_tmp
+        # globalsxp.STREAMS.url = globalsxp.STREAMS.url_tmp
+        self.index = globalsxp.STREAMS.list_index
+        return
+
+    # globalsxp.temp_prev_list
     def mmark(self):
-        Utils.del_jpg()
         copy_poster()
         self.temp_index = 0
-        self.list_index = 0
-        self.temp_channel_list = None
-        # self.temp_playlistname = None
-        self.url_tmp = None
+
         globalsxp.STREAMS.video_status = False
+
+        # self.load_from_tmp()
+        # # self.set_tmp_list()
+        # channel_list2 = self.channel_list
+        # self.index2 = self.index
+
         globalsxp.iptv_list_tmp = channel_list2
         globalsxp.STREAMS.iptv_list = channel_list2
         globalsxp.STREAMS.list_index = self.index2
+
         self.update_channellist()
         self.decodeImage(globalsxp.piclogo)
         globalsxp.ui = False
@@ -1528,28 +1584,12 @@ class xc_Main(Screen):
 
     def exitY(self):
         try:
-            # if globalsxp.next_request == 1 and globalsxp.btnsearch == 1:
-            # print('btttnsearch ', globalsxp.btnsearch)
             if globalsxp.btnsearch == 1:
                 globalsxp.btnsearch = 0
                 self["key_blue"].hide()
                 self["key_green"].hide()
                 self["key_yellow"].hide()
                 self.mmark()
-            # # elif globalsxp.isStream and "/live/" in str(globalsxp.stream_url) and globalsxp.btnsearch == 1:
-            # elif globalsxp.stream_url and "/live/" in globalsxp.stream_url and globalsxp.btnsearch == 1:
-                # globalsxp.btnsearch = 0
-                # self["key_blue"].hide()
-                # self["key_green"].hide()
-                # self["key_yellow"].hide()
-                # self.mmark()
-            # # elif globalsxp.isStream and "/movie/" in str(globalsxp.stream_url) and globalsxp.btnsearch == 1:
-            # elif globalsxp.stream_url and ("/movie/" or "/series/") in globalsxp.stream_url and globalsxp.btnsearch == 1:
-                # globalsxp.btnsearch = 0
-                # self["key_blue"].hide()
-                # self["key_green"].hide()
-                # self["key_yellow"].hide()
-                # self.mmark()
             else:
                 if cfg.stoplayer.value is True:
                     globalsxp.STREAMS.play_vod = False
@@ -1622,29 +1662,18 @@ class xc_Main(Screen):
             self["created_at"].setText("- ? -")
             self["server_protocol"].setText("Protocol: - ? -")
             self["timezone"].setText("Timezone: - ? -")
-            status = created_at = exp_date = active_cons = max_connections = host = '- ? -'
-            auth = 'Not Authorised'
-            user = passw = ''
+            status = auth = created_at = exp_date = active_cons = max_connections = host = '- ? -'
+            username = password = ''
             if cfg.hostaddress != 'exampleserver.com':
                 host = cfg.hostaddress.value
-            ports = cfg.port.value
+            port = cfg.port.value
             if cfg.user.value != "Enter_Username":
-                user = cfg.user.value
+                username = cfg.user.value
             if cfg.passw != '******':
-                passw = cfg.passw.value
-            # urlinfo = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw) + '&action=user&sub=info'
-            url_info2 = 'http://' + str(host) + ':' + str(ports) + '/player_api.php?username=' + str(user) + '&password=' + str(passw)
-            print('checkinf urlinfo -----------> ', url_info2)
-            hdr = {"User-Agent": "Enigma2 - XCForever Plugin"}
-            r = ""
-            adapter = HTTPAdapter()
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(url_info2, headers=hdr, timeout=ntimeout, verify=False, stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                y = r.json()
+                password = cfg.passw.value
+            globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
+            if self.retTest(globalsxp.urlinfo):
+                y = self.ycse
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
@@ -1655,11 +1684,6 @@ class xc_Main(Screen):
                                 exp_date = (y["user_info"]["exp_date"])
                                 active_cons = (y["user_info"]["active_cons"])
                                 max_connections = (y["user_info"]["max_connections"])
-                                if created_at:
-                                    created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-                                    self["created_at"].setText('Start date:\n' + created_at)
-                                if exp_date:
-                                    exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                 if str(auth) == "1":
                                     if str(status) == "Active":
                                         self["exp"].setText("Active\nExp date: " + str(exp_date))
@@ -1671,6 +1695,11 @@ class xc_Main(Screen):
                                         self["exp"].setText("Expired\nExp date: " + str(exp_date))
                                     else:
                                         self["exp"].setText("Server Not Responding" + str(exp_date))
+                                    if created_at:
+                                        created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
+                                        self["created_at"].setText('Start date:\n' + created_at)
+                                    if exp_date:
+                                        exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                     self["max_connect"].setText("Max Connect: " + str(max_connections))
                                     self["active_cons"].setText("User Active: " + str(active_cons))
                                 server_protocol = (y["server_info"]["server_protocol"])
@@ -1840,24 +1869,6 @@ class xc_Main(Screen):
     def power(self):
         self.session.nav.stopService()
         self.session.open(Standby)
-
-    def set_tmp_list(self):
-        self.index = self.mlist.getSelectionIndex()
-        globalsxp.STREAMS.list_index = self.index
-        globalsxp.STREAMS.list_index_tmp = globalsxp.STREAMS.list_index
-        if globalsxp.re_search is True:
-            globalsxp.STREAMS.iptv_list_tmp = globalsxp.iptv_list_tmp
-        else:
-            globalsxp.STREAMS.iptv_list_tmp = globalsxp.STREAMS.iptv_list
-        globalsxp.STREAMS.playlistname_tmp = globalsxp.STREAMS.playlistname
-        globalsxp.STREAMS.url_tmp = globalsxp.STREAMS.url
-
-    def load_from_tmp(self):
-        globalsxp.STREAMS.iptv_list = globalsxp.STREAMS.iptv_list_tmp
-        globalsxp.STREAMS.list_index = globalsxp.STREAMS.list_index_tmp
-        globalsxp.STREAMS.playlistname = globalsxp.STREAMS.playlistname_tmp
-        globalsxp.STREAMS.url = globalsxp.STREAMS.url_tmp
-        self.index = globalsxp.STREAMS.list_index
 
     def back_to_video(self):
         try:
@@ -2940,7 +2951,7 @@ class OpenServer(Screen):
             r.raise_for_status()
             if r.status_code == requests.codes.ok:
                 # print('r.status code: ', r.status_code)
-                self.ycse = r
+                self.ycse = r.json()
                 return True
         except Exception as e:
             print('error requests -----------> ', e)
@@ -2952,7 +2963,7 @@ class OpenServer(Screen):
             auth = status = created_at = exp_date = '- ? -'
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             if self.retTest(globalsxp.urlinfo):
-                y = self.ycse.json()
+                y = self.ycse
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
@@ -2974,22 +2985,17 @@ class OpenServer(Screen):
                                 auth = "Expired\nExp date: " + str(exp_date)
                             elif str(status) == "None":
                                 auth = "N/A"
-                                status = 'N/A'
                             elif status is None:
                                 auth = "N/A"
-                                status = 'N/A'
                             else:
                                 auth = "Server Not Responding" + str(exp_date)
-                                status = 'N/A'
-                            return str(status)
+                            return str(auth)
                 else:
-                    return str(status)
+                    return str(auth)
             else:
-                status = 'N/A'
-                return str(status)
+                return str(auth)
         except Exception as e:
-            status = 'N/A'
-            message = ("Error Exception %s") % (e)
+            message = ("selOn Error Exception %s") % (e)
             print(message)
 
     def openList(self):
@@ -3093,21 +3099,21 @@ class OpenServer(Screen):
                                 created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                             if exp_date:
                                 exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                            if str(auth) == "1":
-                                if str(status) == "Active":
-                                    auth = "Active\nExp date: " + str(exp_date)
-                                elif str(status) == "Banned":
-                                    auth = "Banned\nExp date: " + str(exp_date)
-                                elif str(status) == "Disabled":
-                                    auth = "Disabled"
-                                elif str(status) == "Expired":
-                                    auth = "Expired\nExp date: " + str(exp_date)
-                                else:
-                                    auth = "Server Not Responding" + str(exp_date)
-                                active_cons = "User Active Now: " + str(active_cons)
-                                max_connections = "Max Connect: " + str(max_connections)
-                                server_protocol = "Protocol: " + str(server_protocol)
-                                timezone = "Timezone: " + str(timezone)
+                            # if str(auth) == "1":
+                            if str(status) == "Active":
+                                auth = "Active\nExp date: " + str(exp_date)
+                            elif str(status) == "Banned":
+                                auth = "Banned\nExp date: " + str(exp_date)
+                            elif str(status) == "Disabled":
+                                auth = "Disabled"
+                            elif str(status) == "Expired":
+                                auth = "Expired\nExp date: " + str(exp_date)
+                            else:
+                                auth = "Server Not Responding" + str(exp_date)
+                            active_cons = "User Active Now: " + str(active_cons)
+                            max_connections = "Max Connect: " + str(max_connections)
+                            server_protocol = "Protocol: " + str(server_protocol)
+                            timezone = "Timezone: " + str(timezone)
                             message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s") % (str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(timezone))
                             print(str(message))
                             self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
