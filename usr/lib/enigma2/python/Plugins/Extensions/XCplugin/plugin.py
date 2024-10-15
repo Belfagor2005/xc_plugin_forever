@@ -1144,10 +1144,9 @@ class iptv_streamse():
             self.iptv_list = globalsxp.iptv_list_tmp
             globalsxp.iptv_list_tmp = self.iptv_list
 
-            with open('/tmp/iptv_list.json', 'w') as f:
-                json.dump(self.iptv_list, f)
+            # with open('/tmp/iptv_list.json', 'w') as f:
+                # json.dump(self.iptv_list, f)
 
-        # print("IPTV_LIST_LEN = %s" % len(globalsxp.iptv_list_tmp))
         return
 
     def _request(self, url):
@@ -1270,25 +1269,8 @@ class xc_Main(Screen):
 
         self.index = self.mlist.getSelectionIndex()
         selected_channel = self.channel_list[self.mlist.getSelectionIndex()]
-        # print('select channels =', selected_channel)
         globalsxp.STREAMS.list_index = self.mlist.getSelectionIndex()
-        '''
-        # title = selected_channel[1]
-        # if selected_channel[0] != "[H]":
-            # title = ("[-]   ") + selected_channel[1]
-        # selected_channel_history = (
-            # "[H]",
-            # title,
-            # selected_channel[2],
-            # selected_channel[3],
-            # selected_channel[4],
-            # selected_channel[5],
-            # selected_channel[6],
-            # selected_channel[7],
-            # selected_channel[8],
-            # selected_channel[9])
-        # globalsxp.STREAMS.iptv_list_history.append(selected_channel_history)
-        '''
+
         self.temp_index = -1
         if selected_channel[9] is not None:
             self.temp_index = self.index
@@ -1321,7 +1303,19 @@ class xc_Main(Screen):
                 self.index = self.temp_index
             selected_channel = globalsxp.STREAMS.iptv_list[self.index]
             playlist_url = selected_channel[5]
+
+            input_file = '/tmp/mydata.json'
+            output_file = '/tmp/mydata2.json'
+
+            # test for return from player!!
+            if file_exists(input_file):
+                with open(input_file, 'r') as infile:
+                    data = json.load(infile)
+                with open(output_file, 'w') as outfile:
+                    json.dump(data, outfile)
+
             self.set_tmp_list()
+
             if playlist_url is not None:
                 globalsxp.STREAMS.get_list(playlist_url)
                 self.update_channellist()
@@ -1518,13 +1512,22 @@ class xc_Main(Screen):
         self.filter_search = []
 
     def set_tmp_list(self):
-        with open('/tmp/mydata.json', 'w') as f:
-            json.dump(self.channel_list, f)
+        input_file = '/tmp/mydata.json'
+        output_file = '/tmp/mydata2.json'
+        with open(input_file, 'w') as f:
+            json.dump(self.channel_list, f) 
 
     def load_from_tmp(self):
-        if file_exists('/tmp/mydata.json'):
-            with open('/tmp/mydata.json', 'r') as f:
-                self.channel_list = json.load(f)
+        input_file = '/tmp/mydata.json'
+        output_file = '/tmp/mydata2.json'
+        if file_exists(output_file):
+             with open(output_file, 'r') as f:
+                self.channel_list = json.load(f) 
+                remove(output_file)
+        else:
+            if file_exists(input_file):
+                with open(input_file, 'r') as f:
+                    self.channel_list = json.load(f)
 
         if len(self.channel_list):
             globalsxp.iptv_list_tmp = self.channel_list
@@ -1538,8 +1541,8 @@ class xc_Main(Screen):
     def mmark(self):
         copy_poster()
         self.temp_index = 0
-
-        globalsxp.STREAMS.video_status = False
+        if globalsxp.STREAMS.video_status is True:
+            globalsxp.STREAMS.video_status = False
         self.load_from_tmp()
         globalsxp.STREAMS.list_index = self.index2
         print('=========== self show_all')
@@ -1551,13 +1554,20 @@ class xc_Main(Screen):
         self["playlist"].setText(globalsxp.infoname)
 
     def exitY(self):
+        input_file = '/tmp/mydata.json'
+        output_file = '/tmp/mydata2.json'
         keywords = ['get_series', 'get_vod', 'get_live']
-        if file_exists('/tmp/mydata.json'):
-            with open('/tmp/mydata.json', 'r') as f:
+        if file_exists(input_file):
+            with open(input_file, 'r') as f:
                 content = f.read()
                 if any(keyword in content for keyword in keywords):
                     print('=========== self go now')
                     self.show_all()
+
+        if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
+            import shutil
+            shutil.copy(output_file, input_file)
+            remove(output_file)
 
         if globalsxp.btnsearch == 1:
             globalsxp.btnsearch = 0
@@ -1573,8 +1583,8 @@ class xc_Main(Screen):
                 self.session.nav.stopService()
                 self.session.nav.playService(self.initialservice)
             if any(keyword in content for keyword in keywords):
-                if file_exists('/tmp/mydata.json'):
-                    remove('/tmp/mydata.json')
+                if file_exists(input_file):
+                    remove(input_file)
                     print('======= remove /tmp/mydata.json')
             self.close()
 
