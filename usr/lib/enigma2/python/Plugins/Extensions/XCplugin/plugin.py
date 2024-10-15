@@ -41,7 +41,7 @@ from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.Sources.List import List
-from Components.Sources.Progress import Progress
+# from Components.Sources.Progress import Progress
 from Components.Sources.StaticText import StaticText
 from Components.Task import (
     Task,
@@ -146,7 +146,7 @@ globalsxp = SimpleNamespace(
 )
 
 
-currversion = '3.4'
+currversion = '3.5'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 iconpic = os.path.join(plugin_path, 'plugin.png')
@@ -505,10 +505,7 @@ class xc_home(Screen):
         self.session.open(xc_Play)
 
     def showMovies(self):
-        try:
-            self.session.open(MovieSelection)
-        except:
-            pass
+        self.session.open(MovieSelection)
 
     def OpenList(self):
         globalsxp.STREAMS = iptv_streamse()
@@ -887,7 +884,6 @@ class iptv_streamse():
         self.trial = ""
         self.banned_text = ""
         self.systems = ""
-        # self.url_tmp = ""
         self.next_page_url_tmp = ""
         self.next_page_text_tmp = ""
         self.prev_page_url_tmp = ""
@@ -1024,7 +1020,7 @@ class iptv_streamse():
                     stream_url_id_element = channel.find('stream_url')
                     if stream_url_id_element is not None and stream_url_id_element.text is not None:
                         globalsxp.stream_url = stream_url_id_element.text.strip()
-                        globalsxp.stream_url = str(globalsxp.stream_url)
+                        # globalsxp.stream_url = globalsxp.stream_url
                         # print('channels: Stream URL:', type(globalsxp.stream_url), globalsxp.stream_url)
                     else:
                         print('channels: Stream URL not found or is empty.')
@@ -1091,7 +1087,7 @@ class iptv_streamse():
                     elif ("/movie/" or "/series/") in globalsxp.stream_url:
                         globalsxp.stream_live = False
                         vodItems = {}
-                        name = str(name)
+                        name = html_conv.html_unescape(name)
                         vodTitle = ''
                         vodDescription = ''
                         vodDuration = ''
@@ -1107,7 +1103,7 @@ class iptv_streamse():
                             vodTitle = name
                         # print('vodTitle: ', vodTitle)
                         if "COVER_BIG" in vodItems and vodItems["COVER_BIG"] and vodItems["COVER_BIG"] != "null":
-                            piconname = str(vodItems["COVER_BIG"]).strip()
+                            piconname = vodItems["COVER_BIG"].strip()
                             # print('piconname: ', piconname)
                         if "DESCRIPTION" in vodItems:
                             vodDescription = str(vodItems["DESCRIPTION"]).strip()
@@ -1131,12 +1127,12 @@ class iptv_streamse():
 
                     chan_tulpe = (str(chan_counter),
                                   str(name),
-                                  str(description),
+                                  description,
                                   str(piconname),
                                   globalsxp.stream_url,
                                   playlist_url,
                                   category_id,
-                                  desc_image,
+                                  str(desc_image),
                                   str(description2),
                                   str(nameepg))
                     globalsxp.iptv_list_tmp.append(chan_tulpe)
@@ -1147,26 +1143,25 @@ class iptv_streamse():
         if len(globalsxp.iptv_list_tmp):
             self.iptv_list = globalsxp.iptv_list_tmp
             globalsxp.iptv_list_tmp = self.iptv_list
+
+            with open('/tmp/iptv_list.json', 'w') as f:
+                json.dump(self.iptv_list, f)
+
         # print("IPTV_LIST_LEN = %s" % len(globalsxp.iptv_list_tmp))
         return
 
     def _request(self, url):
         if "exampleserver" not in str(cfg.hostaddress.value):
             TYPE_PLAYER = '/enigma2.php'
-            # TYPE_PLAYER2 = '/player_api.php'
             url = url.strip(" \t\n\r")
-            # print('url 1 request=', url)
             if globalsxp.next_request == 1:
                 url = check_port(url)
                 if not url.find(":"):
                     self.port = str(cfg.port.value)
                     full_url = self.xtream_e2portal_url + ':' + self.port
                     url = url.replace(self.xtream_e2portal_url, full_url)
-                url = url
-                # print('url 1 request urlinfo =', url)
             else:
                 url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
-                # print('url 2 request urlinfo =', url)
             globalsxp.urlinfo = url
             try:
                 res = make_request(globalsxp.urlinfo)
@@ -1199,7 +1194,7 @@ class xc_Main(Screen):
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
         self.channel_list = globalsxp.STREAMS.iptv_list
-        self.index = globalsxp.STREAMS.list_index
+        self.index = globalsxp.STREAMS.list_index  # 0   ??
         channel_list2 = self.channel_list
         self.index2 = self.index
         self.banned = False
@@ -1212,10 +1207,8 @@ class xc_Main(Screen):
         self.errcount = 0
         self.passwd_ok = False
         self.temp_index = 0
-        # self.temp_channel_list = None
         self.temp_playlistname = None
         self.temp_playname = str(globalsxp.STREAMS.playlistname)
-        # self.url_tmp = None
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
@@ -1234,7 +1227,7 @@ class xc_Main(Screen):
         self["description"] = StaticText('')
         self["state"] = Label()
         self["version"] = Label(version)
-        self["key_red"] = Label(_("Back"))
+        self["key_red"] = Label(_("HOME"))
         self["key_green"] = Label(_("Rec Movie"))
         self["key_yellow"] = Label(_("Rec Series"))
         self["key_blue"] = Label(_("Search"))
@@ -1248,7 +1241,8 @@ class xc_Main(Screen):
         self.go()
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "cancel": self.exitY,
-            "home": self.exitY,
+            "home": self.update_list,
+            "red": self.update_list,
             "1": self.update_list,
             "green": self.check_download_vod,
             "yellow": self.check_download_ser,
@@ -1258,7 +1252,7 @@ class xc_Main(Screen):
             "epg": self.show_more_info,
             "0": self.show_more_info,
             "showMediaPlayer": self.showMovies,
-            "5": self.showMediaPlayer,
+            "5": self.showMovies,
             "2": self.taskManager,
             "pvr": self.taskManager,
             "movielist": self.taskManager,
@@ -1293,11 +1287,10 @@ class xc_Main(Screen):
             # selected_channel[7],
             # selected_channel[8],
             # selected_channel[9])
-
         # globalsxp.STREAMS.iptv_list_history.append(selected_channel_history)
         '''
         self.temp_index = -1
-        if selected_channel[9] is not None:  # epg ?
+        if selected_channel[9] is not None:
             self.temp_index = self.index
         self.pin = True
 
@@ -1328,17 +1321,16 @@ class xc_Main(Screen):
                 self.index = self.temp_index
             selected_channel = globalsxp.STREAMS.iptv_list[self.index]
             playlist_url = selected_channel[5]
+            self.set_tmp_list()
             if playlist_url is not None:
                 globalsxp.STREAMS.get_list(playlist_url)
                 self.update_channellist()
 
             elif selected_channel[4] is not None:  # and globalsxp.stream_live is True:
-                # self.set_tmp_list()
                 globalsxp.STREAMS.video_status = True
                 globalsxp.STREAMS.play_vod = False
-                # title = str(selected_channel[2])
                 self.Entered()
-            # self.set_tmp_list()
+
         except Exception as e:
             print(e)
 
@@ -1469,12 +1461,12 @@ class xc_Main(Screen):
     def update_channellist(self):
         if not len(globalsxp.iptv_list_tmp):
             return
-        self.channel_list = globalsxp.STREAMS.iptv_list
         if globalsxp.re_search is False:
             self.channel_list = globalsxp.iptv_list_tmp
 
         if 'season' or 'series' in str(globalsxp.stream_url).lower():
             globalsxp.series = True
+
             streamfile = '/tmp/streamfile.txt'
             with open(streamfile, 'w') as f:
                 f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
@@ -1483,7 +1475,6 @@ class xc_Main(Screen):
         self.mlist.moveToIndex(0)
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.update_description()
-        # self.button_updater()
 
     def show_all(self):
         try:
@@ -1518,7 +1509,6 @@ class xc_Main(Screen):
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self.index = self.mlist.getSelectionIndex()
                 self["feedlist"] = self.mlist
-                # self.button_updater()
             else:
                 self.resetSearch()
             self.button_updater()
@@ -1528,90 +1518,68 @@ class xc_Main(Screen):
         self.filter_search = []
 
     def set_tmp_list(self):
-        self.index = self.mlist.getSelectionIndex()
-        globalsxp.STREAMS.list_index = self.index
-        globalsxp.STREAMS.list_index_tmp = globalsxp.STREAMS.list_index
-        if globalsxp.re_search is True:
-            globalsxp.STREAMS.iptv_list_tmp = globalsxp.iptv_list_tmp
-            self.channel_list = globalsxp.iptv_list_tmp
-        else:
-            globalsxp.STREAMS.iptv_list_tmp = globalsxp.STREAMS.iptv_list
-            self.channel_list = globalsxp.STREAMS.iptv_list
-        globalsxp.STREAMS.playlistname_tmp = globalsxp.STREAMS.playlistname
-        # globalsxp.STREAMS.url_tmp = globalsxp.STREAMS.url
-        file_path = os.path.join('/tmp', 'set_tmp_list.xml')
-        with open(file_path, 'w') as temp_file:
-            for item in self.channel_list:
-                temp_file.write(", ".join(map(str, item)) + "\n")
-            temp_file.flush()
-        return
+        with open('/tmp/mydata.json', 'w') as f:
+            json.dump(self.channel_list, f)
 
     def load_from_tmp(self):
-        file_pathx = os.path.join('/tmp', 'set_tmp_list.xml')
-        with open(file_pathx, 'r') as temp_file:
-            temp_list = temp_file.readlines()
-            self.channel_list = [line.strip().split(", ") for line in temp_list]
-            globalsxp.iptv_list_tmp = [line.strip().split(", ") for line in temp_list]
+        if file_exists('/tmp/mydata.json'):
+            with open('/tmp/mydata.json', 'r') as f:
+                self.channel_list = json.load(f)
 
-        globalsxp.STREAMS.iptv_list = globalsxp.iptv_list_tmp
-        globalsxp.STREAMS.list_index = globalsxp.STREAMS.list_index_tmp
-        globalsxp.STREAMS.playlistname = globalsxp.STREAMS.playlistname_tmp
-        # globalsxp.STREAMS.url = globalsxp.STREAMS.url_tmp
-        self.index = globalsxp.STREAMS.list_index
-        return
+        if len(self.channel_list):
+            globalsxp.iptv_list_tmp = self.channel_list
+            globalsxp.STREAMS.iptv_list = self.channel_list
 
-    # globalsxp.temp_prev_list
+            self.mlist.setList(list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
+            self.mlist.onSelectionChanged.append(self.update_description)
+            self.index = self.mlist.getSelectionIndex()
+            self["feedlist"] = self.mlist
+
     def mmark(self):
         copy_poster()
         self.temp_index = 0
 
         globalsxp.STREAMS.video_status = False
-
-        # self.load_from_tmp()
-        # # self.set_tmp_list()
-        # channel_list2 = self.channel_list
-        # self.index2 = self.index
-
-        globalsxp.iptv_list_tmp = channel_list2
-        globalsxp.STREAMS.iptv_list = channel_list2
+        self.load_from_tmp()
         globalsxp.STREAMS.list_index = self.index2
+        print('=========== self show_all')
+        self.show_all()
 
-        self.update_channellist()
         self.decodeImage(globalsxp.piclogo)
         globalsxp.ui = False
         globalsxp.infoname = self.temp_playname
         self["playlist"].setText(globalsxp.infoname)
 
     def exitY(self):
-        try:
-            if globalsxp.btnsearch == 1:
-                globalsxp.btnsearch = 0
-                self["key_blue"].hide()
-                self["key_green"].hide()
-                self["key_yellow"].hide()
-                self.mmark()
-            else:
-                if cfg.stoplayer.value is True:
-                    globalsxp.STREAMS.play_vod = False
-                    self.session.nav.stopService()
-                    self.session.nav.playService(self.initialservice)
-                self.close()
-        except Exception as e:
-            print('error on exit: ', e)
+        keywords = ['get_series', 'get_vod', 'get_live']
+        if file_exists('/tmp/mydata.json'):
+            with open('/tmp/mydata.json', 'r') as f:
+                content = f.read()
+                if any(keyword in content for keyword in keywords):
+                    print('=========== self go now')
+                    self.show_all()
+
+        if globalsxp.btnsearch == 1:
+            globalsxp.btnsearch = 0
+            self["key_blue"].hide()
+            self["key_green"].hide()
+            self["key_yellow"].hide()
+            print('go mmark')
+            self.mmark()
+        else:
+            if cfg.stoplayer.value is True:
+                print('=========== self stoplayer')
+                globalsxp.STREAMS.play_vod = False
+                self.session.nav.stopService()
+                self.session.nav.playService(self.initialservice)
+            if any(keyword in content for keyword in keywords):
+                if file_exists('/tmp/mydata.json'):
+                    remove('/tmp/mydata.json')
+                    print('======= remove /tmp/mydata.json')
             self.close()
 
-    def showMediaPlayer(self):
-        try:
-            from Plugins.Extensions.MediaPlayer.plugin import MediaPlayer
-            self.session.open(MediaPlayer)
-        except:
-            self.session.open(MessageBox, _("The MediaPlayer plugin is not installed!\nPlease install it."), type=MessageBox.TYPE_INFO, timeout=10)
-
     def showMovies(self):
-        try:
-            self.session.open(MovieSelection)
-        except:
-            pass
+        self.session.open(MovieSelection)
 
     def helpx(self):
         self.session.open(xc_help)
@@ -1744,9 +1712,8 @@ class xc_Main(Screen):
                                     cleanName = re.sub(r"   ", " ", self.title)
                                     cleanName = re.sub(r"  ", " ", cleanName)
                                     cleanName = re.sub(r"---", "-", cleanName)
-                                    self.title = cleanName.strip().lower()
+                                    self.title = titleserie + '_' + cleanName.strip().lower()
                                     self.icount += 1
-                                    # cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', url, str(globalsxp.Path_Movies2), self.title)
                                     cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(globalsxp.Path_Movies2), self.title)
                                     if "https" in str(url):
                                         cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(globalsxp.Path_Movies2), self.title)
@@ -2013,12 +1980,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["key_stop"] = Label("Stop")
         self["programm"] = Label("")
         self["poster"] = Pixmap()
-        self.scale = AVSwitch().getFramebufferScale()
-        self.picload = ePicLoad()
-        try:
-            self.picload.PictureData.get().append(self.setCover)
-        except:
-            self.picload_conn = self.picload.PictureData.connect(self.setCover)
         self.state = self.STATE_PLAYING
         self.cont_play = globalsxp.STREAMS.cont_play
         self.service = None
@@ -2109,6 +2070,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
             print(e)
             self.downloadError()
 
+    def image_downloaded(self, data, pictmp):
+        if file_exists(globalsxp.pictmp):
+            try:
+                self.decodeImage(globalsxp.pictmp)
+            except Exception as e:
+                print("* error ** %s" % e)
+
     def decodeImage(self, png):
         self["poster"].hide()
         if file_exists(png):
@@ -2125,13 +2093,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                 self['poster'].instance.setPixmap(ptr)
                 self['poster'].show()
             return
-
-    def image_downloaded(self, data, pictmp):
-        if file_exists(globalsxp.pictmp):
-            try:
-                self.decodeImage(globalsxp.pictmp)
-            except Exception as e:
-                print("* error ** %s" % e)
 
     def downloadError(self, error=""):
         try:
@@ -2255,7 +2216,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                         ext = '.avi'
                     filename = filename + ext
                     self.filename = filename.lower()  # + ext
-                    # cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s' --post-data='action=purge'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
                     cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
                     if "https" in str(self.vod_url):
                         cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
@@ -3192,13 +3152,13 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         globalsxp.STREAMS.play_vod = False
         self.channel_list = globalsxp.iptv_list_tmp
         self.index = globalsxp.STREAMS.list_index
-        self.channely = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
-        self.live_url = self.channely[4]
-        self.titlex = self.channely[1]
-        self.descr = self.channely[2]
-        self.cover = self.channely[3]
-        self.pixim = self.channely[7]
-        self.service = None
+        # self.channely = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
+        # self.live_url = self.channely[4]
+        # self.titlex = self.channely[1]
+        # self.descr = self.channely[2]
+        # self.cover = self.channely[3]
+        # self.pixim = self.channely[7]
+        # self.service = None
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "0": self.show_more_info,
@@ -3318,6 +3278,16 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             name = str(self.titlex)
             show_more_infos(name, self.index)
 
+    def image_downloaded(self, data, pictmp):
+        if file_exists(globalsxp.pictmp):
+            try:
+                self.decodeImage(globalsxp.pictmp)
+            except Exception as e:
+                print("* error ** %s" % e)
+                pass
+            except:
+                pass
+
     def decodeImage(self, png):
         self["poster"].hide()
         if file_exists(png):
@@ -3337,16 +3307,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
                 self['poster'].instance.setPixmap(ptr)
                 self['poster'].show()
             return
-
-    def image_downloaded(self, data, pictmp):
-        if file_exists(globalsxp.pictmp):
-            try:
-                self.decodeImage(globalsxp.pictmp)
-            except Exception as e:
-                print("* error ** %s" % e)
-                pass
-            except:
-                pass
 
     def downloadError(self, error=""):
         try:
@@ -3648,8 +3608,8 @@ class xc_M3uPlay(Screen):
         self.name = name
         self.downloading = False
         self.download = None
-        self.search = ''
         globalsxp.search_ok = False
+        self.search = ''
         self["list"] = xcM3UList([])
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
@@ -4009,8 +3969,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
         self.cancel()
 
 
-Panel_list = [('CONFIG'), ('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
-              ('MOVIE'), ('PLAYER UTILITY'), ('ABOUT & HELP')]
+Panel_list = [('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
+              ('MOVIE'), ('PLAYER UTILITY'), ('CONFIG'), ('ABOUT & HELP')]
 
 
 def xcm3ulistEntry(name):

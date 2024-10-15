@@ -19,7 +19,7 @@
 	<widget position="1755,1025" size="534,134" name="exp" font="Regular;35" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1755,1155" size="534,54" name="max_connect" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1755,1208" size="534,54" name="active_cons" font="Regular;38" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<!-- <widget position="1755,1022" size="534,54" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" /> -->
+	<widget position="1755,1022" size="534,54" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
     <widget position="1755,1260" size="534,67" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1755,912" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
 	<widget position="1829,834" size="400,54" name="state" font="Regular;38" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />

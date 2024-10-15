@@ -17,10 +17,10 @@
 	<!-- Description -->
 	<widget position="780,1880" size="600,40" name="Text" font="Regular;36" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<widget position="1010,240" size="400,100" name="exp" font="Regular;26" halign="left" valign="center" foregroundColor="#d61f02" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1010,340" size="400,50" name="max_connect" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<widget position="1010,390" size="400,50" name="active_cons" font="Regular;28" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
-	<!-- <widget position="1010,330" size="400,50" name="server_protocol" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" /> -->
-    <widget position="1010,440" size="400,80" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1010,375" size="400,50" name="max_connect" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1010,415" size="400,50" name="active_cons" font="Regular;28" halign="left" valign="center" foregroundColor="#25b721" backgroundColor="#101010" transparent="1" zPosition="2" />
+	<widget position="1010,330" size="400,50" name="server_protocol" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
+    <widget position="1010,465" size="400,55" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1010,155" size="400,85" name="created_at" font="Regular;32" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
 	<widget position="1009,520" size="400,40" name="state" font="Regular;28" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1284,1091" size="340,40" name="key_text" font="Regular;32" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
