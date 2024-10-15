@@ -1652,6 +1652,8 @@ class xc_Main(Screen):
                                 exp_date = (y["user_info"]["exp_date"])
                                 active_cons = (y["user_info"]["active_cons"])
                                 max_connections = (y["user_info"]["max_connections"])
+                                if exp_date:
+                                    exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                                 if str(auth) == "1":
                                     if str(status) == "Active":
                                         self["exp"].setText("Active\nExp date: " + str(exp_date))
@@ -1666,8 +1668,7 @@ class xc_Main(Screen):
                                     if created_at:
                                         created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                                         self["created_at"].setText('Start date:\n' + created_at)
-                                    if exp_date:
-                                        exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+
                                     self["max_connect"].setText("Max Connect: " + str(max_connections))
                                     self["active_cons"].setText("User Active: " + str(active_cons))
                                 server_protocol = (y["server_info"]["server_protocol"])
