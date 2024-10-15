@@ -2023,7 +2023,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
                                                   "info": self.show_more_info,
                                                   "epg": self.show_more_info,
-                                                  "0": self.show_more_info,
+                                                  "0": self.av,
                                                   "back": self.exitx,
                                                   "home": self.exitx,
                                                   "cancel": self.exitx,
@@ -2046,6 +2046,14 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         self.onShown.append(self.show_info)
         self.onPlayStateChanged.append(self.__playStateChanged)
         return
+
+    def av(self):
+        temp = int(getAspect())
+        temp += 1
+        if temp > 6:
+            temp = 0
+        self.new_aspect = temp
+        setAspect(temp)
 
     def exitx(self):
         if cfg.stoplayer.value is True:
@@ -3172,7 +3180,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         # self.service = None
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
-            "0": self.show_more_info,
+            "0": self.av,
             "home": self.exitx,
             "cancel": self.exitx,
             "stop": self.exitx,
@@ -3185,6 +3193,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
             "channelDown": self.prevAR,
             "power": self.power_off}, -1)
         self.onFirstExecBegin.append(self.play_channel)
+
+    def av(self):
+        temp = int(getAspect())
+        temp += 1
+        if temp > 6:
+            temp = 0
+        self.new_aspect = temp
+        setAspect(temp)
 
     def nextAR(self):
         message = nextAR()
