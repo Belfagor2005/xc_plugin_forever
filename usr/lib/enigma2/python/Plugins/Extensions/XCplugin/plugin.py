@@ -11,27 +11,50 @@
 ****************************************
 '''
 from __future__ import print_function
-from . import _, paypal, make_request, b64decoder, isDreamOS
+from . import (
+    _,
+    b64decoder,
+    developer_url,
+    installer_url,
+    isDreamOS,
+    make_request,
+    paypal,
+)
 from . import Utils
 from . import html_conv
+from .modul import (
+    cleanNames,
+    clear_caches,
+    copy_poster,
+    EXTDOWN,
+    EXTENSIONS,
+    getAspect,
+    # getAspectString,
+    globalsxp,
+    nextAR,
+    prevAR,
+    Panel_list,
+    setAspect,
+    # VIDEO_ASPECT_RATIO_MAP,
+)
 from .Console import Console
 from .downloader import downloadWithProgress
 
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
-    ConfigSubsection,
-    config,
-    ConfigYesNo,
-    ConfigEnableDisable,
-    ConfigSelectionNumber,
     ConfigClock,
-    ConfigSelection,
-    getConfigListEntry,
-    ConfigText,
-    NoSave,
     ConfigDirectory,
+    ConfigEnableDisable,
     ConfigPassword,
+    ConfigSelection,
+    ConfigSelectionNumber,
+    ConfigSubsection,
+    ConfigText,
+    ConfigYesNo,
+    config,
     configfile,
+    getConfigListEntry,
+    NoSave,
 )
 from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
@@ -44,20 +67,21 @@ from Components.Sources.List import List
 # from Components.Sources.Progress import Progress
 from Components.Sources.StaticText import StaticText
 from Components.Task import (
-    Task,
     Condition,
     Job,
     job_manager as JobManager,
+    Task,
 )
 from datetime import datetime
 from Plugins.Plugin import PluginDescriptor
 
 from Screens.Standby import Standby
 from Screens.InfoBarGenerics import (
-    InfoBarSubtitleSupport,
-    InfoBarMenu, InfoBarSeek,
-    InfoBarNotifications,
     InfoBarAudioSelection,
+    InfoBarMenu,
+    InfoBarNotifications,
+    InfoBarSeek,
+    InfoBarSubtitleSupport,
 )
 from requests.adapters import HTTPAdapter, Retry
 from Screens.LocationBox import LocationBox
@@ -68,20 +92,20 @@ from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
 from enigma import (
-    RT_HALIGN_CENTER,
-    RT_VALIGN_CENTER,
-    RT_HALIGN_LEFT,
-    eTimer,
     eListboxPythonMultiContent,
-    eServiceReference,
     ePicLoad,
+    eServiceReference,
+    eTimer,
     gFont,
+    getDesktop,
     iPlayableService,
     loadPNG,
-    getDesktop,
+    RT_HALIGN_CENTER,
+    RT_HALIGN_LEFT,
+    RT_VALIGN_CENTER,
 )
 from os import (listdir, remove, system)
-from os.path import splitext
+from os.path import splitext, isdir
 from os.path import exists as file_exists
 from twisted.web.client import downloadPage
 import codecs
@@ -113,54 +137,6 @@ if six.PY3:
 elif six.PY2:
     from urllib2 import (urlopen, Request)
 
-try:
-    from types import SimpleNamespace
-except ImportError:
-
-    class SimpleNamespace:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-
-globalsxp = SimpleNamespace(
-    autoStartTimer=None,
-    # channel_list2=None,
-    btnsearch=0,
-    eserv=None,
-    infoname=None,
-    iptv_list_tmp=[],
-    isStream=False,
-    next_request=0,
-    Path_Movies2=None,
-    Path_Movies=None,
-    piclogo=None,
-    pictmp="/tmp/poster.jpg",
-    re_search=False,
-    search_ok=None,
-    series=False,
-    STREAMS=None,
-    stream_live=None,
-    stream_url=None,
-    ui=True,
-    urlinfo=None,
-    url_tmp=None,
-)
-
-
-currversion = '3.5'
-version = "XC Forever V.%s" % currversion
-plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
-iconpic = os.path.join(plugin_path, 'plugin.png')
-installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
-developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
-enigma_path = '/etc/enigma2/'
-epgimport_path = '/etc/epgimport/'
-xc_list = "/tmp/xc.txt"
-iptvsh = "/etc/enigma2/iptv.sh"
-input_file = '/tmp/mydata.json'
-output_file = '/tmp/mydata2.json'
-socket.setdefaulttimeout(5)
-_session = None
-
 
 try:
     from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
@@ -191,8 +167,12 @@ if sslverify:
             return ctx
 
 
+currversion = '3.5'
+version = "XC Forever V.%s" % currversion
+plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 modelive = [("1", "Dvb(1)"), ("4097", "IPTV(4097)")]
 modemovie = [("4097", "IPTV(4097)")]
+
 if file_exists("/usr/bin/gstplayer"):
     modelive.append(("5001", "Gstreamer(5001)"))
     modemovie.append(("5001", "Gstreamer(5001)"))
@@ -206,13 +186,13 @@ if file_exists('/var/lib/dpkg/info'):
 
 def defaultMoviePath():
     result = config.usage.default_path.value
-    if not os.path.isdir(result):
+    if not isdir(result):
         from Tools import Directories
         return Directories.defaultRecordingLocation(config.usage.default_path.value)
     return result
 
 
-if not os.path.isdir(config.movielist.last_videodir.value):
+if not isdir(config.movielist.last_videodir.value):
     try:
         config.movielist.last_videodir.value = defaultMoviePath()
         config.movielist.last_videodir.save()
@@ -252,32 +232,24 @@ cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=
 cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 
 # global fixed
+_session = None
 globalsxp.eserv = int(cfg.services.value)
 globalsxp.infoname = str(cfg.infoname.value)
 globalsxp.Path_Movies = str(cfg.pthmovie.value)  # + "/"
 globalsxp.Path_Movies2 = globalsxp.Path_Movies
 globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
 globalsxp.pictmp = "/tmp/poster.jpg"
+enigma_path = '/etc/enigma2/'
+epgimport_path = '/etc/epgimport/'
+iconpic = os.path.join(plugin_path, 'plugin.png')
+input_file = '/tmp/mydata.json'
+iptvsh = "/etc/enigma2/iptv.sh"
 ntimeout = float(cfg.timeout.value)
+output_file = '/tmp/mydata2.json'
 Path_Picons = str(cfg.pthpicon.value) + "/"
 Path_XML = str(cfg.pthxmlfile.value) + "/"
-
-
-try:
-    def copy_poster():
-        os.system("cd / && cp -f " + globalsxp.piclogo + " " + globalsxp.pictmp)
-    copy_poster()
-except:
-    pass
-
-
-def clear_caches():
-    try:
-        os.system("echo 1 > /proc/sys/vm/drop_caches")
-        os.system("echo 2 > /proc/sys/vm/drop_caches")
-        os.system("echo 3 > /proc/sys/vm/drop_caches")
-    except:
-        pass
+socket.setdefaulttimeout(5)
+xc_list = "/tmp/xc.txt"
 
 
 def check_port(url):
@@ -304,104 +276,6 @@ def check_port(url):
     return url
 
 
-screenwidth = getDesktop(0).size()
-if screenwidth.width() == 2560:
-    CHANNEL_NUMBER = [3, 4, 120, 60, 0]
-    CHANNEL_NAME = [130, 4, 1800, 60, 1]
-    FONT_0 = ("Regular", 52)
-    FONT_1 = ("Regular", 52)
-    BLOCK_H = 80
-    skin_path = os.path.join(plugin_path, 'skin/uhd')
-    globalsxp.piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
-
-elif screenwidth.width() == 1920:
-    CHANNEL_NUMBER = [3, 0, 100, 50, 0]
-    CHANNEL_NAME = [110, 0, 1200, 50, 1]
-    FONT_0 = ("Regular", 32)
-    FONT_1 = ("Regular", 32)
-    BLOCK_H = 50
-    skin_path = os.path.join(plugin_path, 'skin/fhd')
-    globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
-
-else:
-    CHANNEL_NUMBER = [3, 0, 50, 40, 0]
-    CHANNEL_NAME = [75, 0, 900, 40, 1]
-    FONT_0 = ("Regular", 24)
-    FONT_1 = ("Regular", 24)
-    BLOCK_H = 40
-    skin_path = os.path.join(plugin_path, 'skin/hd')
-    globalsxp.piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
-
-
-if isDreamOS:
-    skin_path = os.path.join(skin_path, 'dreamOs')
-
-
-def getAspect():
-    return AVSwitch().getAspectRatioSetting()
-
-
-def getAspectString(aspectnum):
-    return {
-        0: '4:3 Letterbox',
-        1: '4:3 PanScan',
-        2: '16:9',
-        3: '16:9 always',
-        4: '16:10 Letterbox',
-        5: '16:10 PanScan',
-        6: '16:9 Letterbox'
-    }[aspectnum]
-
-
-def setAspect(aspect):
-    map = {
-        0: '4_3_letterbox',
-        1: '4_3_panscan',
-        2: '16_9',
-        3: '16_9_always',
-        4: '16_10_letterbox',
-        5: '16_10_panscan',
-        6: '16_9_letterbox'
-    }
-    config.av.aspectratio.setValue(map[aspect])
-    try:
-        AVSwitch().setAspectRatio(aspect)
-    except:
-        pass
-
-
-def returnIMDB(text_clear):
-    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
-    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
-    text = html_conv.html_unescape(text_clear)
-    if file_exists(TMDB):
-        try:
-            from Plugins.Extensions.TMBD.plugin import TMBD
-            _session.open(TMBD.tmdbScreen, text, 0)
-        except Exception as e:
-            print("[XCF] Tmdb: ", e)
-        return True
-    elif file_exists(IMDb):
-        try:
-            from Plugins.Extensions.IMDb.plugin import main as imdb
-            imdb(_session, text)
-        except Exception as e:
-            print("[XCF] imdb: ", e)
-        return True
-    else:
-        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
-    return False
-
-
-def cleanNames(name):
-    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", name)
-    cleanName = re.sub(r"   ", " ", cleanName)
-    cleanName = re.sub(r"  ", " ", cleanName)
-    cleanName = re.sub(r"---", "-", cleanName)
-    name = cleanName.strip()
-    return name
-
-
 def retTest(url):
     try:
         retries = Retry(total=1, backoff_factor=1)
@@ -419,42 +293,6 @@ def retTest(url):
     except Exception as e:
         return False
         print('error retTest requests -----------> ', e)
-
-
-EXTENSIONS = {
-    "mts": "movie",
-    "m2ts": "movie",
-    "pls": "music",
-    "vdr": "movie",
-    "vob": "movie",
-    "ogm": "movie",
-    "wmv": "movie",
-    "ts": "movie",
-    "avi": "movie",
-    "divx": "movie",
-    "mpg": "movie",
-    "mpeg": "movie",
-    "mkv": "movie",
-    "mp4": "movie",
-    "mov": "movie",
-    "trp": "movie",
-    "m4v": "movie",
-    "flv": "movie",
-    "m3u8": "movie"}
-
-
-EXTDOWN = {
-    ".avi": "movie",
-    ".divx": "movie",
-    ".mpg": "movie",
-    ".mpeg": "movie",
-    ".mkv": "movie",
-    ".mov": "movie",
-    ".m4v": "movie",
-    ".flv": "movie",
-    ".m3u8": "movie",
-    ".relinker": "movie",
-    ".mp4": "movie"}
 
 
 class xc_home(Screen):
@@ -853,7 +691,7 @@ class xc_config(Screen, ConfigListScreen):
         try:
             if str(cfg.hostaddress.value) != 'exampleserver.com':
                 usernames = 'None'
-                if os.path.exists(Path_XML + '/xclink.txt'):
+                if file_exists(Path_XML + '/xclink.txt'):
                     with codecs.open(Path_XML + '/xclink.txt', "r+", encoding="utf-8") as f:
                         lines = f.readlines()
                         f.seek(0)
@@ -977,10 +815,9 @@ class iptv_streamse():
             if '&type' in self.url:
                 globalsxp.next_request = 1
             elif "_get" in self.url:
-                globalsxp.next_request = 2
-            # elif "get_" in self.url:  # at start
-                # globalsxp.next_request = 3
-            xml = self._request(self.url)  # restituisce fromstring(xml)
+                globalsxp.next_request = 2  # don't use it
+
+            xml = self._request(self.url)
             if xml:
                 root = xml
                 self.playlistname = ""
@@ -1309,7 +1146,7 @@ class xc_Main(Screen):
             selected_channel = globalsxp.STREAMS.iptv_list[self.index]
             playlist_url = selected_channel[5]
 
-            # test for return from player!!
+            # test for return from player!!  work
             if file_exists(input_file):
                 with open(input_file, 'r') as infile:
                     data = json.load(infile)
@@ -1584,6 +1421,11 @@ class xc_Main(Screen):
             if any(keyword in content for keyword in keywords):
                 remove(input_file)
                 print('======= remove /tmp/mydata.json')
+
+            file_path = os.path.join('/tmp', 'canali_temp.xml')
+            if file_exists(file_path):
+                remove(file_path)
+                print('======= remove /tmp/canali_temp.xml')
             self.close()
 
     def showMovies(self):
@@ -1645,6 +1487,7 @@ class xc_Main(Screen):
                                 max_connections = (y["user_info"]["max_connections"])
                                 if exp_date:
                                     exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+
                                 if str(auth) == "1":
                                     if str(status) == "Active":
                                         self["exp"].setText("Active\nExp date: " + str(exp_date))
@@ -1755,11 +1598,13 @@ class xc_Main(Screen):
                 self.downloading = True
                 self.timerDownload = eTimer()
                 self.file_down = globalsxp.Path_Movies + self.filename
+
                 if cfg.pdownmovie.value == "JobManager":
                     try:
                         self.timerDownload.callback.append(self.downloadx)
                     except:
                         self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloadx)
+
                 elif cfg.pdownmovie.value == "Requests":
                     try:
                         r = requests.get(self.vod_url, verify=False)
@@ -1814,7 +1659,7 @@ class xc_Main(Screen):
         return
 
     def check_standby(self, myparam=None):
-        debug(myparam, "check_standby")
+        # debug(myparam, "check_standby")
         if myparam:
             self.power()
 
@@ -1822,6 +1667,7 @@ class xc_Main(Screen):
         self.session.nav.stopService()
         self.session.open(Standby)
 
+    '''
     def back_to_video(self):
         try:
             self.load_from_tmp()
@@ -1829,6 +1675,7 @@ class xc_Main(Screen):
             self.session.open(xc_Player)
         except Exception as e:
             print(e)
+    '''
 
 
 class IPTVInfoBarShowHide():
@@ -2203,10 +2050,10 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     self['state'].setText('RECORD')
                     pth = urlparse(self.vod_url).path
                     ext = splitext(pth)[-1]
-                    filename = Utils.cleantitle(self.titlex)
+                    # filename = Utils.cleantitle(self.titlex)
                     if ext not in EXTDOWN:
                         ext = '.avi'
-                    filename = filename + ext
+                    filename = cleanNames(self.titlex) + ext
                     self.filename = filename.lower()
                     cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
                     if "https" in str(self.vod_url):
@@ -2417,7 +2264,7 @@ class xc_StreamTasks(Screen):
         filelist = ''
         self.pth = ''
         freeSize = "-?-"
-        if os.path.isdir(cfg.pthmovie.value):
+        if isdir(cfg.pthmovie.value):
             filelist = listdir(cfg.pthmovie.value)
             if filelist is not None:
                 file1 = True
@@ -2515,17 +2362,15 @@ class xc_StreamTasks(Screen):
             return
 
     def removeFiles(self, targetfile):
-        if os.path.isfile(targetfile):
+        if file_exists(targetfile):
             try:
                 remove(targetfile)
-                # print("%s removed successfully" % targetfile)
                 self.session.open(MessageBox, targetfile + _(" Movie has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
                 self.onShown.append(self.rebuildMovieList)
             except OSError as e:
                 print("Error removing file:", e)
                 self.session.open(MessageBox, _("Error deleting the file: ") + str(e), MessageBox.TYPE_INFO, timeout=5)
         else:
-            # print("File not found:", targetfile)
             self.session.open(MessageBox, _("File not found!"), MessageBox.TYPE_INFO, timeout=5)
 
 
@@ -2894,8 +2739,8 @@ class OpenServer(Screen):
 
     def selOn(self, host, port, username, password):
         try:
-            TIME_GMT = '%d-%m-%Y %H:%M:%S'
-            auth = status = 'N/A'  # = created_at = exp_date
+            # TIME_GMT = '%d-%m-%Y %H:%M:%S'
+            auth = status = 'N/A'
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             self.ycse = retTest(globalsxp.urlinfo)
             if self.ycse:
@@ -2905,26 +2750,20 @@ class OpenServer(Screen):
                         if y["user_info"]["auth"] == 1:
                             auth = (y["user_info"]["auth"])
                             status = (y["user_info"]["status"])
-                            # created_at = (y["user_info"]["created_at"])
-                            # exp_date = (y["user_info"]["exp_date"])
-                            # if created_at:
-                                # created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-                            # if exp_date:
-                                # exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                             if str(status) == "Active":
-                                auth = "Active"  # \nExp date: " + str(exp_date)
+                                auth = "Active"
                             elif str(status) == "Banned":
-                                auth = "Banned"  # \nExp date: " + str(exp_date)
+                                auth = "Banned"
                             elif str(status) == "Disabled":
                                 auth = "Disabled"
                             elif str(status) == "Expired":
-                                auth = "Expired"  # \nExp date: " + str(exp_date)
+                                auth = "Expired"
                             elif str(status) == "None":
                                 auth = "N/A"
                             elif status is None:
                                 auth = "N/A"
                             else:
-                                auth = "Server Not Responding"  #  + str(exp_date)
+                                auth = "Server Not Responding"
                             return str(auth)
                 else:
                     return str(auth)
@@ -2937,7 +2776,7 @@ class OpenServer(Screen):
     def openList(self):
         self.names = []
         self.urls = []
-        if os.path.exists(Path_XML + '/xclink.txt'):
+        if file_exists(Path_XML + '/xclink.txt'):
             with codecs.open(Path_XML + '/xclink.txt', "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 f.seek(0)
@@ -3487,8 +3326,8 @@ class xc_Play(Screen):
 
     def remove_target(self):
         try:
-            if os.path.exists(self.pathm3u):
-                remove(self.pathm3u)
+            if file_exists(self.in_tmp):
+                remove(self.in_tmp)
         except:
             pass
 
@@ -3540,7 +3379,7 @@ class xc_Play(Screen):
             desk_tmp = ""
             in_bouquets = False
             bouquet_path = "/etc/enigma2/%s" % xcname
-            if os.path.exists(bouquet_path):
+            if file_exists(bouquet_path):
                 remove(bouquet_path)
             with open(bouquet_path, "w") as outfile:
                 outfile.write("#NAME %s\r\n" % namel.replace(".m3u", "").replace(" ", "").capitalize())
@@ -3663,7 +3502,7 @@ class xc_M3uPlay(Screen):
         self.pics = []
         pic = globalsxp.pictmp
         try:
-            if os.path.exists(self.name):
+            if file_exists(self.name):
                 fpage = ''
                 try:
                     with codecs.open(self.name, "r", encoding="utf-8") as f:
@@ -3818,7 +3657,7 @@ class xc_M3uPlay(Screen):
 
     def remove_target(self):
         try:
-            if os.path.exists(self.name_m3u):
+            if file_exists(self.name_m3u):
                 remove(self.name_m3u)
         except:
             pass
@@ -3939,10 +3778,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def leavePlayer(self):
         self.cancel()
-
-
-Panel_list = [('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
-              ('MOVIE'), ('PLAYER UTILITY'), ('CONFIG'), ('ABOUT & HELP')]
 
 
 def xcm3ulistEntry(name):
@@ -4086,32 +3921,37 @@ class downloadTask(Task):
                 print(e)
 
 
-VIDEO_ASPECT_RATIO_MAP = {0: "4:3 Letterbox", 1: "4:3 PanScan", 2: "16:9", 3: "16:9 Always", 4: "16:10 Letterbox", 5: "16:10 PanScan", 6: "16:9 Letterbox"}
-VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
+screenwidth = getDesktop(0).size()
+if screenwidth.width() == 2560:
+    CHANNEL_NUMBER = [3, 4, 120, 60, 0]
+    CHANNEL_NAME = [130, 4, 1800, 60, 1]
+    FONT_0 = ("Regular", 52)
+    FONT_1 = ("Regular", 52)
+    BLOCK_H = 80
+    skin_path = os.path.join(plugin_path, 'skin/uhd')
+    globalsxp.piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
+
+elif screenwidth.width() == 1920:
+    CHANNEL_NUMBER = [3, 0, 100, 50, 0]
+    CHANNEL_NAME = [110, 0, 1200, 50, 1]
+    FONT_0 = ("Regular", 32)
+    FONT_1 = ("Regular", 32)
+    BLOCK_H = 50
+    skin_path = os.path.join(plugin_path, 'skin/fhd')
+    globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
+
+else:
+    CHANNEL_NUMBER = [3, 0, 50, 40, 0]
+    CHANNEL_NAME = [75, 0, 900, 40, 1]
+    FONT_0 = ("Regular", 24)
+    FONT_1 = ("Regular", 24)
+    BLOCK_H = 40
+    skin_path = os.path.join(plugin_path, 'skin/hd')
+    globalsxp.piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
 
-def nextAR():
-    globalsxp.STREAMS.ar_id_player += 1
-    if globalsxp.STREAMS.ar_id_player > 6:
-        globalsxp.STREAMS.ar_id_player = 0
-    try:
-        AVSwitch.getInstance().setAspectRatio(globalsxp.STREAMS.ar_id_player)
-        return VIDEO_ASPECT_RATIO_MAP[globalsxp.STREAMS.ar_id_player]
-    except Exception as e:
-        print(e)
-        return _("Resolution Change Failed")
-
-
-def prevAR():
-    globalsxp.STREAMS.ar_id_player -= 1
-    if globalsxp.STREAMS.ar_id_player == -1:
-        globalsxp.STREAMS.ar_id_player = 6
-    try:
-        AVSwitch.getInstance().setAspectRatio(globalsxp.STREAMS.ar_id_player)
-        return VIDEO_ASPECT_RATIO_MAP[globalsxp.STREAMS.ar_id_player]
-    except Exception as e:
-        print(e)
-        return _("Resolution Change Failed")
+if isDreamOS:
+    skin_path = os.path.join(skin_path, 'dreamOs')
 
 
 def channelEntryIPTVplaylist(entry):
@@ -4122,10 +3962,6 @@ def channelEntryIPTVplaylist(entry):
     return menu_entry
 
 
-def debug(obj, text=""):
-    print("%s" % text + " %s\n" % obj)
-
-
 def uninstaller():
     """Routine di pulizia per rimuovere eventuali modifiche precedenti"""
     try:
@@ -4133,7 +3969,7 @@ def uninstaller():
             file_path = os.path.join(enigma_path, fname)
             if 'userbouquet.xc_' in fname or 'bouquets.tv.bak' in fname:
                 remove(file_path)
-        if os.path.isdir(epgimport_path):
+        if isdir(epgimport_path):
             for fname in os.listdir(epgimport_path):
                 if 'xc_' in fname:
                     remove(os.path.join(epgimport_path, fname))
@@ -4146,6 +3982,29 @@ def uninstaller():
     except Exception as e:
         print("Errore durante il processo di disinstallazione: ", e)
         raise
+
+
+def returnIMDB(text_clear):
+    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
+    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
+    text = html_conv.html_unescape(text_clear)
+    if file_exists(TMDB):
+        try:
+            from Plugins.Extensions.TMBD.plugin import TMBD
+            _session.open(TMBD.tmdbScreen, text, 0)
+        except Exception as e:
+            print("[XCF] Tmdb: ", e)
+        return True
+    elif file_exists(IMDb):
+        try:
+            from Plugins.Extensions.IMDb.plugin import main as imdb
+            imdb(_session, text)
+        except Exception as e:
+            print("[XCF] imdb: ", e)
+        return True
+    else:
+        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
+    return False
 
 
 def show_more_infos(name, index):
@@ -4178,7 +4037,7 @@ def save_old():
     try:
         if cfg.typem3utv.value == 'MPEGTS to TV':
             file_path = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
-            if os.path.exists(file_path):
+            if file_exists(file_path):
                 remove(file_path)
             try:
                 localFile = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
@@ -4189,7 +4048,7 @@ def save_old():
                 print('Error downloading or writing TV file: ', e)
             xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
         else:
-            if os.path.exists(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u")):
+            if file_exists(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u")):
                 remove(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u"))
             try:
                 localFile = os.path.join(globalsxp.Path_Movies, '%s.m3u' % namebouquet)
@@ -4200,7 +4059,7 @@ def save_old():
                 print('Error downloading or writing TV file: ', e)
             name = namebouquet.replace('.m3u', '')
             xcname = 'userbouquet.%s%s_.tv' % (tag, name)
-            if os.path.exists('/etc/enigma2/%s' % xcname):
+            if file_exists('/etc/enigma2/%s' % xcname):
                 remove('/etc/enigma2/%s' % xcname)
             try:
                 with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
@@ -4442,6 +4301,10 @@ def Plugins(**kwargs):
     if cfg.strtmain.value:
         result.append(mainDescriptor)
     return result
+
+
+# def debug(obj, text=""):
+    # print("%s" % text + " %s\n" % obj)
 
 
 # ===================Time is what we want most, but what we use worst===================

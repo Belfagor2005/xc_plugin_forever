@@ -15,6 +15,8 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import gettext
 import os
 from os import environ as os_environ
+installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
+developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
 AgentRequest = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.3'
 PluginLanguageDomain = 'XCplugin'
 PluginLanguagePath = 'Extensions/XCplugin/locale'
