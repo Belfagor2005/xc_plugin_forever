@@ -29,15 +29,13 @@ from .modul import (
     EXTDOWN,
     EXTENSIONS,
     getAspect,
-    # getAspectString,
     globalsxp,
     nextAR,
     prevAR,
     Panel_list,
     setAspect,
-    # VIDEO_ASPECT_RATIO_MAP,
 )
-from .Console import Console
+from .Console import Console as xcConsole
 from .downloader import downloadWithProgress
 
 from Components.ActionMap import ActionMap, HelpableActionMap
@@ -64,7 +62,6 @@ from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import (ServiceEventTracker, InfoBarBase)
 from Components.Sources.List import List
-# from Components.Sources.Progress import Progress
 from Components.Sources.StaticText import StaticText
 from Components.Task import (
     Condition,
@@ -72,6 +69,7 @@ from Components.Task import (
     job_manager as JobManager,
     Task,
 )
+
 from datetime import datetime
 from Plugins.Plugin import PluginDescriptor
 
@@ -83,6 +81,7 @@ from Screens.InfoBarGenerics import (
     InfoBarSeek,
     InfoBarSubtitleSupport,
 )
+
 from requests.adapters import HTTPAdapter, Retry
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
@@ -91,6 +90,7 @@ from Screens.Screen import Screen
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
+
 from enigma import (
     eListboxPythonMultiContent,
     ePicLoad,
@@ -104,10 +104,13 @@ from enigma import (
     RT_HALIGN_LEFT,
     RT_VALIGN_CENTER,
 )
+
 from os import (listdir, remove, system)
 from os.path import splitext, isdir
 from os.path import exists as file_exists
+
 from twisted.web.client import downloadPage
+
 import codecs
 import json
 import os
@@ -343,7 +346,7 @@ class xc_home(Screen):
         if dependencies is False:
             os.chmod(os.path.join(plugin_path, 'dependencies.sh', 0o0755))
             cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh"
-            self.session.openWithCallback(self.start, Console, title="Checking Dependencies", cmdlist=[cmd1], closeOnSuccess=True)
+            self.session.openWithCallback(self.start, xcConsole, title="Checking Dependencies", cmdlist=[cmd1], closeOnSuccess=True)
         else:
             self.start()
 
@@ -2460,7 +2463,7 @@ class xc_help(Screen):
 
     def install_update(self, answer=False):
         if answer:
-            self.session.open(Console, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
+            self.session.open(xcConsole, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
         else:
             self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
 
@@ -3965,12 +3968,12 @@ def channelEntryIPTVplaylist(entry):
 def uninstaller():
     """Routine di pulizia per rimuovere eventuali modifiche precedenti"""
     try:
-        for fname in os.listdir(enigma_path):
+        for fname in listdir(enigma_path):
             file_path = os.path.join(enigma_path, fname)
             if 'userbouquet.xc_' in fname or 'bouquets.tv.bak' in fname:
                 remove(file_path)
         if isdir(epgimport_path):
-            for fname in os.listdir(epgimport_path):
+            for fname in listdir(epgimport_path):
                 if 'xc_' in fname:
                     remove(os.path.join(epgimport_path, fname))
         os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
@@ -4162,7 +4165,7 @@ def make_bouquet():
         f.write(configtext)
     dom = str(globalsxp.STREAMS.playlistname)
     com = ("python %s") % e2m3u2bouquet
-    _session.open(Console, _("Conversion %s in progress: ") % dom, ["%s" % com], closeOnSuccess=True)
+    _session.open(xcConsole, _("Conversion %s in progress: ") % dom, ["%s" % com], closeOnSuccess=True)
 
 
 def menu(menuid, **kwargs):
