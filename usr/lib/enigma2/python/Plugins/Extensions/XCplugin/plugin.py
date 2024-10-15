@@ -156,6 +156,8 @@ enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 xc_list = "/tmp/xc.txt"
 iptvsh = "/etc/enigma2/iptv.sh"
+input_file = '/tmp/mydata.json'
+output_file = '/tmp/mydata2.json'
 socket.setdefaulttimeout(5)
 _session = None
 
@@ -389,6 +391,34 @@ def returnIMDB(text_clear):
     else:
         _session.open(MessageBox, text, MessageBox.TYPE_INFO)
     return False
+
+
+def cleanNames(name):
+    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", name)
+    cleanName = re.sub(r"   ", " ", cleanName)
+    cleanName = re.sub(r"  ", " ", cleanName)
+    cleanName = re.sub(r"---", "-", cleanName)
+    name = cleanName.strip()
+    return name
+
+
+def retTest(url):
+    try:
+        retries = Retry(total=1, backoff_factor=1)
+        adapter = HTTPAdapter(max_retries=retries)
+        http = requests.Session()
+        http.mount("http://", adapter)
+        http.mount("https://", adapter)
+        r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
+        r.raise_for_status()
+        if r.status_code == requests.codes.ok:
+            print('retTest r.status code: ', r.status_code)
+            ycse = r.json()
+            # print('ycse -----------> ', ycse)
+            return ycse
+    except Exception as e:
+        return False
+        print('error retTest requests -----------> ', e)
 
 
 EXTENSIONS = {
@@ -882,34 +912,19 @@ class iptv_streamse():
         self.prev_page_url = ""
         self.prev_page_text = ""
         self.trial = ""
-        self.banned_text = ""
-        self.systems = ""
-        self.next_page_url_tmp = ""
-        self.next_page_text_tmp = ""
-        self.prev_page_url_tmp = ""
-        self.prev_page_text_tmp = ""
         self.iptv_list = []
         self.iptv_list_tmp = []
-        self.iptv_list_history = []
-        self.esr_id = 4097
         self.list_index_tmp = 0
         self.list_index = 0
-        self.ar_id_start = 0
-        self.ar_id_end = 0
         self.ar_id_player = 0
-        self.play_vod = False
-        self.play_iptv = False
         self.video_status = False
-        self.server_oki = True
-        self.ar_start = True
         self.img_loader = False
         self.cont_play = False
-        self.disable_audioselector = False
         self.host = str(cfg.hostaddress.value)
         self.port = str(cfg.port.value)
-        self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
         self.username = str(cfg.user.value)
         self.password = str(cfg.passw.value)
+        self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
 
     def MoviesFolde(self):
         return globalsxp.Path_Movies
@@ -1143,10 +1158,6 @@ class iptv_streamse():
         if len(globalsxp.iptv_list_tmp):
             self.iptv_list = globalsxp.iptv_list_tmp
             globalsxp.iptv_list_tmp = self.iptv_list
-
-            # with open('/tmp/iptv_list.json', 'w') as f:
-                # json.dump(self.iptv_list, f)
-
         return
 
     def _request(self, url):
@@ -1196,17 +1207,11 @@ class xc_Main(Screen):
         self.index = globalsxp.STREAMS.list_index  # 0   ??
         channel_list2 = self.channel_list
         self.index2 = self.index
-        self.banned = False
-        self.banned_text = ""
         self.search = ''
         globalsxp.re_search = False
         self.downloading = False
         self.pin = False
-        self.icount = 0
-        self.errcount = 0
-        self.passwd_ok = False
         self.temp_index = 0
-        self.temp_playlistname = None
         self.temp_playname = str(globalsxp.STREAMS.playlistname)
         self.filter_search = []
         self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
@@ -1304,9 +1309,6 @@ class xc_Main(Screen):
             selected_channel = globalsxp.STREAMS.iptv_list[self.index]
             playlist_url = selected_channel[5]
 
-            input_file = '/tmp/mydata.json'
-            output_file = '/tmp/mydata2.json'
-
             # test for return from player!!
             if file_exists(input_file):
                 with open(input_file, 'r') as infile:
@@ -1320,7 +1322,7 @@ class xc_Main(Screen):
                 globalsxp.STREAMS.get_list(playlist_url)
                 self.update_channellist()
 
-            elif selected_channel[4] is not None:  # and globalsxp.stream_live is True:
+            elif selected_channel[4] is not None:
                 globalsxp.STREAMS.video_status = True
                 globalsxp.STREAMS.play_vod = False
                 self.Entered()
@@ -1512,17 +1514,13 @@ class xc_Main(Screen):
         self.filter_search = []
 
     def set_tmp_list(self):
-        input_file = '/tmp/mydata.json'
-        output_file = '/tmp/mydata2.json'
         with open(input_file, 'w') as f:
-            json.dump(self.channel_list, f) 
+            json.dump(self.channel_list, f)
 
     def load_from_tmp(self):
-        input_file = '/tmp/mydata.json'
-        output_file = '/tmp/mydata2.json'
         if file_exists(output_file):
-             with open(output_file, 'r') as f:
-                self.channel_list = json.load(f) 
+            with open(output_file, 'r') as f:
+                self.channel_list = json.load(f)
                 remove(output_file)
         else:
             if file_exists(input_file):
@@ -1554,8 +1552,6 @@ class xc_Main(Screen):
         self["playlist"].setText(globalsxp.infoname)
 
     def exitY(self):
-        input_file = '/tmp/mydata.json'
-        output_file = '/tmp/mydata2.json'
         keywords = ['get_series', 'get_vod', 'get_live']
         if file_exists(input_file):
             with open(input_file, 'r') as f:
@@ -1615,24 +1611,6 @@ class xc_Main(Screen):
             name = str(selected_channel[1])
             show_more_infos(name, self.index)
 
-    def retTest(self, url):
-        try:
-            retries = Retry(total=1, backoff_factor=1)
-            adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                print('retTest r.status code: ', r.status_code)
-                self.ycse = r.json()
-                print('self.ycse -----------> ', self.ycse)
-                return True
-        except Exception as e:
-            return False
-            print('error requests -----------> ', e)
-
     def checkinf(self):
         try:
             TIME_GMT = '%d-%m-%Y %H:%M:%S'
@@ -1652,7 +1630,8 @@ class xc_Main(Screen):
             if cfg.passw != '******':
                 password = cfg.passw.value
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-            if self.retTest(globalsxp.urlinfo):
+            self.ycse = retTest(globalsxp.urlinfo)
+            if self.ycse:
                 y = self.ycse
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
@@ -1721,11 +1700,8 @@ class xc_Main(Screen):
                                     ext = str(splitext(url)[-1])
                                     if ext not in EXTDOWN:
                                         ext = '.avi'
-                                    self.title = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(name))
-                                    cleanName = re.sub(r"   ", " ", self.title)
-                                    cleanName = re.sub(r"  ", " ", cleanName)
-                                    cleanName = re.sub(r"---", "-", cleanName)
-                                    self.title = titleserie + '_' + cleanName.strip().lower()
+                                    cleanName = cleanNames(name)
+                                    self.title = titleserie + '_' + cleanName.lower()
                                     self.icount += 1
                                     cmd = "wget --no-cache --no-dns-cache -U '%s' -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', url, str(globalsxp.Path_Movies2), self.title)
                                     if "https" in str(url):
@@ -1758,14 +1734,10 @@ class xc_Main(Screen):
                 pth = urlparse(self.vod_url).path
                 ext = splitext(pth)[-1]
                 if ext != '.ts':
-                    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(self.title))
-                    cleanName = re.sub(r"   ", " ", cleanName)
-                    cleanName = re.sub(r"  ", " ", cleanName)
-                    cleanName = re.sub(r"---", "-", cleanName)
-                    filename = cleanName.strip()
+                    cleanName = cleanNames(self.title)
                     if ext not in EXTDOWN:
                         ext = '.avi'
-                    filename = filename + ext
+                    filename = cleanName + ext
                     self.filename = filename.lower()
                     self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?"), type=MessageBox.TYPE_YESNO, timeout=5)
                 else:
@@ -2086,7 +2058,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     downloadPage(self.pixim, globalsxp.pictmp).addCallback(self.image_downloaded, globalsxp.pictmp).addErrback(self.downloadError)
             else:
                 self.downloadError()
-                print("setCover err")
         except Exception as e:
             print(e)
             self.downloadError()
@@ -2236,7 +2207,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
                     if ext not in EXTDOWN:
                         ext = '.avi'
                     filename = filename + ext
-                    self.filename = filename.lower()  # + ext
+                    self.filename = filename.lower()
                     cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
                     if "https" in str(self.vod_url):
                         cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.vod_url, str(globalsxp.Path_Movies), self.filename)
@@ -2921,55 +2892,32 @@ class OpenServer(Screen):
             "help": self.helpx}, -1)
         self.onLayoutFinish.append(self.openList)
 
-    def retTest(self, url):
+    def selOn(self, host, port, username, password):
         try:
-            retries = Retry(total=1, backoff_factor=1)
-            adapter = HTTPAdapter(max_retries=retries)
-            http = requests.Session()
-            http.mount("http://", adapter)
-            http.mount("https://", adapter)
-            r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
-            r.raise_for_status()
-            if r.status_code == requests.codes.ok:
-                # print('r.status code: ', r.status_code)
-                self.ycse = r.json()
-                return True
-        except Exception as e:
-            print('error requests -----------> ', e)
-            return False
-
-    def selOn(self, host, port, username, password):  # , png=None):
-        try:
-            TIME_GMT = '%d-%m-%Y %H:%M:%S'
-            auth = status = created_at = exp_date = '- ? -'
+            auth = status = 'N/A'
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-            if self.retTest(globalsxp.urlinfo):
+            self.ycse = retTest(globalsxp.urlinfo)
+            if self.ycse:
                 y = self.ycse
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
                             auth = (y["user_info"]["auth"])
                             status = (y["user_info"]["status"])
-                            created_at = (y["user_info"]["created_at"])
-                            exp_date = (y["user_info"]["exp_date"])
-                            if created_at:
-                                created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-                            if exp_date:
-                                exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                             if str(status) == "Active":
-                                auth = "Active\nExp date: " + str(exp_date)
+                                auth = "Active"
                             elif str(status) == "Banned":
-                                auth = "Banned\nExp date: " + str(exp_date)
+                                auth = "Banned"
                             elif str(status) == "Disabled":
                                 auth = "Disabled"
                             elif str(status) == "Expired":
-                                auth = "Expired\nExp date: " + str(exp_date)
+                                auth = "Expired"
                             elif str(status) == "None":
                                 auth = "N/A"
                             elif status is None:
                                 auth = "N/A"
                             else:
-                                auth = "Server Not Responding" + str(exp_date)
+                                auth = "Server Not Responding"
                             return str(auth)
                 else:
                     return str(auth)
@@ -2988,7 +2936,7 @@ class OpenServer(Screen):
                 f.seek(0)
                 name = ''
                 host = ''
-                port = ''
+                port = '80'
                 username = ''
                 password = ''
                 for line in lines:
@@ -3028,13 +2976,14 @@ class OpenServer(Screen):
         try:
             idx = self["list"].getSelectionIndex()
             dom = self.urls[idx]
+            port = '80'
             pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
             match = re.match(pattern, dom)
             if match:
                 host = match.group(1)
                 if match.group(2):
                     port = match.group(2)
-                    cfg.port.setValue(str(port))
+                cfg.port.setValue(str(port))
                 username = match.group(3)
                 password = match.group(4)
                 cfg.hostaddress.setValue(str(host))
@@ -3080,7 +3029,6 @@ class OpenServer(Screen):
                                 created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
                             if exp_date:
                                 exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-                            # if str(auth) == "1":
                             if str(status) == "Active":
                                 auth = "Active\nExp date: " + str(exp_date)
                             elif str(status) == "Banned":
@@ -3173,13 +3121,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
         globalsxp.STREAMS.play_vod = False
         self.channel_list = globalsxp.iptv_list_tmp
         self.index = globalsxp.STREAMS.list_index
-        # self.channely = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
-        # self.live_url = self.channely[4]
-        # self.titlex = self.channely[1]
-        # self.descr = self.channely[2]
-        # self.cover = self.channely[3]
-        # self.pixim = self.channely[7]
-        # self.service = None
+
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "info": self.show_more_info,
             "0": self.av,
@@ -3526,7 +3468,6 @@ class xc_Play(Screen):
             self.downloading = False
             self['status'].setText(_('Download Finished!'))
             self['progresstext'].text = ''
-            # self['progresstext'].setText('')
             self.progclear = 0
             self['progress'].setValue(self.progclear)
             self["progress"].hide()
@@ -3772,12 +3713,8 @@ class xc_M3uPlay(Screen):
                 if answer is None:
                     self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.name_m3u)
                 elif answer:
-                    filename = Utils.cleantitle(self.name_m3u)
-                    cleanName = re.sub(r'[\'\<\>\:\"\/\\\|\?\*\(\)\[\]]', "", str(self.name_m3u))
-                    cleanName = re.sub(r"   ", " ", cleanName)
-                    cleanName = re.sub(r"  ", " ", cleanName)
-                    cleanName = re.sub(r"---", "-", cleanName)
-                    filename = cleanName.strip() + ext
+                    cleanName = cleanNames(self.name_m3u)
+                    filename = cleanName + ext
                     self.in_tmp = globalsxp.Path_Movies + filename.lower()
                     if file_exists(self.in_tmp):
                         cmd = 'rm -f ' + self.in_tmp
@@ -3902,8 +3839,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-        url = url.replace(':', '%3a')
-        self.url = url
+        self.url = url.replace(':', '%3a')
         self.name = name
         self.state = self.STATE_PLAYING
         self['actions'] = ActionMap(['MoviePlayerActions', 'MovieSelectionActions', 'MediaPlayerActions',
@@ -3926,8 +3862,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
             print('M3uPlay2 show imdb/tmdb')
 
     def openPlay(self, servicetype, url):
-        name = self.name
-        ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), name.replace(":", "%3a"))
+        ref = "{0}:0:1:0:0:0:0:0:0:0:{1}:{2}".format(servicetype, url.replace(":", "%3a"), self.name.replace(":", "%3a"))
         sref = eServiceReference(ref)
         globalsxp.STREAMS.play_vod = True
         sref.setName(self.name)
@@ -4306,7 +4241,6 @@ def save_old():
 
 
 def make_bouquet():
-    # global infoname
     e2m3u2bouquet = plugin_path + '/bouquet/e2m3u2bouquetpy3.py'
     if not file_exists("/etc/enigma2/e2m3u2bouquet"):
         system("mkdir /etc/enigma2/e2m3u2bouquet")
