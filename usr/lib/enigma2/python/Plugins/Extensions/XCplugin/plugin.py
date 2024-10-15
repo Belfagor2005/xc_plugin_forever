@@ -2894,7 +2894,8 @@ class OpenServer(Screen):
 
     def selOn(self, host, port, username, password):
         try:
-            auth = status = 'N/A'
+            TIME_GMT = '%d-%m-%Y %H:%M:%S'
+            auth = status = 'N/A'  # = created_at = exp_date
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             self.ycse = retTest(globalsxp.urlinfo)
             if self.ycse:
@@ -2904,20 +2905,26 @@ class OpenServer(Screen):
                         if y["user_info"]["auth"] == 1:
                             auth = (y["user_info"]["auth"])
                             status = (y["user_info"]["status"])
+                            # created_at = (y["user_info"]["created_at"])
+                            # exp_date = (y["user_info"]["exp_date"])
+                            # if created_at:
+                                # created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
+                            # if exp_date:
+                                # exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
                             if str(status) == "Active":
-                                auth = "Active"
+                                auth = "Active"  # \nExp date: " + str(exp_date)
                             elif str(status) == "Banned":
-                                auth = "Banned"
+                                auth = "Banned"  # \nExp date: " + str(exp_date)
                             elif str(status) == "Disabled":
                                 auth = "Disabled"
                             elif str(status) == "Expired":
-                                auth = "Expired"
+                                auth = "Expired"  # \nExp date: " + str(exp_date)
                             elif str(status) == "None":
                                 auth = "N/A"
                             elif status is None:
                                 auth = "N/A"
                             else:
-                                auth = "Server Not Responding"
+                                auth = "Server Not Responding"  #  + str(exp_date)
                             return str(auth)
                 else:
                     return str(auth)
@@ -3012,8 +3019,9 @@ class OpenServer(Screen):
                 username = match.group(3)
                 password = match.group(4)
             globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-            if self.retTest(globalsxp.urlinfo):
-                y = self.ycse.json()
+            self.ycse = retTest(globalsxp.urlinfo)
+            if self.ycse:
+                y = self.ycse
                 if "user_info" in y:
                     if "auth" in y["user_info"]:
                         if y["user_info"]["auth"] == 1:
