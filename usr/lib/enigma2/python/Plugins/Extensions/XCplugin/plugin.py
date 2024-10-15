@@ -1582,10 +1582,12 @@ class xc_Main(Screen):
                 globalsxp.STREAMS.play_vod = False
                 self.session.nav.stopService()
                 self.session.nav.playService(self.initialservice)
+            if file_exists(input_file):
+                with open(input_file, 'r') as f:
+                    content = f.read()
             if any(keyword in content for keyword in keywords):
-                if file_exists(input_file):
-                    remove(input_file)
-                    print('======= remove /tmp/mydata.json')
+                remove(input_file)
+                print('======= remove /tmp/mydata.json')
             self.close()
 
     def showMovies(self):
