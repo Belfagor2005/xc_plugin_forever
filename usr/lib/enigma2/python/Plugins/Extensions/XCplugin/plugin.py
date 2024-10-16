@@ -110,6 +110,7 @@ from os.path import splitext, isdir
 from os.path import exists as file_exists
 
 from twisted.web.client import downloadPage
+from six import text_type
 
 import codecs
 import json
@@ -170,7 +171,7 @@ if sslverify:
             return ctx
 
 
-currversion = '3.5'
+currversion = '3.6'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 modelive = [("1", "Dvb(1)"), ("4097", "IPTV(4097)")]
@@ -1149,12 +1150,22 @@ class xc_Main(Screen):
             selected_channel = globalsxp.STREAMS.iptv_list[self.index]
             playlist_url = selected_channel[5]
 
-            # test for return from player!!  work
+            # test for return from player!!
             if file_exists(input_file):
-                with open(input_file, 'r') as infile:
-                    data = json.load(infile)
-                with open(output_file, 'w') as outfile:
-                    json.dump(data, outfile)
+                with codecs.open(input_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+
+                def convert_to_string(entry):
+                    if entry is None:
+                        return ''
+                    elif isinstance(entry, (tuple, list)):
+                        return type(entry)(convert_to_string(item) for item in entry)
+                    else:
+                        return str(entry)
+                string_channel_list = list(map(convert_to_string, data))
+
+                with codecs.open(output_file, "w", encoding="utf-8") as f:
+                    json.dump(string_channel_list, f)
 
             self.set_tmp_list()
 
@@ -1321,8 +1332,23 @@ class xc_Main(Screen):
                 self["feedlist"].moveToIndex(0)
             else:
                 self.channel_list = globalsxp.STREAMS.iptv_list
+
+            def convert_to_str(entry):
+                if entry is None:
+                    return ''
+                elif isinstance(entry, (tuple, list)):
+                    return type(entry)(convert_to_str(item) for item in entry)
+                elif isinstance(entry, str):
+                    return entry
+                elif isinstance(entry, text_type):
+                    return entry.encode('utf-8')
+                else:
+                    return str(entry)
+
+            self.mlist.setList(
+                list(map(lambda x: channelEntryIPTVplaylist(convert_to_str(x)), self.channel_list))
+            )
             self.mlist.moveToIndex(0)
-            self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.selectionEnabled(1)
             self.button_updater()
         except Exception as e:
@@ -1354,17 +1380,26 @@ class xc_Main(Screen):
         self.filter_search = []
 
     def set_tmp_list(self):
-        with open(input_file, 'w') as f:
-            json.dump(self.channel_list, f)
+        def convert_to_string(entry):
+            if entry is None:
+                return ''
+            elif isinstance(entry, (tuple, list)):
+                return type(entry)(convert_to_string(item) for item in entry)
+            else:
+                return str(entry)
+        string_channel_list = list(map(convert_to_string, self.channel_list))
+
+        with codecs.open(input_file, "w", encoding="utf-8") as f:
+            json.dump(string_channel_list, f)
 
     def load_from_tmp(self):
         if file_exists(output_file):
-            with open(output_file, 'r') as f:
+            with codecs.open(output_file, "r", encoding="utf-8") as f:
                 self.channel_list = json.load(f)
                 remove(output_file)
         else:
             if file_exists(input_file):
-                with open(input_file, 'r') as f:
+                with codecs.open(input_file, "r", encoding="utf-8") as f:
                     self.channel_list = json.load(f)
 
         if len(self.channel_list):
@@ -1394,10 +1429,10 @@ class xc_Main(Screen):
     def exitY(self):
         keywords = ['get_series', 'get_vod', 'get_live']
         if file_exists(input_file):
-            with open(input_file, 'r') as f:
+            with codecs.open(input_file, "r", encoding="utf-8") as f:
                 content = f.read()
                 if any(keyword in content for keyword in keywords):
-                    print('=========== self go now')
+                    print('=========== self show_all now')
                     self.show_all()
 
         if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
@@ -1418,12 +1453,13 @@ class xc_Main(Screen):
                 globalsxp.STREAMS.play_vod = False
                 self.session.nav.stopService()
                 self.session.nav.playService(self.initialservice)
+
             if file_exists(input_file):
-                with open(input_file, 'r') as f:
+                with codecs.open(input_file, "r", encoding="utf-8") as f:
                     content = f.read()
-                if any(keyword in content for keyword in keywords):
-                    remove(input_file)
-                    print('======= remove /tmp/mydata.json')
+                    if any(keyword in content for keyword in keywords):
+                        remove(input_file)
+                        print('======= remove /tmp/mydata.json')
             file_path = os.path.join('/tmp', 'canali_temp.xml')
             if file_exists(file_path):
                 remove(file_path)
@@ -3997,7 +4033,7 @@ def returnIMDB(text_clear):
             _session.open(tmdb.tmdbScreen, text, 0)
         except Exception as e:
             print("[XCF] tmdb: ", e)
-        return True    
+        return True
     elif file_exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
