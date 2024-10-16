@@ -1421,10 +1421,9 @@ class xc_Main(Screen):
             if file_exists(input_file):
                 with open(input_file, 'r') as f:
                     content = f.read()
-            if any(keyword in content for keyword in keywords):
-                remove(input_file)
-                print('======= remove /tmp/mydata.json')
-
+                if any(keyword in content for keyword in keywords):
+                    remove(input_file)
+                    print('======= remove /tmp/mydata.json')
             file_path = os.path.join('/tmp', 'canali_temp.xml')
             if file_exists(file_path):
                 remove(file_path)
@@ -3988,22 +3987,30 @@ def uninstaller():
 
 
 def returnIMDB(text_clear):
+    tmdb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
     text = html_conv.html_unescape(text_clear)
-    if file_exists(TMDB):
+    if file_exists(tmdb):
+        try:
+            from Plugins.Extensions.tmdb.plugin import tmdb
+            _session.open(tmdb.tmdbScreen, text, 0)
+        except Exception as e:
+            print("[XCF] tmdb: ", e)
+        return True    
+    elif file_exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
-            print("[XCF] Tmdb: ", e)
+            print("[XCF] TMDB: ", e)
         return True
     elif file_exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
             imdb(_session, text)
         except Exception as e:
-            print("[XCF] imdb: ", e)
+            print("[XCF] IMDb: ", e)
         return True
     else:
         _session.open(MessageBox, text, MessageBox.TYPE_INFO)
@@ -4011,19 +4018,23 @@ def returnIMDB(text_clear):
 
 
 def show_more_infos(name, index):
-    text_clear = name
+    text_clear = re.sub(r'\b\d{4}\b.*', '', name).strip()  # name
     if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
         selected_channel = globalsxp.iptv_list_tmp[index]
         if selected_channel:
             if globalsxp.stream_live is True:
                 text_clear = selected_channel[9]
-            if returnIMDB(text_clear):
-                print('show imdb/tmdb')
-            else:
-                text2 = selected_channel[2]
-                text3 = selected_channel[8]
-                text_clear += str(text2) + '\n\n' + str(text3)
-                _session.open(xc_Epg, text_clear)
+
+        if returnIMDB(text_clear):
+            print('show imdb/tmdb')
+        else:
+            text2 = selected_channel[2]
+            text3 = selected_channel[8]
+            text4 = selected_channel[9]
+            text_clear += (str(text2)
+                           + '\n\n' + str(text3)
+                           + '\n\n' + str(text4))
+            _session.open(xc_Epg, text_clear)
     else:
         message = (_("Please enter correct server parameters in Config\n no valid list "))
         Utils.web_info(message)
