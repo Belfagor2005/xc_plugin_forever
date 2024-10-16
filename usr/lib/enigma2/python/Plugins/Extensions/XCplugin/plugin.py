@@ -3553,16 +3553,16 @@ class xc_M3uPlay(Screen):
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for pic, name, url in match:
                         url = url.replace(' ', '').replace('\n', '')
-                        self.names.append(name)
-                        self.urls.append(url)
+                        self.names.append(str(name))
+                        self.urls.append(str(url))
                         self.pics.append(pic)
                 else:
                     regexcat = r'#EXTINF.*?,(.*?)\n(.*?)\n'
                     match = re.compile(regexcat, re.DOTALL).findall(fpage)
                     for name, url in match:
                         url = url.replace(' ', '').replace('\n', '')
-                        self.names.append(name)
-                        self.urls.append(url)
+                        self.names.append(str(name))
+                        self.urls.append(str(url))
                         self.pics.append(pic)
                 m3ulistxc(self.names, self['list'])
                 self["live"].setText('N.' + str(len(self.names)) + " Stream")
