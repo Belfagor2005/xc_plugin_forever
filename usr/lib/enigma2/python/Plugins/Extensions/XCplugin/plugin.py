@@ -252,8 +252,9 @@ ntimeout = float(cfg.timeout.value)
 output_file = '/tmp/mydata2.json'
 Path_Picons = str(cfg.pthpicon.value) + "/"
 Path_XML = str(cfg.pthxmlfile.value) + "/"
-socket.setdefaulttimeout(5)
 xc_list = "/tmp/xc.txt"
+screenwidth = getDesktop(0).size()
+socket.setdefaulttimeout(5)
 
 
 def check_port(url):
@@ -1333,21 +1334,24 @@ class xc_Main(Screen):
             else:
                 self.channel_list = globalsxp.STREAMS.iptv_list
 
-            def convert_to_str(entry):
-                if entry is None:
-                    return ''
-                elif isinstance(entry, (tuple, list)):
-                    return type(entry)(convert_to_str(item) for item in entry)
-                elif isinstance(entry, str):
-                    return entry
-                elif isinstance(entry, text_type):
-                    return entry.encode('utf-8')
-                else:
-                    return str(entry)
+            if os.path.exists("/usr/bin/apt-get"):
+                def convert_to_str(entry):
+                    if entry is None:
+                        return ''
+                    elif isinstance(entry, (tuple, list)):
+                        return type(entry)(convert_to_str(item) for item in entry)
+                    elif isinstance(entry, str):
+                        return entry
+                    elif isinstance(entry, text_type):
+                        return entry.encode('utf-8')
+                    else:
+                        return str(entry)
 
-            self.mlist.setList(
-                list(map(lambda x: channelEntryIPTVplaylist(convert_to_str(x)), self.channel_list))
-            )
+                self.mlist.setList(
+                    list(map(lambda x: channelEntryIPTVplaylist(convert_to_str(x)), self.channel_list))
+                )
+            else:
+                self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.moveToIndex(0)
             self.mlist.selectionEnabled(1)
             self.button_updater()
@@ -1380,17 +1384,22 @@ class xc_Main(Screen):
         self.filter_search = []
 
     def set_tmp_list(self):
-        def convert_to_string(entry):
-            if entry is None:
-                return ''
-            elif isinstance(entry, (tuple, list)):
-                return type(entry)(convert_to_string(item) for item in entry)
-            else:
-                return str(entry)
-        string_channel_list = list(map(convert_to_string, self.channel_list))
+        if os.path.exists("/usr/bin/apt-get"):
 
-        with codecs.open(input_file, "w", encoding="utf-8") as f:
-            json.dump(string_channel_list, f)
+            def convert_to_string(entry):
+                if entry is None:
+                    return ''
+                elif isinstance(entry, (tuple, list)):
+                    return type(entry)(convert_to_string(item) for item in entry)
+                else:
+                    return str(entry)
+            string_channel_list = list(map(convert_to_string, self.channel_list))
+
+            with codecs.open(input_file, "w", encoding="utf-8") as f:
+                json.dump(string_channel_list, f)
+        else:
+            with open(input_file, 'w') as f:
+                json.dump(self.channel_list, f)
 
     def load_from_tmp(self):
         if file_exists(output_file):
@@ -3819,8 +3828,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
 
 def xcm3ulistEntry(name):
-    png0 = plugin_path + 'skin/pic/xcselh.png'
-    pngl = plugin_path + 'skin/pic/xcon.png'
+    png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+    pngl = os.path.join(plugin_path, 'skin/pic/xcon.png')
     res = [name]
     white = 16777215
 
@@ -3959,7 +3968,6 @@ class downloadTask(Task):
                 print(e)
 
 
-screenwidth = getDesktop(0).size()
 if screenwidth.width() == 2560:
     CHANNEL_NUMBER = [3, 4, 120, 60, 0]
     CHANNEL_NAME = [130, 4, 1800, 60, 1]
