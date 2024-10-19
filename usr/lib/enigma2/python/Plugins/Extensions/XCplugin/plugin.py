@@ -117,6 +117,7 @@ import json
 import os
 import re
 import requests
+import shutil
 import six
 import socket
 import sys
@@ -1437,17 +1438,18 @@ class xc_Main(Screen):
 
     def exitY(self):
         keywords = ['get_series', 'get_vod', 'get_live']
+        
+        if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
+            shutil.copy(output_file, input_file)
+            remove(output_file)        
+        
         if file_exists(input_file):
             with codecs.open(input_file, "r", encoding="utf-8") as f:
                 content = f.read()
                 if any(keyword in content for keyword in keywords):
                     print('=========== self show_all now')
-                    self.show_all()
-
-        if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
-            import shutil
-            shutil.copy(output_file, input_file)
-            remove(output_file)
+                    self.mmark()
+                    # self.show_all()
 
         if globalsxp.btnsearch == 1:
             globalsxp.btnsearch = 0
