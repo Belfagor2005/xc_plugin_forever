@@ -4033,33 +4033,36 @@ def uninstaller():
 
 
 def returnIMDB(text_clear):
-    tmdb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
+    tmdb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
     text = html_conv.html_unescape(text_clear)
-    if file_exists(tmdb):
-        try:
-            from Plugins.Extensions.tmdb.plugin import tmdb
-            _session.open(tmdb.tmdbScreen, text, 0)
-        except Exception as e:
-            print("[XCF] tmdb: ", e)
-        return True
-    elif file_exists(TMDB):
+    if os.path.exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
-            print("[XCF] TMDB: ", e)
+            print("[XCF] Tmdb: ", str(e))
         return True
-    elif file_exists(IMDb):
+
+    elif os.path.exists(tmdb):
+        try:
+            from Plugins.Extensions.tmdb.plugin import tmdb
+            _session.open(tmdb.tmdbScreen, text, 0)
+        except Exception as e:
+            print("[XCF] Tmdb: ", str(e))
+        return True
+
+    elif os.path.exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
             imdb(_session, text)
         except Exception as e:
-            print("[XCF] IMDb: ", e)
+            print("[XCF] imdb: ", str(e))
         return True
     else:
         _session.open(MessageBox, text, MessageBox.TYPE_INFO)
+        return True
     return False
 
 
