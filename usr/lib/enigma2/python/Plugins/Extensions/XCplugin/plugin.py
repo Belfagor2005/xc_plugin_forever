@@ -137,7 +137,7 @@ except ImportError:
 
 from six.moves.urllib.parse import urlparse
 if six.PY3:
-    unicode = str
+    unicode = text_type
     from urllib.request import (urlopen, Request)
 elif six.PY2:
     from urllib2 import (urlopen, Request)
@@ -1438,11 +1438,11 @@ class xc_Main(Screen):
 
     def exitY(self):
         keywords = ['get_series', 'get_vod', 'get_live']
-        
+
         if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
             shutil.copy(output_file, input_file)
-            remove(output_file)        
-        
+            remove(output_file)
+
         if file_exists(input_file):
             with codecs.open(input_file, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -2645,21 +2645,32 @@ class xc_help(Screen):
 
 
 class xc_Epg(Screen):
-    def __init__(self, session, text_clear):
+    def __init__(self, session, text_clear, png=None):
         Screen.__init__(self, session)
         self.session = session
         skin = os.path.join(skin_path, 'xc_epg.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
             self.skin = f.read()
         self.setup_title = ('XCplugin Forever')
+        if png is not None:
+            self.pngx = png
+        else:
+            self.pngx = '/tmp/poster.jpg'
         self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {
             "red": self.close,
             "cancel": self.close,
             "ok": self.close}, -1)
         text = text_clear
+        self["poster"] = Pixmap()
         self["key_red"] = Label(_("Back"))
         self["text_clear"] = StaticText()
         self["text_clear"].setText(text)
+        self.onLayoutFinish.append(self.setCoverArt)
+
+    def setCoverArt(self, pixmap=None):
+        if not self.pngx or not file_exists(self.pngx):
+            self.pngx = '/tmp/poster.jpg'
+        self["poster"].instance.setPixmapFromFile(self.pngx)
 
 
 class xc_maker(Screen):
@@ -3754,7 +3765,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
     def showIMDB(self):
         text_clear = self.name
-        if returnIMDB(text_clear):
+        if returnIMDB(text_clear) is True:
             print('M3uPlay2 show imdb/tmdb')
 
     def openPlay(self, servicetype, url):
@@ -4032,20 +4043,58 @@ def uninstaller():
         raise
 
 
+'''
 def returnIMDB(text_clear):
     TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
-    tmdb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
+    tmdbx = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
+    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
+
+    # List priority: TMDB --> IMDb
+    plugin_priorities = [
+        (TMDB, "TMDB", "from Plugins.Extensions.TMBD.plugin import TMBD", "TMBD.tmdbScreen"),
+        (tmdbx, "tmdbx", "from Plugins.Extensions.tmdb.plugin import tmdb", "tmdb.tmdbScreen"),
+        (IMDb, "IMDb", "from Plugins.Extensions.IMDb.plugin import main as imdb", "imdb(_session, text)")
+    ]
+
+    text = html_conv.html_unescape(text_clear)
+    for plugin_path, plugin_name, import_stmt, open_stmt in plugin_priorities:
+        if os.path.exists(plugin_path):
+            try:
+                exec(import_stmt)
+                if "tmdbScreen" in open_stmt:
+                    exec("_session.open({}, text, 0)".format(open_stmt))
+                else:
+                    exec(open_stmt)
+                return True
+            except Exception as e:
+                print("[XCF] {}: {}".format(plugin_name, str(e)))
+    return False
+'''
+
+
+def returnIMDB(text_clear):
+    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
+    tmdbx = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
     IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
     text = html_conv.html_unescape(text_clear)
     if os.path.exists(TMDB):
         try:
             from Plugins.Extensions.TMBD.plugin import TMBD
+            print("[XCF] TMDB")
             _session.open(TMBD.tmdbScreen, text, 0)
         except Exception as e:
-            print("[XCF] Tmdb: ", str(e))
+            print("[XCF] TMDB: ", str(e))
         return True
 
-    elif os.path.exists(tmdb):
+        try:
+            from Plugins.Extensions.TMBD.plugin import TMBD
+            print("[XCF] tmdb")
+            _session.open(TMBD, text, 0)
+        except Exception as e:
+            print("[XCF] tmdb: ", str(e))
+        return True
+
+    if os.path.exists(tmdbx):
         try:
             from Plugins.Extensions.tmdb.plugin import tmdb
             _session.open(tmdb.tmdbScreen, text, 0)
@@ -4053,16 +4102,14 @@ def returnIMDB(text_clear):
             print("[XCF] Tmdb: ", str(e))
         return True
 
-    elif os.path.exists(IMDb):
+    if os.path.exists(IMDb):
         try:
             from Plugins.Extensions.IMDb.plugin import main as imdb
             imdb(_session, text)
         except Exception as e:
             print("[XCF] imdb: ", str(e))
         return True
-    else:
-        _session.open(MessageBox, text, MessageBox.TYPE_INFO)
-        return True
+
     return False
 
 
@@ -4080,10 +4127,11 @@ def show_more_infos(name, index):
             text2 = selected_channel[2]
             text3 = selected_channel[8]
             text4 = selected_channel[9]
+            pixim = selected_channel[7]
             text_clear += (str(text2)
                            + '\n\n' + str(text3)
                            + '\n\n' + str(text4))
-            _session.open(xc_Epg, text_clear)
+            _session.open(xc_Epg, text_clear, pixim)
     else:
         message = (_("Please enter correct server parameters in Config\n no valid list "))
         Utils.web_info(message)
