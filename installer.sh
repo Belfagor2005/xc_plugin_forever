@@ -136,7 +136,7 @@ BOX MODEL: $box_type
 OO SYSTEM: $OSTYPE
 PYTHON: $python_vers
 IMAGE NAME: $distro_value
-IMAGE VERSION: $distro_version" >> /tmp/XCplugin_debug.txt
+IMAGE VERSION: $distro_version"
 sleep 5
 killall -9 enigma2
 exit 0
