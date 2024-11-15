@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## setup command=wget -q "--no-check-certificate" https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh -O - | /bin/sh
-exec > >(tee -a /tmp/XCplugin_debug.txt) 2>&1
-set -x
+# exec > >(tee -a /tmp/XCplugin_debug.txt) 2>&1
+# set -x
 ## Only This 2 lines to edit with new version ######
 version='3.6'
 changelog='BACK TO CATEGORY LIST\nFix DreamOS System\nEPG Fixed\nAll code unnecessary removed\nAdd Module import'
