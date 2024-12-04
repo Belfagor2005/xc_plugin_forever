@@ -1101,7 +1101,7 @@ class Provider:
         if self._dictchannels:
             with open(mappingfile, "w") as f:
                 f.write('<!--\r\n')
-                f.write('{} E2m3u2bouquet Custom mapping file\r\n'.format(indent))
+                f.write('{} XC Custom mapping file\r\n'.format(indent))
                 f.write('{} Rearrange bouquets or channels in the order you wish\r\n'.format(indent))
                 f.write('{} Disable bouquets or channels by setting enabled to "false"\r\n'.format(indent))
                 f.write('{} Map DVB EPG to IPTV by changing channel serviceRef attribute to match DVB service reference\r\n'.format(indent))
@@ -1534,7 +1534,7 @@ class Config:
         if self.providers:
             with open(config_file, 'w') as f:
                 f.write('<!--\r\n')
-                f.write('{}E2m3u2bouquet supplier config file\r\n'.format(indent))
+                f.write('{}XC supplier config file\r\n'.format(indent))
                 f.write('{}Add as many suppliers as required\r\n'.format(indent))
                 f.write('{}this config file will be used and the relevant bouquets set up for all suppliers entered\r\n'.format(indent))
                 f.write('{}0 = No/False\r\n'.format(indent))
@@ -1684,7 +1684,7 @@ USAGE
 
         if args_config.m3u_url:
             print('\n**************************************')
-            print('E2m3u2bouquet - Command line based setup')
+            print('XC - Command line based setup')
             print('**************************************\n')
             args_provider = Provider(args_config)
             args_provider.process_provider()
@@ -1692,7 +1692,7 @@ USAGE
             display_end_msg()
         else:
             print('\n********************************')
-            print('E2m3u2bouquet - Config based setup')
+            print('XC - Config based setup')
             print('********************************\n')
             e2m3u2b_config = Config()
             if os.path.isfile(os.path.join(CFGPATH, 'config.xml')):
