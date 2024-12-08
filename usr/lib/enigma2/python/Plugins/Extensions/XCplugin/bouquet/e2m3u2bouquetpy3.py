@@ -341,10 +341,11 @@ class Provider:
         if isinstance(name, six.text_type):
             name = name.encode('utf-8')
         name = unicodedata.normalize('NFKD', six.text_type(name, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
-        name = re.sub(b'[\W]', b'', name.replace(b'&', b'and')
+        name = re.sub(r'[\W]', b'', name.replace(b'&', b'and')
                       .replace(b'+', b'plus')
                       .replace(b'*', b'star')
                       .lower())
+
         if not name:
             # use SRP instead of SNP if name can't be used
             name = channel['serviceRef'].replace(':', '_').upper()
@@ -380,7 +381,7 @@ class Provider:
         root, ext = os.path.splitext(parsed_stream_url.path)
 
         # check for vod streams ending .*.m3u8 e.g. 2345.mp4.m3u8
-        is_m3u8_vod = re.search('\.[^/]+\.m3u8$', parsed_stream_url.path)
+        is_m3u8_vod = re.search(r'\.[^/]+\.m3u8$', parsed_stream_url.path)
 
         if (parsed_stream_url.path.endswith('ts') or parsed_stream_url.path.endswith('.m3u8')) \
                 or not ext \
@@ -688,7 +689,7 @@ class Provider:
 
         with open(os.path.join(EPGIMPORTPATH, source_filename), "w+") as f:
             f.write('<sources>\n')
-            f.write('{}<sourcecat sourcecatname="IPTV Bouquet Maker - E2m3u2bouquet">\n'.format(indent))
+            f.write('{}<sourcecat sourcecatname="XC Bouquet Maker">\n'.format(indent))
             f.write('{}<source type="gen_xmltv" nocheck="1" channels="{}">\n'
                     .format(2 * indent, channels_filename))
             f.write('{}<description>{}</description>\n'.format(3 * indent, xml_escape(six.ensure_str(source_name))))
@@ -755,7 +756,7 @@ class Provider:
                         self.config.last_provider_update = int(time.time())
                         updated = True
             except IndexError as e:
-                print('[e2m3u2b] _process_provider_update error unable to read providers update file')
+                print('[e2m3u2b] _process_provider_update error unable to read providers update file', e)
 
             if not DEBUG:
                 os.remove(filename)
@@ -1408,7 +1409,7 @@ class Config:
 
         f = open(configfile, 'wb')
         f.write("""<!--\r
-    E2m3u2bouquet supplier config file\r
+    XC supplier config file\r
     Add as many suppliers as required and run the script with no parameters\r
     this config file will be used and the relevant bouquets set up for all suppliers entered\r
     0 = No/false\r
@@ -1417,7 +1418,7 @@ class Config:
 -->\r
 <config>\r
     <supplier>\r
-        <name>Supplier Name 1</name><!-- Supplier Name -->\r
+        <name>XC Supplier Name 1</name><!-- Supplier Name -->\r
         <enabled>1</enabled><!-- Enable or disable the supplier (0 or 1) -->\r
         <m3uurl><![CDATA[http://address.yourprovider.com:80/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus&output=ts]]></m3uurl><!-- Extended M3U url -->\r
         <epgurl><![CDATA[http://address.yourprovider.com:80/xmltv.php?username=USERNAME&password=PASSWORD]]></epgurl><!-- XMLTV EPG url -->\r
@@ -1436,7 +1437,7 @@ class Config:
         <bouquettop>0</bouquettop><!-- Place IPTV bouquets at top (0 or 1)-->\r
     </supplier>\r
     <supplier>\r
-        <name>Supplier Name</name><!-- Supplier Name -->\r
+        <name>XC Supplier Name</name><!-- Supplier Name -->\r
         <enabled>0</enabled><!-- Enable or disable the supplier (0 or 1) -->\r
         <m3uurl><![CDATA[http://address.yourprovider.com:80/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus&output=ts]]></m3uurl><!-- Extended M3U url -->\r
         <epgurl><![CDATA[http://address.yourprovider.com:80/xmltv.php?username=USERNAME&password=PASSWORD]]></epgurl><!-- XMLTV EPG url -->\r
