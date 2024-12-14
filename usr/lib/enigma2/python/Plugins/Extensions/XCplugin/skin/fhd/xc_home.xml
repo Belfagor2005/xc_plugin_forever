@@ -10,7 +10,7 @@
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
 	<!-- List -->
-	<widget name="text" position="220,155" size="880,600" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
+	<widget name="menu" position="220,155" size="880,600" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
 	<!-- Buttons Colors -->
 	<eLabel position="220,940" size="880,5" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="219,954" size="300,6" zPosition="12" />

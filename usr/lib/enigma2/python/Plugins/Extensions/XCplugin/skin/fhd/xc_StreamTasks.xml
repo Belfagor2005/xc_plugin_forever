@@ -11,7 +11,7 @@
 	<widget name="totalItem" position="370,73" size="936,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" halign="right" />
 	<widget name="label2" position="370,32" size="936,40" font="Regular;30" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="3" halign="right" />
 	<!-- Movie List -->
-	<widget source="movielist" render="Listbox" position="160,155" size="1570,800" scrollbarMode="showOnDemand" transparent="1" zPosition="2" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png">
+	<widget source="filelist" render="Listbox" position="160,155" size="1570,800" scrollbarMode="showOnDemand" transparent="1" zPosition="2" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png">
 		<convert type="TemplatedMultiContent">
 			{"template": [
 				MultiContentEntryText(pos = (10, 5),       size = (920, 50), font=1, flags = RT_HALIGN_LEFT, text = 1),                  # index 1 is the name

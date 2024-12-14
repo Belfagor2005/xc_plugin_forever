@@ -8,7 +8,7 @@
 	<widget source="global.CurrentTime" render="Label" position="1760,40" size="534,107" font="Regular;46" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
 		<convert type="ClockToText">Format %A %d %B %H:%M:%S</convert>
 	</widget>
-	<widget name="feedlist" position="200,207" size="1127,1067" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
+	<widget name="menulist" position="200,207" size="1127,1067" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1880,207" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
 	<widget name="version" position="1884,777" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="1347,820" size="944,7" backgroundColor="#202020" zPosition="1" />

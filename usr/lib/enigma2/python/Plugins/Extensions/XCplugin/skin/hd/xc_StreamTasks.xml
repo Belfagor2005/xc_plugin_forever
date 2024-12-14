@@ -13,7 +13,7 @@
 
 	<eLabel text="MovieList" position="213,20" size="333,66" font="Regular;32" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<!-- Movie List -->
-	<widget source="movielist" render="Listbox" position="106,103" size="1046,533" scrollbarMode="showOnDemand" transparent="1" zPosition="2"  
+	<widget source="filelist" render="Listbox" position="106,103" size="1046,533" scrollbarMode="showOnDemand" transparent="1" zPosition="2"  
 		selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/slider.png" >
 		<convert type="TemplatedMultiContent">
 			{"template": [

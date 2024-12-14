@@ -6,7 +6,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     12/10/2024               *
+*  update     12/12/2024               *
 *       Skin by MMark                  *
 ****************************************
 '''
@@ -19,10 +19,13 @@ from . import (
     isDreamOS,
     make_request,
     paypal,
+    check_port,
+    retTest,
 )
-from . import Utils
-from . import html_conv
-from .modul import (
+from .addons import Utils
+from .addons import html_conv
+from .addons.downloader2 import imagedownloadScreen
+from .addons.modul import (
     cleanNames,
     clear_caches,
     copy_poster,
@@ -35,8 +38,9 @@ from .modul import (
     Panel_list,
     setAspect,
 )
-from .Console import Console as xcConsole
-from .downloader import downloadWithProgress
+from .addons.Console import Console as xcConsole
+from .addons.downloader import downloadWithProgress
+from .addons.NewOeSk import ctrlSkin
 
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.config import (
@@ -82,7 +86,7 @@ from Screens.InfoBarGenerics import (
     InfoBarSubtitleSupport,
 )
 
-from requests.adapters import HTTPAdapter, Retry
+# from requests.adapters import HTTPAdapter, Retry
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.MovieSelection import MovieSelection
@@ -172,7 +176,7 @@ if sslverify:
             return ctx
 
 
-currversion = '3.6'
+currversion = '3.7'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 modelive = [("1", "Dvb(1)"), ("4097", "IPTV(4097)")]
@@ -258,61 +262,26 @@ screenwidth = getDesktop(0).size()
 socket.setdefaulttimeout(5)
 
 
-def check_port(url):
-    print('check_port url init=', check_port)
-    line = url.strip()
-    protocol = 'http://'
-    domain = ''
-    port = ''
-    if str(cfg.port.value) != '80':
-        port = str(cfg.port.value)
-    else:
-        port = '80'
-    host = ''
-    urlsplit1 = line.split("/")
-    protocol = urlsplit1[0] + "//"
-    if len(urlsplit1) > 2:
-        domain = urlsplit1[2].split(':')[0]
-        if len(urlsplit1[2].split(':')) > 1:
-            port = urlsplit1[2].split(':')[1]
-    host = "%s%s:%s" % (protocol, domain, port)
-    if not url.startswith(host):
-        url = str(url.replace(protocol + domain, host))
-    print('check_port return url =', url)
-    return url
-
-
-def retTest(url):
-    try:
-        retries = Retry(total=1, backoff_factor=1)
-        adapter = HTTPAdapter(max_retries=retries)
-        http = requests.Session()
-        http.mount("http://", adapter)
-        http.mount("https://", adapter)
-        r = http.get(url, headers={'User-Agent': Utils.RequestAgent()}, timeout=10, verify=False)  # , stream=True)
-        r.raise_for_status()
-        if r.status_code == requests.codes.ok:
-            print('retTest r.status code: ', r.status_code)
-            ycse = r.json()
-            # print('ycse -----------> ', ycse)
-            return ycse
-    except Exception as e:
-        return False
-        print('error retTest requests -----------> ', e)
-
-
 class xc_home(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_home.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('MAIN MENU')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_home', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'MAIN MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'MAIN MENU')
+            except:
+                pass
+        # self.setTitle = ('MAIN MENU')
         self.list = []
         self["Text"] = Label("")
         self["version"] = Label(version)
-        self['text'] = xcM3UList([])
+        self['menu'] = xcM3UList([])
         self["key_red"] = Label(_("Exit"))
         self["key_green"] = Label(_("Select"))
         self["key_yellow"] = Label(_("Movie"))
@@ -360,7 +329,7 @@ class xc_home(Screen):
         self.session.open(xc_config)
 
     def button_ok(self):
-        self.keyNumberGlobalCB(self['text'].getSelectedIndex())
+        self.keyNumberGlobalCB(self['menu'].getSelectedIndex())
 
     def exitY(self):
         Utils.ReloadBouquets()
@@ -399,7 +368,7 @@ class xc_home(Screen):
         for x in Panel_list:
             list.append(xcm3ulistEntry(x))
             self.menu_list.append(x)
-        self['text'].setList(list)
+        self['menu'].setList(list)
         globalsxp.infoname = str(globalsxp.STREAMS.playlistname)
         if cfg.infoexp.getValue:
             if str(cfg.infoname.value) != 'myBouquet':
@@ -427,11 +396,19 @@ class xc_home(Screen):
 class xc_config(Screen, ConfigListScreen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_config.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_config', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'CONFIG MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'CONFIG MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.list = []
         self.onChangedEntry = []
         self["playlist"] = Label("Xstream Code Setup")
@@ -515,7 +492,8 @@ class xc_config(Screen, ConfigListScreen):
             self['statusbar'].setText(_("Last channel update: %s") % cfg.last_update.value)
 
     def layoutFinished(self):
-        self.setTitle(self.setup_title)
+        pass
+        # self.setTitle(self.setTitle)
 
     def helpx(self):
         self.session.open(xc_help)
@@ -1039,13 +1017,21 @@ class xc_Main(Screen):
         global channel_list2
         _session = session
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_Main.xml')
         if cfg.screenxl.value:
             skin = os.path.join(skin_path, 'xc_Mainxl.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_Main', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'MAIN MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'MAIN MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.channel_list = globalsxp.STREAMS.iptv_list
         self.index = globalsxp.STREAMS.list_index  # 0   ??
         channel_list2 = self.channel_list
@@ -1202,8 +1188,8 @@ class xc_Main(Screen):
     def go(self):
         self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.mlist.onSelectionChanged.append(self.update_description)
-        self["feedlist"] = self.mlist
-        self["feedlist"].moveToIndex(0)
+        self["menulist"] = self.mlist
+        self["menulist"].moveToIndex(0)
 
     def update_list(self):
         globalsxp.STREAMS = iptv_streamse()
@@ -1330,8 +1316,8 @@ class xc_Main(Screen):
             if globalsxp.re_search is True:
                 self.channel_list = globalsxp.iptv_list_tmp
                 self.mlist.onSelectionChanged.append(self.update_description)
-                self["feedlist"] = self.mlist
-                self["feedlist"].moveToIndex(0)
+                self["menulist"] = self.mlist
+                self["menulist"].moveToIndex(0)
             else:
                 self.channel_list = globalsxp.STREAMS.iptv_list
 
@@ -1375,7 +1361,7 @@ class xc_Main(Screen):
                 self.mlist.setList(list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self.index = self.mlist.getSelectionIndex()
-                self["feedlist"] = self.mlist
+                self["menulist"] = self.mlist
             else:
                 self.resetSearch()
             self.button_updater()
@@ -1419,7 +1405,7 @@ class xc_Main(Screen):
             self.mlist.setList(list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
             self.mlist.onSelectionChanged.append(self.update_description)
             self.index = self.mlist.getSelectionIndex()
-            self["feedlist"] = self.mlist
+            self["menulist"] = self.mlist
 
     def mmark(self):
         copy_poster()
@@ -1675,7 +1661,6 @@ class xc_Main(Screen):
 
     def downloady(self):
         if self.downloading is True:
-            from .downloader2 import imagedownloadScreen
             Utils.OnclearMem()
             self.session.open(imagedownloadScreen, self.filename, self.file_down, self.vod_url)
         else:
@@ -1835,12 +1820,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
     def __init__(self, session, recorder_sref=None):
         global _session
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         _session = session
         self.recorder_sref = None
+
         skin = os.path.join(skin_path, 'xc_Player.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
+            skin = f.read()
+        self.skin = ctrlSkin('xc_Player', skin)
+
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
         InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
@@ -1848,11 +1836,13 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
         InfoBarSubtitleSupport.__init__(self)
         SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
         SubsSupportStatus.__init__(self)
+
         try:
             self.init_aspect = int(getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
+
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self["state"] = Label("")
         self["cont_play"] = Label("")
@@ -2238,18 +2228,27 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 class xc_StreamTasks(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_StreamTasks.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_StreamTasks', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'STREAMTASK MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'STREAMTASK MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
+
         try:
             self.init_aspect = int(getAspect())
         except:
             self.init_aspect = 0
         self.new_aspect = self.init_aspect
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-        self["movielist"] = List([])
+        self["filelist"] = List([])
         self["key_green"] = Label(_("Remove"))
         self["key_red"] = Label(_("Close"))
         self['totalItem'] = Label()
@@ -2281,14 +2280,14 @@ class xc_StreamTasks(Screen):
         self.rebuildMovieList()
 
     def rebuildMovieList(self):
-        if file_exists(globalsxp.Path_Movies):
+        if globalsxp.Path_Movies and file_exists(globalsxp.Path_Movies):
             self.movielist = []
             self.getTaskList()
             self.getMovieList()
-            self["movielist"].setList(self.movielist)
-            self["movielist"].updateList(self.movielist)
+            self["filelist"].setList(self.movielist)
+            self["filelist"].updateList(self.movielist)
         else:
-            message = "The Movie path not configured or path not exist!!!"
+            message = "The Movie path is not configured correctly or does not exist!!!"
             Utils.web_info(message)
             self.close()
 
@@ -2315,35 +2314,74 @@ class xc_StreamTasks(Screen):
         freeSize = "-?-"
         if isdir(cfg.pthmovie.value):
             filelist = listdir(cfg.pthmovie.value)
-            if filelist is not None:
+            if filelist:
                 file1 = True
                 filelist.sort()
                 count = 0
                 for filename in filelist:
-                    if file_exists(globalsxp.Path_Movies + filename):
-                        extension = filename.split('.')
-                        extension = extension[-1].lower()
-                        if extension in EXTENSIONS:
-                            count = count + 1
+                    full_path = globalsxp.Path_Movies + filename
+                    if file_exists(full_path):
+                        extension = filename.split('.')[-1].lower()  # Ottieni l'estensione in minuscolo
+                        if extension in EXTENSIONS and EXTENSIONS[extension] == "movie":  # Controlla se è un file video
+                            count += 1
                             self.totalItem = str(count)
                             movieFolder = os.statvfs(cfg.pthmovie.value)
                             try:
                                 stat = movieFolder
-                                freeSize = Utils.convert_size(float(stat.f_bfree * stat.f_bsize))
+                                freeSize = Utils.convert_size(float(stat.f_bfree * stat.f_bsize))  # Calcola lo spazio libero
                             except Exception as e:
                                 print(e)
-                    titel2 = '%s: %s %s' % (folder, str(freeSize), free)
-                    self['label2'].setText(titel2)
-                    self['totalItem'].setText('Item %s' % str(self.totalItem))
-                    self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
-        else:
-            titel2 = '(%s offline)' % folder
-            self['label2'].setText(titel2)
-            self['totalItem'].setText('Item %s' % str(self.totalItem))
+                            titel2 = '%s: %s %s' % (folder, str(freeSize), free)
+                            self['label2'].setText(titel2)
+                            self['totalItem'].setText('Item %s' % str(self.totalItem))
+                            self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+            else:
+                titel2 = '(%s offline)' % folder
+                self['label2'].setText(titel2)
+                self['totalItem'].setText('Item %s' % str(self.totalItem))
+
+
+
+    # def getMovieList(self):
+        # global file1
+        # free = _('Free Space')
+        # folder = _('Movie Folder')
+        # self.totalItem = '0'
+        # file1 = False
+        # filelist = ''
+        # self.pth = ''
+        # freeSize = "-?-"
+        # if isdir(cfg.pthmovie.value):
+            # filelist = listdir(cfg.pthmovie.value)
+            # if filelist is not None:
+                # file1 = True
+                # filelist.sort()
+                # count = 0
+                # for filename in filelist:
+                    # if file_exists(globalsxp.Path_Movies + filename):
+                        # extension = filename.split('.')
+                        # extension = extension[-1].lower()
+                        # if extension in EXTENSIONS:
+                            # count = count + 1
+                            # self.totalItem = str(count)
+                            # movieFolder = os.statvfs(cfg.pthmovie.value)
+                            # try:
+                                # stat = movieFolder
+                                # freeSize = Utils.convert_size(float(stat.f_bfree * stat.f_bsize))
+                            # except Exception as e:
+                                # print(e)
+                    # titel2 = '%s: %s %s' % (folder, str(freeSize), free)
+                    # self['label2'].setText(titel2)
+                    # self['totalItem'].setText('Item %s' % str(self.totalItem))
+                    # self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+        # else:
+            # titel2 = '(%s offline)' % folder
+            # self['label2'].setText(titel2)
+            # self['totalItem'].setText('Item %s' % str(self.totalItem))
 
     def keyOK(self):
         global file1
-        current = self["movielist"].getCurrent()
+        current = self["filelist"].getCurrent()
         path = globalsxp.Path_Movies
         if current:
             if current[0] == "movie":
@@ -2380,7 +2418,7 @@ class xc_StreamTasks(Screen):
         self.close()
 
     def message1(self, answer=None):
-        current = self["movielist"].getCurrent()
+        current = self["filelist"].getCurrent()
         if current is None:
             self.session.open(MessageBox, _("No movie selected!"), MessageBox.TYPE_INFO, timeout=5)
             return
@@ -2426,11 +2464,20 @@ class xc_StreamTasks(Screen):
 class xc_help(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_help.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_help', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'HELP MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'HELP MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
+
         self.Update = False
         self["version"] = Label(version)
         self["key_red"] = Label(_("Back"))
@@ -2647,11 +2694,19 @@ class xc_help(Screen):
 class xc_Epg(Screen):
     def __init__(self, session, text_clear, png=None):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_epg.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_Epg', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'EPG MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'EPG MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         if png is not None:
             self.pngx = png
         else:
@@ -2676,11 +2731,19 @@ class xc_Epg(Screen):
 class xc_maker(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_maker.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_maker', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'MAKER MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'MAKER MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.list = []
         self["Text"] = Label("")
         self["version"] = Label(version)
@@ -2771,17 +2834,25 @@ class xc_maker(Screen):
 class OpenServer(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_OpenServer.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('OpenServer', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'SERVER MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'SERVER MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.list = []
         self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
         self["list"] = xcM3UList([])
         self["Text"] = Label("Select Server")
         self["version"] = Label(version)
-        self["playlist"] = Label("")
+        self["infoname"] = Label("")
         self["key_red"] = Label(_("Back"))
         self["key_green"] = Label()
         self["key_yellow"] = Label(_("Remove"))
@@ -2867,7 +2938,7 @@ class OpenServer(Screen):
         self["live"].setText(str(len(self.names)) + " Team")
         if cfg.infoexp.getValue():
             globalsxp.infoname = str(cfg.infoname.value)
-        self["playlist"].setText(globalsxp.infoname)
+        self["infoname"].setText(globalsxp.infoname)
 
     def Start_iptv_player(self):
         globalsxp.STREAMS = iptv_streamse()
@@ -3002,13 +3073,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 
     def __init__(self, session, recorder_sref=None):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         global _session
         _session = session
         self.recorder_sref = None
         skin = os.path.join(skin_path, 'xc_iptv_player.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
+            skin = f.read()
+        self.skin = ctrlSkin('nIPTVplayer', skin)
         InfoBarBase.__init__(self, steal_current_service=True)
         IPTVInfoBarShowHide.__init__(self)
         InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
@@ -3197,11 +3269,19 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 class xc_Play(Screen):
     def __init__(self, session):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_M3uLoader.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
+            skin = f.read()
+        self.skin = ctrlSkin('xc_Play', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'PLAYER MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'PLAYER MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.list = []
         try:
             self.init_aspect = int(getAspect())
@@ -3215,8 +3295,7 @@ class xc_Play(Screen):
         self.name = globalsxp.Path_Movies
         self["path"] = Label(_("Put .m3u Files in Folder %s") % globalsxp.Path_Movies)
         self["version"] = Label(version)
-        self["Text"] = Label()
-        self["Text"].setText("M3u Utility")
+        self["Text"] = Label("M3u Utility")
         self['progress'] = ProgressBar()
         self['progresstext'] = StaticText()
         self["progress"].hide()
@@ -3476,12 +3555,19 @@ class xc_Play(Screen):
 class xc_M3uPlay(Screen):
     def __init__(self, session, name):
         Screen.__init__(self, session)
-        self.session = session
+        # self.session = session
         skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
-            self.skin = f.read()
-        self.setup_title = ('XCplugin Forever')
-        self.list = []
+            skin = f.read()
+        self.skin = ctrlSkin('xc_M3uPlay', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'M3U UTILITY MENU')
+        except:
+            try:
+                self.setTitle(_('%s') % 'M3U UTILITY MENU')
+            except:
+                pass
+        # self.setTitle = ('XCplugin Forever')
         self.name = name
         self.downloading = False
         self.download = None
@@ -3550,9 +3636,9 @@ class xc_M3uPlay(Screen):
             self.playList()
 
     def refreshmylist(self):
+        # Reset della lista dei nomi
         self.names = []
         self.list = self.names
-        self.names[:] = [0, 0]
         self.playList()
 
     def playList(self):
@@ -3615,7 +3701,6 @@ class xc_M3uPlay(Screen):
             ext = splitext(pth)[1]
             if ext not in EXTDOWN:
                 ext = '.avi'
-            # self.urlm3u = Utils.decodeUrl(self.urlm3u)
             if ext in EXTDOWN or ext == '.avi':
                 if answer is None:
                     self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.name_m3u)
@@ -3647,7 +3732,6 @@ class xc_M3uPlay(Screen):
 
     def downloadz(self):
         if self.downloading:
-            from .downloader2 import imagedownloadScreen
             Utils.OnclearMem()
             self.session.open(imagedownloadScreen, self.name_m3u, self.in_tmp, self.urlm3u)
         else:
@@ -3666,6 +3750,68 @@ class xc_M3uPlay(Screen):
         else:
             self['progress'].value = 0
             self['progresstext'].text = '0 of 0 kBytes (0.00%%)'
+
+    # def runRec(self, answer=None):
+        # self.downloading = False
+        # idx = self["list"].getSelectionIndex()
+        # if idx < 0 or idx is None:
+            # return
+        # else:
+            # self.name_m3u = self.names[idx]
+            # self.urlm3u = self.urls[idx]
+            # pth = urlparse(self.urlm3u).path
+            # ext = splitext(pth)[1]
+            # if ext not in EXTDOWN:
+                # ext = '.avi'
+            # if ext in EXTDOWN or ext == '.avi':
+                # if answer is None:
+                    # self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.name_m3u)
+                # elif answer:
+                    # cleanName = cleanNames(self.name_m3u)
+                    # filename = cleanName + ext
+                    # self.in_tmp = globalsxp.Path_Movies + filename.lower()
+                    # if file_exists(self.in_tmp):
+                        # cmd = 'rm -f ' + self.in_tmp
+                        # system(cmd)
+                    # if cfg.pdownmovie.value == "Direct":
+                        # self.downloading = True
+                        # # print("Direct download mode")
+                        # self.downloadz()
+                    # else:
+                        # try:
+                            # self.downloading = True
+                            # # print("Starting download with progress for:", self.urlm3u)
+                            # self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
+                            # self.download.addProgress(self.downloadProgress)
+                            # self.download.start().addCallback(self.check).addErrback(self.showError)  # Usare le nuove funzioni
+                        # except Exception as e:
+                            # self.downloading = False
+                            # print("Error during download:", e)
+                # else:
+                    # return
+            # else:
+                # self.session.open(MessageBox, _("Only VOD Movie allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+
+    # def downloadz(self):
+        # if self.downloading:
+            # Utils.OnclearMem()
+            # self.session.open(imagedownloadScreen, self.name_m3u, self.in_tmp, self.urlm3u)
+        # else:
+            # print("Download not started")
+            # return
+
+        # self.downloading = False
+        # self.refreshmylist()
+
+    # def downloadProgress(self, recvbytes, totalbytes):
+        # self["progress"].show()
+        # if totalbytes > 0:
+            # self['progress'].value = int(100 * recvbytes // float(totalbytes))
+            # self['progresstext'].text = '%d of %d kBytes (%.2f%%)' % (
+                # recvbytes // 1024, totalbytes // 1024, 100 * recvbytes // float(totalbytes))
+        # else:
+            # self['progress'].value = 0
+            # self['progresstext'].text = '0 of 0 kBytes (0.00%%)'
 
     def check(self, fplug):
         checkfile = self.in_tmp
@@ -4009,8 +4155,8 @@ else:
     globalsxp.piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
 
-if isDreamOS:
-    skin_path = os.path.join(skin_path, 'dreamOs')
+# if isDreamOS:
+    # skin_path = os.path.join(skin_path, 'dreamOs')
 
 
 def channelEntryIPTVplaylist(entry):
@@ -4041,35 +4187,6 @@ def uninstaller():
     except Exception as e:
         print("Errore durante il processo di disinstallazione: ", e)
         raise
-
-
-'''
-def returnIMDB(text_clear):
-    TMDB = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('TMDB'))
-    tmdbx = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
-    IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
-
-    # List priority: TMDB --> IMDb
-    plugin_priorities = [
-        (TMDB, "TMDB", "from Plugins.Extensions.TMBD.plugin import TMBD", "TMBD.tmdbScreen"),
-        (tmdbx, "tmdbx", "from Plugins.Extensions.tmdb.plugin import tmdb", "tmdb.tmdbScreen"),
-        (IMDb, "IMDb", "from Plugins.Extensions.IMDb.plugin import main as imdb", "imdb(_session, text)")
-    ]
-
-    text = html_conv.html_unescape(text_clear)
-    for plugin_path, plugin_name, import_stmt, open_stmt in plugin_priorities:
-        if os.path.exists(plugin_path):
-            try:
-                exec(import_stmt)
-                if "tmdbScreen" in open_stmt:
-                    exec("_session.open({}, text, 0)".format(open_stmt))
-                else:
-                    exec(open_stmt)
-                return True
-            except Exception as e:
-                print("[XCF] {}: {}".format(plugin_name, str(e)))
-    return False
-'''
 
 
 def returnIMDB(text_clear):

@@ -3,8 +3,8 @@
 ## setup command=wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh?inline=false" -O - | /bin/sh
 
 ## Only This 2 lines to edit with new version ######
-version='3.6'
-changelog='BACK TO CATEGORY LIST\nFix DreamOS System\nEPG Fixed\nAll code unnecessary removed\nAdd Module import'
+version='3.7'
+changelog='Fix skin with OeNewEnigma\nMove Module import'
 ##
 TMPPATH=/tmp/XCplugin-main
 FILEPATH=/tmp/main.tar.gz

@@ -8,7 +8,7 @@
 	<eLabel position="220,120" size="880,5" backgroundColor="#202020" zPosition="1" />
 	<!-- List -->
 	<widget name="list" position="220,155" size="880,600" foregroundColor="#a0a0a0" foregroundColorSelected="#ffffff" backgroundColor="#0b2049" backgroundColorSelected="#303030" enableWrapAround="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" scrollbarMode="showOnDemand" transparent="1" zPosition="1" />
-   	<widget name="playlist" position="220,1840" size="880,60" font="Regular;40" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="1" />        
+   	<widget name="infoname" position="220,1840" size="880,60" font="Regular;40" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" zPosition="1" />        
 	<!-- Buttons Colors -->
 	<eLabel backgroundColor="#00ff0000" position="219,954" size="300,6" zPosition="12" />
 	<eLabel backgroundColor="#0000ff00" position="217,1014" size="300,6" zPosition="12" />
