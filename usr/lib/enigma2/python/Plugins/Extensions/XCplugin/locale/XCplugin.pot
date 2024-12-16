@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XC Forever by Lululla\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-16 11:38+0200\n"
+"POT-Creation-Date: 2024-12-16 21:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <lululla@.cc>\n"
@@ -18,452 +18,472 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: plugin.py\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: addons\n"
 
-#: plugin.py:232
-msgid "interval"
+#: addons/downloader2.py:99 addons/downloader2.py:259
+msgid "Downloading,please wait.."
 msgstr ""
 
-#: plugin.py:232
-msgid "fixed time"
+#: addons/downloader2.py:102 addons/downloader2.py:161
+#: addons/downloader2.py:162 addons/downloader2.py:260
+#: addons/downloader2.py:281 addons/downloader2.py:282
+msgid "Connecting"
 msgstr ""
 
-#: plugin.py:314
+#: addons/downloader2.py:171 addons/downloader2.py:174
+msgid "Downloading"
+msgstr ""
+
+#: addons/downloader2.py:180 addons/downloader2.py:294
+msgid "Download completed successfully."
+msgstr ""
+
+#: addons/downloader2.py:193 addons/downloader2.py:306
+msgid "Download failed Press Ok To Exit"
+msgstr ""
+
+#: addons/downloader2.py:211 addons/downloader2.py:324
+msgid "Are you sure to stop download."
+msgstr ""
+
+#: addons/downloader2.py:232 addons/downloader2.py:345 xcPlayerUri.py:1030
+#: xcPlayerUri.py:1334
+msgid "Aborting..."
+msgstr ""
+
+#: addons/modul.py:188 addons/modul.py:200
+msgid "Resolution Change Failed"
+msgstr ""
+
+#: plugin.py:133 plugin.py:136 plugin.py:560 plugin.py:563 xcConfig.py:121
+#: xcConfig.py:124 xcEpg.py:46 xcEpg.py:49 xcHelp.py:55 xcHelp.py:58
+#: xcMaker.py:52 xcMaker.py:55 xcOpenServer.py:49 xcOpenServer.py:52
+#: xcPlayerUri.py:831 xcPlayerUri.py:834 xcPlayerUri.py:1112
+#: xcPlayerUri.py:1115 xcTask.py:57 xcTask.py:60
+#, python-format
+msgid "%s"
+msgstr ""
+
+#: plugin.py:143
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:315
+#: plugin.py:144
 msgid "Select"
 msgstr ""
 
-#: plugin.py:316
+#: plugin.py:145
 msgid "Movie"
 msgstr ""
 
-#: plugin.py:317
+#: plugin.py:146
 msgid "Loader M3U"
 msgstr ""
 
-#: plugin.py:389
+#: plugin.py:223 xcMaker.py:117
 msgid "First Select the list or enter it in Config"
 msgstr ""
 
-#: plugin.py:439 plugin.py:2425 plugin.py:2649 plugin.py:2666 plugin.py:2763
-#: plugin.py:3202 plugin.py:3470
-msgid "Back"
-msgstr ""
-
-#: plugin.py:440
-msgid "Save"
-msgstr ""
-
-#: plugin.py:441 plugin.py:442
-msgid "Import"
-msgstr ""
-
-#: plugin.py:465
-msgid "Import Server from /ect/enigma2/iptv.sh?"
-msgstr ""
-
-#: plugin.py:484
-#, python-format
-msgid "Missing %s !"
-msgstr ""
-
-#: plugin.py:490
-msgid "Import Server from /tmp/xc.tx?"
-msgstr ""
-
-#: plugin.py:507
-#, python-format
-msgid "File not found %s"
-msgstr ""
-
-#: plugin.py:513
-#, python-format
-msgid "Last channel update: %s"
-msgstr ""
-
-#: plugin.py:526
-msgid "Data Server Configuration:"
-msgstr ""
-
-#: plugin.py:526
-msgid "Your Server Login and data input"
-msgstr ""
-
-#: plugin.py:528
-msgid "Server URL"
-msgstr ""
-
-#: plugin.py:528
-msgid "Enter Server Url without 'http://' your_domine"
-msgstr ""
-
-#: plugin.py:529
-msgid "Server PORT"
-msgstr ""
-
-#: plugin.py:529
-msgid "Enter Server Port Eg.:'8080'"
-msgstr ""
-
-#: plugin.py:530
-msgid "Server Username"
-msgstr ""
-
-#: plugin.py:530
-msgid "Enter Username"
-msgstr ""
-
-#: plugin.py:531
-msgid "Server Password"
-msgstr ""
-
-#: plugin.py:531
-msgid "Enter Password"
-msgstr ""
-
-#: plugin.py:532
-msgid "Server Timeout"
-msgstr ""
-
-#: plugin.py:532
-msgid "Timeout Server (sec)"
-msgstr ""
-
-#: plugin.py:533
-msgid "Folder user file .xml"
-msgstr ""
-
-#: plugin.py:533
-msgid ""
-"Configure folder containing .xml files\n"
-"Press 'OK' to change location."
-msgstr ""
-
-#: plugin.py:534
-msgid "Media Folder "
-msgstr ""
-
-#: plugin.py:534
-msgid ""
-"Configure folder containing movie/media files\n"
-"Press 'OK' to change location."
-msgstr ""
-
-#: plugin.py:536
-msgid "Main Screen XL"
-msgstr ""
-
-#: plugin.py:536
-msgid "Active Main Screen Large"
-msgstr ""
-
-#: plugin.py:537
-msgid "LivePlayer Active "
-msgstr ""
-
-#: plugin.py:537
-msgid "Live Player for Stream .ts: set No for Record Live"
-msgstr ""
-
-#: plugin.py:539
-msgid "Live Services Type"
-msgstr ""
-
-#: plugin.py:539
-msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
-msgstr ""
-
-#: plugin.py:541
-msgid "Download Type "
-msgstr ""
-
-#: plugin.py:541
-msgid "Configure type of download movie: JobManager/Direct."
-msgstr ""
-
-#: plugin.py:543
-msgid "Filter Bad Tag"
-msgstr ""
-
-#: plugin.py:545
-msgid "Bouquet style "
-msgstr ""
-
-#: plugin.py:545
-msgid "Configure the type of conversion in the favorite list"
-msgstr ""
-
-#: plugin.py:547
-msgid "Conversion type Output "
-msgstr ""
-
-#: plugin.py:547
-msgid "Configure type of stream to be downloaded by conversion"
-msgstr ""
-
-#: plugin.py:549
-msgid "Vod Services Type"
-msgstr ""
-
-#: plugin.py:549
-msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
-msgstr ""
-
-#: plugin.py:551
-msgid "Stop Player on Exit"
-msgstr ""
-
-#: plugin.py:551
-msgid "If player active STOP player riproduction on exit"
-msgstr ""
-
-#: plugin.py:553
-msgid "Name Bouquet Configuration:"
-msgstr ""
-
-#: plugin.py:553
-msgid "Set Name for MakerBouquet"
-msgstr ""
-
-#: plugin.py:555
-msgid "Name Bouquet Export"
-msgstr ""
-
-#: plugin.py:555
-msgid "Configure name of exported bouquet. Default is myBouquet"
-msgstr ""
-
-#: plugin.py:557
-msgid "Place IPTV bouquets at "
-msgstr ""
-
-#: plugin.py:557
-msgid "Configure to place the bouquets of the converted lists"
-msgstr ""
-
-#: plugin.py:559
-msgid "Automatic bouquet update (schedule):"
-msgstr ""
-
-#: plugin.py:559
-msgid "Active Automatic Bouquet Update"
-msgstr ""
-
-#: plugin.py:561
-msgid "Schedule type:"
-msgstr ""
-
-#: plugin.py:561
-msgid "At an interval of hours or at a fixed time"
-msgstr ""
-
-#: plugin.py:563
-msgid "Update interval (hours):"
-msgstr ""
-
-#: plugin.py:563
-msgid "Configure every interval of hours from now"
-msgstr ""
-
-#: plugin.py:565
-msgid "Time to start update:"
-msgstr ""
-
-#: plugin.py:565
-msgid "Configure at a fixed time"
-msgstr ""
-
-#: plugin.py:566
-msgid "Picons IPTV "
-msgstr ""
-
-#: plugin.py:566
-msgid "Download Picons ?"
-msgstr ""
-
-#: plugin.py:568
-msgid "Picons IPTV bouquets to "
-msgstr ""
-
-#: plugin.py:568
-msgid ""
-"Configure folder containing picons files\n"
-"Press 'OK' to change location."
-msgstr ""
-
-#: plugin.py:569
-msgid "Link in Main Menu "
-msgstr ""
-
-#: plugin.py:569
-msgid "Display XCplugin in Main Menu"
-msgstr ""
-
-#: plugin.py:581
-msgid "SELECT YOUR CHOICE"
-msgstr ""
-
-#: plugin.py:649
-msgid "Choose Directory:"
-msgstr ""
-
-#: plugin.py:650
-msgid "Choose directory"
-msgstr ""
-
-#: plugin.py:669 plugin.py:673 plugin.py:677
-#, python-format
-msgid "%s NOT DETECTED!"
-msgstr ""
-
-#: plugin.py:691
-msgid "Settings saved successfully !"
-msgstr ""
-
-#: plugin.py:716
-msgid "Line Append to playlist"
-msgstr ""
-
-#: plugin.py:734
-msgid "Really close without saving settings?"
-msgstr ""
-
-#: plugin.py:1075
+#: plugin.py:594
 msgid "HOME"
 msgstr ""
 
-#: plugin.py:1076
+#: plugin.py:595
 msgid "Rec Movie"
 msgstr ""
 
-#: plugin.py:1077
+#: plugin.py:596
 msgid "Rec Series"
 msgstr ""
 
-#: plugin.py:1078 plugin.py:3473
+#: plugin.py:597 xcPlayerUri.py:1128
 msgid "Search"
 msgstr ""
 
-#: plugin.py:1113
+#: plugin.py:638
 msgid "No data or playlist not compatible with XCplugin."
 msgstr ""
 
-#: plugin.py:1138
+#: plugin.py:663
 msgid "Please enter the parental control pin code"
 msgstr ""
 
-#: plugin.py:1138
+#: plugin.py:663
 msgid "Enter pin code"
 msgstr ""
 
-#: plugin.py:1143
+#: plugin.py:668
 msgid "The pin code you entered is wrong."
 msgstr ""
 
-#: plugin.py:1360
+#: plugin.py:889
 msgid "Filter this category..."
 msgstr ""
 
-#: plugin.py:1562
+#: plugin.py:1093
 msgid ""
 "ATTENTION!!!\n"
 "DOWNLOAD ALL EPISODES SERIES\n"
 "SURE???"
 msgstr ""
 
-#: plugin.py:1605
+#: plugin.py:1136
 msgid "Only Series Episodes Allowed!!!"
 msgstr ""
 
-#: plugin.py:1623
+#: plugin.py:1154
 msgid "DOWNLOAD VIDEO?"
 msgstr ""
 
-#: plugin.py:1626
+#: plugin.py:1157
 msgid "Live Player Active in Setting: set No for Record Live"
 msgstr ""
 
-#: plugin.py:1629
+#: plugin.py:1160
 msgid "No Video to Download/Record!!"
 msgstr ""
 
-#: plugin.py:1662
+#: plugin.py:1193
 msgid ""
 "Download Failed\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2242 plugin.py:2668 plugin.py:2765 plugin.py:3203
-msgid "Remove"
+#: xcConfig.py:106
+msgid "interval"
 msgstr ""
 
-#: plugin.py:2243
-msgid "Close"
+#: xcConfig.py:106
+msgid "fixed time"
 msgstr ""
 
-#: plugin.py:2298
-msgid "Free Space"
+#: xcConfig.py:133 xcEpg.py:62 xcHelp.py:63 xcMaker.py:63 xcOpenServer.py:61
+#: xcPlayerUri.py:855 xcPlayerUri.py:1125
+msgid "Back"
 msgstr ""
 
-#: plugin.py:2299
-msgid "Movie Folder"
+#: xcConfig.py:134
+msgid "Save"
 msgstr ""
 
-#: plugin.py:2327
-msgid "Finished"
+#: xcConfig.py:135 xcConfig.py:136
+msgid "Import"
 msgstr ""
 
-#: plugin.py:2348
-msgid "Is Directory or file not exist"
+#: xcConfig.py:163
+msgid "Import Server from /etc/enigma2/iptv.sh?"
 msgstr ""
 
-#: plugin.py:2374
-msgid "No movie selected!"
-msgstr ""
-
-#: plugin.py:2379
+#: xcConfig.py:189
 #, python-format
-msgid "Do you want to remove %s ?"
+msgid "Invalid format in %s. Could not extract server details."
 msgstr ""
 
-#: plugin.py:2386 plugin.py:2393
-msgid "Movie has been successfully deleted"
+#: xcConfig.py:196
+#, python-format
+msgid "Error reading or processing %s: %s"
 msgstr ""
 
-#: plugin.py:2397
-msgid "The movie does not exist!"
+#: xcConfig.py:203
+#, python-format
+msgid "Missing or empty file: %s"
 msgstr ""
 
-#: plugin.py:2406
+#: xcConfig.py:218
+msgid "Import Server from /tmp/xc.tx?"
+msgstr ""
+
+#: xcConfig.py:229
+#, python-format
+msgid "Invalid file format: not enough lines in %s"
+msgstr ""
+
+#: xcConfig.py:251
+#, python-format
+msgid "Error reading or processing the file: %s"
+msgstr ""
+
+#: xcConfig.py:258
+#, python-format
+msgid "File not found or empty: %s"
+msgstr ""
+
+#: xcConfig.py:269
+#, python-format
+msgid "Last channel update: %s"
+msgstr ""
+
+#: xcConfig.py:283
+msgid "Data Server Configuration:"
+msgstr ""
+
+#: xcConfig.py:283
+msgid "Your Server Login and data input"
+msgstr ""
+
+#: xcConfig.py:285
+msgid "Server URL"
+msgstr ""
+
+#: xcConfig.py:285
+msgid "Enter Server Url without 'http://' your_domine"
+msgstr ""
+
+#: xcConfig.py:286
+msgid "Server PORT"
+msgstr ""
+
+#: xcConfig.py:286
+msgid "Enter Server Port Eg.:'8080'"
+msgstr ""
+
+#: xcConfig.py:287
+msgid "Server Username"
+msgstr ""
+
+#: xcConfig.py:287
+msgid "Enter Username"
+msgstr ""
+
+#: xcConfig.py:288
+msgid "Server Password"
+msgstr ""
+
+#: xcConfig.py:288
+msgid "Enter Password"
+msgstr ""
+
+#: xcConfig.py:289
+msgid "Server Timeout"
+msgstr ""
+
+#: xcConfig.py:289
+msgid "Timeout Server (sec)"
+msgstr ""
+
+#: xcConfig.py:290
+msgid "Folder user file .xml"
+msgstr ""
+
+#: xcConfig.py:290
 msgid ""
-" Movie has been successfully deleted\n"
-"wait time to refresh the list..."
+"Configure folder containing .xml files\n"
+"Press 'OK' to change location."
 msgstr ""
 
-#: plugin.py:2410
-msgid "Error deleting the file: "
+#: xcConfig.py:291
+msgid "Media Folder "
 msgstr ""
 
-#: plugin.py:2412
-msgid "File not found!"
+#: xcConfig.py:291
+msgid ""
+"Configure folder containing movie/media files\n"
+"Press 'OK' to change location."
 msgstr ""
 
-#: plugin.py:2426
+#: xcConfig.py:293
+msgid "Main Screen XL"
+msgstr ""
+
+#: xcConfig.py:293
+msgid "Active Main Screen Large"
+msgstr ""
+
+#: xcConfig.py:294
+msgid "LivePlayer Active "
+msgstr ""
+
+#: xcConfig.py:294
+msgid "Live Player for Stream .ts: set No for Record Live"
+msgstr ""
+
+#: xcConfig.py:296
+msgid "Live Services Type"
+msgstr ""
+
+#: xcConfig.py:296
+msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
+#: xcConfig.py:298
+msgid "Download Type "
+msgstr ""
+
+#: xcConfig.py:298
+msgid "Configure type of download movie: JobManager/Direct."
+msgstr ""
+
+#: xcConfig.py:300
+msgid "Filter Bad Tag"
+msgstr ""
+
+#: xcConfig.py:302
+msgid "Bouquet style "
+msgstr ""
+
+#: xcConfig.py:302
+msgid "Configure the type of conversion in the favorite list"
+msgstr ""
+
+#: xcConfig.py:304
+msgid "Conversion type Output "
+msgstr ""
+
+#: xcConfig.py:304
+msgid "Configure type of stream to be downloaded by conversion"
+msgstr ""
+
+#: xcConfig.py:306
+msgid "Vod Services Type"
+msgstr ""
+
+#: xcConfig.py:306
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
+#: xcConfig.py:308
+msgid "Stop Player on Exit"
+msgstr ""
+
+#: xcConfig.py:308
+msgid "If player active STOP player riproduction on exit"
+msgstr ""
+
+#: xcConfig.py:310
+msgid "Name Bouquet Configuration:"
+msgstr ""
+
+#: xcConfig.py:310
+msgid "Set Name for MakerBouquet"
+msgstr ""
+
+#: xcConfig.py:312
+msgid "Name Bouquet Export"
+msgstr ""
+
+#: xcConfig.py:312
+msgid "Configure name of exported bouquet. Default is myBouquet"
+msgstr ""
+
+#: xcConfig.py:314
+msgid "Place IPTV bouquets at "
+msgstr ""
+
+#: xcConfig.py:314
+msgid "Configure to place the bouquets of the converted lists"
+msgstr ""
+
+#: xcConfig.py:316
+msgid "Automatic bouquet update (schedule):"
+msgstr ""
+
+#: xcConfig.py:316
+msgid "Active Automatic Bouquet Update"
+msgstr ""
+
+#: xcConfig.py:318
+msgid "Schedule type:"
+msgstr ""
+
+#: xcConfig.py:318
+msgid "At an interval of hours or at a fixed time"
+msgstr ""
+
+#: xcConfig.py:320
+msgid "Update interval (hours):"
+msgstr ""
+
+#: xcConfig.py:320
+msgid "Configure every interval of hours from now"
+msgstr ""
+
+#: xcConfig.py:322
+msgid "Time to start update:"
+msgstr ""
+
+#: xcConfig.py:322
+msgid "Configure at a fixed time"
+msgstr ""
+
+#: xcConfig.py:323
+msgid "Picons IPTV "
+msgstr ""
+
+#: xcConfig.py:323
+msgid "Download Picons ?"
+msgstr ""
+
+#: xcConfig.py:325
+msgid "Picons IPTV bouquets to "
+msgstr ""
+
+#: xcConfig.py:325
+msgid ""
+"Configure folder containing picons files\n"
+"Press 'OK' to change location."
+msgstr ""
+
+#: xcConfig.py:326
+msgid "Link in Main Menu "
+msgstr ""
+
+#: xcConfig.py:326
+msgid "Display XCplugin in Main Menu"
+msgstr ""
+
+#: xcConfig.py:338
+msgid "SELECT YOUR CHOICE"
+msgstr ""
+
+#: xcConfig.py:406
+msgid "Choose Directory:"
+msgstr ""
+
+#: xcConfig.py:407
+msgid "Choose directory"
+msgstr ""
+
+#: xcConfig.py:428 xcConfig.py:438 xcConfig.py:448
+#, python-format
+msgid "%s NOT DETECTED!"
+msgstr ""
+
+#: xcConfig.py:466
+msgid "Settings saved successfully !"
+msgstr ""
+
+#: xcConfig.py:484
+msgid "Line appended to playlist"
+msgstr ""
+
+#: xcConfig.py:486
+msgid "Line already exists in playlist"
+msgstr ""
+
+#: xcConfig.py:503
+msgid "Really close without saving settings?"
+msgstr ""
+
+#: xcEpg.py:138
+msgid ""
+"Please enter correct server parameters in Config\n"
+"No valid list!"
+msgstr ""
+
+#: xcHelp.py:64
 msgid "Config"
 msgstr ""
 
-#: plugin.py:2427
+#: xcHelp.py:65
 msgid "Main"
 msgstr ""
 
-#: plugin.py:2428
+#: xcHelp.py:66
 msgid "Player"
 msgstr ""
 
-#: plugin.py:2482
+#: xcHelp.py:120
 #, python-format
 msgid ""
 "New version %s is available\n"
@@ -473,7 +493,7 @@ msgid ""
 "Press info_long or yellow_long button to start force updating."
 msgstr ""
 
-#: plugin.py:2486
+#: xcHelp.py:124
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -483,300 +503,271 @@ msgid ""
 "Do you want to install it now?"
 msgstr ""
 
-#: plugin.py:2488
+#: xcHelp.py:126
 msgid "Congrats! You already have the latest version..."
 msgstr ""
 
-#: plugin.py:2497
+#: xcHelp.py:135
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
-#: plugin.py:2503
+#: xcHelp.py:141
 msgid "Update Aborted!"
 msgstr ""
 
-#: plugin.py:2536
-#, python-format
-msgid ""
-"Current configuration for creating the bouquet\n"
-"    > %s Conversion %s\n"
-"\n"
-msgstr ""
-
-#: plugin.py:2549
-msgid "    (MENU BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2550
+#: xcHelp.py:188
 msgid "            Config Setup Options\n"
 msgstr ""
 
-#: plugin.py:2551
-msgid "    (5 BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2552
+#: xcHelp.py:191
 msgid "            MediaPlayer\n"
 msgstr ""
 
-#: plugin.py:2553
-msgid "    (9/Help BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2554
+#: xcHelp.py:194
 msgid "            Help\n"
 msgstr ""
 
-#: plugin.py:2555
-msgid "    (PVR/FILELIST/2 BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2556
+#: xcHelp.py:197
 msgid "            Open Movie Folder\n"
 msgstr ""
 
-#: plugin.py:2557
-msgid "    (EPG/INFO/0 BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2558
+#: xcHelp.py:200
 msgid "            Epg guide or imdb/tmdb\n"
 msgstr ""
 
-#: plugin.py:2559
-msgid ""
-"    (GREEN BUTTON):\n"
-" "
-msgstr ""
-
-#: plugin.py:2560
+#: xcHelp.py:203
 msgid "            Start Download or Record Selected Channel:\n"
 msgstr ""
 
-#: plugin.py:2561
+#: xcHelp.py:204
 msgid "            Set 'Live Player Active' in Setting:\n"
 msgstr ""
 
-#: plugin.py:2562
+#: xcHelp.py:205
 msgid "            Set 'No' for Record Live\n"
 msgstr ""
 
-#: plugin.py:2563 plugin.py:2577 plugin.py:2618
-msgid "    (YELLOW BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2564
+#: xcHelp.py:208
 msgid "            Start Download All Episodes Series\n"
 msgstr ""
 
-#: plugin.py:2565
-msgid "    (BLUE BUTTON): Search LIve/Movie"
+#: xcHelp.py:210
+msgid "            Search LIve/Movie"
 msgstr ""
 
-#: plugin.py:2578 plugin.py:2586
-msgid "            If you have a file format:\n"
+#: xcHelp.py:225
+msgid "            If you have a file\n"
 msgstr ""
 
-#: plugin.py:2579
+#: xcHelp.py:226
 msgid "            /etc/enigma2/iptv.sh\n"
 msgstr ""
 
-#: plugin.py:2580
-msgid "            USERNAME='xxxxxxxxxx'\n"
-msgstr ""
-
-#: plugin.py:2581
-msgid "            PASSWORD='yyyyyyyyy'\n"
-msgstr ""
-
-#: plugin.py:2582
-msgid "            url='http://server:port/xxyyzz'\n"
-msgstr ""
-
-#: plugin.py:2583
+#: xcHelp.py:227
 msgid ""
 "            Import with Yellow Button this file\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2585 plugin.py:2608 plugin.py:2620
-msgid "    (BLUE BUTTON):\n"
+#: xcHelp.py:228 xcHelp.py:237
+msgid "            Format:\n"
 msgstr ""
 
-#: plugin.py:2587
+#: xcHelp.py:229
+msgid "            USERNAME='xxxxxxxxxx'\n"
+msgstr ""
+
+#: xcHelp.py:230
+msgid "            PASSWORD='yyyyyyyyy'\n"
+msgstr ""
+
+#: xcHelp.py:231
+msgid ""
+"            url='http://server:port/xxyyzz'\n"
+"\n"
+msgstr ""
+
+#: xcHelp.py:234
+msgid "            If you have a file:\n"
+msgstr ""
+
+#: xcHelp.py:235
 msgid "            /tmp/xc.txt\n"
 msgstr ""
 
-#: plugin.py:2588
+#: xcHelp.py:236
+msgid ""
+"            Import with Blue Button this file\n"
+"\n"
+msgstr ""
+
+#: xcHelp.py:238
 msgid "            host\t(host without http:// )\n"
 msgstr ""
 
-#: plugin.py:2589
+#: xcHelp.py:239
 msgid "            port\n"
 msgstr ""
 
-#: plugin.py:2590
+#: xcHelp.py:240
 msgid "            user\n"
 msgstr ""
 
-#: plugin.py:2591
+#: xcHelp.py:241
 msgid "            password\n"
 msgstr ""
 
-#: plugin.py:2592
-msgid "            Import with Blue Button this file"
-msgstr ""
-
-#: plugin.py:2606
-msgid "    (RED BUTTON):\n"
-msgstr ""
-
-#: plugin.py:2607
+#: xcHelp.py:255
 msgid "            Return to Channels List\n"
 msgstr ""
 
-#: plugin.py:2609
+#: xcHelp.py:256 xcHelp.py:268
+msgid "    (BLUE BUTTON):\n"
+msgstr ""
+
+#: xcHelp.py:257
 msgid "            Init Continue Play\n"
 msgstr ""
 
-#: plugin.py:2610
+#: xcHelp.py:258
 msgid "    (REC BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2611
+#: xcHelp.py:259
 msgid "            Download Video \n"
 msgstr ""
 
-#: plugin.py:2612
+#: xcHelp.py:260
 msgid "    (STOP BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2613
-msgid "            Close/Stop Movie/Live\n"
+#: xcHelp.py:261
+msgid ""
+"            Close/Stop Movie/Live\n"
+"\n"
 msgstr ""
 
-#: plugin.py:2615
-msgid "UTILITY PLAYER M3U\n"
-msgstr ""
-
-#: plugin.py:2616
+#: xcHelp.py:264
 msgid "    (GREEN BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2617
+#: xcHelp.py:265
 msgid "            Remove file from list\n"
 msgstr ""
 
-#: plugin.py:2619
+#: xcHelp.py:266
+msgid "    (YELLOW BUTTON):\n"
+msgstr ""
+
+#: xcHelp.py:267
 msgid "            Export file m3u to Bouquet .tv\n"
 msgstr ""
 
-#: plugin.py:2621
+#: xcHelp.py:269
 msgid ""
 "            Download file m3u from current server\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2622
-msgid "UTILITY PLAYER M3U - OPEN FILE:\n"
-msgstr ""
-
-#: plugin.py:2623
+#: xcHelp.py:272
 msgid "    When opening an .m3u file instead:\n"
 msgstr ""
 
-#: plugin.py:2624
+#: xcHelp.py:273
 msgid "   (GREEN BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2625
+#: xcHelp.py:274
 msgid "           Reload List\n"
 msgstr ""
 
-#: plugin.py:2626
+#: xcHelp.py:275
 msgid "   (YELLOW BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2627
+#: xcHelp.py:276
 msgid "           Download VOD selected channel\n"
 msgstr ""
 
-#: plugin.py:2628
+#: xcHelp.py:277
 msgid "   (BLUE BUTTON):\n"
 msgstr ""
 
-#: plugin.py:2629
-msgid "           Search for a title in the list\n"
+#: xcHelp.py:278
+msgid "           Search for a title in the list"
 msgstr ""
 
-#: plugin.py:2667
+#: xcMaker.py:64
 msgid "Make"
 msgstr ""
 
-#: plugin.py:2697 plugin.py:2700 plugin.py:2703
+#: xcMaker.py:65 xcOpenServer.py:63 xcPlayerUri.py:856 xcTask.py:71
+msgid "Remove"
+msgstr ""
+
+#: xcMaker.py:94 xcMaker.py:97 xcMaker.py:100
 #, python-format
 msgid "Convert Playlist to: %s ?"
 msgstr ""
 
-#: plugin.py:2710 plugin.py:2716 plugin.py:2724 plugin.py:3450
+#: xcMaker.py:107 xcMaker.py:114 xcMaker.py:125 xcPlayerUri.py:1100
 msgid "Reload Playlists in progress..."
 msgstr ""
 
-#: plugin.py:2710 plugin.py:2716 plugin.py:2724 plugin.py:3450
+#: xcMaker.py:107 xcMaker.py:114 xcMaker.py:125 xcPlayerUri.py:1100
 msgid "wait please..."
 msgstr ""
 
-#: plugin.py:2721
+#: xcMaker.py:122
 msgid "Remove Playlist from Bouquets?"
 msgstr ""
 
-#: plugin.py:2729
+#: xcMaker.py:130
 msgid ""
 "GREEN BUTTON:\n"
 " "
 msgstr ""
 
-#: plugin.py:2730
-msgid "   Create XC Live/VOD Bouquets\n"
+#: xcMaker.py:131
+msgid "    Create XC Live/VOD Bouquets\n"
 msgstr ""
 
-#: plugin.py:2731
+#: xcMaker.py:132
 msgid "    You need to configure the type of output\n"
 msgstr ""
 
-#: plugin.py:2732
+#: xcMaker.py:133
 msgid ""
 "    in the config menu\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2733
+#: xcMaker.py:134
 msgid "YELLOW BUTTON:\n"
 msgstr ""
 
-#: plugin.py:2734
+#: xcMaker.py:135
 msgid "    Removes all the bouquets that have been\n"
 msgstr ""
 
-#: plugin.py:2735
+#: xcMaker.py:136
 msgid ""
 "    created with XCplugin\n"
 "\n"
 msgstr ""
 
-#: plugin.py:2736
+#: xcMaker.py:137
 msgid "HELP BUTTON:\n"
 msgstr ""
 
-#: plugin.py:2737
+#: xcMaker.py:138
 msgid ""
 "    Go to Help info plugin\n"
 "\n"
-"\n"
 msgstr ""
 
-#: plugin.py:2743
+#: xcMaker.py:144
 #, python-format
 msgid ""
 "Current configuration for creating the bouquet\n"
@@ -784,28 +775,33 @@ msgid ""
 "\n"
 msgstr ""
 
-#: plugin.py:2766
+#: xcMaker.py:310
+#, python-format
+msgid "Conversion %s in progress: "
+msgstr ""
+
+#: xcOpenServer.py:64
 msgid "Info"
 msgstr ""
 
-#: plugin.py:2948
+#: xcOpenServer.py:237
 #, python-format
 msgid "Do you want to remove: %s?"
 msgstr ""
 
-#: plugin.py:2959
+#: xcOpenServer.py:248
 msgid ""
 " has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:2964
+#: xcOpenServer.py:253
 msgid ""
 " not exist!\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:2971
+#: xcOpenServer.py:260
 #, python-format
 msgid ""
 "Put your lines to the %s/xclink.txt'.\n"
@@ -818,121 +814,165 @@ msgid ""
 "Select list from Menulist"
 msgstr ""
 
-#: plugin.py:3194
+#: xcPlayerUri.py:848
 #, python-format
 msgid "Put .m3u Files in Folder %s"
 msgstr ""
 
-#: plugin.py:3204
+#: xcPlayerUri.py:857
 msgid "Export"
 msgstr ""
 
-#: plugin.py:3204
+#: xcPlayerUri.py:857
 msgid " Bouquet"
 msgstr ""
 
-#: plugin.py:3205 plugin.py:3472
+#: xcPlayerUri.py:858 xcPlayerUri.py:1127
 msgid "Download"
 msgstr ""
 
-#: plugin.py:3205
+#: xcPlayerUri.py:858
 msgid " M3u"
 msgstr ""
 
-#: plugin.py:3276
+#: xcPlayerUri.py:927
 #, python-format
 msgid "Do you want to remove: %s ?"
 msgstr ""
 
-#: plugin.py:3281
+#: xcPlayerUri.py:931
 msgid ""
 "   has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: plugin.py:3286
+#: xcPlayerUri.py:936
 msgid " not exist!"
 msgstr ""
 
-#: plugin.py:3293
+#: xcPlayerUri.py:943
 msgid "Wait... downloading in progress ..."
 msgstr ""
 
-#: plugin.py:3296
+#: xcPlayerUri.py:946
 msgid "Download M3u File?"
 msgstr ""
 
-#: plugin.py:3321
+#: xcPlayerUri.py:971
 msgid "No Server Configured to Download!!!"
 msgstr ""
 
-#: plugin.py:3354 plugin.py:3652
+#: xcPlayerUri.py:1004 xcPlayerUri.py:1302
 msgid "Download Finished!"
 msgstr ""
 
-#: plugin.py:3380 plugin.py:3688
-msgid "Aborting..."
-msgstr ""
-
-#: plugin.py:3398
+#: xcPlayerUri.py:1048
 #, python-format
 msgid "Do you want to Convert %s to favorite .tv ?"
 msgstr ""
 
-#: plugin.py:3441
+#: xcPlayerUri.py:1091
 msgid "Check on favorites lists..."
 msgstr ""
 
-#: plugin.py:3471
+#: xcPlayerUri.py:1126
 msgid "Reload"
 msgstr ""
 
-#: plugin.py:3570
+#: xcPlayerUri.py:1224
 msgid "File Unknow!!!"
 msgstr ""
 
-#: plugin.py:3599
+#: xcPlayerUri.py:1252
 #, python-format
 msgid ""
 "DOWNLOAD VIDEO?\n"
 "%s"
 msgstr ""
 
-#: plugin.py:3624
+#: xcPlayerUri.py:1275
 msgid "Only VOD Movie allowed!!!"
 msgstr ""
 
-#: plugin.py:3892 plugin.py:3893 plugin.py:3894 plugin.py:3895 plugin.py:3896
+#: xcTask.py:72
+msgid "Close"
+msgstr ""
+
+#: xcTask.py:134 xcTask.py:181
+msgid "Finished"
+msgstr ""
+
+#: xcTask.py:144
+msgid "Free Space"
+msgstr ""
+
+#: xcTask.py:145
+msgid "Movie Folder"
+msgstr ""
+
+#: xcTask.py:210
+msgid "Invalid job parameter"
+msgstr ""
+
+#: xcTask.py:214
+msgid "Session is not valid"
+msgstr ""
+
+#: xcTask.py:219
+msgid "Unable to open JobView dialog"
+msgstr ""
+
+#: xcTask.py:243
+msgid "No movie selected!"
+msgstr ""
+
+#: xcTask.py:248
+#, python-format
+msgid "Do you want to remove %s ?"
+msgstr ""
+
+#: xcTask.py:254 xcTask.py:260
+msgid "Movie has been successfully deleted"
+msgstr ""
+
+#: xcTask.py:263
+msgid "The movie does not exist!"
+msgstr ""
+
+#: xcTask.py:272
+msgid ""
+" Movie has been successfully deleted\n"
+"wait time to refresh the list..."
+msgstr ""
+
+#: xcTask.py:276
+msgid "Error deleting the file: "
+msgstr ""
+
+#: xcTask.py:278
+msgid "File not found!"
+msgstr ""
+
+#: xcTask.py:310 xcTask.py:311 xcTask.py:312 xcTask.py:313 xcTask.py:314
 msgid "MOVIE DOWNLOAD FAILED!"
 msgstr ""
 
-#: plugin.py:3892
+#: xcTask.py:310
 msgid "DOWNLOADED FILE CORRUPTED:"
 msgstr ""
 
-#: plugin.py:3893
+#: xcTask.py:311
 msgid "COULD NOT READ RTMP PACKET:"
 msgstr ""
 
-#: plugin.py:3894
+#: xcTask.py:312
 msgid "SEGMENTATION FAULT:"
 msgstr ""
 
-#: plugin.py:3895
+#: xcTask.py:313
 msgid "SERVER RETURNED ERROR:"
 msgstr ""
 
-#: plugin.py:3896
+#: xcTask.py:314
 msgid "UNKNOWN ERROR:"
-msgstr ""
-
-#: plugin.py:4075
-msgid ""
-"Please enter correct server parameters in Config\n"
-" no valid list "
-msgstr ""
-
-#: plugin.py:4215
-#, python-format
-msgid "Conversion %s in progress: "
 msgstr ""

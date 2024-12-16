@@ -94,11 +94,9 @@ class xcRunningText(Renderer):
 
     def preWidgetRemove(self, instance):
         self.mTimer.stop()
-        # from boxbranding import getMachineBrand, getImageDistro, getImageVersion, getOEVersion
         try:
             self.mTimer.callback.remove(self.movingLoop)
         except:
-            # if getMachineBrand() == "Dream Multimedia" or getOEVersion() == "OE 2.2":
             self.mTimer_conn = self.mTimer.timeout.disconnect(self.movingLoop)
 
         """
@@ -245,7 +243,7 @@ class xcRunningText(Renderer):
                     self.moveLabel(self.X, self.Y)
 
     def moveLabel(self, X, Y):
-        self.scroll_label.move(ePoint(X-self.soffset[0], Y-self.soffset[1]))
+        self.scroll_label.move(ePoint(X - self.soffset[0], Y - self.soffset[1]))
 
     def calcMoving(self):
         try:
@@ -274,9 +272,9 @@ class xcRunningText(Renderer):
             # text height correction if necessary:
             if self.lineHeight and self.direction in (TOP, BOTTOM):
                 text_height = max(text_height, (text_height + self.lineHeight - 1) / self.lineHeight * self.lineHeight)
-    #       self.type =     0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
-    #       self.direction =    0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
-    #       self.halign =       0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
+            # self.type =     0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
+            # self.direction =    0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
+            # self.halign =       0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
 
             if self.direction in (LEFT, RIGHT):
                 if not self.mAlways and text_width <= self.W:
@@ -299,8 +297,8 @@ class xcRunningText(Renderer):
                             self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_width + self.soffset[0]))
                 elif self.type == SWIMMING:
                     if text_width < self.W:
-                        self.A = self.X + 1         # incomprehensible indent '+ 1' ???
-                        self.B = self.W - text_width - 1    # incomprehensible indent '- 1' ???
+                        self.A = self.X + 1  # incomprehensible indent '+ 1' ???
+                        self.B = self.W - text_width - 1  # incomprehensible indent '- 1' ???
                         if self.halign == LEFT:
                             self.P = self.A
                             self.mStep = abs(self.mStep)
@@ -312,7 +310,7 @@ class xcRunningText(Renderer):
                             self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
                     else:
                         if text_width == self.W:
-                            text_width += max(2, text_width/20)
+                            text_width += max(2, text_width // 20)
                         self.A = self.W - text_width
                         self.B = self.X
                         if self.halign == LEFT:
@@ -359,7 +357,7 @@ class xcRunningText(Renderer):
                             self.mStep = abs(self.mStep)
                     else:
                         if text_height == self.H:
-                            text_height += max(2, text_height/40)
+                            text_height += max(2, text_height // 40)
                         self.A = self.H - text_height
                         self.B = self.Y
                         if self.direction == TOP:
@@ -401,7 +399,7 @@ class xcRunningText(Renderer):
             timeout = self.mStepTimeout
             if (self.mStop is not None) and (self.mStop + abs(self.mStep) > self.P >= self.mStop):
                 if (self.type == RUNNING) and (self.mOneShot > 0):
-                    if (self.mRepeat > 0) and (self.mCount-1 <= 0):
+                    if (self.mRepeat > 0) and (self.mCount - 1 <= 0):
                         return
                     timeout = self.mOneShot
                 elif (self.type == SWIMMING) and (self.mPageLength > 0) and (self.mPageDelay > 0):

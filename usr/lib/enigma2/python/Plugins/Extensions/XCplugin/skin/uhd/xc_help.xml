@@ -12,9 +12,9 @@
 	<!-- Poster -->
 	<ePixmap position="1054,187" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" scale="1" alphatest="blend" zPosition="1" />
 	<widget name="helpdesc" position="294,180" font="Regular;35" size="1004,1120" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
-	<widget name="helpdesc2" position="298,727" font="Regular;40" size="1067,522" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />
+	<widget name="helpdesc2" position="298,1169" font="Regular;40" size="1067,95" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />
 	<!-- Buttons Colors -->
-	<eLabel position="294,1269" size="1174,7" backgroundColor="#202020" zPosition="1" />
+	<eLabel position="294,1309" size="1174,7" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="275,1334" size="300,6" zPosition="12" />
 	<eLabel backgroundColor="#0000ff00" position="575,1334" size="300,6" zPosition="12" />
 	<eLabel backgroundColor="#00ffff00" position="874,1334" size="300,6" zPosition="12" />

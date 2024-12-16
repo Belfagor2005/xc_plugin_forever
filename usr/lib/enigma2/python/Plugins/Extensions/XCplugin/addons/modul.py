@@ -1,17 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from os import system
-from Components.config import config
-import re
+'''
+****************************************
+*        coded by Lululla              *
+*             skin by MMark            *
+*  update     16/12/2024               *
+*       Skin by MMark                  *
+****************************************
+'''
+
+from __future__ import print_function
 from . import _
 
+from Components.config import config
+from os import system
+import re
 try:
     from Components.AVSwitch import AVSwitch
 except ImportError:
     from Components.AVSwitch import eAVControl as AVSwitch
-
-
 try:
     from types import SimpleNamespace
 except ImportError:
@@ -40,7 +48,7 @@ globalsxp = SimpleNamespace(
     STREAMS=None,
     stream_live=None,
     stream_url=None,
-    ui=True,
+    ui=True,  #not used
     urlinfo=None,
     url_tmp=None,
 )
@@ -86,9 +94,32 @@ Panel_list = [('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
 VIDEO_ASPECT_RATIO_MAP = {0: "4:3 Letterbox", 1: "4:3 PanScan", 2: "16:9", 3: "16:9 Always", 4: "16:10 Letterbox", 5: "16:10 PanScan", 6: "16:9 Letterbox"}
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
+
 try:
     def copy_poster():
-        system("cd / && cp -f " + globalsxp.piclogo + " " + globalsxp.pictmp)
+        import subprocess
+        piclogo = str(globalsxp.piclogo[0])
+        pictmp = str(globalsxp.pictmp)
+        if isinstance(globalsxp.piclogo, tuple) and len(globalsxp.piclogo) == 1:
+            piclogo = str(globalsxp.piclogo[0])  # Estrai il percorso dal primo (e unico) elemento della tupla
+        else:
+            print("Error: piclogo is not a single-element tuple!")
+            piclogo = None
+        if isinstance(globalsxp.pictmp, str):
+            pictmp = str(globalsxp.pictmp)
+        else:
+            print("Error: pictmp is not a string!")
+            pictmp = None
+        if piclogo and pictmp:
+            print("Executing the command 'copy_poster'...")
+            command = ["cp", "-f", piclogo, pictmp]
+            return_code = subprocess.call(command)
+            if return_code != 0:
+                print("Error executing command.")
+            else:
+                print("Command executed successfully.")
+        else:
+            print("Command not executed: piclogo or pictmp are invalid.")
     copy_poster()
 except:
     pass
