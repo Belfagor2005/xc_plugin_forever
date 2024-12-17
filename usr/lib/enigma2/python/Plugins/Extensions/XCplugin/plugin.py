@@ -246,9 +246,9 @@ class xc_home(Screen):
             self.session.open(OpenServer)
         elif sel == ('MAKER BOUQUET'):
             self.session.open(xc_maker)
-        elif sel == ('MOVIE'):
+        elif sel == ('DOWNLOADER'):
             self.taskManager()
-        elif sel == ('PLAYER UTILITY'):
+        elif sel == ('M3U LOADER'):
             self.session.open(xc_Play)
         elif sel == ('CONFIG'):
             self.config()

@@ -90,7 +90,7 @@ EXTDOWN = {
     ".mp4": "movie"}
 
 Panel_list = [('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
-              ('MOVIE'), ('PLAYER UTILITY'), ('CONFIG'), ('ABOUT & HELP')]
+              ('DOWNLOADER'), ('M3U LOADER'), ('CONFIG'), ('ABOUT & HELP')]
 VIDEO_ASPECT_RATIO_MAP = {0: "4:3 Letterbox", 1: "4:3 PanScan", 2: "16:9", 3: "16:9 Always", 4: "16:10 Letterbox", 5: "16:10 PanScan", 6: "16:9 Letterbox"}
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 

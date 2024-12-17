@@ -32,11 +32,11 @@ from Components.Task import (
     Job,
     Task,
 )
-from enigma import eTimer
+from enigma import eTimer, eServiceReference
 from os.path import exists as file_exists
 from os import listdir, remove, statvfs
-from os.path import isdir, join, splitext
-from Screens.TaskView import JobView
+from os.path import isdir, join
+# from Screens.TaskView import JobView
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 
@@ -178,12 +178,11 @@ class xc_StreamTasks(Screen):
                                     if filename.lower().split('.')[0] == job.filename.lower().split('.')[0]:
                                         continue
 
-                            self.movielist.append(("movie", filename, _("Finished"), 100, "100%"))
+                            self.movielist.append(("movie", filename, ("Finished"), 100, "100%"))
             else:
                 titel2 = '(%s offline)' % folder
                 self['label2'].setText(titel2)
                 self['totalItem'].setText('Item %s' % str(self.totalItem))
-
 
     def keyOK(self):
         global file1
@@ -213,11 +212,29 @@ class xc_StreamTasks(Screen):
             if self.session is None:
                 self.session.open(MessageBox, _("Session is not valid"), MessageBox.TYPE_ERROR, timeout=5)
                 return
-            # Open JobView with callback
-            dlg = self.session.openWithCallback(self.JobViewCB, JobView, job)
-            if dlg is None:
-                self.session.open(MessageBox, _("Unable to open JobView dialog"), MessageBox.TYPE_ERROR, timeout=5)
-                return
+            # # Open JobView with callback
+            # dlg = self.session.openWithCallback(self.JobViewCB, JobView, job)
+            # if dlg is None:
+                # self.session.open(MessageBox, _("Unable to open JobView dialog"), MessageBox.TYPE_ERROR, timeout=5)
+                # return
+            if job == "movie" and current[2] == 'Finished':
+                if file1 is True:
+                    path = globalsxp.Path_Movies
+                    url = path + current[1]
+                    name = current[1]
+                    file1 = False
+                    isFile = file_exists(url)
+                    if isFile:
+                        filenameSplitList = current[1].split('.')
+                        fileExtension = filenameSplitList[-1].lower()
+                        print('fileExtension=', fileExtension)
+                        if fileExtension in ["mpg", "mpeg", "mkv", "m2ts", "vob", "mod", "avi", "mp4", "divx", "mov", "flv", "3gp", "wmv"]:
+                            from Screens.InfoBar import MoviePlayer
+                            fileRef = eServiceReference("4097:0:0:0:0:0:0:0:0:0:" + url)
+                            fileRef.setName(name)
+                            self.session.open(MoviePlayer, fileRef)
+                    else:
+                        self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
 
     def keyBlue(self):
         pass
