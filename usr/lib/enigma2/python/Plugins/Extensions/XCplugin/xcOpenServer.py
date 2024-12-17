@@ -59,12 +59,13 @@ class OpenServer(Screen):
         self["version"] = Label(version)
         self["infoname"] = Label("")
         self["key_red"] = Label(_("Back"))
-        self["key_green"] = Label()
+        self["key_green"] = Label("Select")
         self["key_yellow"] = Label(_("Remove"))
         self["key_blue"] = Label(_("Info"))
         self["live"] = Label("")
         self["actions"] = HelpableActionMap(self, "XCpluginActions", {
             "ok": self.selectlist,
+            "green": self.selectlist,
             "home": self.close,
             "cancel": self.close,
             "yellow": self.message1,
