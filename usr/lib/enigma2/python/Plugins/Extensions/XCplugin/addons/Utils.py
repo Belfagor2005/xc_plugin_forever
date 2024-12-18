@@ -60,7 +60,6 @@ requests.packages.urllib3.disable_warnings(
 
 if sys.version_info >= (2, 7, 9):
     try:
-        import ssl
         sslContext = ssl._create_unverified_context()
     except:
         sslContext = None
@@ -1238,8 +1237,9 @@ def get_safe_filename(filename, fallback=''):
     return six.ensure_str(name)
 
 
-def decodeHtml( text):
+def decodeHtml(text):
     # List of HTML and Unicode entities to replace
+    import six
     if six.PY2:
         from six.moves import (html_parser)
         h = html_parser.HTMLParser()
@@ -1247,9 +1247,9 @@ def decodeHtml( text):
     else:
         import html
         text = html.unescape(text)
-   
+
     charlist = [
-        ('&#034;', '"'), ('&#038;', '&'), ('&#039;', "'"), ('&#060;', ' '), 
+        ('&#034;', '"'), ('&#038;', '&'), ('&#039;', "'"), ('&#060;', ' '),
         ('&#062;', ' '), ('&#160;', ' '), ('&#174;', ''), ('&#192;', 'À'),
         ('&#193;', 'Á'), ('&#194;', 'Â'), ('&#196;', 'Ä'), ('&#204;', 'Ì'),
         ('&#205;', 'Í'), ('&#206;', 'Î'), ('&#207;', 'Ï'), ('&#210;', 'Ò'),
@@ -1293,7 +1293,6 @@ def decodeHtml( text):
     # Remove any remaining HTML tags
     text = re.sub('<[^>]+>', '', text)
     return text.strip()
-
 
 
 if sys.version_info[0] < 3:
@@ -1604,10 +1603,10 @@ def get_title(title):
         # title = title.encode('utf-8')
     # except:
         # pass
-    title = re.sub('&#(\d+);', '', title)
-    title = re.sub('(&#[0-9]+)([^;^0-9]+)', '\\1;\\2', title)
+    title = re.sub(r'&#(\d+);', '', title)
+    title = re.sub(r'(&#[0-9]+)([^;^0-9]+)', '\\1;\\2', title)
     title = title.replace('&quot;', '\"').replace('&amp;', '&')
-    title = re.sub('\n|([[].+?[]])|([(].+?[)])|\s(vs|v[.])\s|(:|;|-|–|"|,|\'|\_|\.|\?)|\s', '', title).lower()
+    title = re.sub(r'\n|([[].+?[]])|([(].+?[)])|\s(vs|v[.])\s|(:|;|-|–|"|,|\'|\_|\.|\?)|\s', '', title).lower()
     return title
 
 
