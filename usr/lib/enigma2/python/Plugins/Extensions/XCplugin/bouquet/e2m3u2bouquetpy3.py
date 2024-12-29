@@ -9,6 +9,7 @@ e2m3u2bouquet.e2m3u2bouquet -- Enigma2 IPTV m3u to bouquet parser
 @license:    GNU GENERAL PUBLIC LICENSE version 3
 @deffield    updated: Updated
 """
+
 from __future__ import print_function
 import time
 import sys
@@ -17,7 +18,6 @@ import errno
 import re
 import unicodedata
 import datetime
-# import imghdr
 import tempfile
 import glob
 import hashlib
@@ -41,8 +41,6 @@ from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 from six.moves import range
 from xml.sax.saxutils import escape
-# from Components.config import config
-
 import six
 import requests
 
@@ -56,6 +54,7 @@ if PY3:
 else:
     from urlparse import urlparse, parse_qs
     from urllib import quote, quote_plus
+
 
 __all__ = []
 __version__ = '0.8.5'

@@ -5,7 +5,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     16/12/2024               *
+*  update     29/12/2024               *
 *       Skin by MMark                  *
 ****************************************
 '''
@@ -151,10 +151,18 @@ class xc_maker(Screen):
 def uninstaller():
     """Routine di pulizia per rimuovere eventuali modifiche precedenti"""
     try:
+        configfilexml = ("/etc/enigma2/e2m3u2bouquet/config.xml")
+        try:
+            remove(configfilexml)
+            print("% s removed successfully" % configfilexml)
+        except OSError as error:
+            print("File path can not be removed. Error is:", error)
+
         for fname in listdir(enigma_path):
             file_path = os.path.join(enigma_path, fname)
             if 'userbouquet.xc_' in fname or 'bouquets.tv.bak' in fname:
                 remove(file_path)
+
         if isdir(epgimport_path):
             for fname in listdir(epgimport_path):
                 if 'xc_' in fname:
