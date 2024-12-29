@@ -5,7 +5,7 @@
 ****************************************
 *        coded by Lululla              *
 *             skin by MMark            *
-*  update     16/12/2024               *
+*  update     29/12/2024               *
 *       Skin by MMark                  *
 ****************************************
 '''
@@ -68,21 +68,47 @@ def channelEntryIPTVplaylist(entry):
     return menu_entry
 
 
+MENU_ITEMS = [
+    "home",
+    "playlist",
+    "maker bouquet",
+    "downloader",
+    "m3u loader",
+    "config",
+    "about & help",
+]
+
 def xcm3ulistEntry(name):
-    png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
-    pngl = os.path.join(plugin_path, 'skin/pic/xcon.png')
+    if 'active' in name.lower() or name.lower() in [item.lower() for item in MENU_ITEMS]:
+        png0 = os.path.join(plugin_path, 'skin/pic/xcon.png')
+        if screenwidth.width() == 2560:
+            png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+    else:
+        png0 = os.path.join(plugin_path, 'skin/pic/xcoff.png')
+        if screenwidth.width() == 2560:
+            png0 = os.path.join(plugin_path, 'skin/pic/xc1.png')
     res = [name]
     white = 16777215
-
     if screenwidth.width() == 2560:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 4), size=(86, 54), png=loadPNG(png0)))
-        res.append(MultiContentEntryText(pos=(140, 0), size=(1800, 60), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        icon0_pos = (5, 4)
+        icon0_size = (86, 54)
+        text_pos = (140, 0)
+        text_size = (1800, 60)
+        font_size = 0
     elif screenwidth.width() == 1920:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(64, 40), png=loadPNG(pngl)))
-        res.append(MultiContentEntryText(pos=(80, 0), size=(1000, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        icon0_pos = (5, 5)
+        icon0_size = (64, 40)
+        text_pos = (80, 0)
+        text_size = (1000, 50)
+        font_size = 0
     else:
-        res.append(MultiContentEntryPixmapAlphaTest(pos=(5, 5), size=(66, 40), png=loadPNG(pngl)))
-        res.append(MultiContentEntryText(pos=(80, 0), size=(500, 50), font=0, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
+        icon0_pos = (5, 5)
+        icon0_size = (66, 40)
+        text_pos = (80, 0)
+        text_size = (500, 50)
+        font_size = 0
+    res.append(MultiContentEntryPixmapAlphaTest(pos=icon0_pos, size=icon0_size, png=loadPNG(png0)))
+    res.append(MultiContentEntryText(pos=text_pos, size=text_size, font=font_size, text=name, color=white, flags=RT_HALIGN_LEFT | RT_VALIGN_CENTER))
     return res
 
 
