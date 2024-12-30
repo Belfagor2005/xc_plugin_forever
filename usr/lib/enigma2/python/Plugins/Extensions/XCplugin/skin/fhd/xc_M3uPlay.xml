@@ -1,5 +1,5 @@
 <!-- ***** M3U PLAYLIST 1920x1080 ***** 26/03/2022 /-->
-<screen name="xc_M3uPlay" position="0,0" size="1920,1080" title="Playlist" backgroundColor="#FF000000" flags="wfNoBorder">
+<screen name="xc_Play" position="0,0" size="1920,1080" title="Playlist" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backc.png" scale="stretch" />
 	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="1" />
 	<widget name="live" position="370,30" size="1074,100" font="Regular;50" halign="left" valign="center" foregroundColor="#808080" backgroundColor="#000000" transparent="1" zPosition="3" />
