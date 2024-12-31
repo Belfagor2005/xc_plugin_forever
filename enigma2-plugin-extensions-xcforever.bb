@@ -10,7 +10,7 @@ inherit gitpkgv
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-VER ="1.0"
+VER ="3.9"
 PR = "r0"
 
 SRC_URI="git://github.com/Belfagor2005/xc_plugin_forever.git;protocol=https;branch=main"
