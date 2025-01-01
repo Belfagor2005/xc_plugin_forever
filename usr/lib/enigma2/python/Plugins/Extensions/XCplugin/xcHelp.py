@@ -3,10 +3,10 @@
 
 '''
 ****************************************
-*        coded by Lululla              *
-*             skin by MMark            *
-*  update     16/12/2024               *
-*       Skin by MMark                  *
+*		 coded by Lululla			   *
+*			  skin by MMark			   *
+*  update	  16/12/2024			   *
+*		Skin by MMark				   *
 ****************************************
 '''
 
@@ -69,17 +69,17 @@ class xc_help(Screen):
 		self["paypal"] = Label()
 		self['actions'] = ActionMap(['OkCancelActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ColorActions', 'ChannelSelectBaseActions'],
 									{
-                                    'ok': self.exitx,
-                                    'back': self.exitx,
-                                    'cancel': self.exitx,
-                                    'yellow': self.yellow,
-                                    'green': self.green,
-                                    'blue': self.blue,
-                                    'yellow_long': self.update_dev,
-                                    'info_long': self.update_dev,
-                                    'infolong': self.update_dev,
-                                    'showEventInfoPlugin': self.update_dev,
-                                    'red': self.exitx}, -1)
+									'ok': self.exitx,
+									'back': self.exitx,
+									'cancel': self.exitx,
+									'yellow': self.yellow,
+									'green': self.green,
+									'blue': self.blue,
+									'yellow_long': self.update_dev,
+									'info_long': self.update_dev,
+									'infolong': self.update_dev,
+									'showEventInfoPlugin': self.update_dev,
+									'red': self.exitx}, -1)
 		self.timer = eTimer()
 		if os.path.exists('/usr/bin/apt-get'):
 			self.timer_conn = self.timer.timeout.connect(self.check_vers)
@@ -135,7 +135,7 @@ class xc_help(Screen):
 		if answer:
 			self.session.open(xcConsole, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
 		else:
-			self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+			self.session.open(MessageBox, _("Update Aborted!"),	 MessageBox.TYPE_INFO, timeout=3)
 
 	def myCallback(self, result=None):
 		print('result:', result)
@@ -154,10 +154,10 @@ class xc_help(Screen):
 		conthelp += "Original code by Dave Sully, Doug Mackay\n\n"
 		conthelp += "Modded by Lululla\n\n"
 		conthelp += "Skin By: Mmark - Info e2skin.blogspot.it\n\n"
-		conthelp += ("        ___________________________________\n")
+		conthelp += ("		  ___________________________________\n")
 		conthelp += "Please reports bug or info to forums:\n\n"
 		conthelp += "Corvoboys - linuxsat-support\n\n"
-		conthelp += ("        ___________________________________\n")
+		conthelp += ("		  ___________________________________\n")
 		conthelp += "Special thanks to:\n"
 		conthelp += "MMark, Pcd, KiddaC\n\n"
 		conthelp += "*FOR UPDATE PLUGIN PRESS INFO_LONG BUTTON\n"
@@ -169,7 +169,7 @@ class xc_help(Screen):
 		# conthelp += "Config Media Folder %s/\n" % cfg.pthmovie.value
 		# conthelp += "LivePlayer Active %s\n" % cfg.LivePlayer.value
 		# conthelp = "Current Service Type: %s\n" % cfg.services.value
-		# conthelp += _("Current configuration for creating the bouquet\n    > %s Conversion %s\n\n") % (cfg.typem3utv.getValue(), cfg.typelist.getValue())
+		# conthelp += _("Current configuration for creating the bouquet\n	 > %s Conversion %s\n\n") % (cfg.typem3utv.getValue(), cfg.typelist.getValue())
 		return conthelp
 
 	def yellow(self):
@@ -180,32 +180,32 @@ class xc_help(Screen):
 		self["helpdesc2"].show()
 
 	def yellowcontext(self):
-		conthelp = "    HOME - MAIN\n\n"
-		conthelp += ("    (MENU BUTTON):\n")
-		conthelp += _("            Config Setup Options\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (5 BUTTON):\n")
-		conthelp += _("            MediaPlayer\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (9/HELP BUTTON):\n")
-		conthelp += _("            Help\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (PVR/FILELIST/2 BUTTON):\n")
-		conthelp += _("            Open Movie Folder\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (EPG/INFO/0 BUTTON):\n")
-		conthelp += _("            Epg guide or imdb/tmdb\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (GREEN BUTTON):\n ")
-		conthelp += _("            Start Download or Record Selected Channel:\n")
-		conthelp += _("            Set 'Live Player Active' in Setting:\n")
-		conthelp += _("            Set 'No' for Record Live\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (YELLOW BUTTON):\n")
-		conthelp += _("            Start Download All Episodes Series\n")
-		conthelp += ("    (BLUE BUTTON):\n")
-		conthelp += _("            Search LIve/Movie")
-		conthelp += ("        ___________________________________\n")
+		conthelp = "	HOME - MAIN\n\n"
+		conthelp += ("	  (MENU BUTTON):\n")
+		conthelp += _("			   Config Setup Options\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (5 BUTTON):\n")
+		conthelp += _("			   MediaPlayer\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (9/HELP BUTTON):\n")
+		conthelp += _("			   Help\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (PVR/FILELIST/2 BUTTON):\n")
+		conthelp += _("			   Open Movie Folder\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (EPG/INFO/0 BUTTON):\n")
+		conthelp += _("			   Epg guide or imdb/tmdb\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (GREEN BUTTON):\n ")
+		conthelp += _("			   Start Download or Record Selected Channel:\n")
+		conthelp += _("			   Set 'Live Player Active' in Setting:\n")
+		conthelp += _("			   Set 'No' for Record Live\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (YELLOW BUTTON):\n")
+		conthelp += _("			   Start Download All Episodes Series\n")
+		conthelp += ("	  (BLUE BUTTON):\n")
+		conthelp += _("			   Search LIve/Movie")
+		conthelp += ("		  ___________________________________\n")
 		return conthelp
 
 	def green(self):
@@ -216,26 +216,26 @@ class xc_help(Screen):
 		self["helpdesc2"].show()
 
 	def greencontext(self):
-		conthelp = "    MENU CONFIG\n\n"
-		conthelp += ("    (YELLOW BUTTON):\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += _("            If you have a file\n")
-		conthelp += _("            /etc/enigma2/iptv.sh\n")
-		conthelp += _("            Import with Yellow Button this file\n\n")
-		conthelp += _("            Format:\n")
-		conthelp += _("            USERNAME='xxxxxxxxxx'\n")
-		conthelp += _("            PASSWORD='yyyyyyyyy'\n")
-		conthelp += _("            url='http://server:port/xxyyzz'\n\n")
-		conthelp += ("    (BLUE BUTTON):\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += _("            If you have a file:\n")
-		conthelp += _("            /tmp/xc.txt\n")
-		conthelp += _("            Import with Blue Button this file\n\n")
-		conthelp += _("            Format:\n")
-		conthelp += _("            host\t(host without http:// )\n")
-		conthelp += _("            port\n")
-		conthelp += _("            user\n")
-		conthelp += _("            password\n")
+		conthelp = "	MENU CONFIG\n\n"
+		conthelp += ("	  (YELLOW BUTTON):\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += _("			   If you have a file\n")
+		conthelp += _("			   /etc/enigma2/iptv.sh\n")
+		conthelp += _("			   Import with Yellow Button this file\n\n")
+		conthelp += _("			   Format:\n")
+		conthelp += _("			   USERNAME='xxxxxxxxxx'\n")
+		conthelp += _("			   PASSWORD='yyyyyyyyy'\n")
+		conthelp += _("			   url='http://server:port/xxyyzz'\n\n")
+		conthelp += ("	  (BLUE BUTTON):\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += _("			   If you have a file:\n")
+		conthelp += _("			   /tmp/xc.txt\n")
+		conthelp += _("			   Import with Blue Button this file\n\n")
+		conthelp += _("			   Format:\n")
+		conthelp += _("			   host\t(host without http:// )\n")
+		conthelp += _("			   port\n")
+		conthelp += _("			   user\n")
+		conthelp += _("			   password\n")
 		return conthelp
 
 	def blue(self):
@@ -246,33 +246,33 @@ class xc_help(Screen):
 		self["helpdesc2"].hide()
 
 	def bluecontext(self):
-		conthelp = "    PLAYER XC\n"
-		conthelp += ("        ___________________________________\n")
-		conthelp += ("    (RED BUTTON):\n")
-		conthelp += _("            Return to Channels List\n")
-		conthelp += _("    (BLUE BUTTON):\n")
-		conthelp += _("            Init Continue Play\n")
-		conthelp += _("    (REC BUTTON):\n")
-		conthelp += _("            Download Video \n")
-		conthelp += _("    (STOP BUTTON):\n")
-		conthelp += _("            Close/Stop Movie/Live\n\n")
+		conthelp = "	PLAYER XC\n"
+		conthelp += ("		  ___________________________________\n")
+		conthelp += ("	  (RED BUTTON):\n")
+		conthelp += _("			   Return to Channels List\n")
+		conthelp += _("	   (BLUE BUTTON):\n")
+		conthelp += _("			   Init Continue Play\n")
+		conthelp += _("	   (REC BUTTON):\n")
+		conthelp += _("			   Download Video \n")
+		conthelp += _("	   (STOP BUTTON):\n")
+		conthelp += _("			   Close/Stop Movie/Live\n\n")
 		conthelp += ("UTILITY PLAYER M3U\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += _("    (GREEN BUTTON):\n")
-		conthelp += _("            Remove file from list\n")
-		conthelp += _("    (YELLOW BUTTON):\n")
-		conthelp += _("            Export file m3u to Bouquet .tv\n")
-		conthelp += _("    (BLUE BUTTON):\n")
-		conthelp += _("            Download file m3u from current server\n\n")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += _("	   (GREEN BUTTON):\n")
+		conthelp += _("			   Remove file from list\n")
+		conthelp += _("	   (YELLOW BUTTON):\n")
+		conthelp += _("			   Export file m3u to Bouquet .tv\n")
+		conthelp += _("	   (BLUE BUTTON):\n")
+		conthelp += _("			   Download file m3u from current server\n\n")
 		conthelp += ("UTILITY PLAYER M3U - OPEN FILE:\n")
-		conthelp += ("        ___________________________________\n")
-		conthelp += _("    When opening an .m3u file instead:\n")
-		conthelp += _("   (GREEN BUTTON):\n")
-		conthelp += _("           Reload List\n")
-		conthelp += _("   (YELLOW BUTTON):\n")
-		conthelp += _("           Download VOD selected channel\n")
-		conthelp += _("   (BLUE BUTTON):\n")
-		conthelp += _("           Search for a title in the list")
+		conthelp += ("		  ___________________________________\n")
+		conthelp += _("	   When opening an .m3u file instead:\n")
+		conthelp += _("	  (GREEN BUTTON):\n")
+		conthelp += _("			  Reload List\n")
+		conthelp += _("	  (YELLOW BUTTON):\n")
+		conthelp += _("			  Download VOD selected channel\n")
+		conthelp += _("	  (BLUE BUTTON):\n")
+		conthelp += _("			  Search for a title in the list")
 		return conthelp
 
 	def exitx(self):

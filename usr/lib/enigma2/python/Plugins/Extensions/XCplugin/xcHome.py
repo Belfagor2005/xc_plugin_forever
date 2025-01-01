@@ -144,11 +144,16 @@ class xc_home(Screen):
 		Utils.OnclearMem()
 
 	def config(self):
-		self.session.openWithCallback(self.ConfigTextx, xc_config)
+		self.session.openWithCallback(self.loadlist, xc_config)
 
-	def ConfigTextx(self):
-		globalsxp.STREAMS.read_config()
-		globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
+	# def ConfigTextx(self):
+		# globalsxp.STREAMS = iptv_streamse()
+		# if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
+			# globalsxp.STREAMS.read_config()
+			# globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
+		# else:
+			# message = (_("First Select the list or enter it in Config"))
+			# Utils.web_info(message)
 
 	def button_ok(self):
 		self.keyNumberGlobalCB(self['menu'].getSelectedIndex())
@@ -158,7 +163,8 @@ class xc_home(Screen):
 		self.close()
 
 	def Team(self):
-		self.session.open(xc_Playlist)
+		# self.session.open(xc_Playlist)
+		self.session.openWithCallback(self.loadlist, xc_Playlist)
 
 	def xc_Help(self):
 		self.session.openWithCallback(self.xcClean, xc_help)
@@ -172,12 +178,29 @@ class xc_home(Screen):
 	def showMovies(self):
 		self.session.open(MovieSelection)
 
-	def xc_StartMain(self):
+	def loadlist(self):
 		from Plugins.Extensions.XCplugin.plugin import iptv_streamse
+		# print("-----------CONFIG START----------")
+		# host = str(cfg.hostaddress.value)
+		# if host and host != 'exampleserver.com':
+			# self.host = host
+			# self.port = str(cfg.port.value)
+			# username = str(cfg.user.value)
+			# if username and username != "" and 'Enter' not in username:
+				# self.username = username			
+			# password = str(cfg.passw.value)
+			# if password and password != "" and 'Enter' not in password:
+				# self.password = password
+			# self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
 		globalsxp.STREAMS = iptv_streamse()
-		globalsxp.STREAMS.read_config()
 		if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
+			globalsxp.STREAMS.read_config()
 			globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
+			return True
+		return False
+
+	def xc_StartMain(self):
+		if self.loadlist:
 			check_configuring(_session)
 		else:
 			message = (_("First Select the list or enter it in Config"))
@@ -203,7 +226,7 @@ class xc_home(Screen):
 		if sel == ('HOME'):
 			self.xc_StartMain()
 		elif sel == ('PLAYLIST'):
-			self.session.open(xc_Playlist)
+			self.Team()
 		elif sel == ('MAKER BOUQUET'):
 			self.session.open(xc_maker)
 		elif sel == ('DOWNLOADER'):
