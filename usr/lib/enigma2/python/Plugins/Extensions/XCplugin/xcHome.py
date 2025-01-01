@@ -146,15 +146,6 @@ class xc_home(Screen):
 	def config(self):
 		self.session.openWithCallback(self.loadlist, xc_config)
 
-	# def ConfigTextx(self):
-		# globalsxp.STREAMS = iptv_streamse()
-		# if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
-			# globalsxp.STREAMS.read_config()
-			# globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
-		# else:
-			# message = (_("First Select the list or enter it in Config"))
-			# Utils.web_info(message)
-
 	def button_ok(self):
 		self.keyNumberGlobalCB(self['menu'].getSelectedIndex())
 
@@ -180,6 +171,7 @@ class xc_home(Screen):
 
 	def loadlist(self):
 		from Plugins.Extensions.XCplugin.plugin import iptv_streamse
+		"""
 		# print("-----------CONFIG START----------")
 		# host = str(cfg.hostaddress.value)
 		# if host and host != 'exampleserver.com':
@@ -187,11 +179,12 @@ class xc_home(Screen):
 			# self.port = str(cfg.port.value)
 			# username = str(cfg.user.value)
 			# if username and username != "" and 'Enter' not in username:
-				# self.username = username			
+				# self.username = username
 			# password = str(cfg.passw.value)
 			# if password and password != "" and 'Enter' not in password:
 				# self.password = password
 			# self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
+		"""
 		globalsxp.STREAMS = iptv_streamse()
 		if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
 			globalsxp.STREAMS.read_config()
