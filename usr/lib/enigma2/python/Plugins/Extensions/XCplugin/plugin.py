@@ -227,7 +227,7 @@ class xc_home(Screen):
         elif sel == ('CONFIG'):
             self.config()
         elif sel == ('ABOUT & HELP'):
-            self.helpx()
+            self.xc_Help()
 
 
 class iptv_streamse():
