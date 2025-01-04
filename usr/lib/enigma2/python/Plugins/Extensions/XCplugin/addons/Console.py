@@ -8,7 +8,7 @@ from enigma import eConsoleAppContainer
 from Screens.Screen import Screen
 from Components.ActionMap import ActionMap
 from Components.ScrollLabel import ScrollLabel
-from Components.Sources.StaticText import StaticText
+# from Components.Sources.StaticText import StaticText
 from Screens.MessageBox import MessageBox
 from enigma import getDesktop
 import sys
@@ -98,6 +98,7 @@ class Console(Screen):
             self.runFinished(-1)
 
     def runFinished(self, retval):
+        lastpage = ''
         if retval:
             self.errorOcurred = True
             self.show()
@@ -112,6 +113,7 @@ class Console(Screen):
                 lastpage = self['text'].isAtLastPage()
             except:
                 lastpage = self['text']
+            print(lastpage)
             if self.cancel_msg:
                 self.cancel_msg.close()
             if self.showStartStopText:

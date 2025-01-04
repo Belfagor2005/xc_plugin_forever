@@ -48,7 +48,7 @@ globalsxp = SimpleNamespace(
     STREAMS=None,
     stream_live=None,
     stream_url=None,
-    ui=True,  #not used
+    ui=True,  # not used
     urlinfo=None,
     url_tmp=None,
 )

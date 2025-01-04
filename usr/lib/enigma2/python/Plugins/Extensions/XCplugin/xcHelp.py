@@ -1,14 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
-****************************************
-*        coded by Lululla              *
-*             skin by MMark            *
-*  update     16/12/2024               *
-*       Skin by MMark                  *
-****************************************
-'''
+# ======================================================================
+# XCForever Plugin
+#
+# Original code by Dave Sully, Doug Mackay\
+# rewritten by Lululla
+#
+#***************************************
+#        coded by Lululla              *
+#             skin by MMark            *
+#  update     29/12/2024               *
+#       Skin by MMark                  *
+#***************************************
+# ATTENTION PLEASE...
+# This is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2, or (at your option) any later
+# version.
+# You must not remove the credits at
+# all and you must make the modified
+# code open to everyone. by Lululla
+# ======================================================================
 
 from __future__ import print_function
 from . import (
@@ -22,8 +35,7 @@ from . import (
 from .addons import Utils
 from .addons.Console import Console as xcConsole
 from .addons.NewOeSk import ctrlSkin
-from .xcShared import skin_path
-
+from .xcSkin import skin_path
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from datetime import datetime
@@ -281,3 +293,14 @@ class xc_help(Screen):
 
 	def exitx(self):
 		self.close()
+
+# ===================Time is what we want most, but what we use worst===================
+#
+# Time is the best author. It always writes the perfect ending (Charlie Chaplin)
+#
+# by Lululla & MMark -thanks my friend PCD and aime_jeux and other friends
+# thank's to Linux-Sat-support forum - MasterG
+# thanks again to KiddaC for all the tricks we exchanged, and not just the tricks ;)
+# -------------------------------------------------------------------------------------
+# ===================Skin by Mmark Edition for Xc Plugin Infinity please don't copy o remove this
+# send credits to autor Lululla  ;)

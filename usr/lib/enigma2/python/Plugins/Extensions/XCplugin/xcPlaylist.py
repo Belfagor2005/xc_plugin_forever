@@ -1,22 +1,34 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
-****************************************
-*        coded by Lululla              *
-*             skin by MMark            *
-*  update     16/12/2024               *
-*       Skin by MMark                  *
-****************************************
-'''
+# ======================================================================
+# XCForever Plugin
+#
+# Original code by Dave Sully, Doug Mackay\
+# rewritten by Lululla
+#
+#***************************************
+#        coded by Lululla              *
+#             skin by MMark            *
+#  update     29/12/2024               *
+#       Skin by MMark                  *
+#***************************************
+# ATTENTION PLEASE...
+# This is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2, or (at your option) any later
+# version.
+# You must not remove the credits at
+# all and you must make the modified
+# code open to everyone. by Lululla
+# ======================================================================
 
 from __future__ import print_function
 from . import _, version, retTest
 from .addons.modul import globalsxp
 from .addons.NewOeSk import ctrlSkin
 from .xcConfig import cfg
-from .xcShared import skin_path, m3ulistxc, xcM3UList
-
+from .xcSkin import skin_path, m3ulistxc, xcM3UList
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
@@ -141,7 +153,13 @@ class xc_Playlist(Screen):
 	def selectlist(self):
 		try:
 			idx = self["list"].getSelectionIndex()
+			nom = self.names[idx]
 			dom = self.urls[idx]
+			if 'active' not in nom.lower():
+				message = ("User: %s\n\nIs Not Active or Server not responding!\nSelect another list...") % (str(nom))
+				print(str(message))
+				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
+				return
 			port = '80'
 			pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
 			match = re.match(pattern, dom)
@@ -169,7 +187,7 @@ class xc_Playlist(Screen):
 			username = ''
 			password = ''
 			port = '80'
-			pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
+			pattern = (r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)")
 			match = re.match(pattern, dom)
 			if match:
 				host = match.group(1)
@@ -177,7 +195,7 @@ class xc_Playlist(Screen):
 					port = match.group(2)
 				username = match.group(3)
 				password = match.group(4)
-			globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
+			globalsxp.urlinfo = ('http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password))
 			self.ycse = retTest(globalsxp.urlinfo)
 			if self.ycse:
 				y = self.ycse
@@ -251,3 +269,14 @@ class xc_Playlist(Screen):
 
 	def xc_Help(self):
 		self.session.open(MessageBox, _("Put your lines to the %s/xclink.txt'.\nFormat type:\n\nhttp://YOUR_HOST/get.php?username=USERNAME&password=PASSWORD&type=m3u\n\nhttp://YOUR_HOST:YOUR_PORT/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus'\n\nSelect list from Menulist" % Path_XML), MessageBox.TYPE_INFO, timeout=5)
+
+# ===================Time is what we want most, but what we use worst===================
+#
+# Time is the best author. It always writes the perfect ending (Charlie Chaplin)
+#
+# by Lululla & MMark -thanks my friend PCD and aime_jeux and other friends
+# thank's to Linux-Sat-support forum - MasterG
+# thanks again to KiddaC for all the tricks we exchanged, and not just the tricks ;)
+# -------------------------------------------------------------------------------------
+# ===================Skin by Mmark Edition for Xc Plugin Infinity please don't copy o remove this
+# send credits to autor Lululla  ;)

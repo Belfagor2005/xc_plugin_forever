@@ -1,11 +1,11 @@
 import re
-from six import unichr, iteritems  # ensure_str
+from six import unichr, iteritems, text_type
 from six.moves import html_entities
 import sys
 import functools
 import itertools
 import operator
-import sys
+# import sys
 import types
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
@@ -14,7 +14,7 @@ if PY3:
     string_types = str,
     integer_types = int,
     class_types = type,
-    text_type = str
+    text_type = text_type
     binary_type = bytes
 
     MAXSIZE = sys.maxsize
@@ -22,7 +22,7 @@ else:
     string_types = basestring,
     integer_types = (int, long)
     class_types = (type, types.ClassType)
-    text_type = unicode
+    text_type = text_type
     binary_type = str
 
     if sys.platform.startswith("java"):
@@ -47,14 +47,12 @@ else:
 _UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
 _ESCAPE_RE = re.compile("[&<>\"']")
 _UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")  # Whitespace handling added due to "hand-assed" parsers of html pages
-_ESCAPE_DICT = {
-                "&": "&amp;",
+_ESCAPE_DICT = {"&": "&amp;",
                 "<": "&lt;",
                 ">": "&gt;",
                 '"': "&quot;",
                 "'": "&apos;",
                 }
-
 
 
 def ensure_str(s, encoding='utf-8', errors='strict'):

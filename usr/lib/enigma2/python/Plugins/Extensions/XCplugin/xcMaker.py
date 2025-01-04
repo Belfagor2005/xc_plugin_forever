@@ -1,25 +1,36 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
-****************************************
-*        coded by Lululla              *
-*             skin by MMark            *
-*  update     29/12/2024               *
-*       Skin by MMark                  *
-****************************************
-'''
+# ======================================================================
+# XCForever Plugin
+#
+# Original code by Dave Sully, Doug Mackay\
+# rewritten by Lululla
+#
+#***************************************
+#        coded by Lululla              *
+#             skin by MMark            *
+#  update     29/12/2024               *
+#       Skin by MMark                  *
+#***************************************
+# ATTENTION PLEASE...
+# This is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2, or (at your option) any later
+# version.
+# You must not remove the credits at
+# all and you must make the modified
+# code open to everyone. by Lululla
+# ======================================================================
 
 from __future__ import print_function
-from . import _, version
+from . import _, version, plugin_path
 from .addons import Utils
 from .addons.Console import Console as xcConsole
 from .addons.modul import globalsxp
 from .addons.NewOeSk import ctrlSkin
-from .xcConfig import xc_config, cfg
-from .xcShared import skin_path, plugin_path
-from .xcHelp import xc_help
-
+from .xcConfig import cfg
+from .xcSkin import skin_path
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
@@ -32,14 +43,26 @@ from os.path import exists as file_exists
 import codecs
 import os
 
+global _session
+
+
+# def get_config():
+	# from .xcConfig import xc_config  # Import locale
+	# return xc_config
+
+
+# def get_cfg():
+	# from .xcConfig import cfg  # Import locale
+	# return cfg
+
+
 Path_Picons = str(cfg.pthpicon.value) + "/"
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
 
-global _session
-
 
 class xc_maker(Screen):
+
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		global _session
@@ -74,12 +97,14 @@ class xc_maker(Screen):
 		self.onLayoutFinish.append(self.updateMenuList)
 
 	def configc(self):
+		from .xcConfig import xc_config
 		self.session.open(xc_config)
 
 	def exitY(self):
 		self.close()
 
 	def xc_Help(self):
+		from .xcHelp import xc_help
 		self.session.openWithCallback(self.updateMenuList, xc_help)
 
 	def updateMenuList(self):
@@ -334,3 +359,14 @@ Save the input with the green button.
 After a while should you the events imported.
 It takes a while so be patient.
 """
+
+# ===================Time is what we want most, but what we use worst===================
+#
+# Time is the best author. It always writes the perfect ending (Charlie Chaplin)
+#
+# by Lululla & MMark -thanks my friend PCD and aime_jeux and other friends
+# thank's to Linux-Sat-support forum - MasterG
+# thanks again to KiddaC for all the tricks we exchanged, and not just the tricks ;)
+# -------------------------------------------------------------------------------------
+# ===================Skin by Mmark Edition for Xc Plugin Infinity please don't copy o remove this
+# send credits to autor Lululla  ;)

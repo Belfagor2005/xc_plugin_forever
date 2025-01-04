@@ -3,24 +3,29 @@
 
 # python3
 from __future__ import print_function
-
+from . import _
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from enigma import eTimer, eConsoleAppContainer, getDesktop
 from os import path as os_path
-from Components.GUIComponent import *
 from Components.ProgressBar import ProgressBar
 from Tools.Downloader import downloadWithProgress
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import os
-
+import ssl
+import urllib2
 
 try:
     from Components.HTMLComponent import *
 except:
     print("KeyAdder: No HTMLComponent file found")
+
+try:
+    from Components.GUIComponent import *
+except:
+    print("KeyAdder: No GUIComponent file found")
 
 
 # imagedownloadScreen screen
@@ -120,8 +125,6 @@ class imagedownloadScreen(Screen):
         self.downloadfile2(self.url, self.target)
 
     def downloadfile(self, url, target):
-        import ssl, urllib2
-        list1 = []
         try:
             req = urllib2.Request(url)
             try:

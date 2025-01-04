@@ -15,6 +15,7 @@
 # all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
+
 from __future__ import absolute_import
 __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
@@ -26,7 +27,6 @@ from Components.Language import language
 from Tools.Directories import (resolveFilename, SCOPE_PLUGINS)
 import gettext
 import os
-from . import Utils
 from os import environ as os_environ
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
@@ -75,4 +75,3 @@ else:
         else:
             print(("[%s] fallback to default translation for %s" % (PluginLanguageDomain, txt)))
             return gettext.gettext(txt)
-

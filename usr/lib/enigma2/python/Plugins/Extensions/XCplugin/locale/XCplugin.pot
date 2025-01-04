@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XC Forever by Lululla\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-16 21:47+0100\n"
+"POT-Creation-Date: 2025-01-04 14:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <lululla@.cc>\n"
@@ -21,34 +21,34 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: addons\n"
 
-#: addons/downloader2.py:99 addons/downloader2.py:259
+#: addons/downloader2.py:104 addons/downloader2.py:262
 msgid "Downloading,please wait.."
 msgstr ""
 
-#: addons/downloader2.py:102 addons/downloader2.py:161
-#: addons/downloader2.py:162 addons/downloader2.py:260
-#: addons/downloader2.py:281 addons/downloader2.py:282
+#: addons/downloader2.py:107 addons/downloader2.py:164
+#: addons/downloader2.py:165 addons/downloader2.py:263
+#: addons/downloader2.py:284 addons/downloader2.py:285
 msgid "Connecting"
 msgstr ""
 
-#: addons/downloader2.py:171 addons/downloader2.py:174
+#: addons/downloader2.py:174 addons/downloader2.py:177
 msgid "Downloading"
 msgstr ""
 
-#: addons/downloader2.py:180 addons/downloader2.py:294
+#: addons/downloader2.py:183 addons/downloader2.py:297
 msgid "Download completed successfully."
 msgstr ""
 
-#: addons/downloader2.py:193 addons/downloader2.py:306
+#: addons/downloader2.py:196 addons/downloader2.py:309
 msgid "Download failed Press Ok To Exit"
 msgstr ""
 
-#: addons/downloader2.py:211 addons/downloader2.py:324
+#: addons/downloader2.py:214 addons/downloader2.py:327
 msgid "Are you sure to stop download."
 msgstr ""
 
-#: addons/downloader2.py:232 addons/downloader2.py:345 xcPlayerUri.py:1030
-#: xcPlayerUri.py:1334
+#: addons/downloader2.py:235 addons/downloader2.py:348 xcPlayerUri.py:1047
+#: xcPlayerUri.py:1351
 msgid "Aborting..."
 msgstr ""
 
@@ -56,434 +56,369 @@ msgstr ""
 msgid "Resolution Change Failed"
 msgstr ""
 
-#: plugin.py:133 plugin.py:136 plugin.py:560 plugin.py:563 xcConfig.py:121
-#: xcConfig.py:124 xcEpg.py:46 xcEpg.py:49 xcHelp.py:55 xcHelp.py:58
-#: xcMaker.py:52 xcMaker.py:55 xcOpenServer.py:49 xcOpenServer.py:52
-#: xcPlayerUri.py:831 xcPlayerUri.py:834 xcPlayerUri.py:1112
-#: xcPlayerUri.py:1115 xcTask.py:57 xcTask.py:60
+#: plugin.py:108 plugin.py:111 xcConfig.py:138 xcConfig.py:141 xcEpg.py:58
+#: xcEpg.py:61 xcHelp.py:67 xcHelp.py:70 xcMain.py:124 xcMain.py:127
+#: xcMaker.py:75 xcMaker.py:78 xcPlayerUri.py:848 xcPlayerUri.py:851
+#: xcPlayerUri.py:1129 xcPlayerUri.py:1132 xcPlaylist.py:53 xcPlaylist.py:56
+#: xcTask.py:69 xcTask.py:72
 #, python-format
 msgid "%s"
 msgstr ""
 
-#: plugin.py:143
+#: plugin.py:118
 msgid "Exit"
 msgstr ""
 
-#: plugin.py:144
+#: plugin.py:119
 msgid "Select"
 msgstr ""
 
-#: plugin.py:145
+#: plugin.py:120
 msgid "Movie"
 msgstr ""
 
-#: plugin.py:146
-msgid "Loader M3U"
+#: plugin.py:121
+msgid "M3u Loader"
 msgstr ""
 
-#: plugin.py:223 xcMaker.py:117
+#: plugin.py:197 xcMaker.py:142 xcShared.py:129
 msgid "First Select the list or enter it in Config"
 msgstr ""
 
-#: plugin.py:594
-msgid "HOME"
-msgstr ""
-
-#: plugin.py:595
-msgid "Rec Movie"
-msgstr ""
-
-#: plugin.py:596
-msgid "Rec Series"
-msgstr ""
-
-#: plugin.py:597 xcPlayerUri.py:1128
-msgid "Search"
-msgstr ""
-
-#: plugin.py:638
-msgid "No data or playlist not compatible with XCplugin."
-msgstr ""
-
-#: plugin.py:663
-msgid "Please enter the parental control pin code"
-msgstr ""
-
-#: plugin.py:663
-msgid "Enter pin code"
-msgstr ""
-
-#: plugin.py:668
-msgid "The pin code you entered is wrong."
-msgstr ""
-
-#: plugin.py:889
-msgid "Filter this category..."
-msgstr ""
-
-#: plugin.py:1093
-msgid ""
-"ATTENTION!!!\n"
-"DOWNLOAD ALL EPISODES SERIES\n"
-"SURE???"
-msgstr ""
-
-#: plugin.py:1136
-msgid "Only Series Episodes Allowed!!!"
-msgstr ""
-
-#: plugin.py:1154
-msgid "DOWNLOAD VIDEO?"
-msgstr ""
-
-#: plugin.py:1157
-msgid "Live Player Active in Setting: set No for Record Live"
-msgstr ""
-
-#: plugin.py:1160
-msgid "No Video to Download/Record!!"
-msgstr ""
-
-#: plugin.py:1193
-msgid ""
-"Download Failed\n"
-"\n"
-msgstr ""
-
-#: xcConfig.py:106
+#: xcConfig.py:123
 msgid "interval"
 msgstr ""
 
-#: xcConfig.py:106
+#: xcConfig.py:123
 msgid "fixed time"
 msgstr ""
 
-#: xcConfig.py:133 xcEpg.py:62 xcHelp.py:63 xcMaker.py:63 xcOpenServer.py:61
-#: xcPlayerUri.py:855 xcPlayerUri.py:1125
+#: xcConfig.py:150 xcEpg.py:74 xcHelp.py:75 xcMaker.py:86 xcPlayerUri.py:872
+#: xcPlayerUri.py:1142 xcPlaylist.py:65
 msgid "Back"
 msgstr ""
 
-#: xcConfig.py:134
+#: xcConfig.py:151
 msgid "Save"
 msgstr ""
 
-#: xcConfig.py:135 xcConfig.py:136
+#: xcConfig.py:152 xcConfig.py:153
 msgid "Import"
 msgstr ""
 
-#: xcConfig.py:163
+#: xcConfig.py:180
 msgid "Import Server from /etc/enigma2/iptv.sh?"
 msgstr ""
 
-#: xcConfig.py:189
+#: xcConfig.py:206
 #, python-format
 msgid "Invalid format in %s. Could not extract server details."
 msgstr ""
 
-#: xcConfig.py:196
+#: xcConfig.py:213
 #, python-format
 msgid "Error reading or processing %s: %s"
 msgstr ""
 
-#: xcConfig.py:203
+#: xcConfig.py:220
 #, python-format
 msgid "Missing or empty file: %s"
 msgstr ""
 
-#: xcConfig.py:218
+#: xcConfig.py:235
 msgid "Import Server from /tmp/xc.tx?"
 msgstr ""
 
-#: xcConfig.py:229
+#: xcConfig.py:246
 #, python-format
 msgid "Invalid file format: not enough lines in %s"
 msgstr ""
 
-#: xcConfig.py:251
+#: xcConfig.py:268
 #, python-format
 msgid "Error reading or processing the file: %s"
 msgstr ""
 
-#: xcConfig.py:258
+#: xcConfig.py:275
 #, python-format
 msgid "File not found or empty: %s"
 msgstr ""
 
-#: xcConfig.py:269
+#: xcConfig.py:286
 #, python-format
 msgid "Last channel update: %s"
 msgstr ""
 
-#: xcConfig.py:283
+#: xcConfig.py:300
 msgid "Data Server Configuration:"
 msgstr ""
 
-#: xcConfig.py:283
+#: xcConfig.py:300
 msgid "Your Server Login and data input"
 msgstr ""
 
-#: xcConfig.py:285
+#: xcConfig.py:302
 msgid "Server URL"
 msgstr ""
 
-#: xcConfig.py:285
+#: xcConfig.py:302
 msgid "Enter Server Url without 'http://' your_domine"
 msgstr ""
 
-#: xcConfig.py:286
+#: xcConfig.py:303
 msgid "Server PORT"
 msgstr ""
 
-#: xcConfig.py:286
+#: xcConfig.py:303
 msgid "Enter Server Port Eg.:'8080'"
 msgstr ""
 
-#: xcConfig.py:287
+#: xcConfig.py:304
 msgid "Server Username"
 msgstr ""
 
-#: xcConfig.py:287
+#: xcConfig.py:304
 msgid "Enter Username"
 msgstr ""
 
-#: xcConfig.py:288
+#: xcConfig.py:305
 msgid "Server Password"
 msgstr ""
 
-#: xcConfig.py:288
+#: xcConfig.py:305
 msgid "Enter Password"
 msgstr ""
 
-#: xcConfig.py:289
+#: xcConfig.py:306
 msgid "Server Timeout"
 msgstr ""
 
-#: xcConfig.py:289
+#: xcConfig.py:306
 msgid "Timeout Server (sec)"
 msgstr ""
 
-#: xcConfig.py:290
+#: xcConfig.py:307
 msgid "Folder user file .xml"
 msgstr ""
 
-#: xcConfig.py:290
+#: xcConfig.py:307
 msgid ""
 "Configure folder containing .xml files\n"
 "Press 'OK' to change location."
 msgstr ""
 
-#: xcConfig.py:291
+#: xcConfig.py:308
 msgid "Media Folder "
 msgstr ""
 
-#: xcConfig.py:291
+#: xcConfig.py:308
 msgid ""
 "Configure folder containing movie/media files\n"
 "Press 'OK' to change location."
 msgstr ""
 
-#: xcConfig.py:293
+#: xcConfig.py:310
 msgid "Main Screen XL"
 msgstr ""
 
-#: xcConfig.py:293
+#: xcConfig.py:310
 msgid "Active Main Screen Large"
 msgstr ""
 
-#: xcConfig.py:294
+#: xcConfig.py:311
 msgid "LivePlayer Active "
 msgstr ""
 
-#: xcConfig.py:294
+#: xcConfig.py:311
 msgid "Live Player for Stream .ts: set No for Record Live"
 msgstr ""
 
-#: xcConfig.py:296
+#: xcConfig.py:313
 msgid "Live Services Type"
 msgstr ""
 
-#: xcConfig.py:296
+#: xcConfig.py:313
 msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
 msgstr ""
 
-#: xcConfig.py:298
+#: xcConfig.py:315
 msgid "Download Type "
 msgstr ""
 
-#: xcConfig.py:298
+#: xcConfig.py:315
 msgid "Configure type of download movie: JobManager/Direct."
 msgstr ""
 
-#: xcConfig.py:300
+#: xcConfig.py:317
 msgid "Filter Bad Tag"
 msgstr ""
 
-#: xcConfig.py:302
+#: xcConfig.py:319
 msgid "Bouquet style "
 msgstr ""
 
-#: xcConfig.py:302
+#: xcConfig.py:319
 msgid "Configure the type of conversion in the favorite list"
 msgstr ""
 
-#: xcConfig.py:304
+#: xcConfig.py:321
 msgid "Conversion type Output "
 msgstr ""
 
-#: xcConfig.py:304
+#: xcConfig.py:321
 msgid "Configure type of stream to be downloaded by conversion"
 msgstr ""
 
-#: xcConfig.py:306
+#: xcConfig.py:323
 msgid "Vod Services Type"
 msgstr ""
 
-#: xcConfig.py:306
+#: xcConfig.py:323
 msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
 msgstr ""
 
-#: xcConfig.py:308
+#: xcConfig.py:325
 msgid "Stop Player on Exit"
 msgstr ""
 
-#: xcConfig.py:308
+#: xcConfig.py:325
 msgid "If player active STOP player riproduction on exit"
 msgstr ""
 
-#: xcConfig.py:310
+#: xcConfig.py:327
 msgid "Name Bouquet Configuration:"
 msgstr ""
 
-#: xcConfig.py:310
+#: xcConfig.py:327
 msgid "Set Name for MakerBouquet"
 msgstr ""
 
-#: xcConfig.py:312
+#: xcConfig.py:329
 msgid "Name Bouquet Export"
 msgstr ""
 
-#: xcConfig.py:312
+#: xcConfig.py:329
 msgid "Configure name of exported bouquet. Default is myBouquet"
 msgstr ""
 
-#: xcConfig.py:314
+#: xcConfig.py:331
 msgid "Place IPTV bouquets at "
 msgstr ""
 
-#: xcConfig.py:314
+#: xcConfig.py:331
 msgid "Configure to place the bouquets of the converted lists"
 msgstr ""
 
-#: xcConfig.py:316
+#: xcConfig.py:333
 msgid "Automatic bouquet update (schedule):"
 msgstr ""
 
-#: xcConfig.py:316
+#: xcConfig.py:333
 msgid "Active Automatic Bouquet Update"
 msgstr ""
 
-#: xcConfig.py:318
+#: xcConfig.py:335
 msgid "Schedule type:"
 msgstr ""
 
-#: xcConfig.py:318
+#: xcConfig.py:335
 msgid "At an interval of hours or at a fixed time"
 msgstr ""
 
-#: xcConfig.py:320
+#: xcConfig.py:337
 msgid "Update interval (hours):"
 msgstr ""
 
-#: xcConfig.py:320
+#: xcConfig.py:337
 msgid "Configure every interval of hours from now"
 msgstr ""
 
-#: xcConfig.py:322
+#: xcConfig.py:339
 msgid "Time to start update:"
 msgstr ""
 
-#: xcConfig.py:322
+#: xcConfig.py:339
 msgid "Configure at a fixed time"
 msgstr ""
 
-#: xcConfig.py:323
+#: xcConfig.py:340
 msgid "Picons IPTV "
 msgstr ""
 
-#: xcConfig.py:323
+#: xcConfig.py:340
 msgid "Download Picons ?"
 msgstr ""
 
-#: xcConfig.py:325
+#: xcConfig.py:342
 msgid "Picons IPTV bouquets to "
 msgstr ""
 
-#: xcConfig.py:325
+#: xcConfig.py:342
 msgid ""
 "Configure folder containing picons files\n"
 "Press 'OK' to change location."
 msgstr ""
 
-#: xcConfig.py:326
+#: xcConfig.py:343
 msgid "Link in Main Menu "
 msgstr ""
 
-#: xcConfig.py:326
+#: xcConfig.py:343
 msgid "Display XCplugin in Main Menu"
 msgstr ""
 
-#: xcConfig.py:338
+#: xcConfig.py:355
 msgid "SELECT YOUR CHOICE"
 msgstr ""
 
-#: xcConfig.py:406
+#: xcConfig.py:423
 msgid "Choose Directory:"
 msgstr ""
 
-#: xcConfig.py:407
+#: xcConfig.py:424
 msgid "Choose directory"
 msgstr ""
 
-#: xcConfig.py:428 xcConfig.py:438 xcConfig.py:448
+#: xcConfig.py:445 xcConfig.py:455 xcConfig.py:465
 #, python-format
 msgid "%s NOT DETECTED!"
 msgstr ""
 
-#: xcConfig.py:466
+#: xcConfig.py:483
 msgid "Settings saved successfully !"
 msgstr ""
 
-#: xcConfig.py:484
+#: xcConfig.py:501
 msgid "Line appended to playlist"
 msgstr ""
 
-#: xcConfig.py:486
+#: xcConfig.py:503
 msgid "Line already exists in playlist"
 msgstr ""
 
-#: xcConfig.py:503
+#: xcConfig.py:520
 msgid "Really close without saving settings?"
 msgstr ""
 
-#: xcEpg.py:138
+#: xcEpg.py:148
 msgid ""
 "Please enter correct server parameters in Config\n"
 "No valid list!"
 msgstr ""
 
-#: xcHelp.py:64
+#: xcHelp.py:76
 msgid "Config"
 msgstr ""
 
-#: xcHelp.py:65
+#: xcHelp.py:77
 msgid "Main"
 msgstr ""
 
-#: xcHelp.py:66
+#: xcHelp.py:78
 msgid "Player"
 msgstr ""
 
-#: xcHelp.py:120
+#: xcHelp.py:133
 #, python-format
 msgid ""
 "New version %s is available\n"
@@ -493,7 +428,7 @@ msgid ""
 "Press info_long or yellow_long button to start force updating."
 msgstr ""
 
-#: xcHelp.py:124
+#: xcHelp.py:137
 #, python-format
 msgid ""
 "New version %s is available.\n"
@@ -503,271 +438,336 @@ msgid ""
 "Do you want to install it now?"
 msgstr ""
 
-#: xcHelp.py:126
+#: xcHelp.py:139
 msgid "Congrats! You already have the latest version..."
 msgstr ""
 
-#: xcHelp.py:135
+#: xcHelp.py:148
 #, python-format
 msgid "Do you want to install update ( %s ) now?"
 msgstr ""
 
-#: xcHelp.py:141
+#: xcHelp.py:154
 msgid "Update Aborted!"
 msgstr ""
 
-#: xcHelp.py:188
+#: xcHelp.py:201
 msgid "            Config Setup Options\n"
 msgstr ""
 
-#: xcHelp.py:191
+#: xcHelp.py:204
 msgid "            MediaPlayer\n"
 msgstr ""
 
-#: xcHelp.py:194
+#: xcHelp.py:207
 msgid "            Help\n"
 msgstr ""
 
-#: xcHelp.py:197
+#: xcHelp.py:210
 msgid "            Open Movie Folder\n"
 msgstr ""
 
-#: xcHelp.py:200
+#: xcHelp.py:213
 msgid "            Epg guide or imdb/tmdb\n"
 msgstr ""
 
-#: xcHelp.py:203
+#: xcHelp.py:216
 msgid "            Start Download or Record Selected Channel:\n"
 msgstr ""
 
-#: xcHelp.py:204
+#: xcHelp.py:217
 msgid "            Set 'Live Player Active' in Setting:\n"
 msgstr ""
 
-#: xcHelp.py:205
+#: xcHelp.py:218
 msgid "            Set 'No' for Record Live\n"
 msgstr ""
 
-#: xcHelp.py:208
+#: xcHelp.py:221
 msgid "            Start Download All Episodes Series\n"
 msgstr ""
 
-#: xcHelp.py:210
+#: xcHelp.py:223
 msgid "            Search LIve/Movie"
 msgstr ""
 
-#: xcHelp.py:225
+#: xcHelp.py:238
 msgid "            If you have a file\n"
 msgstr ""
 
-#: xcHelp.py:226
+#: xcHelp.py:239
 msgid "            /etc/enigma2/iptv.sh\n"
 msgstr ""
 
-#: xcHelp.py:227
+#: xcHelp.py:240
 msgid ""
 "            Import with Yellow Button this file\n"
 "\n"
 msgstr ""
 
-#: xcHelp.py:228 xcHelp.py:237
+#: xcHelp.py:241 xcHelp.py:250
 msgid "            Format:\n"
 msgstr ""
 
-#: xcHelp.py:229
+#: xcHelp.py:242
 msgid "            USERNAME='xxxxxxxxxx'\n"
 msgstr ""
 
-#: xcHelp.py:230
+#: xcHelp.py:243
 msgid "            PASSWORD='yyyyyyyyy'\n"
 msgstr ""
 
-#: xcHelp.py:231
+#: xcHelp.py:244
 msgid ""
 "            url='http://server:port/xxyyzz'\n"
 "\n"
 msgstr ""
 
-#: xcHelp.py:234
+#: xcHelp.py:247
 msgid "            If you have a file:\n"
 msgstr ""
 
-#: xcHelp.py:235
+#: xcHelp.py:248
 msgid "            /tmp/xc.txt\n"
 msgstr ""
 
-#: xcHelp.py:236
+#: xcHelp.py:249
 msgid ""
 "            Import with Blue Button this file\n"
 "\n"
 msgstr ""
 
-#: xcHelp.py:238
+#: xcHelp.py:251
 msgid "            host\t(host without http:// )\n"
 msgstr ""
 
-#: xcHelp.py:239
+#: xcHelp.py:252
 msgid "            port\n"
 msgstr ""
 
-#: xcHelp.py:240
+#: xcHelp.py:253
 msgid "            user\n"
 msgstr ""
 
-#: xcHelp.py:241
+#: xcHelp.py:254
 msgid "            password\n"
 msgstr ""
 
-#: xcHelp.py:255
+#: xcHelp.py:268
 msgid "            Return to Channels List\n"
 msgstr ""
 
-#: xcHelp.py:256 xcHelp.py:268
+#: xcHelp.py:269 xcHelp.py:281
 msgid "    (BLUE BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:257
+#: xcHelp.py:270
 msgid "            Init Continue Play\n"
 msgstr ""
 
-#: xcHelp.py:258
+#: xcHelp.py:271
 msgid "    (REC BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:259
+#: xcHelp.py:272
 msgid "            Download Video \n"
 msgstr ""
 
-#: xcHelp.py:260
+#: xcHelp.py:273
 msgid "    (STOP BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:261
+#: xcHelp.py:274
 msgid ""
 "            Close/Stop Movie/Live\n"
 "\n"
 msgstr ""
 
-#: xcHelp.py:264
+#: xcHelp.py:277
 msgid "    (GREEN BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:265
+#: xcHelp.py:278
 msgid "            Remove file from list\n"
 msgstr ""
 
-#: xcHelp.py:266
+#: xcHelp.py:279
 msgid "    (YELLOW BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:267
+#: xcHelp.py:280
 msgid "            Export file m3u to Bouquet .tv\n"
 msgstr ""
 
-#: xcHelp.py:269
+#: xcHelp.py:282
 msgid ""
 "            Download file m3u from current server\n"
 "\n"
 msgstr ""
 
-#: xcHelp.py:272
+#: xcHelp.py:285
 msgid "    When opening an .m3u file instead:\n"
 msgstr ""
 
-#: xcHelp.py:273
+#: xcHelp.py:286
 msgid "   (GREEN BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:274
+#: xcHelp.py:287
 msgid "           Reload List\n"
 msgstr ""
 
-#: xcHelp.py:275
+#: xcHelp.py:288
 msgid "   (YELLOW BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:276
+#: xcHelp.py:289
 msgid "           Download VOD selected channel\n"
 msgstr ""
 
-#: xcHelp.py:277
+#: xcHelp.py:290
 msgid "   (BLUE BUTTON):\n"
 msgstr ""
 
-#: xcHelp.py:278
+#: xcHelp.py:291
 msgid "           Search for a title in the list"
 msgstr ""
 
-#: xcMaker.py:64
+#: xcMain.py:160
+msgid "HOME"
+msgstr ""
+
+#: xcMain.py:161
+msgid "Rec Movie"
+msgstr ""
+
+#: xcMain.py:162
+msgid "Rec Series"
+msgstr ""
+
+#: xcMain.py:163 xcPlayerUri.py:1145
+msgid "Search"
+msgstr ""
+
+#: xcMain.py:204
+msgid "No data or playlist not compatible with XCplugin."
+msgstr ""
+
+#: xcMain.py:229
+msgid "Please enter the parental control pin code"
+msgstr ""
+
+#: xcMain.py:229
+msgid "Enter pin code"
+msgstr ""
+
+#: xcMain.py:234
+msgid "The pin code you entered is wrong."
+msgstr ""
+
+#: xcMain.py:457
+msgid "Filter this category..."
+msgstr ""
+
+#: xcMain.py:661
+msgid ""
+"ATTENTION!!!\n"
+"DOWNLOAD ALL EPISODES SERIES\n"
+"SURE???"
+msgstr ""
+
+#: xcMain.py:704
+msgid "Only Series Episodes Allowed!!!"
+msgstr ""
+
+#: xcMain.py:722
+msgid "DOWNLOAD VIDEO?"
+msgstr ""
+
+#: xcMain.py:725
+msgid "Live Player Active in Setting: set No for Record Live"
+msgstr ""
+
+#: xcMain.py:728
+msgid "No Video to Download/Record!!"
+msgstr ""
+
+#: xcMain.py:761
+msgid ""
+"Download Failed\n"
+"\n"
+msgstr ""
+
+#: xcMaker.py:87
 msgid "Make"
 msgstr ""
 
-#: xcMaker.py:65 xcOpenServer.py:63 xcPlayerUri.py:856 xcTask.py:71
+#: xcMaker.py:88 xcPlayerUri.py:873 xcPlaylist.py:67 xcTask.py:83
 msgid "Remove"
 msgstr ""
 
-#: xcMaker.py:94 xcMaker.py:97 xcMaker.py:100
+#: xcMaker.py:119 xcMaker.py:122 xcMaker.py:125
 #, python-format
 msgid "Convert Playlist to: %s ?"
 msgstr ""
 
-#: xcMaker.py:107 xcMaker.py:114 xcMaker.py:125 xcPlayerUri.py:1100
+#: xcMaker.py:132 xcMaker.py:139 xcMaker.py:150 xcPlayerUri.py:1117
 msgid "Reload Playlists in progress..."
 msgstr ""
 
-#: xcMaker.py:107 xcMaker.py:114 xcMaker.py:125 xcPlayerUri.py:1100
+#: xcMaker.py:132 xcMaker.py:139 xcMaker.py:150 xcPlayerUri.py:1117
 msgid "wait please..."
 msgstr ""
 
-#: xcMaker.py:122
+#: xcMaker.py:147
 msgid "Remove Playlist from Bouquets?"
 msgstr ""
 
-#: xcMaker.py:130
+#: xcMaker.py:155
 msgid ""
 "GREEN BUTTON:\n"
 " "
 msgstr ""
 
-#: xcMaker.py:131
+#: xcMaker.py:156
 msgid "    Create XC Live/VOD Bouquets\n"
 msgstr ""
 
-#: xcMaker.py:132
+#: xcMaker.py:157
 msgid "    You need to configure the type of output\n"
 msgstr ""
 
-#: xcMaker.py:133
+#: xcMaker.py:158
 msgid ""
 "    in the config menu\n"
 "\n"
 msgstr ""
 
-#: xcMaker.py:134
+#: xcMaker.py:159
 msgid "YELLOW BUTTON:\n"
 msgstr ""
 
-#: xcMaker.py:135
+#: xcMaker.py:160
 msgid "    Removes all the bouquets that have been\n"
 msgstr ""
 
-#: xcMaker.py:136
+#: xcMaker.py:161
 msgid ""
 "    created with XCplugin\n"
 "\n"
 msgstr ""
 
-#: xcMaker.py:137
+#: xcMaker.py:162
 msgid "HELP BUTTON:\n"
 msgstr ""
 
-#: xcMaker.py:138
+#: xcMaker.py:163
 msgid ""
 "    Go to Help info plugin\n"
 "\n"
 msgstr ""
 
-#: xcMaker.py:144
+#: xcMaker.py:169
 #, python-format
 msgid ""
 "Current configuration for creating the bouquet\n"
@@ -775,33 +775,113 @@ msgid ""
 "\n"
 msgstr ""
 
-#: xcMaker.py:310
+#: xcMaker.py:342
 #, python-format
 msgid "Conversion %s in progress: "
 msgstr ""
 
-#: xcOpenServer.py:64
+#: xcPlayerUri.py:865
+#, python-format
+msgid "Put .m3u Files in Folder %s"
+msgstr ""
+
+#: xcPlayerUri.py:874
+msgid "Export"
+msgstr ""
+
+#: xcPlayerUri.py:874
+msgid " Bouquet"
+msgstr ""
+
+#: xcPlayerUri.py:875 xcPlayerUri.py:1144
+msgid "Download"
+msgstr ""
+
+#: xcPlayerUri.py:875
+msgid " M3u"
+msgstr ""
+
+#: xcPlayerUri.py:944
+#, python-format
+msgid "Do you want to remove: %s ?"
+msgstr ""
+
+#: xcPlayerUri.py:948
+msgid ""
+"   has been successfully deleted\n"
+"wait time to refresh the list..."
+msgstr ""
+
+#: xcPlayerUri.py:953
+msgid " not exist!"
+msgstr ""
+
+#: xcPlayerUri.py:960
+msgid "Wait... downloading in progress ..."
+msgstr ""
+
+#: xcPlayerUri.py:963
+msgid "Download M3u File?"
+msgstr ""
+
+#: xcPlayerUri.py:988
+msgid "No Server Configured to Download!!!"
+msgstr ""
+
+#: xcPlayerUri.py:1021 xcPlayerUri.py:1319
+msgid "Download Finished!"
+msgstr ""
+
+#: xcPlayerUri.py:1065
+#, python-format
+msgid "Do you want to Convert %s to favorite .tv ?"
+msgstr ""
+
+#: xcPlayerUri.py:1108
+msgid "Check on favorites lists..."
+msgstr ""
+
+#: xcPlayerUri.py:1143
+msgid "Reload"
+msgstr ""
+
+#: xcPlayerUri.py:1241
+msgid "File Unknow!!!"
+msgstr ""
+
+#: xcPlayerUri.py:1269
+#, python-format
+msgid ""
+"DOWNLOAD VIDEO?\n"
+"%s"
+msgstr ""
+
+#: xcPlayerUri.py:1292
+msgid "Only VOD Movie allowed!!!"
+msgstr ""
+
+#: xcPlaylist.py:68
 msgid "Info"
 msgstr ""
 
-#: xcOpenServer.py:237
+#: xcPlaylist.py:248
 #, python-format
 msgid "Do you want to remove: %s?"
 msgstr ""
 
-#: xcOpenServer.py:248
+#: xcPlaylist.py:259
 msgid ""
 " has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: xcOpenServer.py:253
+#: xcPlaylist.py:264
 msgid ""
 " not exist!\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: xcOpenServer.py:260
+#: xcPlaylist.py:271
 #, python-format
 msgid ""
 "Put your lines to the %s/xclink.txt'.\n"
@@ -814,165 +894,85 @@ msgid ""
 "Select list from Menulist"
 msgstr ""
 
-#: xcPlayerUri.py:848
-#, python-format
-msgid "Put .m3u Files in Folder %s"
-msgstr ""
-
-#: xcPlayerUri.py:857
-msgid "Export"
-msgstr ""
-
-#: xcPlayerUri.py:857
-msgid " Bouquet"
-msgstr ""
-
-#: xcPlayerUri.py:858 xcPlayerUri.py:1127
-msgid "Download"
-msgstr ""
-
-#: xcPlayerUri.py:858
-msgid " M3u"
-msgstr ""
-
-#: xcPlayerUri.py:927
-#, python-format
-msgid "Do you want to remove: %s ?"
-msgstr ""
-
-#: xcPlayerUri.py:931
-msgid ""
-"   has been successfully deleted\n"
-"wait time to refresh the list..."
-msgstr ""
-
-#: xcPlayerUri.py:936
-msgid " not exist!"
-msgstr ""
-
-#: xcPlayerUri.py:943
-msgid "Wait... downloading in progress ..."
-msgstr ""
-
-#: xcPlayerUri.py:946
-msgid "Download M3u File?"
-msgstr ""
-
-#: xcPlayerUri.py:971
-msgid "No Server Configured to Download!!!"
-msgstr ""
-
-#: xcPlayerUri.py:1004 xcPlayerUri.py:1302
-msgid "Download Finished!"
-msgstr ""
-
-#: xcPlayerUri.py:1048
-#, python-format
-msgid "Do you want to Convert %s to favorite .tv ?"
-msgstr ""
-
-#: xcPlayerUri.py:1091
-msgid "Check on favorites lists..."
-msgstr ""
-
-#: xcPlayerUri.py:1126
-msgid "Reload"
-msgstr ""
-
-#: xcPlayerUri.py:1224
-msgid "File Unknow!!!"
-msgstr ""
-
-#: xcPlayerUri.py:1252
-#, python-format
-msgid ""
-"DOWNLOAD VIDEO?\n"
-"%s"
-msgstr ""
-
-#: xcPlayerUri.py:1275
-msgid "Only VOD Movie allowed!!!"
-msgstr ""
-
-#: xcTask.py:72
+#: xcTask.py:84
 msgid "Close"
 msgstr ""
 
-#: xcTask.py:134 xcTask.py:181
+#: xcTask.py:147
 msgid "Finished"
 msgstr ""
 
-#: xcTask.py:144
+#: xcTask.py:157
 msgid "Free Space"
 msgstr ""
 
-#: xcTask.py:145
+#: xcTask.py:158
 msgid "Movie Folder"
 msgstr ""
 
-#: xcTask.py:210
+#: xcTask.py:222
 msgid "Invalid job parameter"
 msgstr ""
 
-#: xcTask.py:214
+#: xcTask.py:226
 msgid "Session is not valid"
 msgstr ""
 
-#: xcTask.py:219
-msgid "Unable to open JobView dialog"
+#: xcTask.py:250
+msgid "Is Directory or file not exist"
 msgstr ""
 
-#: xcTask.py:243
+#: xcTask.py:273
 msgid "No movie selected!"
 msgstr ""
 
-#: xcTask.py:248
+#: xcTask.py:278
 #, python-format
 msgid "Do you want to remove %s ?"
 msgstr ""
 
-#: xcTask.py:254 xcTask.py:260
+#: xcTask.py:284 xcTask.py:290
 msgid "Movie has been successfully deleted"
 msgstr ""
 
-#: xcTask.py:263
+#: xcTask.py:293
 msgid "The movie does not exist!"
 msgstr ""
 
-#: xcTask.py:272
+#: xcTask.py:302
 msgid ""
 " Movie has been successfully deleted\n"
 "wait time to refresh the list..."
 msgstr ""
 
-#: xcTask.py:276
+#: xcTask.py:306
 msgid "Error deleting the file: "
 msgstr ""
 
-#: xcTask.py:278
+#: xcTask.py:308
 msgid "File not found!"
 msgstr ""
 
-#: xcTask.py:310 xcTask.py:311 xcTask.py:312 xcTask.py:313 xcTask.py:314
+#: xcTask.py:340 xcTask.py:341 xcTask.py:342 xcTask.py:343 xcTask.py:344
 msgid "MOVIE DOWNLOAD FAILED!"
 msgstr ""
 
-#: xcTask.py:310
+#: xcTask.py:340
 msgid "DOWNLOADED FILE CORRUPTED:"
 msgstr ""
 
-#: xcTask.py:311
+#: xcTask.py:341
 msgid "COULD NOT READ RTMP PACKET:"
 msgstr ""
 
-#: xcTask.py:312
+#: xcTask.py:342
 msgid "SEGMENTATION FAULT:"
 msgstr ""
 
-#: xcTask.py:313
+#: xcTask.py:343
 msgid "SERVER RETURNED ERROR:"
 msgstr ""
 
-#: xcTask.py:314
+#: xcTask.py:344
 msgid "UNKNOWN ERROR:"
 msgstr ""

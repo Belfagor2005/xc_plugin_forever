@@ -4,8 +4,15 @@
 # ======================================================================
 # XCForever Plugin
 #
+# Original code by Dave Sully, Doug Mackay\
 # rewritten by Lululla
 #
+#***************************************
+#        coded by Lululla              *
+#             skin by MMark            *
+#  update     29/12/2024               *
+#       Skin by MMark                  *
+#***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -18,6 +25,7 @@
 
 from __future__ import absolute_import
 from .addons import Utils
+from Components.config import config
 from Components.Language import language
 from os import environ as os_environ
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
@@ -28,14 +36,15 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "GPL-v2"
-currversion = '3.9'
+currversion = '4.0'
 version = "XC Forever V.%s" % currversion
-
+plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='
 developer_url = 'aHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy9CZWxmYWdvcjIwMDUveGNfcGx1Z2luX2ZvcmV2ZXI='
 AgentRequest = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.3'
 PluginLanguageDomain = 'XCplugin'
-PluginLanguagePath = 'Extensions/XCplugin/locale'
+PluginLanguagePath = os.path.join(plugin_path, 'locale')
+
 
 isDreamOS = False
 if os.path.exists("/usr/bin/apt-get"):
@@ -173,7 +182,7 @@ def make_request(url, max_retries=3, base_delay=1):
 				except UnicodeDecodeError:
 					print("Decoding error with 'utf-8', trying 'latin-1'...")
 					content = content.decode('latin-1', errors='replace')
-				print("Contenuto decodificato con latin-1:\n", content)
+					# print("Contenuto decodificato con latin-1:\n", content)
 				return content
 		except URLError as e:
 			if isinstance(e.reason, socket.timeout):
@@ -188,14 +197,13 @@ def make_request(url, max_retries=3, base_delay=1):
 
 
 def check_port(url):
-	from .plugin import cfg
 	print('check_port url init=', check_port)
 	line = url.strip()
 	protocol = 'http://'
 	domain = ''
 	port = ''
-	if str(cfg.port.value) != '80':
-		port = str(cfg.port.value)
+	if str(config.plugins.XCplugin.port.value) != '80':
+		port = str(config.plugins.XCplugin.port.value)
 	else:
 		port = '80'
 	host = ''

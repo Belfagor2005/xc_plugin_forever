@@ -1,4 +1,5 @@
 #!/bin/sh
+
 pyv="$(python -V 2>&1)"
 echo "$pyv"
 echo "Checking Dependencies"
