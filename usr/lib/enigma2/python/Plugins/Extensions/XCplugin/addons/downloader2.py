@@ -15,7 +15,13 @@ from Tools.Downloader import downloadWithProgress
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import os
 import ssl
-import urllib2
+
+
+try:
+    from urllib.request import urlopen, Request
+    from urllib.error import URLError
+except ImportError:
+    from urllib2 import urlopen, Request, URLError
 
 try:
     from Components.HTMLComponent import *
@@ -126,18 +132,18 @@ class imagedownloadScreen(Screen):
 
     def downloadfile(self, url, target):
         try:
-            req = urllib2.Request(url)
+            req = Request(url)
             try:
-                response = urllib2.urlopen(req, context=ssl._create_unverified_context())
+                response = urlopen(req, context=ssl._create_unverified_context())
             except:
-                response = urllib2.urlopen(req)
+                response = urlopen(req)
             r = response.read()
             response.close()
             with open(target, 'wb') as f:
                 f.write(r.content)
             f.close()
             self['status'].setText('downloaded successfully')
-        except urllib2.URLError as e:
+        except URLError as e:
             # trace_error()
             if hasattr(e, 'code'):
                 print('We failed with error code - %s.' % e.code)
