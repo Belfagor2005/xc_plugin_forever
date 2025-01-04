@@ -7,12 +7,12 @@
 # Original code by Dave Sully, Doug Mackay\
 # rewritten by Lululla
 #
-#***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
-#       Skin by MMark                  *
-#***************************************
+# ***************************************
+#        coded by Lululla               *
+#             skin by MMark             *
+#  update     29/12/2024                *
+#       Skin by MMark                   *
+# ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -45,16 +45,16 @@ import os
 
 global _session
 
+"""
+def get_config():
+	from .xcConfig import xc_config  # Import locale
+	return xc_config
 
-# def get_config():
-	# from .xcConfig import xc_config  # Import locale
-	# return xc_config
 
-
-# def get_cfg():
-	# from .xcConfig import cfg  # Import locale
-	# return cfg
-
+def get_cfg():
+	from .xcConfig import cfg  # Import locale
+	return cfg
+"""
 
 Path_Picons = str(cfg.pthpicon.value) + "/"
 enigma_path = '/etc/enigma2/'
