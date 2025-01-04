@@ -2,7 +2,7 @@ Xc Gold Forever v.4.0 by Lululla
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005)
 
-<img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.png">
+<img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.png">
 
 Enigma2 project
 This plugin does not contain any playlists or channels. 
