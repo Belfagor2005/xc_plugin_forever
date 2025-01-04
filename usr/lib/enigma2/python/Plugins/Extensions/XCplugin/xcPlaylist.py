@@ -153,6 +153,8 @@ class xc_Playlist(Screen):
 	def selectlist(self):
 		try:
 			idx = self["list"].getSelectionIndex()
+			if idx is None or idx < 0 or idx >= len(self.names):
+				return
 			nom = self.names[idx]
 			dom = self.urls[idx]
 			if 'active' not in nom.lower():
@@ -180,6 +182,8 @@ class xc_Playlist(Screen):
 	def infoxc(self):
 		try:
 			idx = self["list"].getSelectionIndex()
+			if idx is None or idx < 0 or idx >= len(self.names):
+				return
 			dom = self.urls[idx]
 			TIME_GMT = '%d-%m-%Y %H:%M:%S'
 			auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
@@ -242,6 +246,8 @@ class xc_Playlist(Screen):
 
 	def message1(self, answer=None):
 		idx = self["list"].getSelectionIndex()
+		if idx is None or idx < 0 or idx >= len(self.names):
+			return
 		nam = self.names[idx]
 		dom = self.urls[idx]
 		if answer is None:

@@ -80,6 +80,7 @@ class xc_StreamTasks(Screen):
 		self.new_aspect = self.init_aspect
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self["filelist"] = List([])
+		self.movielist = []
 		self["key_green"] = Label(_("Remove"))
 		self["key_red"] = Label(_("Close"))
 		self['totalItem'] = Label()
@@ -200,54 +201,56 @@ class xc_StreamTasks(Screen):
 	def keyOK(self):
 		global file1
 		current = self["filelist"].getCurrent()
-		if current:
-			"""
-			if current[0] == "movie":
+		if current is None or current < 0 or current >= len(self.movielist):
+			return
+
+		"""
+		if current[0] == "movie":
+			path = globalsxp.Path_Movies
+			if file1 is True:
 				path = globalsxp.Path_Movies
-				if file1 is True:
-					path = globalsxp.Path_Movies
+			url = path + current[1]
+			name = current[1]
+			file1 = False
+			isFile = file_exists(url)
+			if isFile:
+				self.session.open(M3uPlay2, name, url)
+			else:
+				self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
+		else:
+		"""
+		job = current[0]
+		# check valid job
+		if job is None or not isinstance(job, str):
+			self.session.open(MessageBox, _("Invalid job parameter"), MessageBox.TYPE_ERROR, timeout=5)
+			return
+		# Verify session
+		if self.session is None:
+			self.session.open(MessageBox, _("Session is not valid"), MessageBox.TYPE_ERROR, timeout=5)
+			return
+		# # Open JobView with callback
+		# dlg = self.session.openWithCallback(self.JobViewCB, JobView, job)
+		# if dlg is None:
+			# self.session.open(MessageBox, _("Unable to open JobView dialog"), MessageBox.TYPE_ERROR, timeout=5)
+			# return
+		if job == "movie" and current[2] == 'Finished':
+			if file1 is True:
+				path = globalsxp.Path_Movies
 				url = path + current[1]
 				name = current[1]
 				file1 = False
 				isFile = file_exists(url)
 				if isFile:
-					self.session.open(M3uPlay2, name, url)
+					filenameSplitList = current[1].split('.')
+					fileExtension = filenameSplitList[-1].lower()
+					print('fileExtension=', fileExtension)
+					if fileExtension in ["mpg", "mpeg", "mkv", "m2ts", "vob", "mod", "avi", "mp4", "divx", "mov", "flv", "3gp", "wmv"]:
+						from Screens.InfoBar import MoviePlayer
+						fileRef = eServiceReference("4097:0:0:0:0:0:0:0:0:0:" + url)
+						fileRef.setName(name)
+						self.session.open(MoviePlayer, fileRef)
 				else:
 					self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
-			else:
-			"""
-			job = current[0]
-			# check valid job
-			if job is None or not isinstance(job, str):
-				self.session.open(MessageBox, _("Invalid job parameter"), MessageBox.TYPE_ERROR, timeout=5)
-				return
-			# Verify session
-			if self.session is None:
-				self.session.open(MessageBox, _("Session is not valid"), MessageBox.TYPE_ERROR, timeout=5)
-				return
-			# # Open JobView with callback
-			# dlg = self.session.openWithCallback(self.JobViewCB, JobView, job)
-			# if dlg is None:
-				# self.session.open(MessageBox, _("Unable to open JobView dialog"), MessageBox.TYPE_ERROR, timeout=5)
-				# return
-			if job == "movie" and current[2] == 'Finished':
-				if file1 is True:
-					path = globalsxp.Path_Movies
-					url = path + current[1]
-					name = current[1]
-					file1 = False
-					isFile = file_exists(url)
-					if isFile:
-						filenameSplitList = current[1].split('.')
-						fileExtension = filenameSplitList[-1].lower()
-						print('fileExtension=', fileExtension)
-						if fileExtension in ["mpg", "mpeg", "mkv", "m2ts", "vob", "mod", "avi", "mp4", "divx", "mov", "flv", "3gp", "wmv"]:
-							from Screens.InfoBar import MoviePlayer
-							fileRef = eServiceReference("4097:0:0:0:0:0:0:0:0:0:" + url)
-							fileRef.setName(name)
-							self.session.open(MoviePlayer, fileRef)
-					else:
-						self.session.open(MessageBox, _("Is Directory or file not exist"), MessageBox.TYPE_INFO, timeout=5)
 
 	def keyBlue(self):
 		pass
@@ -269,7 +272,7 @@ class xc_StreamTasks(Screen):
 
 	def message1(self, answer=None):
 		current = self["filelist"].getCurrent()
-		if current is None:
+		if current is None or current < 0 or current >= len(self.movielist):
 			self.session.open(MessageBox, _("No movie selected!"), MessageBox.TYPE_INFO, timeout=5)
 			return
 		self.sel = globalsxp.Path_Movies + current[1]

@@ -908,10 +908,10 @@ class xc_Play(Screen):
 
 	def runList(self):
 		idx = self["list"].getSelectionIndex()
-		name = self.Movies[idx]
-		if idx < 0 or idx is None:
+		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		else:
+			name = self.Movies[idx]
 			if ".m3u" in name:
 				self.session.open(xc_M3uPlay, name)
 				return
@@ -937,7 +937,7 @@ class xc_Play(Screen):
 
 	def message1(self, answer=None):
 		idx = self["list"].getSelectionIndex()
-		if idx < 0 or idx is None:
+		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		dom = self.Movies[idx]
 		if answer is None:
@@ -1056,10 +1056,10 @@ class xc_Play(Screen):
 
 	def message2(self):
 		idx = self["list"].getSelectionIndex()
+		if idx is None or idx < 0 or idx >= len(self.names):
+			return
 		dom = self.names[idx]
 		name = self.Movies[idx]
-		if idx < 0 or idx is None:
-			return
 		if ".m3u" in name:
 			idx = self["list"].getSelectionIndex()
 			self.session.openWithCallback(self.convert, MessageBox, _("Do you want to Convert %s to favorite .tv ?") % dom, MessageBox.TYPE_YESNO, timeout=15, default=True)
@@ -1075,7 +1075,7 @@ class xc_Play(Screen):
 
 	def convert_bouquet(self):
 		idx = self["list"].getSelectionIndex()
-		if idx < 0 or idx is None:
+		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		else:
 			name = os.path.join(globalsxp.Path_Movies, self.names[idx])
@@ -1244,18 +1244,18 @@ class xc_M3uPlay(Screen):
 
 	def runChannel(self):
 		idx = self["list"].getSelectionIndex()
-		if idx < 0 or idx is None:
+		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		else:
 			name = self.names[idx]
 			url = self.urls[idx]
 			self.session.open(M3uPlay2, name, url)
-			return
+		return
 
 	def runRec(self, answer=None):
 		self.downloading = False
 		idx = self["list"].getSelectionIndex()
-		if idx < 0 or idx is None:
+		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		else:
 			self.name_m3u = self.names[idx]
