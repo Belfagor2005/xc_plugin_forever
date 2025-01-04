@@ -7,12 +7,12 @@
 # Original code by Dave Sully, Doug Mackay\
 # rewritten by Lululla
 #
-#***************************************
+# ***************************************
 #        coded by Lululla              *
 #             skin by MMark            *
 #  update     29/12/2024               *
 #       Skin by MMark                  *
-#***************************************
+# ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -428,7 +428,7 @@ class iptv_streamse():
                             # Compose the description
                             description = epgnowtime + ' ' + nameepg + '\n\n' + epgnowdescription
                             description = html_conv.html_unescape(description) + '\n\n'
-                            description2 = epgnexttime + ' ' + epgnexttitle + '\n\n' + epgnextdescription 
+                            description2 = epgnexttime + ' ' + epgnexttitle + '\n\n' + epgnextdescription
                             description2 = html_conv.html_unescape(description2) + '\n\n'
 
                     elif ("/movie/" in globalsxp.stream_url) or ("/series/" in globalsxp.stream_url) or ("vod_streams" in globalsxp.stream_url):
@@ -535,7 +535,7 @@ class iptv_streamse():
                             str(vodGenre) + '\n' +
                             'Duration: ' + str(vodDuration) + '\n' +
                             'Release: ' + str(vodRelease) + '\n' +
-                            'Rating: ' + str(vodRating) + '\n' +
+                            'Rating: ' + str(vodRating) + '\n'
                         )
 
                         description = html_conv.html_unescape(description3)
