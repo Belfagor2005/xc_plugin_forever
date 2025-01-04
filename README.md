@@ -1,4 +1,4 @@
-Xc Forever v.3.9 by Lululla
+Xc Gold Forever v.4.0 by Lululla
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005)
 
