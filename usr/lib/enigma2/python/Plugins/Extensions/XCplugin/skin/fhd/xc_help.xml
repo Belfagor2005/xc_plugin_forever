@@ -11,7 +11,7 @@
 	</widget>
 	<!-- Poster -->
 	<ePixmap position="805,140" size="308,423" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvlogo.jpg" scale="1" alphatest="blend" zPosition="1" />
-	<ePixmap position="1403,719" size="370,233" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.jpg" scale="1" alphatest="blend" zPosition="1" />
+	<ePixmap position="1403,719" size="370,233" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.png" scale="1" alphatest="blend" zPosition="2" />
 	<widget name="helpdesc" position="220,135" font="Regular;26" size="585,840" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />
 	<widget name="helpdesc2" position="223,888" font="Regular;30" size="800,48" halign="left" foregroundColor="#ffff00" backgroundColor="#101010" transparent="1" zPosition="2" valign="bottom" />
 	<!-- Buttons Colors -->
