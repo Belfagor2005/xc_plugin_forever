@@ -1227,20 +1227,22 @@ class xc_M3uPlay(Screen):
 						self.names.append(str(name))
 						self.urls.append(str(url))
 						self.pics.append(pic)
-				else:
-					regexcat = r'#EXTINF.*?,(.*?)\n(.*?)\n'
+				elif "#EXTM3U" in fpage and not 'tvg-logo' in fpage:
+					regexcat = r'#EXTINF:-1,(.*?)\n(.*?)\n'
 					match = re.compile(regexcat, re.DOTALL).findall(fpage)
 					for name, url in match:
-						url = url.replace(' ', '').replace('\n', '')
+						url = url.strip()  # Rimuove spazi e newline
 						self.names.append(str(name))
 						self.urls.append(str(url))
 						self.pics.append(pic)
-				m3ulistxc(self.names, self['list'])
-				self["live"].setText('N.' + str(len(self.names)) + " Stream")
+					m3ulistxc(self.names, self['list'])
+					self["live"].setText('N.' + str(len(self.names)) + " Stream")
+				else:
+					self.session.open(MessageBox, _('Formato M3U non valido!'), MessageBox.TYPE_INFO, timeout=5)
 			else:
-				self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
+				self.session.open(MessageBox, _('File non trovato!'), MessageBox.TYPE_INFO, timeout=5)
 		except Exception as e:
-			print('Error processing M3U file:', e)
+			print('Errore durante il parsing del file M3U:', e)
 
 	def runChannel(self):
 		idx = self["list"].getSelectionIndex()
@@ -1277,6 +1279,16 @@ class xc_M3uPlay(Screen):
 					if cfg.pdownmovie.value == "Direct":
 						self.downloading = True
 						self.downloadz()
+					elif cfg.pdownmovie.value == "JobManager":
+						self.downloading = True
+						self.filename = filename.lower()
+						cmd = "wget --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.urlm3u, str(globalsxp.Path_Movies), self.filename)
+						if "https" in str(self.urlm3u):
+							cmd = "wget --no-check-certificate --no-cache --no-dns-cache -U %s -c '%s' -O '%s%s'" % ('Enigma2 - XC Forever Plugin', self.urlm3u, str(globalsxp.Path_Movies), self.filename)
+						self.timeshift_url = globalsxp.Path_Movies + self.filename
+						JobManager.AddJob(downloadJob(self, cmd, self.timeshift_url, self.name_m3u))
+						self.LastJobView()
+
 					else:
 						try:
 							self.downloading = True
@@ -1290,6 +1302,14 @@ class xc_M3uPlay(Screen):
 					return
 			else:
 				self.session.open(MessageBox, _("Only VOD Movie allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+
+	def LastJobView(self):
+		currentjob = None
+		for job in JobManager.getPendingJobs():
+			currentjob = job
+		if currentjob is not None:
+			self.session.open(JobView, currentjob)
+		return
 
 	def downloadz(self):
 		if self.downloading:
