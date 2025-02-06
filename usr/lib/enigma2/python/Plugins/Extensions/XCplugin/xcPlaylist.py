@@ -56,7 +56,9 @@ class xc_Playlist(Screen):
 				self.setTitle(_('%s') % 'SERVER MENU')
 			except:
 				pass
+
 		self.list = []
+
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self["list"] = xcM3UList([])
 		self["Text"] = Label("Select Server")
@@ -67,6 +69,7 @@ class xc_Playlist(Screen):
 		self["key_yellow"] = Label(_("Remove"))
 		self["key_blue"] = Label(_("Info"))
 		self["live"] = Label("")
+
 		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
 			"ok": self.selectlist,
 			"green": self.selectlist,

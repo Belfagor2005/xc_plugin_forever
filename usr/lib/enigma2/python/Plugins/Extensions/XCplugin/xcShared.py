@@ -40,6 +40,7 @@ class AutoStartTimer:
 		global _session
 		self.session = session
 		_session = session
+
 		self.timer = eTimer()
 		try:
 			self.timer.callback.append(self.on_timer)

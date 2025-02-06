@@ -27,14 +27,16 @@ from __future__ import print_function
 from . import _
 from .addons import Utils
 from .addons.modul import (
-	getAspect,
+	# getAspect,
 	globalsxp,
-	setAspect,
+	# setAspect,
 	EXTENSIONS,
 )
 from .addons.NewOeSk import ctrlSkin
 from .xcConfig import cfg
 from .xcSkin import skin_path
+from .xcPlayerUri import aspect_manager
+
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Sources.List import List
@@ -64,6 +66,7 @@ class xc_StreamTasks(Screen):
 		skin = join(skin_path, 'xc_StreamTasks.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
+
 		self.skin = ctrlSkin('xc_StreamTasks', skin)
 		try:
 			Screen.setTitle(self, _('%s') % 'STREAMTASK MENU')
@@ -73,14 +76,11 @@ class xc_StreamTasks(Screen):
 			except:
 				pass
 
-		try:
-			self.init_aspect = int(getAspect())
-		except:
-			self.init_aspect = 0
-		self.new_aspect = self.init_aspect
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+
 		self["filelist"] = List([])
 		self.movielist = []
+
 		self["key_green"] = Label(_("Remove"))
 		self["key_red"] = Label(_("Close"))
 		self['totalItem'] = Label()
@@ -94,6 +94,7 @@ class xc_StreamTasks(Screen):
 			"blue": self.keyBlue,
 			"cancel": self.keyClose},
 			-1)
+
 		self.Timer = eTimer()
 		try:
 			self.Timer_conn = self.Timer.timeout.connect(self.TimerFire)
@@ -263,11 +264,8 @@ class xc_StreamTasks(Screen):
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		if self.new_aspect != self.init_aspect:
-			try:
-				setAspect(self.init_aspect)
-			except:
-				pass
+
+		aspect_manager.restore_aspect()
 		self.close()
 
 	def message1(self, answer=None):

@@ -130,6 +130,7 @@ Path_XML = str(cfg.pthxmlfile.value) + "/"
 class xc_config(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+
 		skin = os.path.join(skin_path, 'xc_config.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
@@ -141,8 +142,10 @@ class xc_config(Screen, ConfigListScreen):
 				self.setTitle(_('%s') % 'CONFIG MENU')
 			except:
 				pass
+
 		self.list = []
 		self.onChangedEntry = []
+
 		self["playlist"] = Label("Xstream Code Setup")
 		self["version"] = Label(version)
 		self['statusbar'] = Label()
@@ -151,20 +154,25 @@ class xc_config(Screen, ConfigListScreen):
 		self["key_green"] = Label(_("Save"))
 		self["key_blue"] = Label(_("Import") + " txt")
 		self["key_yellow"] = Label(_("Import") + " sh")
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"home": self.extnok,
-			"cancel": self.extnok,
-			"left": self.keyLeft,
-			"right": self.keyRight,
-			"up": self.keyUp,
-			"down": self.keyDown,
-			"help": self.xc_Help,
-			"yellow": self.iptv_sh,
-			"green": self.cfgok,
-			"blue": self.ImportInfosServer,
-			"showVirtualKeyboard": self.KeyText,
-			"ok": self.ok
-		}, -1)
+		self["actions"] = HelpableActionMap(
+			self,
+			"XCpluginActions",
+			{
+				"home": self.extnok,
+				"cancel": self.extnok,
+				"left": self.keyLeft,
+				"right": self.keyRight,
+				"up": self.keyUp,
+				"down": self.keyDown,
+				"help": self.xc_Help,
+				"yellow": self.iptv_sh,
+				"green": self.cfgok,
+				"blue": self.ImportInfosServer,
+				"showVirtualKeyboard": self.KeyText,
+				"ok": self.ok
+			},
+			-1
+		)
 		self.update_status()
 		ConfigListScreen.__init__(self, self.list, session=self.session, on_change=self.changedEntry)
 		self.createSetup()

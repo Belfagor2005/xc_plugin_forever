@@ -50,6 +50,7 @@ class xc_Epg(Screen):
 		Screen.__init__(self, session)
 		global _session
 		_session = session
+
 		skin = os.path.join(skin_path, 'xc_epg.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
@@ -61,10 +62,12 @@ class xc_Epg(Screen):
 				self.setTitle(_('%s') % 'EPG MENU')
 			except:
 				pass
+
 		if png is not None:
 			self.pngx = png
 		else:
 			self.pngx = '/tmp/poster.jpg'
+
 		self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {
 			"red": self.closex,
 			"cancel": self.closex,

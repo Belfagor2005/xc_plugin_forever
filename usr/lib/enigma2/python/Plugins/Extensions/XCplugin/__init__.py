@@ -7,12 +7,12 @@
 # Original code by Dave Sully, Doug Mackay\
 # rewritten by Lululla
 #
-#***************************************
+# ***************************************
 #        coded by Lululla              *
 #             skin by MMark            *
 #  update     06/02/2025               *
 #       Skin by MMark                  *
-#***************************************
+# ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
