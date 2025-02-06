@@ -93,6 +93,31 @@ except ImportError:
 	from Components.AVSwitch import eAVControl as AVSwitch
 
 
+class AspectManager:
+	def __init__(self):
+		self.init_aspect = self.get_current_aspect()
+		print("[INFO] Initial aspect ratio:", self.init_aspect)
+
+	def get_current_aspect(self):
+		"""Restituisce l'aspect ratio attuale del dispositivo."""
+		try:
+			return int(AVSwitch().getAspectRatioSetting())
+		except Exception as e:
+			print("[ERROR] Failed to get aspect ratio:", str(e))
+			return 0  # Valore di default in caso di errore
+
+	def restore_aspect(self):
+		"""Ripristina l'aspect ratio originale all'uscita del plugin."""
+		try:
+			print("[INFO] Restoring aspect ratio to:", self.init_aspect)
+			AVSwitch().setAspectRatio(self.init_aspect)
+		except Exception as e:
+			print("[ERROR] Failed to restore aspect ratio:", str(e))
+
+
+aspect_manager = AspectManager()
+
+
 try:
 	from Plugins.Extensions.SubsSupport import SubsSupport, SubsSupportStatus
 except ImportError:
@@ -218,7 +243,9 @@ class IPTVInfoBarShowHide():
 			self.startHideTimer()
 
 
-class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
+class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
+				InfoBarAudioSelection, InfoBarSubtitleSupport, SubsSupportStatus, SubsSupport):
+
 	STATE_IDLE = 0
 	STATE_PLAYING = 1
 	STATE_PAUSED = 2
@@ -230,13 +257,19 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 		global _session
 		Screen.__init__(self, session)
 		_session = session
-		self.recorder_sref = None
+		self.recorder_sref = recorder_sref
 
-		skin = os.path.join(skin_path, 'xc_Player.xml')
-		with codecs.open(skin, "r", encoding="utf-8") as f:
-			skin = f.read()
-		self.skin = ctrlSkin('xc_Player', skin)
+		# load Skin
+		skin_file = os.path.join(skin_path, 'xc_Player.xml')
+		try:
+			with open(skin_file, "r", encoding="utf-8") as f:
+				skin_data = f.read()
+			self.skin = ctrlSkin('xc_Player', skin_data)
+		except Exception as e:
+			print("[ERROR] Failed to load skin:", str(e))
+			self.skin = None
 
+		# Init InfoBar
 		InfoBarBase.__init__(self, steal_current_service=True)
 		IPTVInfoBarShowHide.__init__(self)
 		InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
@@ -244,12 +277,6 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 		InfoBarSubtitleSupport.__init__(self)
 		SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
 		SubsSupportStatus.__init__(self)
-
-		try:
-			self.init_aspect = int(getAspect())
-		except:
-			self.init_aspect = 0
-		self.new_aspect = self.init_aspect
 
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self["state"] = Label("")
@@ -259,6 +286,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 		self["key_stop"] = Label("Stop")
 		self["programm"] = Label("")
 		self["poster"] = Pixmap()
+
 		self.state = self.STATE_PLAYING
 		self.cont_play = globalsxp.STREAMS.cont_play
 		self.service = None
@@ -267,32 +295,45 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 		self.timeshift_url = None
 		self.timeshift_title = None
 		self.error_message = ""
-		if recorder_sref is not None:
-			self.recorder_sref = recorder_sref
+
+		# if 'recorder_sref`, start riproduction
+		if recorder_sref:
 			self.session.nav.playService(recorder_sref)
 		else:
 			self.index = globalsxp.STREAMS.list_index
-		self.channelx = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
-		self.vod_url = self.channelx[4]
-		self.titlex = self.channelx[1]
-		self.descr = self.channelx[2]
-		self.cover = self.channelx[3]
-		self.pixim = self.channelx[7]
-		self.__event_tracker = ServiceEventTracker(
-			screen=self,
-			eventmap={
-				iPlayableService.evStart: self.__serviceStarted,
-				iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
-				iPlayableService.evTuneFailed: self.__evTuneFailed,
-				iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
-				iPlayableService.evEOF: self.__evEOF,
-			},
-		)
+
+		# if index is valid
+		if 0 <= globalsxp.STREAMS.list_index < len(globalsxp.iptv_list_tmp):
+			self.channelx = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
+			self.vod_url = self.channelx[4]
+			self.titlex = self.channelx[1]
+			self.descr = self.channelx[2]
+			self.cover = self.channelx[3]
+			self.pixim = self.channelx[7]
+		else:
+			print("[ERROR] Invalid list index in globalsxp.iptv_list_tmp")
+			self.channelx = None
+
+		# Tracker
+		try:
+			self.__event_tracker = ServiceEventTracker(
+				screen=self,
+				eventmap={
+					iPlayableService.evStart: self.__serviceStarted,
+					iPlayableService.evSeekableStatusChanged: self.__seekableStatusChanged,
+					iPlayableService.evTuneFailed: self.__evTuneFailed,
+					iPlayableService.evUpdatedInfo: self.__evUpdatedInfo,
+					iPlayableService.evEOF: self.__evEOF,
+				},
+			)
+		except Exception as e:
+			print("[ERROR] Failed to initialize ServiceEventTracker:", str(e))
 		self["actions"] = HelpableActionMap(
 			self,
-			"XCpluginActions", {
-				"info": self.show_more_info,
-				"epg": self.show_more_info,
+			"XCpluginActions",
+			{
+				"info": self.show_moreinfo,
+				"epg": self.show_moreinfo,
 				"0": self.av,
 				"back": self.exitx,
 				"home": self.exitx,
@@ -312,19 +353,19 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 				# "help": self.xc_Help,
 				"power": self.power_off
 			},
-			-1)
+			-1
+		)
+		# Callback event
 		self.onFirstExecBegin.append(self.play_vod)
 		self.onShown.append(self.setCover)
 		self.onShown.append(self.show_info)
 		self.onPlayStateChanged.append(self.__playStateChanged)
-		return
 
 	def av(self):
 		temp = int(getAspect())
 		temp += 1
 		if temp > 6:
 			temp = 0
-		self.new_aspect = temp
 		setAspect(temp)
 
 	def exitx(self):
@@ -333,11 +374,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		if self.new_aspect != self.init_aspect:
-			try:
-				setAspect(self.init_aspect)
-			except:
-				pass
+
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def setCover(self):
@@ -585,7 +623,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBarAu
 		message = prevAR()
 		self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=3)
 
-	def show_more_info(self):
+	def show_moreinfo(self):
 		index = globalsxp.STREAMS.list_index
 		if self.vod_url is not None:
 			name = str(self.channelx[1])
@@ -645,11 +683,14 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 		Screen.__init__(self, session)
 		global _session
 		_session = session
-		self.recorder_sref = None
+
+		self.recorder_sref = recorder_sref
 		skin = os.path.join(skin_path, 'xc_iptv_player.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('nIPTVplayer', skin)
+
+		# Init InfoBar
 		InfoBarBase.__init__(self, steal_current_service=True)
 		IPTVInfoBarShowHide.__init__(self)
 		InfoBarSeek.__init__(self, actionmap="InfobarSeekActions")
@@ -657,12 +698,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 		InfoBarSubtitleSupport.__init__(self)
 		SubsSupport.__init__(self, searchSupport=True, embeddedSupport=True)
 		SubsSupportStatus.__init__(self)
-
-		try:
-			self.init_aspect = int(getAspect())
-		except:
-			self.init_aspect = 0
-		self.new_aspect = self.init_aspect
 
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self["channel_name"] = Label("")
@@ -672,20 +707,32 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 		self.channel_list = globalsxp.iptv_list_tmp
 		self.index = globalsxp.STREAMS.list_index
 
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"info": self.show_more_info,
-			"0": self.av,
-			"home": self.exitx,
-			"cancel": self.exitx,
-			"stop": self.exitx,
-			"help": self.xc_Help,
-			"up": self.prevChannel,
-			"down": self.nextChannel,
-			"next": self.nextChannel,
-			"previous": self.prevChannel,
-			"channelUp": self.nextAR,
-			"channelDown": self.prevAR,
-			"power": self.power_off}, -1)
+		# if 'recorder_sref`, start riproduction
+		if recorder_sref:
+			self.session.nav.playService(recorder_sref)
+		else:
+			self.index = globalsxp.STREAMS.list_index
+
+		self["actions"] = HelpableActionMap(
+			self,
+			"XCpluginActions",
+			{
+				"info": self.show_more_info,
+				"0": self.av,
+				"home": self.exitx,
+				"cancel": self.exitx,
+				"stop": self.exitx,
+				"help": self.xc_Help,
+				"up": self.prevChannel,
+				"down": self.nextChannel,
+				"next": self.nextChannel,
+				"previous": self.prevChannel,
+				"channelUp": self.nextAR,
+				"channelDown": self.prevAR,
+				"power": self.power_off
+			},
+			-1
+		)
 		self.onFirstExecBegin.append(self.play_channel)
 
 	def av(self):
@@ -693,8 +740,17 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 		temp += 1
 		if temp > 6:
 			temp = 0
-		self.new_aspect = temp
+		# self.new_aspect = temp
 		setAspect(temp)
+
+	def exitx(self):
+		copy_poster()
+		if cfg.stoplayer.value is True:
+			globalsxp.STREAMS.play_vod = False
+			self.session.nav.stopService()
+			self.session.nav.playService(self.initialservice)
+		aspect_manager.restore_aspect()  # Restore aspect on exit
+		self.close()
 
 	def nextAR(self):
 		message = nextAR()
@@ -703,19 +759,6 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 	def prevAR(self):
 		message = prevAR()
 		self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=3)
-
-	def exitx(self):
-		copy_poster()
-		if cfg.stoplayer.value is True:
-			globalsxp.STREAMS.play_vod = False
-			self.session.nav.stopService()
-			self.session.nav.playService(self.initialservice)
-		if self.new_aspect != self.init_aspect:
-			try:
-				setAspect(self.init_aspect)
-			except:
-				pass
-		self.close()
 
 	def power_off(self):
 		self.close(1)
@@ -851,17 +894,16 @@ class xc_Play(Screen):
 				self.setTitle(_('%s') % 'PLAYER MENU')
 			except:
 				pass
+
 		self.list = []
-		try:
-			self.init_aspect = int(getAspect())
-		except:
-			self.init_aspect = 0
-		self.new_aspect = self.init_aspect
+
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+
 		self["list"] = xcM3UList([])
 		self.downloading = False
 		self.download = None
 		self.name = globalsxp.Path_Movies
+
 		self["path"] = Label(_("Put .m3u Files in Folder %s") % globalsxp.Path_Movies)
 		self["version"] = Label(version)
 		self["Text"] = Label("M3u Utility")
@@ -873,13 +915,19 @@ class xc_Play(Screen):
 		self["key_green"] = Label(_("Remove"))
 		self["key_yellow"] = Label(_("Export") + _(" Bouquet"))
 		self["key_blue"] = Label(_("Download") + _(" M3u"))
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"home": self.cancel,
-			"green": self.message1,
-			"yellow": self.message2,
-			"blue": self.message3,
-			"cancel": self.cancel,
-			"ok": self.runList}, -2)
+		self["actions"] = HelpableActionMap(
+			self,
+			"XCpluginActions",
+			{
+				"home": self.cancel,
+				"green": self.message1,
+				"yellow": self.message2,
+				"blue": self.message3,
+				"cancel": self.cancel,
+				"ok": self.runList
+			},
+			-2
+		)
 		self.onFirstExecBegin.append(self.openList)
 		self.onLayoutFinish.append(self.layoutFinished)
 
@@ -913,7 +961,10 @@ class xc_Play(Screen):
 		else:
 			name = self.Movies[idx]
 			if ".m3u" in name:
-				self.session.open(xc_M3uPlay, name)
+				if self.session:
+					self.session.open(xc_M3uPlay, name)
+				else:
+					print("Session is not initialized.")
 				return
 			else:
 				name = self.names[idx]
@@ -926,13 +977,10 @@ class xc_Play(Screen):
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		if self.new_aspect != self.init_aspect:
-			try:
-				setAspect(self.init_aspect)
-			except:
-				pass
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 
 	def cancel(self):
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def message1(self, answer=None):
@@ -963,34 +1011,55 @@ class xc_Play(Screen):
 				self.session.openWithCallback(self.message3, MessageBox, _("Download M3u File?"))
 			elif answer:
 				self.downloading = False
-				if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
-					self.urlm3u = globalsxp.urlinfo.replace("enigma2.php", "get.php")
-					self.urlm3u = self.urlm3u + '&type=m3u_plus&output=ts'
-					self.m3ulnk = ('wget %s -O ' % self.urlm3u)
-					self.name_m3u = str(cfg.user.value)
-					self.in_tmp = globalsxp.Path_Movies + self.name_m3u + '.m3u'
-					if file_exists(self.in_tmp):
-						cmd = 'rm -f ' + self.in_tmp
-						system(cmd)
-					if cfg.pdownmovie.value == "Direct":
-						self.downloading = True
-						self.downloadz()
+				urlm3u = globalsxp.urlinfo.replace("enigma2.php", "get.php")
+				self.urlm3u = urlm3u + '&type=m3u_plus&output=ts'
+				self.name_m3u = str(cfg.user.value)
+				self.in_tmp = globalsxp.Path_Movies + self.name_m3u + '.m3u'
+				self.m3ulnk = ('wget %s -O %s' % (self.urlm3u, self.in_tmp))
+
+				print('Url urlm3u are:', self.urlm3u)
+				print('file in_tmp are:', self.in_tmp)
+				print('Url download are:', self.m3ulnk)
+
+				if file_exists(self.in_tmp):
+					cmd = 'rm -f ' + self.in_tmp
+					system(cmd)
+
+				import requests
+				headers = {
+					'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+				}
+
+				try:
+					response = requests.head(self.urlm3u, headers=headers, timeout=10)
+					if response.status_code == 200:
+						print("URL valido, pronto per il download")
 					else:
-						try:
-							self.downloading = True
-							self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
-							self.download.addProgress(self.downloadProgress)
-							self.download.start().addCallback(self.check).addErrback(self.showError)
-						except Exception as e:
-							print(e)
+						print("URL non valido, status code:", response.status_code)
+						self.session.open(MessageBox, _("Invalid URL!"), MessageBox.TYPE_WARNING)
+						return
+				except requests.exceptions.RequestException as e:
+					print("Errore di rete:", str(e))
+					self.session.open(MessageBox, _("Network error!"), MessageBox.TYPE_WARNING)
+					return
+
+				if cfg.pdownmovie.value == "Direct":
+					self.downloading = True
+					self.downloadz()
 				else:
-					self.downloading = False
-					self.session.open(MessageBox, _('No Server Configured to Download!!!'), MessageBox.TYPE_WARNING)
-					pass
-				self.refreshmylist()
+					try:
+						self.downloading = True
+						self.download = downloadWithProgress(self.urlm3u, self.in_tmp)
+						self.download.addProgress(self.downloadProgress)
+						self.download.start().addCallback(self.check).addErrback(self.showError)
+					except Exception as e:
+						print(e)
+						self.downloading = False
 			else:
-				self.refreshmylist()
-				return
+				self.downloading = False
+				self.session.open(MessageBox, _('No Server Configured to Download!!!'), MessageBox.TYPE_WARNING)
+				pass
+			self.refreshmylist()
 		else:
 			self.refreshmylist()
 
@@ -1125,6 +1194,7 @@ class xc_M3uPlay(Screen):
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_M3uPlay', skin)
+
 		try:
 			Screen.setTitle(self, _('%s') % 'M3U UTILITY MENU')
 		except:
@@ -1132,11 +1202,13 @@ class xc_M3uPlay(Screen):
 				self.setTitle(_('%s') % 'M3U UTILITY MENU')
 			except:
 				pass
+
 		self.name = name
 		self.downloading = False
 		self.download = None
 		globalsxp.search_ok = False
 		self.search = ''
+
 		self["list"] = xcM3UList([])
 		self["version"] = Label(version)
 		self["key_red"] = Label(_("Back"))
@@ -1147,16 +1219,23 @@ class xc_M3uPlay(Screen):
 		self['progress'] = ProgressBar()
 		self['progresstext'] = StaticText()
 		self["progress"].hide()
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"home": self.cancel,
-			"cancel": self.cancel,
-			"ok": self.runChannel,
-			"green": self.playList,
-			"yellow": self.runRec,
-			"blue": self.search_m3u,
-			"rec": self.runRec,
-			"instantRecord": self.runRec,
-			"ShortRecord": self.runRec}, -2)
+
+		self["actions"] = HelpableActionMap(
+			self,
+			"XCpluginActions",
+			{
+				"home": self.cancel,
+				"cancel": self.cancel,
+				"ok": self.runChannel,
+				"green": self.playList,
+				"yellow": self.runRec,
+				"blue": self.search_m3u,
+				"rec": self.runRec,
+				"instantRecord": self.runRec,
+				"ShortRecord": self.runRec
+			},
+			-2
+		)
 		self["live"] = Label("")
 		self.onLayoutFinish.append(self.playList)
 
@@ -1219,15 +1298,8 @@ class xc_M3uPlay(Screen):
 				except Exception as e:
 					print("Errore durante la lettura del file:", e)
 					return
-				if "#EXTM3U" in fpage and 'tvg-logo' in fpage:
-					regexcat = r'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\n(.*?)\n'
-					match = re.compile(regexcat, re.DOTALL).findall(fpage)
-					for pic, name, url in match:
-						url = url.replace(' ', '').replace('\n', '')
-						self.names.append(str(name))
-						self.urls.append(str(url))
-						self.pics.append(pic)
-				elif "#EXTM3U" in fpage and not 'tvg-logo' in fpage:
+
+				if "#EXTM3U" in fpage:  # and not 'tvg-logo' in fpage:
 					regexcat = r'#EXTINF:-1,(.*?)\n(.*?)\n'
 					match = re.compile(regexcat, re.DOTALL).findall(fpage)
 					for name, url in match:
@@ -1266,6 +1338,7 @@ class xc_M3uPlay(Screen):
 			ext = splitext(pth)[1]
 			if ext not in EXTDOWN:
 				ext = '.avi'
+
 			if ext in EXTDOWN or ext == '.avi':
 				if answer is None:
 					self.session.openWithCallback(self.runRec, MessageBox, _("DOWNLOAD VIDEO?\n%s") % self.name_m3u)
@@ -1276,9 +1349,11 @@ class xc_M3uPlay(Screen):
 					if file_exists(self.in_tmp):
 						cmd = 'rm -f ' + self.in_tmp
 						system(cmd)
+
 					if cfg.pdownmovie.value == "Direct":
 						self.downloading = True
 						self.downloadz()
+
 					elif cfg.pdownmovie.value == "JobManager":
 						self.downloading = True
 						self.filename = filename.lower()
@@ -1394,6 +1469,8 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 	def __init__(self, session, name, url):
 		Screen.__init__(self, session)
 		self.skinName = 'MoviePlayer'
+
+		# Init InfoBar
 		InfoBarMenu.__init__(self)
 		InfoBarNotifications.__init__(self)
 		InfoBarBase.__init__(self, steal_current_service=True)
@@ -1402,37 +1479,36 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 		InfoBarSeek.__init__(self, actionmap='InfobarSeekActions')
 		InfoBarAudioSelection.__init__(self)
 
-		try:
-			self.init_aspect = int(getAspect())
-		except:
-			self.init_aspect = 0
-		self.new_aspect = self.init_aspect
-
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self.url = url.replace(':', '%3a')
 		self.name = name
 		self.state = self.STATE_PLAYING
-		self['actions'] = ActionMap([
-			'MoviePlayerActions',
-			'MovieSelectionActions',
-			'MediaPlayerActions',
-			'EPGSelectActions',
-			'MediaPlayerSeekActions',
-			'SetupActions',
-			'ColorActions',
-			'InfobarShowHideActions',
-			'InfobarActions',
-			'DirectionActions',
-			'InfobarSeekActions'], {
-			'leavePlayer': self.cancel,
-			'epg': self.showIMDB,
-			'info': self.cicleStreamType,
-			'tv': self.cicleStreamType,
-			'stop': self.leavePlayer,
-			'cancel': self.cancel,
-			'back': self.cancel},
-			-1)
 
+		self['actions'] = ActionMap(
+			[
+				'MoviePlayerActions',
+				'MovieSelectionActions',
+				'MediaPlayerActions',
+				'EPGSelectActions',
+				'MediaPlayerSeekActions',
+				'SetupActions',
+				'ColorActions',
+				'InfobarShowHideActions',
+				'InfobarActions',
+				'DirectionActions',
+				'InfobarSeekActions'
+			],
+			{
+				'leavePlayer': self.cancel,
+				'epg': self.showIMDB,
+				'info': self.cicleStreamType,
+				'tv': self.cicleStreamType,
+				'stop': self.leavePlayer,
+				'cancel': self.cancel,
+				'back': self.cancel
+			},
+			-1
+		)
 		self.onFirstExecBegin.append(self.cicleStreamType)
 		self.onClose.append(self.cancel)
 
@@ -1502,11 +1578,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		if self.new_aspect != self.init_aspect:
-			try:
-				setAspect(self.init_aspect)
-			except:
-				pass
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):

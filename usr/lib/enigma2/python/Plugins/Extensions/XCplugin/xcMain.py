@@ -43,7 +43,7 @@ from .xcConfig import cfg
 from .xcEpg import show_more_infos
 from .xcHelp import xc_help
 from .xcSkin import skin_path, FONT_0, FONT_1, BLOCK_H, channelEntryIPTVplaylist
-from .xcPlayerUri import nIPTVplayer, xc_Player, sslverify, SNIFactory
+from .xcPlayerUri import nIPTVplayer, xc_Player, sslverify, SNIFactory, aspect_manager, AVSwitch
 from .xcTask import xc_StreamTasks, downloadJob
 
 from Components.ActionMap import HelpableActionMap
@@ -82,12 +82,6 @@ import shutil
 import six
 import socket
 import time
-
-
-try:
-	from Components.AVSwitch import AVSwitch
-except ImportError:
-	from Components.AVSwitch import eAVControl as AVSwitch
 
 
 # global fixed
@@ -140,10 +134,12 @@ class xc_Main(Screen):
 		self.temp_index = 0
 		self.temp_playname = str(globalsxp.STREAMS.playlistname)
 		self.filter_search = []
+		
 		self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
 		self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
 		self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
 		self.mlist.l.setItemHeight(BLOCK_H)
+		
 		if cfg.infoexp.getValue():
 			globalsxp.infoname = str(cfg.infoname.value)
 		self["exp"] = Label("")
@@ -168,26 +164,34 @@ class xc_Main(Screen):
 		self["poster"] = Pixmap()
 		self["Text"] = Label(globalsxp.infoname)
 		self["playlist"].setText(self.temp_playname)
+		
 		self.go()
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"cancel": self.exitY,
-			"home": self.update_list,
-			"red": self.update_list,
-			"1": self.update_list,
-			"green": self.check_download_vod,
-			"yellow": self.check_download_ser,
-			"blue": self.search_text,
-			"ok": self.ok,
-			"info": self.show_more_info,
-			"epg": self.show_more_info,
-			"0": self.show_more_info,
-			"showMediaPlayer": self.showMovies,
-			"5": self.showMovies,
-			"2": self.taskManager,
-			"pvr": self.taskManager,
-			"movielist": self.taskManager,
-			"help": self.xc_Help,
-			"power": self.power}, -1)
+		
+		self["actions"] = HelpableActionMap(
+			self,
+			"XCpluginActions",
+			{
+				"cancel": self.exitY,
+				"home": self.update_list,
+				"red": self.update_list,
+				"1": self.update_list,
+				"green": self.check_download_vod,
+				"yellow": self.check_download_ser,
+				"blue": self.search_text,
+				"ok": self.ok,
+				"info": self.show_more_info,
+				"epg": self.show_more_info,
+				"0": self.show_more_info,
+				"showMediaPlayer": self.showMovies,
+				"5": self.showMovies,
+				"2": self.taskManager,
+				"pvr": self.taskManager,
+				"movielist": self.taskManager,
+				"help": self.xc_Help,
+				"power": self.power
+			},
+			-1
+		)
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self.onFirstExecBegin.append(self.checkinf)
 		# self.onLayoutFinish.append(self.show_all)
@@ -564,6 +568,9 @@ class xc_Main(Screen):
 			if file_exists(file_path):
 				remove(file_path)
 				print('======= remove /tmp/canali_temp.xml')
+
+			aspect_manager.restore_aspect()
+
 			self.close()
 
 	def showMovies(self):

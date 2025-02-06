@@ -10,7 +10,7 @@
 # ***************************************
 #        coded by Lululla               *
 #             skin by MMark             *
-#  update     29/12/2024                *
+#  update     06/02/2025                *
 #       Skin by MMark                   *
 # ***************************************
 # ATTENTION PLEASE...
@@ -107,6 +107,44 @@ class xc_help(Screen):
 	def check_vers(self):
 		remote_version = '0.0'
 		remote_changelog = ''
+
+		try:
+			req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+			page = urlopen(req).read().decode("utf-8")  # Decodifica diretta
+		except Exception as e:
+			print("[ERROR] Unable to fetch version info:", str(e))
+			return
+
+		if page:
+			for line in page.split("\n"):
+				line = line.strip()
+				if line.startswith("version"):
+					remote_version = line.split("=")[-1].strip().strip("'").strip('"')
+				elif line.startswith("changelog"):
+					remote_changelog = line.split("=")[-1].strip().strip("'").strip('"')
+					break
+
+		self.new_version = remote_version
+		self.new_changelog = remote_changelog
+
+		def version_tuple(version):
+			return tuple(map(int, (version.split("."))))
+
+		if version_tuple(currversion) < version_tuple(remote_version):
+			self.Update = True
+			self['key_yellow'].show()
+			self['key_green'].show()
+			self.session.open(
+				MessageBox,
+				_('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.')
+				% (self.new_version, self.new_changelog),
+				MessageBox.TYPE_INFO,
+				timeout=5
+			)
+	"""
+	def check_vers(self):
+		remote_version = '0.0'
+		remote_changelog = ''
 		req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
 		page = urlopen(req).read()
 		if six.PY3:
@@ -131,6 +169,7 @@ class xc_help(Screen):
 			self['key_yellow'].show()
 			self['key_green'].show()
 			self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
+	"""
 
 	def update_me(self):
 		if self.Update is True:
@@ -139,13 +178,28 @@ class xc_help(Screen):
 			self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
 
 	def update_dev(self):
-		req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
-		page = urlopen(req).read()
-		data = json.loads(page)
-		remote_date = data['pushed_at']
-		strp_remote_date = datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
-		remote_date = strp_remote_date.strftime('%Y-%m-%d')
-		self.session.openWithCallback(self.install_update, MessageBox, _("Do you want to install update ( %s ) now?") % (remote_date), MessageBox.TYPE_YESNO)
+		try:
+			req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+			page = urlopen(req).read()
+			data = json.loads(page)
+
+			if 'pushed_at' not in data:
+				print("[ERROR] 'pushed_at' key not found in JSON response")
+				return
+
+			remote_date = data['pushed_at']
+			strp_remote_date = datetime.datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+			formatted_date = strp_remote_date.strftime('%Y-%m-%d')
+
+			self.session.openWithCallback(
+				self.install_update,
+				MessageBox,
+				_("Do you want to install update ( %s ) now?") % formatted_date,
+				MessageBox.TYPE_YESNO
+			)
+
+		except Exception as e:
+			print("[ERROR] Failed to fetch update info:", str(e))
 
 	def install_update(self, answer=False):
 		if answer:
