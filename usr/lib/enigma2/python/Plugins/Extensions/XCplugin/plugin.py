@@ -550,17 +550,18 @@ class iptv_streamse():
 						# print('channels name: ', name)
 						# print('channels description:', description)
 
-					chan_tulpe = (str(chan_counter),
-								  str(name),
-								  description,
-								  str(piconname),
-								  globalsxp.stream_url,
-								  playlist_url,
-								  category_id,
-								  str(desc_image),
-								  str(description2),
-								  str(nameepg))
-
+					chan_tulpe = (
+						str(chan_counter),
+						str(name),
+						description,
+						str(piconname),
+						globalsxp.stream_url,
+						playlist_url,
+						category_id,
+						str(desc_image),
+						str(description2),
+						str(nameepg)
+					)
 					globalsxp.iptv_list_tmp.append(chan_tulpe)
 					globalsxp.btnsearch = globalsxp.next_request
 

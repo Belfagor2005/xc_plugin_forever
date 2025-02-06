@@ -88,8 +88,9 @@ class xc_help(Screen):
 				'yellow': self.yellow,
 				'green': self.green,
 				'blue': self.blue,
+				'menu': self.update_dev,
 				'yellow_long': self.update_dev,
-				'info_long': self.update_dev,
+				'info': self.update_dev,
 				'infolong': self.update_dev,
 				'showEventInfoPlugin': self.update_dev,
 				'red': self.exitx
@@ -126,50 +127,17 @@ class xc_help(Screen):
 
 		self.new_version = remote_version
 		self.new_changelog = remote_changelog
+		if not isinstance(self.new_changelog, str):
+			self.new_changelog = str(self.new_changelog)
+		if not isinstance(self.new_version, str):
+			self.new_version = str(self.new_version)
 
-		def version_tuple(version):
-			return tuple(map(int, (version.split("."))))
-
-		if version_tuple(currversion) < version_tuple(remote_version):
-			self.Update = True
-			self['key_yellow'].show()
-			self['key_green'].show()
-			self.session.open(
-				MessageBox,
-				_('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.')
-				% (self.new_version, self.new_changelog),
-				MessageBox.TYPE_INFO,
-				timeout=5
-			)
-	"""
-	def check_vers(self):
-		remote_version = '0.0'
-		remote_changelog = ''
-		req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
-		page = urlopen(req).read()
-		if six.PY3:
-			data = page.decode("utf-8")
-		else:
-			data = page.encode("utf-8")
-		if data:
-			lines = data.split("\n")
-			for line in lines:
-				if line.startswith("version"):
-					remote_version = line.split("=")
-					remote_version = line.split("'")[1]
-				if line.startswith("changelog"):
-					remote_changelog = line.split("=")
-					remote_changelog = line.split("'")[1]
-					break
-		self.new_version = remote_version
-		self.new_changelog = remote_changelog
 		# if float(currversion) < float(remote_version):
 		if currversion < remote_version:
 			self.Update = True
 			self['key_yellow'].show()
 			self['key_green'].show()
 			self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
-	"""
 
 	def update_me(self):
 		if self.Update is True:
