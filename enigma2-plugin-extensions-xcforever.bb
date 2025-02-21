@@ -32,9 +32,8 @@ do_compile[noexec] = "1"
 do_install() {
 install -d ${D}${libdir}/enigma2/python/Components/Renderer
 install -d ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin
-cp -rf ${S}/usr/lib/enigma2/python/Components/Renderer/*.py ${D}${libdir}/enigma2/python/Components/Renderer/
-cp -rf ${S}/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/* ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin/
-# cp -rf ${S}/etc/* /
+cp -af --no-preserve=ownership ${S}/usr/lib/enigma2/python/Components/Renderer/*.py ${D}${libdir}/enigma2/python/Components/Renderer/
+cp -af --no-preserve=ownership ${S}/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/* ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin/
 }
 
 
