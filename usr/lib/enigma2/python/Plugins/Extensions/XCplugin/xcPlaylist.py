@@ -10,7 +10,7 @@
 # ***************************************
 #        coded by Lululla              *
 #             skin by MMark            *
-#  update     29/12/2024               *
+#  update     23/02/2025               *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -39,11 +39,13 @@ import os
 import re
 import time
 
+# from .plugin import iptv_streamse
+
 Path_XML = str(cfg.pthxmlfile.value) + "/"
 
 
 class xc_Playlist(Screen):
-	def __init__(self, session):
+	def __init__(self, session, STREAMS):
 		Screen.__init__(self, session)
 		skin = os.path.join(skin_path, 'xc_Playlist.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
@@ -58,7 +60,7 @@ class xc_Playlist(Screen):
 				pass
 
 		self.list = []
-
+		self.streams = STREAMS
 		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
 		self["list"] = xcM3UList([])
 		self["Text"] = Label("Select Server")
@@ -83,70 +85,66 @@ class xc_Playlist(Screen):
 
 	def selOn(self, host, port, username, password):
 		try:
-			# TIME_GMT = '%d-%m-%Y %H:%M:%S'
-			auth = status = 'N/A'
+			TIME_GMT = '%d-%m-%Y'
+			auth = "N/A"
+			exp_date = "N/A"
+			status = "N/A"
 			globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
 			self.ycse = retTest(globalsxp.urlinfo)
 			if self.ycse:
 				y = self.ycse
-				if "user_info" in y:
-					if "auth" in y["user_info"]:
-						if y["user_info"]["auth"] == 1:
-							auth = (y["user_info"]["auth"])
-							status = (y["user_info"]["status"])
-							if str(status) == "Active":
-								auth = "Active"
-							elif str(status) == "Banned":
-								auth = "Banned"
-							elif str(status) == "Disabled":
-								auth = "Disabled"
-							elif str(status) == "Expired":
-								auth = "Expired"
-							elif str(status) == "None":
-								auth = "N/A"
-							elif status is None:
-								auth = "N/A"
-							else:
-								auth = "Server Not Responding"
-							return str(auth)
-				else:
-					return str(auth)
-			else:
-				return str(auth)
+				if "user_info" in y and "auth" in y["user_info"]:
+					if y["user_info"]["auth"] == 1:
+						exp_date = y["user_info"].get("exp_date", "N/A")
+						exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date))) if exp_date else "N/A"
+						status = y["user_info"].get("status", "N/A")
+						auth = status if status in ["Active", "Banned", "Disabled", "Expired", "None"] else "N/A"
+					else:
+						auth = "Server Not Responding"
+			return auth, exp_date
+
 		except Exception as e:
-			message = ("selOn Error Exception %s") % (e)
-			print(message)
+			print("selOn Error Exception: %s" % e)
+			return "N/A", "N/A"
 
 	def openList(self):
 		self.names = []
 		self.urls = []
+
 		if file_exists(Path_XML + '/xclink.txt'):
 			with codecs.open(Path_XML + '/xclink.txt', "r", encoding="utf-8") as f:
 				lines = f.readlines()
-				f.seek(0)
 				name = ''
 				host = ''
 				port = '80'
 				username = ''
 				password = ''
+				exp_date = ''
 				for line in lines:
 					if line.startswith('#'):
 						continue
 					elif line.startswith('http'):
 						pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
 						match = re.match(pattern, line)
+
 						if match:
 							host = match.group(1)
 							if match.group(2):
 								port = match.group(2)
 							username = match.group(3)
 							password = match.group(4)
-							namelx = self.selOn(str(host), str(port), str(username), str(password))
-							if namelx == 'None' or namelx is None:
-								namelx = 'N/A'
-							name = '(' + str(namelx) + ')' + ' xc_' + str(username)
+							namelx, exp_date = self.selOn(str(host), str(port), str(username), str(password))
+							if namelx in [None, "None"]:
+								namelx = "N/A"
+							# print('namelx, exp_date=', namelx, exp_date)
+							name = '(' + str(namelx) + ')' + ' ' + str(username) + ' Expiry:' + str(exp_date)
+							user, passw = self.streams.read_config()  # Ora restituisce i valori corretti
+							# print('globalsxp.STREAMS.read_config:', user, passw)
+							if str(username) == user and str(password) == passw:
+								name = "X (" + str(namelx) + ") " + str(username) + " Expiry:" + str(exp_date)
 							self.names.append(name)
 							self.urls.append(line)
+
 		m3ulistxc(self.names, self["list"])
 		self["live"].setText(str(len(self.names)) + " Team")
 		if cfg.infoexp.getValue():
@@ -178,6 +176,10 @@ class xc_Playlist(Screen):
 				cfg.hostaddress.setValue(str(host))
 				cfg.user.setValue(str(username))
 				cfg.passw.setValue(str(password))
+
+				message = ("User: %s\n\nIs Active on Config") % (str(username))
+				print(str(message))
+				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
 				self.close()
 		except IOError as e:
 			print(e)
@@ -188,7 +190,7 @@ class xc_Playlist(Screen):
 			if idx is None or idx < 0 or idx >= len(self.names):
 				return
 			dom = self.urls[idx]
-			TIME_GMT = '%d-%m-%Y %H:%M:%S'
+			TIME_GMT = '%d-%m-%Y %H:%M'
 			auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
 			host = ''
 			username = ''
@@ -209,35 +211,36 @@ class xc_Playlist(Screen):
 				if "user_info" in y:
 					if "auth" in y["user_info"]:
 						if y["user_info"]["auth"] == 1:
-							auth = (y["user_info"]["auth"])
-							status = (y["user_info"]["status"])
-							created_at = (y["user_info"]["created_at"])
-							exp_date = (y["user_info"]["exp_date"])
-							active_cons = (y["user_info"]["active_cons"])
-							max_connections = (y["user_info"]["max_connections"])
-							server_protocol = (y["server_info"]["server_protocol"])
-							timezone = (y["server_info"]["timezone"])
-							if created_at:
-								created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
-							if exp_date:
-								exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
-							if str(status) == "Active":
-								auth = "Active\nExp date: " + str(exp_date)
-							elif str(status) == "Banned":
-								auth = "Banned\nExp date: " + str(exp_date)
-							elif str(status) == "Disabled":
-								auth = "Disabled"
-							elif str(status) == "Expired":
-								auth = "Expired\nExp date: " + str(exp_date)
-							else:
-								auth = "Server Not Responding" + str(exp_date)
+							auth = y["user_info"]["auth"]
+							status = y["user_info"]["status"]
+							created_at = y["user_info"]["created_at"]
+							exp_date = y["user_info"]["exp_date"]
+							active_cons = y["user_info"]["active_cons"]
+							max_connections = y["user_info"]["max_connections"]
+							server_protocol = y["server_info"]["server_protocol"]
+							timezone = y["server_info"]["timezone"]
+
+							created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at))) if created_at else "Null"
+							exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date))) if exp_date else "Null"
+							status_messages = {
+								"Active": "Active\nExp date: " + str(exp_date),
+								"Banned": "Banned\nExp date: " + str(exp_date),
+								"Disabled": "Disabled",
+								"Expired": "Expired\nExp date: " + str(exp_date),
+							}
+							auth = status_messages.get(status, "Server Not Responding\nExp date: " + str(exp_date))
+
 							active_cons = "User Active Now: " + str(active_cons)
 							max_connections = "Max Connect: " + str(max_connections)
 							server_protocol = "Protocol: " + str(server_protocol)
 							timezone = "Timezone: " + str(timezone)
-							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s") % (str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(timezone))
+
+							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s") % (
+								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(timezone)
+							)
 							print(str(message))
 							self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
+
 		except Exception as e:
 			status = 'N/A'
 			message = ("Error Exception %s") % (e)

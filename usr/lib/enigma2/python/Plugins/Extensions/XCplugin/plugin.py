@@ -180,7 +180,7 @@ class xc_home(Screen):
 		self.close()
 
 	def Team(self):
-		self.session.openWithCallback(self.OpenList, xc_Playlist)
+		self.session.openWithCallback(self.OpenList, xc_Playlist, globalsxp.STREAMS )
 
 	def xc_Help(self):
 		self.session.openWithCallback(self.xcClean, xc_help)
@@ -270,7 +270,7 @@ class iptv_streamse():
 
 	def read_config(self):
 		try:
-			print("-----------CONFIG START----------")
+			print("\n-----------CONFIG START----------")
 			host = str(cfg.hostaddress.value)
 			self.port = str(cfg.port.value)
 			username = str(cfg.user.value)
@@ -282,11 +282,14 @@ class iptv_streamse():
 			if password and password != "" and 'Enter' not in password:
 				self.password = password
 			self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
-			print('Host: %s\nUsername: %s\nPassword:%s\n' % (self.xtream_e2portal_url, self.username, self.password))
-			print("-----------CONFIG END----------")
+			
+			print('Host: %s\nUsername: %s\nPassword:%s' % (self.xtream_e2portal_url, self.username, self.password))
+			print("-----------CONFIG END----------\n")
+			return self.username, self.password
 		except Exception as e:
 			print("++++++++++ERROR READ CONFIG+++++++++++++ ", e)
-
+			return None, None
+        
 	def get_list(self, url=None):
 		globalsxp.stream_live = False
 		self.url = check_port(url)

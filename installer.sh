@@ -3,8 +3,8 @@
 ## setup command=wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh?inline=false" -O - | /bin/sh
 
 ## Only This 2 lines to edit with new version ######
-version='4.1'
-changelog='Fix aspect ratio on exit\nremoved other code unnecessary\n\n\nIf you like what I do\n\nbuy me a coffee!!!'
+version='4.2'
+changelog='Fix png Active in playlist\nCode unnecessary removed\n\n\nIf you like what I do\n\nbuy me a coffee!!!'
 ##
 TMPPATH=/tmp/XCplugin-main
 FILEPATH=/tmp/main.tar.gz

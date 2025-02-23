@@ -36,7 +36,7 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "GPL-v2"
-currversion = '4.1'
+currversion = '4.2'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('XCplugin'))
 installer_url = 'aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0JlbGZhZ29yMjAwNS94Y19wbHVnaW5fZm9yZXZlci9tYWluL2luc3RhbGxlci5zaA=='

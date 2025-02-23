@@ -1310,7 +1310,7 @@ class xc_M3uPlay(Screen):
 					m3ulistxc(self.names, self['list'])
 					self["live"].setText('N.' + str(len(self.names)) + " Stream")
 				else:
-					self.session.open(MessageBox, _('Formato M3U non valido!'), MessageBox.TYPE_INFO, timeout=5)
+					self.session.open(MessageBox, _('No valid M3U Format!'), MessageBox.TYPE_INFO, timeout=5)
 			else:
 				self.session.open(MessageBox, _('File non trovato!'), MessageBox.TYPE_INFO, timeout=5)
 		except Exception as e:

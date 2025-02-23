@@ -94,10 +94,23 @@ MENU_ITEMS = [
 
 
 def xcm3ulistEntry(name):
-	if 'active' in name.lower() or name.lower() in [item.lower() for item in MENU_ITEMS]:
+	"""
+	# if 'active' in name.lower() or name.lower() in [item.lower() for item in MENU_ITEMS]:
+		# png0 = os.path.join(plugin_path, 'skin/pic/xcon.png')
+		# if screenwidth.width() == 2560:
+			# png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+	"""
+	name_lower = name.lower()
+	if 'active' in name_lower or name_lower in [item.lower() for item in MENU_ITEMS]:
 		png0 = os.path.join(plugin_path, 'skin/pic/xcon.png')
 		if screenwidth.width() == 2560:
 			png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+
+		if 'x (' in name_lower:
+			png0 = os.path.join(plugin_path, 'skin/pic/xcatt.png')
+			if screenwidth.width() == 2560:
+				png0 = os.path.join(plugin_path, 'skin/pic/xcselat.png')
+
 	else:
 		png0 = os.path.join(plugin_path, 'skin/pic/xcoff.png')
 		if screenwidth.width() == 2560:
