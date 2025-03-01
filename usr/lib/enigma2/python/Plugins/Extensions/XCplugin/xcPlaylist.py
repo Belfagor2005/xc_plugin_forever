@@ -61,7 +61,14 @@ class xc_Playlist(Screen):
 
 		self.list = []
 		self.streams = STREAMS
-		self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+		if self.streams is None:
+			raise ValueError("STREAMS must not be None")
+
+		# self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+		if hasattr(self.session, 'nav'):
+			self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+		else:
+			self.initialservice = None  # Gestisci il caso quando 'nav' non è disponibile
 		self["list"] = xcM3UList([])
 		self["Text"] = Label("Select Server")
 		self["version"] = Label(version)

@@ -192,29 +192,36 @@ class xc_config(Screen, ConfigListScreen):
 					try:
 						with open(iptvsh, 'r') as f:
 							fpage = f.read()
-						regexcat = r'USERNAME="(.*?)".*?PASSWORD="(.*?)".*?url="http://(.*?):(.*?)/get.php'
-						match = re.search(regexcat, fpage, re.DOTALL)
-						if match:
-							usernamesh = match.group(1).replace('"', '')
-							passwordsh = match.group(2).replace('"', '')
-							urlsh = match.group(3).replace('"', '')
-							ports = match.group(4).replace('"', '')
+							print('fpage=', fpage)
 
-							cfg.hostaddress.setValue(urlsh)
-							cfg.port.setValue(ports)
-							cfg.user.setValue(usernamesh)
-							cfg.passw.setValue(passwordsh)
+						regexcat = r'USERNAME="(.*?)";.*?PASSWORD="(.*?)";.*?url="http://([^:]+):(\d+)/get.php'
+						matches = re.findall(regexcat, fpage, re.DOTALL)
+
+						if matches:
+							for match in matches:
+								username, password, host, port = match
+								print("USERNAME:", username)
+								print("PASSWORD:", password)
+								print("URL Host:", host)
+								print("Port:", port)
+
+								cfg.hostaddress.setValue(host)
+								cfg.port.setValue(port)
+								cfg.user.setValue(username)
+								cfg.passw.setValue(password)
 
 							self.xml_plugin()
-							# self.ConfigTextx()
 							self.createSetup()
+
 						else:
+							print("No match found.")
 							self.session.open(
 								MessageBox,
 								_("Invalid format in %s. Could not extract server details." % iptvsh),
 								MessageBox.TYPE_ERROR,
 								timeout=5
 							)
+
 					except Exception as e:
 						self.session.open(
 							MessageBox,
@@ -240,7 +247,7 @@ class xc_config(Screen, ConfigListScreen):
 				self.session.openWithCallback(
 					self.ImportInfosServer,
 					MessageBox,
-					_("Import Server from /tmp/xc.tx?"),
+					_("Import Server from /tmp/xc.tx?")
 				)
 			elif answer:
 				if file_exists(xc_list) and os.stat(xc_list).st_size > 0:
@@ -248,46 +255,162 @@ class xc_config(Screen, ConfigListScreen):
 						with codecs.open(xc_list, "r", encoding="utf-8") as f:
 							lines = f.readlines()
 
-						if len(lines) < 4:
+						# Check if the file has enough lines and that they are not empty
+						if len(lines) < 4 or any(not line.strip() for line in lines):
 							self.session.open(
 								MessageBox,
-								_("Invalid file format: not enough lines in %s" % xc_list),
+								_("Invalid file format: not enough or empty lines in %s" % xc_list),
 								MessageBox.TYPE_ERROR,
-								timeout=5,
+								timeout=5
 							)
 							return
 
+						# Extract values from the file
 						url = lines[0].strip()
 						port = lines[1].strip().replace(":", "_")
 						user = lines[2].strip().replace(":", "_")
 						pswrd = lines[3].strip()
 
+						# Set the configuration values
 						cfg.hostaddress.setValue(url)
 						cfg.port.setValue(port)
 						cfg.user.setValue(user)
 						cfg.passw.setValue(pswrd)
 
+						# Call additional setup methods
 						self.xml_plugin()
-						# self.ConfigTextx()
 						self.createSetup()
+
 					except Exception as e:
 						self.session.open(
 							MessageBox,
 							_("Error reading or processing the file: %s" % str(e)),
 							MessageBox.TYPE_ERROR,
-							timeout=5,
+							timeout=5
 						)
 				else:
 					self.session.open(
 						MessageBox,
 						_("File not found or empty: %s" % xc_list),
 						MessageBox.TYPE_INFO,
-						timeout=5,
+						timeout=5
 					)
 			else:
 				return
 		except Exception as e:
 			print("Error in ImportInfosServer:", str(e))
+
+	"""
+	# def iptv_sh(self, answer=None):
+		# try:
+			# if answer is None:
+				# self.session.openWithCallback(
+					# self.iptv_sh,
+					# MessageBox,
+					# _("Import Server from /etc/enigma2/iptv.sh?")
+				# )
+			# elif answer:
+				# if file_exists(iptvsh) and os.stat(iptvsh).st_size > 0:
+					# try:
+						# with open(iptvsh, 'r') as f:
+							# fpage = f.read()
+						# regexcat = r'USERNAME="(.*?)".*?PASSWORD="(.*?)".*?url="http://(.*?):(.*?)/get.php'
+						# match = re.search(regexcat, fpage, re.DOTALL)
+						# if match:
+							# usernamesh = match.group(1).replace('"', '')
+							# passwordsh = match.group(2).replace('"', '')
+							# urlsh = match.group(3).replace('"', '')
+							# ports = match.group(4).replace('"', '')
+
+							# cfg.hostaddress.setValue(urlsh)
+							# cfg.port.setValue(ports)
+							# cfg.user.setValue(usernamesh)
+							# cfg.passw.setValue(passwordsh)
+
+							# self.xml_plugin()
+							# # self.ConfigTextx()
+							# self.createSetup()
+						# else:
+							# self.session.open(
+								# MessageBox,
+								# _("Invalid format in %s. Could not extract server details." % iptvsh),
+								# MessageBox.TYPE_ERROR,
+								# timeout=5
+							# )
+					# except Exception as e:
+						# self.session.open(
+							# MessageBox,
+							# _("Error reading or processing %s: %s" % (iptvsh, str(e))),
+							# MessageBox.TYPE_ERROR,
+							# timeout=5
+						# )
+				# else:
+					# self.session.open(
+						# MessageBox,
+						# _("Missing or empty file: %s" % iptvsh),
+						# MessageBox.TYPE_INFO,
+						# timeout=4
+					# )
+			# else:
+				# return
+		# except Exception as e:
+			# print("Error in iptv_sh:", str(e))
+
+	# def ImportInfosServer(self, answer=None):
+		# try:
+			# if answer is None:
+				# self.session.openWithCallback(
+					# self.ImportInfosServer,
+					# MessageBox,
+					# _("Import Server from /tmp/xc.tx?"),
+				# )
+			# elif answer:
+				# if file_exists(xc_list) and os.stat(xc_list).st_size > 0:
+					# try:
+						# with codecs.open(xc_list, "r", encoding="utf-8") as f:
+							# lines = f.readlines()
+
+						# if len(lines) < 4:
+							# self.session.open(
+								# MessageBox,
+								# _("Invalid file format: not enough lines in %s" % xc_list),
+								# MessageBox.TYPE_ERROR,
+								# timeout=5,
+							# )
+							# return
+
+						# url = lines[0].strip()
+						# port = lines[1].strip().replace(":", "_")
+						# user = lines[2].strip().replace(":", "_")
+						# pswrd = lines[3].strip()
+
+						# cfg.hostaddress.setValue(url)
+						# cfg.port.setValue(port)
+						# cfg.user.setValue(user)
+						# cfg.passw.setValue(pswrd)
+
+						# self.xml_plugin()
+						# # self.ConfigTextx()
+						# self.createSetup()
+					# except Exception as e:
+						# self.session.open(
+							# MessageBox,
+							# _("Error reading or processing the file: %s" % str(e)),
+							# MessageBox.TYPE_ERROR,
+							# timeout=5,
+						# )
+				# else:
+					# self.session.open(
+						# MessageBox,
+						# _("File not found or empty: %s" % xc_list),
+						# MessageBox.TYPE_INFO,
+						# timeout=5,
+					# )
+			# else:
+				# return
+		# except Exception as e:
+			# print("Error in ImportInfosServer:", str(e))
+	"""
 
 	def update_status(self):
 		if cfg.autobouquetupdate:

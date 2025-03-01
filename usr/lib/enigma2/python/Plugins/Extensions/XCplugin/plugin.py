@@ -87,12 +87,6 @@ socket.setdefaulttimeout(5)
 screenwidth = getDesktop(0).size()
 
 
-try:
-	from xml.etree.cElementTree import fromstring, tostring
-except ImportError:
-	from xml.etree.ElementTree import fromstring, tostring
-
-
 if six.PY3:
 	unicode = text_type
 
@@ -180,7 +174,8 @@ class xc_home(Screen):
 		self.close()
 
 	def Team(self):
-		self.session.openWithCallback(self.OpenList, xc_Playlist, globalsxp.STREAMS )
+		# self.session.openWithCallback(self.OpenList, xc_Playlist(globalsxp.STREAMS))
+		self.session.openWithCallback(self.OpenList, xc_Playlist, globalsxp.STREAMS)
 
 	def xc_Help(self):
 		self.session.openWithCallback(self.xcClean, xc_help)
@@ -282,14 +277,14 @@ class iptv_streamse():
 			if password and password != "" and 'Enter' not in password:
 				self.password = password
 			self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
-			
+
 			print('Host: %s\nUsername: %s\nPassword:%s' % (self.xtream_e2portal_url, self.username, self.password))
 			print("-----------CONFIG END----------\n")
 			return self.username, self.password
 		except Exception as e:
 			print("++++++++++ERROR READ CONFIG+++++++++++++ ", e)
 			return None, None
-        
+
 	def get_list(self, url=None):
 		globalsxp.stream_live = False
 		self.url = check_port(url)
@@ -591,20 +586,29 @@ class iptv_streamse():
 				url = url + TYPE_PLAYER + "?" + "username=" + self.username + "&password=" + self.password
 			globalsxp.urlinfo = url
 			try:
+				# Effettua la richiesta HTTP
 				res = make_request(globalsxp.urlinfo)
-				res = fromstring(res)
 				if res is not None:
-					res_string = tostring(res, encoding='utf-8', method='xml').decode('utf-8')
-					file_path = os.path.join('/tmp', 'canali_temp.xml')
-					with open(file_path, 'w') as temp_file:
-						temp_file.write(res_string)
-						temp_file.flush()
-						globalsxp.temp_prev_list = res_string
-				return res
+					try:
+						from lxml import etree
+						res_xml = etree.fromstring(res)
+						if res_xml is not None:
+							res_string = etree.tostring(res_xml, encoding='utf-8', method='xml').decode('utf-8')
+							file_path = os.path.join('/tmp', 'canali_temp.xml')
+							with open(file_path, 'w') as temp_file:
+								temp_file.write(res_string)
+								temp_file.flush()
+								globalsxp.temp_prev_list = res_string
+							return res_xml
+					except Exception as e:
+						print("Error during XML parsing: " + str(e))
+						return None
+				else:
+					print("Request failed or no content received.")
+					return None
 			except Exception as e:
-				res = None
-				print('error requests -----------> ', e)
-			return res
+				print("Error during request or XML processing: " + str(e))
+				return None
 
 
 def menu(menuid, **kwargs):
