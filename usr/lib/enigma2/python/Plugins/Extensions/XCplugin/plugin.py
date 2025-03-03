@@ -56,6 +56,11 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
 from six import text_type
+try:
+	from xml.etree.ElementTree import fromstring, tostring
+except ImportError:
+	from xml.etree.cElementTree import fromstring, tostring
+
 
 import codecs
 import os
@@ -590,10 +595,9 @@ class iptv_streamse():
 				res = make_request(globalsxp.urlinfo)
 				if res is not None:
 					try:
-						from lxml import etree
-						res_xml = etree.fromstring(res)
+						res_xml = fromstring(res)
 						if res_xml is not None:
-							res_string = etree.tostring(res_xml, encoding='utf-8', method='xml').decode('utf-8')
+							res_string = tostring(res_xml, encoding='utf-8', method='xml').decode('utf-8')
 							file_path = os.path.join('/tmp', 'canali_temp.xml')
 							with open(file_path, 'w') as temp_file:
 								temp_file.write(res_string)
