@@ -110,8 +110,11 @@ class xc_Playlist(Screen):
 						auth = "Server Not Responding"
 
 					time_now = (y["server_info"]["time_now"])
+					time_zone = (y["server_info"]["timezone"])
 					if time_now:
 						globalsxp.timeserver = str(time_now)
+					if time_zone:
+						globalsxp.timezone = str(time_zone)
 
 			return auth, exp_date
 
@@ -249,11 +252,14 @@ class xc_Playlist(Screen):
 							time_now = "Time Now: " + str(time_now)
 							time_zone = "Time Zone: " + str(time_zone)
 
+							# # Apply user-configured time adjustment
+							# time_adjustment_delta = timedelta(hours=cfg.uptimezone.value)
+							# next_event_time_utc += time_adjustment_delta  # Apply adjustment after converting to UTC
 							# globalsxp.timeserver = time_now
 							# globalsxp.timezone = time_zone
 
-							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s") % (
-								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(time_now)
+							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s") % (
+								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(time_now), str(time_zone)
 							)
 							print(str(message))
 							self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)

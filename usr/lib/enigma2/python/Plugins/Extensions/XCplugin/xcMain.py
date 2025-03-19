@@ -73,6 +73,7 @@ from six.moves.urllib.parse import urlparse
 from six import text_type, ensure_binary, PY3
 from twisted.web.client import downloadPage
 from time import time, strftime, gmtime
+# from datetime import timedelta
 from json import dump, load
 from shutil import copy
 from requests import get, codes
@@ -118,7 +119,7 @@ class xc_Main(Screen):
 			except:
 				pass
 
-		self.checkinf()  # test
+		self.checkinf()  # test for timezone
 
 		# iptv_list_tmp
 		self.channel_list = globalsxp.STREAMS.iptv_list
@@ -654,6 +655,7 @@ class xc_Main(Screen):
 								time_zone = (y["server_info"]["timezone"])
 								globalsxp.timeserver = time_now
 								globalsxp.timezone = time_zone
+								# Apply user-configured time adjustment
 								self["timezone"].setText("Time Now: " + str(time_now))
 							except Exception as e:
 								print('error checkinf : ', e)

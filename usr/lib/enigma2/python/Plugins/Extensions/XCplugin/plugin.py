@@ -484,37 +484,55 @@ class iptv_streamse():
 						if description != '':
 							# Find event titles in the format [hh:mm] Title
 							titlematch = findall(r'\[\d{2}:\d{2}\]\s*(.*?)\n', description)
-							# Find times in the format [hh:mm]
+							# Find event times in the format [hh:mm]
 							timematch = findall(r'\[(\d{2}:\d{2})\]', description)
-							# Find descriptions in parentheses (multi-line)
+							# Find event descriptions in parentheses (multi-line)
 							descriptionmatch = findall(r'\((.*?)\)', description, DOTALL)
-
+							# Debug prints
+							print('titlematch=', titlematch)
+							print('timematch=', timematch)
 							# Get server timezone and server time from globalsxp
 							server_timezone = globalsxp.timezone  # Example: "Europe/London"
 							server_time_str = globalsxp.timeserver  # Example: "2025-03-18 21:20:02"
+							print("server_timezone is {}:".format(server_timezone))
+							print("server_time_str is {}:".format(server_time_str))
 
+							"""
+							# Validate server_time_str
+							# if not server_time_str or not isinstance(server_time_str, str):
+								# print("Error: server_time_str is invalid or missing.")
+								# server_time_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")  # Fallback
+							"""
 							# Get server timezone offset
 							server_offset = timezone_offsets.get(server_timezone, 0)  # Default to UTC if not found
 							print("Server timezone: {}, Offset: {} seconds".format(server_timezone, server_offset))
-
+							# Parse server time
 							try:
 								# Convert server time to a datetime object
 								server_time_struct = strptime(server_time_str, "%Y-%m-%d %H:%M:%S")
 								server_time = datetime.fromtimestamp(mktime(server_time_struct))  # Convert to datetime
-								print("Server time = {}".format(server_time))
-							except ValueError:
-								print("Error: Invalid time format in globalsxp.timeserver")
-								server_time = datetime.utcnow()  # Use UTC time as fallback
-
+								print("Convert server time to a datetime object time = {}".format(server_time))
+							except ValueError as e:
+								print("Error: Invalid server time format. Details: {}".format(e))
+								server_time = datetime.utcnow()  # Fallback to current UTC time
 							# Convert server time to UTC
 							server_time_utc = server_time - timedelta(seconds=server_offset)
 							print("Server time (UTC): {}".format(server_time_utc.strftime('%Y-%m-%d %H:%M:%S')))
-
 							# Get local timezone offset (in seconds)
 							local_offset = get_local_offset()
 							local_time_utc = datetime.utcnow()  # Local time in UTC
 							local_time = local_time_utc + timedelta(seconds=local_offset)  # Convert to local time
-							print("Local time: {}".format(local_time.strftime('%Y-%m-%d %H:%M:%S')))
+
+							# Apply user-configured time adjustment
+							try:
+								# Ensure cfg.uptimezone.value is an integer (e.g., 1, -2, etc.)
+								time_adjustment_delta = timedelta(hours=int(cfg.uptimezone.value))
+								local_time += time_adjustment_delta  # Apply adjustment
+								print("Local time after adjustment: {}".format(local_time.strftime('%Y-%m-%d %H:%M:%S')))
+							except (ValueError, AttributeError) as e:
+								print("Error: Invalid time adjustment value. Details: {}".format(e))
+								# Fallback to no adjustment if cfg.uptimezone.value is invalid
+								time_adjustment_delta = timedelta(hours=0)
 
 							# Process the first event
 							if timematch:
@@ -524,46 +542,57 @@ class iptv_streamse():
 									event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + timestamp_str, "%Y-%m-%d %H:%M")
 									event_time = datetime.fromtimestamp(mktime(event_time_struct))  # Convert to datetime
 									event_time_utc = event_time - timedelta(seconds=local_offset)  # Convert to UTC
-
 									# If the event is in the past, add 1 day
 									if event_time_utc < local_time_utc:
 										event_time_utc += timedelta(days=1)
 										print("Event is scheduled for tomorrow.")
-
 									# Calculate the difference from the current time (time remaining)
 									time_diff = event_time_utc - local_time_utc
-
-									# Format event time in UTC
-									epgnowtime = event_time_utc.strftime("%Y-%m-%d %H:%M")
+									# Calculate event duration
+									time1_utc_plus1 = datetime.strptime(timematch[0], "%H:%M")  # Start time in UTC+1
+									time2_utc_plus1 = datetime.strptime(timematch[1], "%H:%M")  # End time in UTC+1
+									diff = (time2_utc_plus1 - time1_utc_plus1).total_seconds() / 60  # Duration in minutes
+									# Calculate event end time in UTC
+									start_time_utc = event_time_utc  # Start time in UTC
+									end_time_utc = start_time_utc + timedelta(minutes=diff)  # Event end time
+									end_time_str_utc = end_time_utc.strftime("%H:%M")  # Format end time
+									# Create the final result in the desired format
+									epgnowtime = "[" + start_time_utc.strftime("%H:%M") + ":" + end_time_str_utc + ")"
+									# Debug prints
 									print("Adjusted Event Time (UTC): {}".format(epgnowtime))
-									print("Time Difference: {}".format(format_time_diff(time_diff)))  # Time remaining until the event
-								except ValueError:
-									print("Error: Invalid event time format")
+									print("Time Difference: {}".format(format_time_diff(time_diff)))  # Time remaining
+								except ValueError as e:
+									print("Error: Invalid event time format. Details: {}".format(e))
 
 							# Process the next event (if present)
 							if len(timematch) > 1:
 								next_time_str = timematch[1].strip()
-
 								try:
 									# Combine current date with next event time
 									next_event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + next_time_str, "%Y-%m-%d %H:%M")
 									next_event_time = datetime.fromtimestamp(mktime(next_event_time_struct))  # Convert to datetime
 									next_event_time_utc = next_event_time - timedelta(seconds=local_offset)  # Convert to UTC
-
 									# If the event is in the past, add 1 day
 									if next_event_time_utc < local_time_utc:
 										next_event_time_utc += timedelta(days=1)
 										print("Next event is scheduled for tomorrow.")
-
 									# Calculate the difference from the current time (time remaining)
 									time_diff_next = next_event_time_utc - local_time_utc
-
-									# Format next event time in UTC
-									epgnexttime = next_event_time_utc.strftime("%Y-%m-%d %H:%M")
+									# Calculate next event duration
+									time1_utc_plus1 = datetime.strptime(timematch[0], "%H:%M")  # Start time in UTC+1
+									time2_utc_plus1 = datetime.strptime(timematch[1], "%H:%M")  # End time in UTC+1
+									diff = (time2_utc_plus1 - time1_utc_plus1).total_seconds() / 60  # Duration in minutes
+									# Calculate next event end time in UTC
+									start_time_utc = next_event_time_utc  # Start time in UTC
+									end_time_utc = start_time_utc + timedelta(minutes=diff)  # Event end time
+									end_time_str_utc = end_time_utc.strftime("%H:%M")  # Format end time
+									# Create the final result in the desired format
+									epgnexttime = "[" + start_time_utc.strftime("%H:%M") + ":" + end_time_str_utc + ")"
+									# Debug prints
 									print("Next Event Adjusted Time (UTC): {}".format(epgnexttime))
-									print("Time Difference for Next Event: {}".format(format_time_diff(time_diff_next)))  # Time remaining until the next event
-								except ValueError:
-									print("Error: Invalid next event time format")
+									print("Time Difference for Next Event: {}".format(format_time_diff(time_diff_next)))  # Time remaining
+								except ValueError as e:
+									print("Error: Invalid next event time format. Details: {}".format(e))
 
 							# Titles
 							nameepg = titlematch[0].strip() if len(titlematch) > 0 else ''
@@ -573,15 +602,6 @@ class iptv_streamse():
 							epgnowdescription = descriptionmatch[0].strip() if len(descriptionmatch) > 0 else ''
 							epgnextdescription = descriptionmatch[1].strip() if len(descriptionmatch) > 1 else ''
 
-							# Debug print
-							"""
-							print("Current time:", epgnowtime)
-							print("Next time:", epgnexttime)
-							print("Current title:", nameepg)
-							print("Next title:", epgnexttitle)
-							print("Current description:", epgnowdescription)
-							print("Next description:", epgnextdescription)
-							"""
 							# Compose the description
 							description = epgnowdescription  # epgnowtime + ' ' + nameepg + '\n\n' + epgnowdescription
 							description = html_conv.html_unescape(description) + '\n\n'
@@ -630,25 +650,25 @@ class iptv_streamse():
 						RATING = channel.find("RATING").text if channel.find("RATING") is not None else ""
 
 						if NAME:
-							vodTitle = b64decoder(NAME)  # Decodifica Base64 per NAME
+							vodTitle = b64decoder(NAME)  # Base64 NAME
 						elif O_NAME:
-							vodTitle = b64decoder(O_NAME)  # Decodifica Base64 per O_NAME
+							vodTitle = b64decoder(O_NAME)  # Base64 O_NAME
 						else:
-							vodTitle = name  # Valore predefinito se entrambi sono assenti
+							vodTitle = name  # fallback
 
 						piconname = COVER_BIG if COVER_BIG else ""
 
 						if DESCRIPTION:
-							vodDescription = b64decoder(DESCRIPTION)  # Decodifica Base64 per DESCRIPTION
+							vodDescription = b64decoder(DESCRIPTION)  # Base64 DESCRIPTION
 						elif PLOT:
-							vodDescription = b64decoder(PLOT)  # Decodifica Base64 per PLOT
+							vodDescription = b64decoder(PLOT)  # Base64 PLOT
 						else:
-							vodDescription = "DESCRIPTION: -- --"  # Valore predefinito
+							vodDescription = "DESCRIPTION: -- --"  # fallback
 
-						vodDuration = DURATION if DURATION else "DURATION: -- --"  # Valore predefinito
-						vodGenre = GENRE if GENRE else "GENRE: -- --"  # Valore predefinito
-						vodRelease = RELEASEDATE if RELEASEDATE else "RELEASEDATE: -- --"  # Valore predefinito
-						vodRating = RATING if RATING else "RATING: -- --"  # Valore predefinito
+						vodDuration = DURATION if DURATION else "DURATION: -- --"  # Default Value
+						vodGenre = GENRE if GENRE else "GENRE: -- --"  # Default Value
+						vodRelease = RELEASEDATE if RELEASEDATE else "RELEASEDATE: -- --"  # Default Value
+						vodRating = RATING if RATING else "RATING: -- --"  # Default Value
 
 						"""
 						vodItems = {}

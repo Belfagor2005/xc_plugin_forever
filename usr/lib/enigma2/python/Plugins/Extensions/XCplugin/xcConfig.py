@@ -110,6 +110,7 @@ cfg.live = ConfigSelection(default='1', choices=modelive)
 cfg.hostaddress = ConfigText(default="exampleserver.com")
 cfg.user = ConfigText(default="Enter_Username", visible_width=50, fixed_size=False)
 cfg.passw = ConfigPassword(default="******", visible_width=50, fixed_size=False, censor="*")
+cfg.uptimezone = ConfigSelectionNumber(default=0, min=-20, max=80, stepwidth=1)
 cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "Direct", "Requests"])
 cfg.picons = ConfigEnableDisable(default=False)
 cfg.port = ConfigText(default="80", fixed_size=False)
@@ -323,6 +324,8 @@ class xc_config(Screen, ConfigListScreen):
 			self.list.append(getConfigListEntry(indent + (_("Server Username")), cfg.user, (_("Enter Username"))))
 			self.list.append(getConfigListEntry(indent + (_("Server Password")), cfg.passw, (_("Enter Password"))))
 		self.list.append(getConfigListEntry(_("Server Timeout"), cfg.timeout, (_("Timeout Server (sec)"))))
+		self.list.append(getConfigListEntry(_("Adjust Timezone"), cfg.uptimezone, (_("Adjust Timezone (hour)"))))		
+		
 		self.list.append(getConfigListEntry(_("Folder user file .xml"), cfg.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
 		self.list.append(getConfigListEntry(_("Media Folder "), cfg.pthmovie, (_("Configure folder containing movie/media files\nPress 'OK' to change location."))))
 
