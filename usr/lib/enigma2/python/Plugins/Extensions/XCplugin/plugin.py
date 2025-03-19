@@ -49,26 +49,27 @@ from .xcPlayerUri import xc_Play, aspect_manager
 from .xcShared import autostart
 from .xcTask import xc_StreamTasks
 from .xcSkin import skin_path, xcm3ulistEntry, xcM3UList
+
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from enigma import getDesktop
 from Plugins.Plugin import PluginDescriptor
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
-from six import text_type
+from datetime import timedelta, datetime
+from time import altzone, timezone, localtime, strptime, mktime  # , strftime
+from six import text_type, PY3
 try:
 	from xml.etree.ElementTree import fromstring, tostring
 except ImportError:
 	from xml.etree.cElementTree import fromstring, tostring
 
-
+from os.path import join
+from os import chmod
 import codecs
-import os
-import re
-import six
-import socket
-import sys
-
+from re import DOTALL, findall
+from socket import setdefaulttimeout
+from sys import version_info
 
 # global fixed
 _session = None
@@ -76,11 +77,11 @@ globalsxp.eserv = int(cfg.services.value)
 globalsxp.infoname = str(cfg.infoname.value)
 globalsxp.Path_Movies = str(cfg.pthmovie.value)  # + "/"
 globalsxp.Path_Movies2 = globalsxp.Path_Movies
-globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
+globalsxp.piclogo = join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
 globalsxp.pictmp = "/tmp/poster.jpg"
 enigma_path = '/etc/enigma2/'
 epgimport_path = '/etc/epgimport/'
-iconpic = os.path.join(plugin_path, 'plugin.png')
+iconpic = join(plugin_path, 'plugin.png')
 input_file = '/tmp/mydata.json'
 iptvsh = "/etc/enigma2/iptv.sh"
 ntimeout = float(cfg.timeout.value)
@@ -88,18 +89,18 @@ output_file = '/tmp/mydata2.json'
 Path_Picons = str(cfg.pthpicon.value) + "/"
 Path_XML = str(cfg.pthxmlfile.value) + "/"
 xc_list = "/tmp/xc.txt"
-socket.setdefaulttimeout(5)
+setdefaulttimeout(5)
 screenwidth = getDesktop(0).size()
 
 
-if six.PY3:
+if PY3:
 	unicode = text_type
 
 
 class xc_home(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_home.xml')
+		skin = join(skin_path, 'xc_home.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_home', skin)
@@ -146,7 +147,7 @@ class xc_home(Screen):
 	def check_dependencies(self):
 		dependencies = True
 		try:
-			pythonFull = float(str(sys.version_info.major) + "." + str(sys.version_info.minor))
+			pythonFull = float(str(version_info.major) + "." + str(version_info.minor))
 			if pythonFull < 3.9:
 				print("*** checking python version ***", pythonFull)
 		except Exception as e:
@@ -154,7 +155,7 @@ class xc_home(Screen):
 			dependencies = False
 
 		if dependencies is False:
-			os.chmod(os.path.join(plugin_path, 'dependencies.sh', 0o0755))
+			chmod(join(plugin_path, 'dependencies.sh', 0o0755))
 			cmd1 = ". /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/dependencies.sh"
 			self.session.openWithCallback(self.xcClean, xcConsole, title="Checking Dependencies", cmdlist=[cmd1], closeOnSuccess=True)
 		else:
@@ -237,6 +238,80 @@ class xc_home(Screen):
 			self.xc_Help()
 
 
+timezone_offsets = {
+	# Europa
+	"Europe/London": 0,          # UTC+0
+	"Europe/Berlin": 3600,       # UTC+1
+	"Europe/Paris": 3600,        # UTC+1
+	"Europe/Rome": 3600,         # UTC+1
+	"Europe/Moscow": 10800,      # UTC+3
+	"Europe/Athens": 7200,       # UTC+2
+	"Europe/Madrid": 3600,       # UTC+1
+	"Europe/Lisbon": 0,          # UTC+0
+	"Europe/Dublin": 0,          # UTC+0
+
+	# America
+	"America/New_York": -18000,  # UTC-5
+	"America/Chicago": -21600,   # UTC-6
+	"America/Denver": -25200,    # UTC-7
+	"America/Los_Angeles": -28800,  # UTC-8
+	"America/Toronto": -18000,   # UTC-5
+	"America/Sao_Paulo": -10800,  # UTC-3
+	"America/Argentina/Buenos_Aires": -10800,  # UTC-3
+	"America/Mexico_City": -21600,  # UTC-6
+	"America/Phoenix": -25200,   # UTC-7 (no DST)
+
+	# Asia
+	"Asia/Tokyo": 32400,         # UTC+9
+	"Asia/Shanghai": 28800,      # UTC+8
+	"Asia/Hong_Kong": 28800,     # UTC+8
+	"Asia/Singapore": 28800,     # UTC+8
+	"Asia/Seoul": 32400,         # UTC+9
+	"Asia/Dubai": 14400,         # UTC+4
+	"Asia/Kolkata": 19800,       # UTC+5:30
+	"Asia/Jakarta": 25200,       # UTC+7
+	"Asia/Bangkok": 25200,       # UTC+7
+
+	# Africa
+	"Africa/Cairo": 7200,        # UTC+2
+	"Africa/Johannesburg": 7200,  # UTC+2
+	"Africa/Lagos": 3600,        # UTC+1
+	"Africa/Casablanca": 0,      # UTC+0
+	"Africa/Nairobi": 10800,     # UTC+3
+
+	# Oceania
+	"Australia/Sydney": 36000,   # UTC+10
+	"Australia/Melbourne": 36000,  # UTC+10
+	"Australia/Brisbane": 36000,  # UTC+10 (no DST)
+	"Australia/Perth": 28800,    # UTC+8
+	"Pacific/Auckland": 43200,   # UTC+12
+	"Pacific/Honolulu": -36000,  # UTC-10
+
+	# Altri
+	"UTC": 0,                    # UTC+0
+	"GMT": 0,                    # UTC+0
+	"Etc/GMT": 0,                # UTC+0
+	"Etc/GMT+1": -3600,          # UTC-1
+	"Etc/GMT+12": -43200,        # UTC-12
+	"Etc/GMT-14": 50400,         # UTC+14
+}
+
+
+def get_local_offset():
+	"""Get the local timezone offset (in seconds)"""
+	if localtime().tm_isdst == 1:
+		return -altzone  # Daylight saving time
+	else:
+		return -timezone  # Standard time
+
+
+def format_time_diff(time_diff):
+	"""Format the time difference in hours, minutes, and seconds"""
+	hours, remainder = divmod(time_diff.seconds, 3600)
+	minutes, seconds = divmod(remainder, 60)
+	return "{:02}:{:02}:{:02}".format(hours, minutes, seconds)
+
+
 class iptv_streamse():
 	def __init__(self):
 		self.plugin_version = ""
@@ -282,6 +357,8 @@ class iptv_streamse():
 			if password and password != "" and 'Enter' not in password:
 				self.password = password
 			self.xtream_e2portal_url = "http://" + self.host + ':' + self.port
+
+			# globalsxp.timeserver = self.xtream_e2portal_url + '/player_api.php?username=' + str(self.username) + '&password=' + str(self.password)
 
 			print('Host: %s\nUsername: %s\nPassword:%s' % (self.xtream_e2portal_url, self.username, self.password))
 			print("-----------CONFIG END----------\n")
@@ -396,6 +473,7 @@ class iptv_streamse():
 					else:
 						globalsxp.isStream = False
 
+					# Check if the stream URL contains "/live/"
 					if "/live/" in globalsxp.stream_url:
 						globalsxp.stream_live = True
 						epgnowtime = ''
@@ -403,40 +481,109 @@ class iptv_streamse():
 						epgnexttitle = ''
 						epgnexttime = ''
 						epgnextdescription = ''
-
 						if description != '':
-							# Trova orari [hh:mm]
-							timematch = re.findall(r'\[(\d{2}:\d{2})\]', description)
+							# Find event titles in the format [hh:mm] Title
+							titlematch = findall(r'\[\d{2}:\d{2}\]\s*(.*?)\n', description)
+							# Find times in the format [hh:mm]
+							timematch = findall(r'\[(\d{2}:\d{2})\]', description)
+							# Find descriptions in parentheses (multi-line)
+							descriptionmatch = findall(r'\((.*?)\)', description, DOTALL)
 
-							# Trova titoli dopo gli orari
-							titlematch = re.findall(r'\[\d{2}:\d{2}\]\s*(.*?)\n', description)
+							# Get server timezone and server time from globalsxp
+							server_timezone = globalsxp.timezone  # Example: "Europe/London"
+							server_time_str = globalsxp.timeserver  # Example: "2025-03-18 21:20:02"
 
-							# Trova descrizioni tra parentesi tonde multilinea
-							descriptionmatch = re.findall(r'\((.*?)\)', description, re.DOTALL)
+							# Get server timezone offset
+							server_offset = timezone_offsets.get(server_timezone, 0)  # Default to UTC if not found
+							print("Server timezone: {}, Offset: {} seconds".format(server_timezone, server_offset))
 
-							# Ora attuale ed episodio successivo
-							epgnowtime = timematch[0].strip() if len(timematch) > 0 else ''
-							epgnexttime = timematch[1].strip() if len(timematch) > 1 else ''
+							try:
+								# Convert server time to a datetime object
+								server_time_struct = strptime(server_time_str, "%Y-%m-%d %H:%M:%S")
+								server_time = datetime.fromtimestamp(mktime(server_time_struct))  # Convert to datetime
+								print("Server time = {}".format(server_time))
+							except ValueError:
+								print("Error: Invalid time format in globalsxp.timeserver")
+								server_time = datetime.utcnow()  # Use UTC time as fallback
 
-							# Titoli
+							# Convert server time to UTC
+							server_time_utc = server_time - timedelta(seconds=server_offset)
+							print("Server time (UTC): {}".format(server_time_utc.strftime('%Y-%m-%d %H:%M:%S')))
+
+							# Get local timezone offset (in seconds)
+							local_offset = get_local_offset()
+							local_time_utc = datetime.utcnow()  # Local time in UTC
+							local_time = local_time_utc + timedelta(seconds=local_offset)  # Convert to local time
+							print("Local time: {}".format(local_time.strftime('%Y-%m-%d %H:%M:%S')))
+
+							# Process the first event
+							if timematch:
+								timestamp_str = timematch[0].strip()
+								try:
+									# Combine current date with event time
+									event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + timestamp_str, "%Y-%m-%d %H:%M")
+									event_time = datetime.fromtimestamp(mktime(event_time_struct))  # Convert to datetime
+									event_time_utc = event_time - timedelta(seconds=local_offset)  # Convert to UTC
+
+									# If the event is in the past, add 1 day
+									if event_time_utc < local_time_utc:
+										event_time_utc += timedelta(days=1)
+										print("Event is scheduled for tomorrow.")
+
+									# Calculate the difference from the current time (time remaining)
+									time_diff = event_time_utc - local_time_utc
+
+									# Format event time in UTC
+									epgnowtime = event_time_utc.strftime("%Y-%m-%d %H:%M")
+									print("Adjusted Event Time (UTC): {}".format(epgnowtime))
+									print("Time Difference: {}".format(format_time_diff(time_diff)))  # Time remaining until the event
+								except ValueError:
+									print("Error: Invalid event time format")
+
+							# Process the next event (if present)
+							if len(timematch) > 1:
+								next_time_str = timematch[1].strip()
+
+								try:
+									# Combine current date with next event time
+									next_event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + next_time_str, "%Y-%m-%d %H:%M")
+									next_event_time = datetime.fromtimestamp(mktime(next_event_time_struct))  # Convert to datetime
+									next_event_time_utc = next_event_time - timedelta(seconds=local_offset)  # Convert to UTC
+
+									# If the event is in the past, add 1 day
+									if next_event_time_utc < local_time_utc:
+										next_event_time_utc += timedelta(days=1)
+										print("Next event is scheduled for tomorrow.")
+
+									# Calculate the difference from the current time (time remaining)
+									time_diff_next = next_event_time_utc - local_time_utc
+
+									# Format next event time in UTC
+									epgnexttime = next_event_time_utc.strftime("%Y-%m-%d %H:%M")
+									print("Next Event Adjusted Time (UTC): {}".format(epgnexttime))
+									print("Time Difference for Next Event: {}".format(format_time_diff(time_diff_next)))  # Time remaining until the next event
+								except ValueError:
+									print("Error: Invalid next event time format")
+
+							# Titles
 							nameepg = titlematch[0].strip() if len(titlematch) > 0 else ''
 							epgnexttitle = titlematch[1].strip() if len(titlematch) > 1 else ''
 
-							# Descrizioni
+							# Descriptions
 							epgnowdescription = descriptionmatch[0].strip() if len(descriptionmatch) > 0 else ''
 							epgnextdescription = descriptionmatch[1].strip() if len(descriptionmatch) > 1 else ''
 
-							# Stampa per debug
+							# Debug print
 							"""
-							print("Ora attuale:", epgnowtime)
-							print("Prossimo orario:", epgnexttime)
-							print("Titolo attuale:", nameepg)
-							print("Titolo successivo:", epgnexttitle)
-							print("Descrizione attuale:", epgnowdescription)
-							print("Descrizione successiva:", epgnextdescription)
+							print("Current time:", epgnowtime)
+							print("Next time:", epgnexttime)
+							print("Current title:", nameepg)
+							print("Next title:", epgnexttitle)
+							print("Current description:", epgnowdescription)
+							print("Next description:", epgnextdescription)
 							"""
 							# Compose the description
-							description = epgnowtime + ' ' + nameepg + '\n\n' + epgnowdescription
+							description = epgnowdescription  # epgnowtime + ' ' + nameepg + '\n\n' + epgnowdescription
 							description = html_conv.html_unescape(description) + '\n\n'
 							description2 = epgnexttime + ' ' + epgnexttitle + '\n\n' + epgnextdescription
 							description2 = html_conv.html_unescape(description2) + '\n\n'
@@ -598,7 +745,7 @@ class iptv_streamse():
 						res_xml = fromstring(res)
 						if res_xml is not None:
 							res_string = tostring(res_xml, encoding='utf-8', method='xml').decode('utf-8')
-							file_path = os.path.join('/tmp', 'canali_temp.xml')
+							file_path = join('/tmp', 'canali_temp.xml')
 							with open(file_path, 'w') as temp_file:
 								temp_file.write(res_string)
 								temp_file.flush()

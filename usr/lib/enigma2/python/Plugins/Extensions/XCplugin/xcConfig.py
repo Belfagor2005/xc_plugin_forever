@@ -51,10 +51,10 @@ from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from os.path import exists as file_exists, isdir
+from os.path import exists as file_exists, isdir, join
+from os import stat
+from re import DOTALL, findall
 import codecs
-import os
-import re
 
 
 xc_list = "/tmp/xc.txt"
@@ -131,7 +131,7 @@ class xc_config(Screen, ConfigListScreen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
 
-		skin = os.path.join(skin_path, 'xc_config.xml')
+		skin = join(skin_path, 'xc_config.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_config', skin)
@@ -188,14 +188,14 @@ class xc_config(Screen, ConfigListScreen):
 					_("Import Server from /etc/enigma2/iptv.sh?")
 				)
 			elif answer:
-				if file_exists(iptvsh) and os.stat(iptvsh).st_size > 0:
+				if file_exists(iptvsh) and stat(iptvsh).st_size > 0:
 					try:
 						with open(iptvsh, 'r') as f:
 							fpage = f.read()
 							print('fpage=', fpage)
 
 						regexcat = r'USERNAME="(.*?)";.*?PASSWORD="(.*?)";.*?url="http://([^:]+):(\d+)/get.php'
-						matches = re.findall(regexcat, fpage, re.DOTALL)
+						matches = findall(regexcat, fpage, DOTALL)
 
 						if matches:
 							for match in matches:
@@ -250,7 +250,7 @@ class xc_config(Screen, ConfigListScreen):
 					_("Import Server from /tmp/xc.tx?")
 				)
 			elif answer:
-				if file_exists(xc_list) and os.stat(xc_list).st_size > 0:
+				if file_exists(xc_list) and stat(xc_list).st_size > 0:
 					try:
 						with codecs.open(xc_list, "r", encoding="utf-8") as f:
 							lines = f.readlines()
@@ -299,118 +299,6 @@ class xc_config(Screen, ConfigListScreen):
 				return
 		except Exception as e:
 			print("Error in ImportInfosServer:", str(e))
-
-	"""
-	# def iptv_sh(self, answer=None):
-		# try:
-			# if answer is None:
-				# self.session.openWithCallback(
-					# self.iptv_sh,
-					# MessageBox,
-					# _("Import Server from /etc/enigma2/iptv.sh?")
-				# )
-			# elif answer:
-				# if file_exists(iptvsh) and os.stat(iptvsh).st_size > 0:
-					# try:
-						# with open(iptvsh, 'r') as f:
-							# fpage = f.read()
-						# regexcat = r'USERNAME="(.*?)".*?PASSWORD="(.*?)".*?url="http://(.*?):(.*?)/get.php'
-						# match = re.search(regexcat, fpage, re.DOTALL)
-						# if match:
-							# usernamesh = match.group(1).replace('"', '')
-							# passwordsh = match.group(2).replace('"', '')
-							# urlsh = match.group(3).replace('"', '')
-							# ports = match.group(4).replace('"', '')
-
-							# cfg.hostaddress.setValue(urlsh)
-							# cfg.port.setValue(ports)
-							# cfg.user.setValue(usernamesh)
-							# cfg.passw.setValue(passwordsh)
-
-							# self.xml_plugin()
-							# # self.ConfigTextx()
-							# self.createSetup()
-						# else:
-							# self.session.open(
-								# MessageBox,
-								# _("Invalid format in %s. Could not extract server details." % iptvsh),
-								# MessageBox.TYPE_ERROR,
-								# timeout=5
-							# )
-					# except Exception as e:
-						# self.session.open(
-							# MessageBox,
-							# _("Error reading or processing %s: %s" % (iptvsh, str(e))),
-							# MessageBox.TYPE_ERROR,
-							# timeout=5
-						# )
-				# else:
-					# self.session.open(
-						# MessageBox,
-						# _("Missing or empty file: %s" % iptvsh),
-						# MessageBox.TYPE_INFO,
-						# timeout=4
-					# )
-			# else:
-				# return
-		# except Exception as e:
-			# print("Error in iptv_sh:", str(e))
-
-	# def ImportInfosServer(self, answer=None):
-		# try:
-			# if answer is None:
-				# self.session.openWithCallback(
-					# self.ImportInfosServer,
-					# MessageBox,
-					# _("Import Server from /tmp/xc.tx?"),
-				# )
-			# elif answer:
-				# if file_exists(xc_list) and os.stat(xc_list).st_size > 0:
-					# try:
-						# with codecs.open(xc_list, "r", encoding="utf-8") as f:
-							# lines = f.readlines()
-
-						# if len(lines) < 4:
-							# self.session.open(
-								# MessageBox,
-								# _("Invalid file format: not enough lines in %s" % xc_list),
-								# MessageBox.TYPE_ERROR,
-								# timeout=5,
-							# )
-							# return
-
-						# url = lines[0].strip()
-						# port = lines[1].strip().replace(":", "_")
-						# user = lines[2].strip().replace(":", "_")
-						# pswrd = lines[3].strip()
-
-						# cfg.hostaddress.setValue(url)
-						# cfg.port.setValue(port)
-						# cfg.user.setValue(user)
-						# cfg.passw.setValue(pswrd)
-
-						# self.xml_plugin()
-						# # self.ConfigTextx()
-						# self.createSetup()
-					# except Exception as e:
-						# self.session.open(
-							# MessageBox,
-							# _("Error reading or processing the file: %s" % str(e)),
-							# MessageBox.TYPE_ERROR,
-							# timeout=5,
-						# )
-				# else:
-					# self.session.open(
-						# MessageBox,
-						# _("File not found or empty: %s" % xc_list),
-						# MessageBox.TYPE_INFO,
-						# timeout=5,
-					# )
-			# else:
-				# return
-		# except Exception as e:
-			# print("Error in ImportInfosServer:", str(e))
-	"""
 
 	def update_status(self):
 		if cfg.autobouquetupdate:

@@ -44,22 +44,22 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from six import text_type
 import codecs
-import os
-import json
-import six
+from os.path import join, exists
+from json import loads
+from six import PY3, PY2
+from time import strptime
 
-
-if six.PY3:
+if PY3:
 	unicode = text_type
 	from urllib.request import (urlopen, Request)
-elif six.PY2:
+elif PY2:
 	from urllib2 import (urlopen, Request)
 
 
 class xc_help(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_help.xml')
+		skin = join(skin_path, 'xc_help.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_help', skin)
@@ -98,7 +98,7 @@ class xc_help(Screen):
 			-1
 		)
 		self.timer = eTimer()
-		if os.path.exists('/usr/bin/apt-get'):
+		if exists('/usr/bin/apt-get'):
 			self.timer_conn = self.timer.timeout.connect(self.check_vers)
 		else:
 			self.timer.callback.append(self.check_vers)
@@ -149,14 +149,14 @@ class xc_help(Screen):
 		try:
 			req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
 			page = urlopen(req).read()
-			data = json.loads(page)
+			data = loads(page)
 
 			if 'pushed_at' not in data:
 				print("[ERROR] 'pushed_at' key not found in JSON response")
 				return
 
 			remote_date = data['pushed_at']
-			strp_remote_date = datetime.datetime.strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+			strp_remote_date = strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
 			formatted_date = strp_remote_date.strftime('%Y-%m-%d')
 
 			self.session.openWithCallback(

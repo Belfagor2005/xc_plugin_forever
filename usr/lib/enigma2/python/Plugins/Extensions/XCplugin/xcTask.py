@@ -49,14 +49,12 @@ from enigma import eTimer, eServiceReference
 from os.path import exists as file_exists
 from os import listdir, remove, statvfs
 from os.path import isdir, join
-# from Screens.TaskView import JobView
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-
+from re import findall
+from six import PY3
+from time import time
 import codecs
-import re
-import six
-import time
 
 
 try:
@@ -377,7 +375,7 @@ class downloadTaskPostcondition(Condition):
 
 
 class downloadTask(Task):
-	if six.PY3:
+	if PY3:
 		ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
 	else:
 		ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
@@ -393,14 +391,14 @@ class downloadTask(Task):
 		self.progress = 0
 		self.lastprogress = 0
 		self.firstrun = True
-		self.starttime = time.time()
+		self.starttime = time()
 
 	def processOutput(self, data):
-		if six.PY3:
+		if PY3:
 			data = str(data)
 		try:
 			if data.find("%") != -1:
-				tmpvalue = re.findall(r'(\d+?%)', data)[-1].rstrip("%")
+				tmpvalue = findall(r'(\d+?%)', data)[-1].rstrip("%")
 				self.progress = int(float(tmpvalue))
 
 				if self.firstrun:
@@ -415,9 +413,9 @@ class downloadTask(Task):
 
 				elif int(self.progress) != int(self.lastprogress):
 					self.lastprogress = int(self.progress)
-					elapsed_time = time.time() - self.starttime
+					elapsed_time = time() - self.starttime
 					if elapsed_time > 2:
-						self.starttime = time.time()
+						self.starttime = time()
 						if hasattr(self.toolbox, 'updatescreen'):
 							self.toolbox.updatescreen()
 			else:

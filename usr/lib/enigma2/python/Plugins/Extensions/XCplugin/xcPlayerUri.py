@@ -60,9 +60,8 @@ from enigma import (
 	eTimer,
 	iPlayableService,
 )
-from os import (remove, system)
-from os.path import splitext
-from os.path import exists as file_exists
+from os import remove, system, walk
+from os.path import splitext, join, exists as file_exists
 
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
@@ -77,12 +76,10 @@ from Screens.InfoBarGenerics import (
 )
 from six.moves.urllib.parse import urlparse
 from twisted.web.client import downloadPage
-
+from re import DOTALL, compile
+from six import ensure_binary, PY3
+from time import time
 import codecs
-import os
-import re
-import six
-import time
 
 ntimeout = float(cfg.timeout.value)
 
@@ -260,7 +257,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		self.recorder_sref = recorder_sref
 
 		# load Skin
-		skin_file = os.path.join(skin_path, 'xc_Player.xml')
+		skin_file = join(skin_path, 'xc_Player.xml')
 		try:
 			with open(skin_file, "r", encoding="utf-8") as f:
 				skin_data = f.read()
@@ -384,8 +381,8 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 			self['poster'].instance.setPixmapFromFile(globalsxp.piclogo[0])
 			self.pixim = str(self.channelx[7])
 			if (self.pixim != "" or self.pixim != "n/A" or self.pixim is not None or self.pixim != "null"):
-				if six.PY3:
-					self.pixim = six.ensure_binary(self.pixim)
+				if PY3:
+					self.pixim = ensure_binary(self.pixim)
 				if self.pixim.startswith(b"https") and sslverify:
 					parsed_uri = urlparse(self.pixim)
 					domain = parsed_uri.hostname
@@ -559,7 +556,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		try:
 			serviceref = eServiceReference(4097, 0, self.timeshift_url)
 			with open('%s/%s.meta' % (globalsxp.Path_Movies, filename), 'w') as f:
-				f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), filmtitle, "", time.time()))
+				f.write('%s\n%s\n%s\n%i\n' % (serviceref.toString(), filmtitle, "", time()))
 		except Exception as e:
 			print('ERROR metaFile', e)
 
@@ -685,7 +682,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 		_session = session
 
 		self.recorder_sref = recorder_sref
-		skin = os.path.join(skin_path, 'xc_iptv_player.xml')
+		skin = join(skin_path, 'xc_iptv_player.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('nIPTVplayer', skin)
@@ -780,7 +777,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 					if self.cover.find("http") == -1:
 						self.downloadError()
 					else:
-						self.cover = six.ensure_binary(self.cover)
+						self.cover = ensure_binary(self.cover)
 						if self.cover.startswith(b"https") and sslverify:
 							parsed_uri = urlparse(self.cover)
 							domain = parsed_uri.hostname
@@ -883,7 +880,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 class xc_Play(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_Play.xml')
+		skin = join(skin_path, 'xc_Play.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Play', skin)
@@ -936,7 +933,7 @@ class xc_Play(Screen):
 		self.Movies = []
 		path = self.name
 		AA = ['.m3u']
-		for root, dirs, files in os.walk(path):
+		for root, dirs, files in walk(path):
 			for name in files:
 				for x in AA:
 					if x not in name:
@@ -1147,7 +1144,7 @@ class xc_Play(Screen):
 		if idx is None or idx < 0 or idx >= len(self.names):
 			return
 		else:
-			name = os.path.join(globalsxp.Path_Movies, self.names[idx])
+			name = join(globalsxp.Path_Movies, self.names[idx])
 			namel = self.names[idx]
 			xcname = "userbouquet.%s.tv" % namel.replace(".m3u", "").replace(" ", "")
 			desk_tmp = ""
@@ -1190,7 +1187,7 @@ class xc_Play(Screen):
 class xc_M3uPlay(Screen):
 	def __init__(self, session, name):
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_M3uPlay.xml')
+		skin = join(skin_path, 'xc_M3uPlay.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_M3uPlay', skin)
@@ -1260,7 +1257,7 @@ class xc_M3uPlay(Screen):
 					except:
 						pass
 					regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
-					match = re.compile(regexcat, re.DOTALL).findall(fpage)
+					match = compile(regexcat, DOTALL).findall(fpage)
 					for name, url in match:
 						if str(search).lower() in name.lower():
 							globalsxp.search_ok = True
@@ -1301,7 +1298,7 @@ class xc_M3uPlay(Screen):
 
 				if "#EXTM3U" in fpage:  # and not 'tvg-logo' in fpage:
 					regexcat = r'#EXTINF:-1,(.*?)\n(.*?)\n'
-					match = re.compile(regexcat, re.DOTALL).findall(fpage)
+					match = compile(regexcat, DOTALL).findall(fpage)
 					for name, url in match:
 						url = url.strip()  # Rimuove spazi e newline
 						self.names.append(str(name))

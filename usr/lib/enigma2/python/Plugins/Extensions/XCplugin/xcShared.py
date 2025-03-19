@@ -31,7 +31,7 @@ from .xcConfig import cfg
 from .xcMaker import xc_maker, save_old
 
 from enigma import eTimer
-import time
+from time import time, asctime, localtime
 
 
 class AutoStartTimer:
@@ -53,11 +53,11 @@ class AutoStartTimer:
 		if cfg.autobouquetupdate.value is True:
 			if cfg.timetype.value == "interval":
 				interval = int(cfg.updateinterval.value)
-				nowt = time.time()
+				nowt = time()
 				return int(nowt) + interval * 60 * 60
 			if cfg.timetype.value == "fixed time":
 				ftc = cfg.fixedtime.value
-				now = time.localtime(time.time())
+				now = time.localtime(time())
 				fwt = int(time.mktime((
 					now.tm_year,  # Anno corrente
 					now.tm_mon,   # Mese corrente
@@ -77,7 +77,7 @@ class AutoStartTimer:
 		if cfg.autobouquetupdate.value is True:
 			self.timer.stop()
 			wake = self.get_wake_time()
-			nowt = time.time()
+			nowt = time()
 			now = int(nowt)
 			if wake > 0:
 				if wake < now + constant:
@@ -99,7 +99,7 @@ class AutoStartTimer:
 	def on_timer(self):
 		if cfg.autobouquetupdate.value is True:
 			self.timer.stop()
-			now = int(time.time())
+			now = int(time())
 			wake = now
 			constant = 0
 			if cfg.timetype.value == "fixed time":
@@ -108,8 +108,8 @@ class AutoStartTimer:
 				try:
 					self.startMain()
 					constant = 60
-					localtime = time.asctime(time.localtime(time.time()))
-					cfg.last_update.value = localtime
+					localtimex = asctime(localtime(time()))
+					cfg.last_update.value = localtimex
 					cfg.last_update.save()
 				except Exception as e:
 					print(e)

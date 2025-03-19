@@ -37,10 +37,9 @@ from Components.Sources.StaticText import StaticText
 from os.path import exists as file_exists
 from Screens.Screen import Screen
 from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-
+from os.path import join, exists
 import codecs
-import os
-import re
+from re import sub
 
 global _session
 
@@ -51,7 +50,7 @@ class xc_Epg(Screen):
 		global _session
 		_session = session
 
-		skin = os.path.join(skin_path, 'xc_epg.xml')
+		skin = join(skin_path, 'xc_epg.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Epg', skin)
@@ -94,7 +93,7 @@ def returnIMDB(text_clear, session):
 	tmdbx = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('tmdb'))
 	IMDb = resolveFilename(SCOPE_PLUGINS, "Extensions/{}".format('IMDb'))
 	text = html_conv.html_unescape(text_clear)
-	if os.path.exists(TMDB):
+	if exists(TMDB):
 		try:
 			from Plugins.Extensions.TMBD.plugin import TMBD
 			print("[XCF] TMDB")
@@ -111,7 +110,7 @@ def returnIMDB(text_clear, session):
 			print("[XCF] tmdb: ", str(e))
 		return True
 
-	if os.path.exists(tmdbx):
+	if exists(tmdbx):
 		try:
 			from Plugins.Extensions.tmdb.plugin import tmdb
 			session.open(tmdb.tmdbScreen, text, 0)
@@ -119,7 +118,7 @@ def returnIMDB(text_clear, session):
 			print("[XCF] Tmdb: ", str(e))
 		return True
 
-	if os.path.exists(IMDb):
+	if exists(IMDb):
 		try:
 			from Plugins.Extensions.IMDb.plugin import main as imdb
 			imdb(session, text)
@@ -131,7 +130,7 @@ def returnIMDB(text_clear, session):
 
 
 def show_more_infos(name, index, session):
-	text_clear = re.sub(r'\b\d{4}\b.*', '', name).strip()  # name
+	text_clear = sub(r'\b\d{4}\b.*', '', name).strip()  # name
 	if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
 		selected_channel = globalsxp.iptv_list_tmp[index]
 		if selected_channel:

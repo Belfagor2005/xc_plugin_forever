@@ -60,28 +60,24 @@ from enigma import (
 	eTimer,
 	gFont,
 )
-from os import remove, system
-from os.path import splitext
-from os.path import exists as file_exists
+from os import remove, system, stat
+from os.path import splitext, join, exists as file_exists
 from Screens.MovieSelection import MovieSelection
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.Standby import Standby
 from Screens.TaskView import JobView
 from Screens.VirtualKeyBoard import VirtualKeyBoard
+from re import compile, DOTALL
 from six.moves.urllib.parse import urlparse
-from six import text_type
+from six import text_type, ensure_binary, PY3
 from twisted.web.client import downloadPage
-
+from time import time, strftime, gmtime
+from json import dump, load
+from shutil import copy
+from requests import get, codes
+from socket import setdefaulttimeout
 import codecs
-import json
-import os
-import re
-import requests
-import shutil
-import six
-import socket
-import time
 
 
 # global fixed
@@ -89,15 +85,15 @@ _session = None
 globalsxp.infoname = str(cfg.infoname.value)
 globalsxp.Path_Movies = str(cfg.pthmovie.value)  # + "/"
 globalsxp.Path_Movies2 = globalsxp.Path_Movies
-globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
+globalsxp.piclogo = join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
 globalsxp.pictmp = "/tmp/poster.jpg"
 input_file = '/tmp/mydata.json'
 ntimeout = float(cfg.timeout.value)
 output_file = '/tmp/mydata2.json'
-socket.setdefaulttimeout(5)
+setdefaulttimeout(5)
 
 
-if six.PY3:
+if PY3:
 	unicode = text_type
 
 
@@ -107,9 +103,9 @@ class xc_Main(Screen):
 		global channel_list2
 		_session = session
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_Main.xml')
+		skin = join(skin_path, 'xc_Main.xml')
 		if cfg.screenxl.value:
-			skin = os.path.join(skin_path, 'xc_Mainxl.xml')
+			skin = join(skin_path, 'xc_Mainxl.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Main', skin)
@@ -121,7 +117,9 @@ class xc_Main(Screen):
 				self.setTitle(_('%s') % 'MAIN MENU')
 			except:
 				pass
-				
+
+		self.checkinf()  # test
+
 		# iptv_list_tmp
 		self.channel_list = globalsxp.STREAMS.iptv_list
 		self.index = globalsxp.STREAMS.list_index  # 0   ??
@@ -134,12 +132,12 @@ class xc_Main(Screen):
 		self.temp_index = 0
 		self.temp_playname = str(globalsxp.STREAMS.playlistname)
 		self.filter_search = []
-		
+
 		self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
 		self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
 		self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
 		self.mlist.l.setItemHeight(BLOCK_H)
-		
+
 		if cfg.infoexp.getValue():
 			globalsxp.infoname = str(cfg.infoname.value)
 		self["exp"] = Label("")
@@ -164,9 +162,9 @@ class xc_Main(Screen):
 		self["poster"] = Pixmap()
 		self["Text"] = Label(globalsxp.infoname)
 		self["playlist"].setText(self.temp_playname)
-		
+
 		self.go()
-		
+
 		self["actions"] = HelpableActionMap(
 			self,
 			"XCpluginActions",
@@ -242,14 +240,14 @@ class xc_Main(Screen):
 		try:
 			if self.temp_index > -1:
 				self.index = self.temp_index
-			# selected_channel = globalsxp.STREAMS.iptv_list_tmp[self.index]	
+			# selected_channel = globalsxp.STREAMS.iptv_list_tmp[self.index]
 			selected_channel = globalsxp.STREAMS.iptv_list[self.index]
 			playlist_url = selected_channel[5]
 
 			# for return from player!!
 			if file_exists(input_file):
 				with codecs.open(input_file, "r", encoding="utf-8") as f:
-					data = json.load(f)
+					data = load(f)
 
 				def convert_to_string(entry):
 					if entry is None:
@@ -261,7 +259,7 @@ class xc_Main(Screen):
 				string_channel_list = list(map(convert_to_string, data))
 
 				with codecs.open(output_file, "w", encoding="utf-8") as f:
-					json.dump(string_channel_list, f)
+					dump(string_channel_list, f)
 
 			self.set_tmp_list()
 
@@ -354,7 +352,7 @@ class xc_Main(Screen):
 				else:
 					description = str(selected_channel[2])
 					self["description"].setText(description)
-				pixim = six.ensure_binary(selected_channel[7])
+				pixim = ensure_binary(selected_channel[7])
 				if pixim != "":
 					parsed = urlparse(pixim)
 					domain = parsed.hostname
@@ -431,7 +429,7 @@ class xc_Main(Screen):
 			else:
 				self.channel_list = globalsxp.STREAMS.iptv_list
 
-			if os.path.exists("/usr/bin/apt-get"):
+			if file_exists("/usr/bin/apt-get"):
 				def convert_to_str(entry):
 					if entry is None:
 						return ''
@@ -481,7 +479,7 @@ class xc_Main(Screen):
 		self.filter_search = []
 
 	def set_tmp_list(self):
-		if os.path.exists("/usr/bin/apt-get"):
+		if file_exists("/usr/bin/apt-get"):
 
 			def convert_to_string(entry):
 				if entry is None:
@@ -493,20 +491,20 @@ class xc_Main(Screen):
 			string_channel_list = list(map(convert_to_string, self.channel_list))
 
 			with codecs.open(input_file, "w", encoding="utf-8") as f:
-				json.dump(string_channel_list, f)
+				dump(string_channel_list, f)
 		else:
 			with open(input_file, 'w') as f:
-				json.dump(self.channel_list, f)
+				dump(self.channel_list, f)
 
 	def load_from_tmp(self):
 		if file_exists(output_file):
 			with codecs.open(output_file, "r", encoding="utf-8") as f:
-				self.channel_list = json.load(f)
+				self.channel_list = load(f)
 				remove(output_file)
 		else:
 			if file_exists(input_file):
 				with codecs.open(input_file, "r", encoding="utf-8") as f:
-					self.channel_list = json.load(f)
+					self.channel_list = load(f)
 
 		if len(self.channel_list):
 			globalsxp.iptv_list_tmp = self.channel_list
@@ -534,7 +532,7 @@ class xc_Main(Screen):
 		keywords = ['get_series', 'get_vod', 'get_live']
 		copy_poster()
 		if file_exists(output_file) and globalsxp.STREAMS.video_status is True:
-			shutil.copy(output_file, input_file)
+			copy(output_file, input_file)
 			remove(output_file)
 
 		if file_exists(input_file):
@@ -564,7 +562,7 @@ class xc_Main(Screen):
 					if any(keyword in content for keyword in keywords):
 						remove(input_file)
 						print('======= remove /tmp/mydata.json')
-			file_path = os.path.join('/tmp', 'canali_temp.xml')
+			file_path = join('/tmp', 'canali_temp.xml')
 			if file_exists(file_path):
 				remove(file_path)
 				print('======= remove /tmp/canali_temp.xml')
@@ -606,7 +604,7 @@ class xc_Main(Screen):
 			self["exp"].setText("- ? -")
 			self["created_at"].setText("- ? -")
 			self["server_protocol"].setText("Protocol: - ? -")
-			self["timezone"].setText("Timezone: - ? -")
+			self["timezone"].setText("Time Now: - ? -")
 			status = auth = created_at = exp_date = active_cons = max_connections = host = '- ? -'
 			username = password = ''
 			if cfg.hostaddress != 'exampleserver.com':
@@ -631,7 +629,7 @@ class xc_Main(Screen):
 								active_cons = (y["user_info"]["active_cons"])
 								max_connections = (y["user_info"]["max_connections"])
 								if exp_date:
-									exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date)))
+									exp_date = strftime(TIME_GMT, gmtime(int(exp_date)))
 
 								if str(auth) == "1":
 									if str(status) == "Active":
@@ -645,15 +643,18 @@ class xc_Main(Screen):
 									else:
 										self["exp"].setText("Server Not Responding" + str(exp_date))
 									if created_at:
-										created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at)))
+										created_at = strftime(TIME_GMT, gmtime(int(created_at)))
 										self["created_at"].setText('Start date:\n' + created_at)
 
 									self["max_connect"].setText("Max Connect: " + str(max_connections))
 									self["active_cons"].setText("User Active: " + str(active_cons))
 								server_protocol = (y["server_info"]["server_protocol"])
 								self["server_protocol"].setText("Protocol: " + str(server_protocol))
-								timezone = (y["server_info"]["timezone"])
-								self["timezone"].setText("Timezone: " + str(timezone))
+								time_now = (y["server_info"]["time_now"])
+								time_zone = (y["server_info"]["timezone"])
+								globalsxp.timeserver = time_now
+								globalsxp.timezone = time_zone
+								self["timezone"].setText("Time Now: " + str(time_now))
 							except Exception as e:
 								print('error checkinf : ', e)
 		except Exception as e:
@@ -664,7 +665,7 @@ class xc_Main(Screen):
 		if globalsxp.series is True and globalsxp.btnsearch == 1:
 			if answer is None:
 				self.streamfile = '/tmp/streamfile.txt'
-				if file_exists(self.streamfile) and os.stat(self.streamfile).st_size > 0:
+				if file_exists(self.streamfile) and stat(self.streamfile).st_size > 0:
 					self.session.openWithCallback(self.check_download_ser, MessageBox, _("ATTENTION!!!\nDOWNLOAD ALL EPISODES SERIES\nSURE???"))
 			elif answer:
 				self.icount = 0
@@ -681,7 +682,7 @@ class xc_Main(Screen):
 					if read_data != "":
 						try:
 							regexcat = ".*?,'(.*?)','(.*?)'.*?\\n"
-							match = re.compile(regexcat, re.DOTALL).findall(read_data)
+							match = compile(regexcat, DOTALL).findall(read_data)
 							for name, url in match:
 								if url.startswith('http'):
 									ext = str(splitext(url)[-1])
@@ -751,8 +752,8 @@ class xc_Main(Screen):
 
 				elif cfg.pdownmovie.value == "Requests":
 					try:
-						r = requests.get(self.vod_url, verify=False)
-						if r.status_code == requests.codes.ok:
+						r = get(self.vod_url, verify=False)
+						if r.status_code == codes.ok:
 							with open(self.file_down, 'wb') as f:
 								f.write(r.content)
 					except Exception as e:
@@ -796,7 +797,7 @@ class xc_Main(Screen):
 		try:
 			serviceref = eServiceReference(4097, 0, filename)
 			with open("%s/%s.meta" % (globalsxp.Path_Movies, filename), "wb") as f:
-				f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), str(filmtitle), "", time.time()))
+				f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), str(filmtitle), "", time()))
 		except Exception as e:
 			print(e)
 		return

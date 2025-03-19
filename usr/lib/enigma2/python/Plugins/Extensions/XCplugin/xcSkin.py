@@ -38,12 +38,12 @@ from enigma import (
 	gFont,
 	eListboxPythonMultiContent,
 )
-import os
+from os.path import join
 
 global skin_path
 
 
-globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
+globalsxp.piclogo = join(plugin_path, 'skin/fhd/iptvlogo.jpg'),
 screenwidth = getDesktop(0).size()
 skin_path = None
 if screenwidth.width() == 2560:
@@ -52,8 +52,8 @@ if screenwidth.width() == 2560:
 	FONT_0 = ("Regular", 52)
 	FONT_1 = ("Regular", 52)
 	BLOCK_H = 80
-	skin_path = os.path.join(plugin_path, 'skin/uhd')
-	globalsxp.piclogo = os.path.join(plugin_path, 'skin/uhd/iptvlogo.jpg')
+	skin_path = join(plugin_path, 'skin/uhd')
+	globalsxp.piclogo = join(plugin_path, 'skin/uhd/iptvlogo.jpg')
 
 elif screenwidth.width() == 1920:
 	CHANNEL_NUMBER = [3, 0, 100, 50, 0]
@@ -61,8 +61,8 @@ elif screenwidth.width() == 1920:
 	FONT_0 = ("Regular", 32)
 	FONT_1 = ("Regular", 32)
 	BLOCK_H = 50
-	skin_path = os.path.join(plugin_path, 'skin/fhd')
-	globalsxp.piclogo = os.path.join(plugin_path, 'skin/fhd/iptvlogo.jpg')
+	skin_path = join(plugin_path, 'skin/fhd')
+	globalsxp.piclogo = join(plugin_path, 'skin/fhd/iptvlogo.jpg')
 
 else:
 	CHANNEL_NUMBER = [3, 0, 50, 40, 0]
@@ -70,8 +70,8 @@ else:
 	FONT_0 = ("Regular", 24)
 	FONT_1 = ("Regular", 24)
 	BLOCK_H = 40
-	skin_path = os.path.join(plugin_path, 'skin/hd')
-	globalsxp.piclogo = os.path.join(plugin_path, 'skin/hd/iptvlogo.jpg')
+	skin_path = join(plugin_path, 'skin/hd')
+	globalsxp.piclogo = join(plugin_path, 'skin/hd/iptvlogo.jpg')
 
 
 def channelEntryIPTVplaylist(entry):
@@ -96,25 +96,25 @@ MENU_ITEMS = [
 def xcm3ulistEntry(name):
 	"""
 	# if 'active' in name.lower() or name.lower() in [item.lower() for item in MENU_ITEMS]:
-		# png0 = os.path.join(plugin_path, 'skin/pic/xcon.png')
+		# png0 = join(plugin_path, 'skin/pic/xcon.png')
 		# if screenwidth.width() == 2560:
-			# png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+			# png0 = join(plugin_path, 'skin/pic/xcselh.png')
 	"""
 	name_lower = name.lower()
 	if 'active' in name_lower or name_lower in [item.lower() for item in MENU_ITEMS]:
-		png0 = os.path.join(plugin_path, 'skin/pic/xcon.png')
+		png0 = join(plugin_path, 'skin/pic/xcon.png')
 		if screenwidth.width() == 2560:
-			png0 = os.path.join(plugin_path, 'skin/pic/xcselh.png')
+			png0 = join(plugin_path, 'skin/pic/xcselh.png')
 
 		if 'x (' in name_lower:
-			png0 = os.path.join(plugin_path, 'skin/pic/xcatt.png')
+			png0 = join(plugin_path, 'skin/pic/xcatt.png')
 			if screenwidth.width() == 2560:
-				png0 = os.path.join(plugin_path, 'skin/pic/xcselat.png')
+				png0 = join(plugin_path, 'skin/pic/xcselat.png')
 
 	else:
-		png0 = os.path.join(plugin_path, 'skin/pic/xcoff.png')
+		png0 = join(plugin_path, 'skin/pic/xcoff.png')
 		if screenwidth.width() == 2560:
-			png0 = os.path.join(plugin_path, 'skin/pic/xc1.png')
+			png0 = join(plugin_path, 'skin/pic/xc1.png')
 	res = [name]
 	white = 16777215
 	if screenwidth.width() == 2560:

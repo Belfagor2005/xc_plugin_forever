@@ -24,21 +24,21 @@
 # ======================================================================
 
 from __future__ import print_function
+
 from . import _, version, retTest
 from .addons.modul import globalsxp
 from .addons.NewOeSk import ctrlSkin
 from .xcConfig import cfg
 from .xcSkin import skin_path, m3ulistxc, xcM3UList
+
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from os.path import exists as file_exists
+from os.path import exists as file_exists, join
 import codecs
-import os
-import re
-import time
-
+from re import match
+from time import strftime, gmtime
 # from .plugin import iptv_streamse
 
 Path_XML = str(cfg.pthxmlfile.value) + "/"
@@ -47,7 +47,7 @@ Path_XML = str(cfg.pthxmlfile.value) + "/"
 class xc_Playlist(Screen):
 	def __init__(self, session, STREAMS):
 		Screen.__init__(self, session)
-		skin = os.path.join(skin_path, 'xc_Playlist.xml')
+		skin = join(skin_path, 'xc_Playlist.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Playlist', skin)
@@ -103,11 +103,16 @@ class xc_Playlist(Screen):
 				if "user_info" in y and "auth" in y["user_info"]:
 					if y["user_info"]["auth"] == 1:
 						exp_date = y["user_info"].get("exp_date", "N/A")
-						exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date))) if exp_date else "N/A"
+						exp_date = strftime(TIME_GMT, gmtime(int(exp_date))) if exp_date else "N/A"
 						status = y["user_info"].get("status", "N/A")
 						auth = status if status in ["Active", "Banned", "Disabled", "Expired", "None"] else "N/A"
 					else:
 						auth = "Server Not Responding"
+
+					time_now = (y["server_info"]["time_now"])
+					if time_now:
+						globalsxp.timeserver = str(time_now)
+
 			return auth, exp_date
 
 		except Exception as e:
@@ -132,14 +137,14 @@ class xc_Playlist(Screen):
 						continue
 					elif line.startswith('http'):
 						pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
-						match = re.match(pattern, line)
+						matchx = match(pattern, line)
 
-						if match:
-							host = match.group(1)
-							if match.group(2):
-								port = match.group(2)
-							username = match.group(3)
-							password = match.group(4)
+						if matchx:
+							host = matchx.group(1)
+							if matchx.group(2):
+								port = matchx.group(2)
+							username = matchx.group(3)
+							password = matchx.group(4)
 							namelx, exp_date = self.selOn(str(host), str(port), str(username), str(password))
 							if namelx in [None, "None"]:
 								namelx = "N/A"
@@ -172,14 +177,14 @@ class xc_Playlist(Screen):
 				return
 			port = '80'
 			pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
-			match = re.match(pattern, dom)
-			if match:
-				host = match.group(1)
-				if match.group(2):
-					port = match.group(2)
+			matchx = match(pattern, dom)
+			if matchx:
+				host = matchx.group(1)
+				if matchx.group(2):
+					port = matchx.group(2)
 				cfg.port.setValue(str(port))
-				username = match.group(3)
-				password = match.group(4)
+				username = matchx.group(3)
+				password = matchx.group(4)
 				cfg.hostaddress.setValue(str(host))
 				cfg.user.setValue(str(username))
 				cfg.passw.setValue(str(password))
@@ -198,19 +203,19 @@ class xc_Playlist(Screen):
 				return
 			dom = self.urls[idx]
 			TIME_GMT = '%d-%m-%Y %H:%M'
-			auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = timezone = '- ? -'
+			auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = time_now = '- ? -'
 			host = ''
 			username = ''
 			password = ''
 			port = '80'
 			pattern = (r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)")
-			match = re.match(pattern, dom)
-			if match:
-				host = match.group(1)
-				if match.group(2):
-					port = match.group(2)
-				username = match.group(3)
-				password = match.group(4)
+			matchx = match(pattern, dom)
+			if matchx:
+				host = matchx.group(1)
+				if matchx.group(2):
+					port = matchx.group(2)
+				username = matchx.group(3)
+				password = matchx.group(4)
 			globalsxp.urlinfo = ('http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password))
 			self.ycse = retTest(globalsxp.urlinfo)
 			if self.ycse:
@@ -225,10 +230,11 @@ class xc_Playlist(Screen):
 							active_cons = y["user_info"]["active_cons"]
 							max_connections = y["user_info"]["max_connections"]
 							server_protocol = y["server_info"]["server_protocol"]
-							timezone = y["server_info"]["timezone"]
+							time_now = y["server_info"]["time_now"]
+							time_zone = y["server_info"]["timezone"]
 
-							created_at = time.strftime(TIME_GMT, time.gmtime(int(created_at))) if created_at else "Null"
-							exp_date = time.strftime(TIME_GMT, time.gmtime(int(exp_date))) if exp_date else "Null"
+							created_at = strftime(TIME_GMT, gmtime(int(created_at))) if created_at else "Null"
+							exp_date = strftime(TIME_GMT, gmtime(int(exp_date))) if exp_date else "Null"
 							status_messages = {
 								"Active": "Active\nExp date: " + str(exp_date),
 								"Banned": "Banned\nExp date: " + str(exp_date),
@@ -240,10 +246,14 @@ class xc_Playlist(Screen):
 							active_cons = "User Active Now: " + str(active_cons)
 							max_connections = "Max Connect: " + str(max_connections)
 							server_protocol = "Protocol: " + str(server_protocol)
-							timezone = "Timezone: " + str(timezone)
+							time_now = "Time Now: " + str(time_now)
+							time_zone = "Time Zone: " + str(time_zone)
+
+							# globalsxp.timeserver = time_now
+							# globalsxp.timezone = time_zone
 
 							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s") % (
-								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(timezone)
+								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(time_now)
 							)
 							print(str(message))
 							self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)

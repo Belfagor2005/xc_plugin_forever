@@ -35,13 +35,9 @@ from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-
-from os import listdir, remove, system
-from os.path import isdir
-from os.path import exists as file_exists
-
+from os import listdir, remove, system, rename
+from os.path import isdir, join, exists as file_exists
 import codecs
-import os
 
 global _session
 
@@ -67,7 +63,7 @@ class xc_maker(Screen):
 		Screen.__init__(self, session)
 		global _session
 		_session = self.session
-		skin = os.path.join(skin_path, 'xc_maker.xml')
+		skin = join(skin_path, 'xc_maker.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_maker', skin)
@@ -184,16 +180,16 @@ def uninstaller():
 			print("File path can not be removed. Error is:", error)
 
 		for fname in listdir(enigma_path):
-			file_path = os.path.join(enigma_path, fname)
+			file_path = join(enigma_path, fname)
 			if 'userbouquet.xc_' in fname or 'bouquets.tv.bak' in fname:
 				remove(file_path)
 
 		if isdir(epgimport_path):
 			for fname in listdir(epgimport_path):
 				if 'xc_' in fname:
-					remove(os.path.join(epgimport_path, fname))
-		os.rename(os.path.join(enigma_path, 'bouquets.tv'), os.path.join(enigma_path, 'bouquets.tv.bak'))
-		with open(os.path.join(enigma_path, 'bouquets.tv'), 'w+') as tvfile, open(os.path.join(enigma_path, 'bouquets.tv.bak'), 'r+') as bakfile:
+					remove(join(epgimport_path, fname))
+		rename(join(enigma_path, 'bouquets.tv'), join(enigma_path, 'bouquets.tv.bak'))
+		with open(join(enigma_path, 'bouquets.tv'), 'w+') as tvfile, open(join(enigma_path, 'bouquets.tv.bak'), 'r+') as bakfile:
 			for line in bakfile:
 				if '.xc_' not in line:
 					tvfile.write(line)
@@ -212,11 +208,11 @@ def save_old():
 	desk_tmp = xcname = ''
 	try:
 		if cfg.typem3utv.value == 'MPEGTS to TV':
-			file_path = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
+			file_path = join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
 			if file_exists(file_path):
 				remove(file_path)
 			try:
-				localFile = os.path.join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
+				localFile = join(enigma_path, 'userbouquet.%s%s_.tv' % (tag, namebouquet))
 				r = Utils.getUrl(xc12)
 				with open(localFile, 'w') as f:
 					f.write(r)
@@ -224,10 +220,10 @@ def save_old():
 				print('Error downloading or writing TV file: ', e)
 			xcname = 'userbouquet.%s%s_.tv' % (tag, namebouquet)
 		else:
-			if file_exists(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u")):
-				remove(os.path.join(globalsxp.Path_Movies, namebouquet + ".m3u"))
+			if file_exists(join(globalsxp.Path_Movies, namebouquet + ".m3u")):
+				remove(join(globalsxp.Path_Movies, namebouquet + ".m3u"))
 			try:
-				localFile = os.path.join(globalsxp.Path_Movies, '%s.m3u' % namebouquet)
+				localFile = join(globalsxp.Path_Movies, '%s.m3u' % namebouquet)
 				r = Utils.getUrl(xc13)
 				with open(localFile, 'w') as f:
 					f.write(r)
@@ -241,7 +237,7 @@ def save_old():
 				with open('/etc/enigma2/%s' % xcname, 'w') as outfile:
 					outfile.write('#NAME %s\r\n' % name.capitalize())
 					desk_tmp = ""
-					with open(os.path.join(globalsxp.Path_Movies, '%s.m3u' % name)) as infile:
+					with open(join(globalsxp.Path_Movies, '%s.m3u' % name)) as infile:
 						for line in infile:
 							if line.startswith('http://') or line.startswith('https://'):
 								outfile.write('#SERVICE 4097:0:1:0:0:0:0:0:0:0:%s\r\n' % line.strip().replace(':', '%3a'))
