@@ -111,10 +111,13 @@ class xc_Playlist(Screen):
 
 					time_now = (y["server_info"]["time_now"])
 					time_zone = (y["server_info"]["timezone"])
+					time_stamp = (y["server_info"]["timestamp_now"])
 					if time_now:
 						globalsxp.timeserver = str(time_now)
 					if time_zone:
 						globalsxp.timezone = str(time_zone)
+					if time_stamp:
+						globalsxp.time_stamp = str(time_stamp)
 
 			return auth, exp_date
 

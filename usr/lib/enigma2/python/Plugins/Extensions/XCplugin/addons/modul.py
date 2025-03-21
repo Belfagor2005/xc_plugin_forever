@@ -52,7 +52,8 @@ globalsxp = SimpleNamespace(
     urlinfo=None,
     url_tmp=None,
     timezone="Europe/London",
-    timeserver="2025-01-01 00:00:00"
+    timeserver="2025-01-01 00:00:00",
+    timestamp=""
 )
 
 

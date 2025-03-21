@@ -110,6 +110,7 @@ class xc_Main(Screen):
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Main', skin)
+		print('skin=\n', self.skin)
 
 		try:
 			Screen.setTitle(self, _('%s') % 'MAIN MENU')
@@ -653,8 +654,10 @@ class xc_Main(Screen):
 								self["server_protocol"].setText("Protocol: " + str(server_protocol))
 								time_now = (y["server_info"]["time_now"])
 								time_zone = (y["server_info"]["timezone"])
+								time_stamp = (y["server_info"]["timestamp_now"])
 								globalsxp.timeserver = time_now
 								globalsxp.timezone = time_zone
+								globalsxp.timestamp = time_stamp
 								# Apply user-configured time adjustment
 								self["timezone"].setText("Time Now: " + str(time_now))
 							except Exception as e:

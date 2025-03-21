@@ -57,7 +57,7 @@ from Plugins.Plugin import PluginDescriptor
 from Screens.MovieSelection import MovieSelection
 from Screens.Screen import Screen
 from datetime import timedelta, datetime
-from time import altzone, timezone, localtime, strptime, mktime  # , strftime
+from time import altzone, timezone, localtime  # , strftime, strptime, mktime
 from six import text_type, PY3
 try:
 	from xml.etree.ElementTree import fromstring, tostring
@@ -297,6 +297,7 @@ timezone_offsets = {
 }
 
 
+# Funzione per ottenere l'offset del fuso orario locale
 def get_local_offset():
 	"""Get the local timezone offset (in seconds)"""
 	if localtime().tm_isdst == 1:
@@ -305,11 +306,20 @@ def get_local_offset():
 		return -timezone  # Standard time
 
 
+# Funzione per formattare la differenza di tempo
 def format_time_diff(time_diff):
 	"""Format the time difference in hours, minutes, and seconds"""
 	hours, remainder = divmod(time_diff.seconds, 3600)
 	minutes, seconds = divmod(remainder, 60)
 	return "{:02}:{:02}:{:02}".format(hours, minutes, seconds)
+
+
+# Recupera l'offset locale in secondi
+local_offset = get_local_offset()
+# Ottieni l'orario corrente in UTC
+local_time_utc = datetime.utcnow()
+# Calcola l'orario locale sottraendo l'offset
+local_time = local_time_utc + timedelta(seconds=local_offset)
 
 
 class iptv_streamse():
@@ -396,7 +406,7 @@ class iptv_streamse():
 
 			root = self._request(self.url)
 
-			if root:
+			if len(root) > 0:
 				self.playlistname = ""
 				self.category_title = ""
 				self.category_id = ""
@@ -481,132 +491,102 @@ class iptv_streamse():
 						epgnexttitle = ''
 						epgnexttime = ''
 						epgnextdescription = ''
+						timematch = []
+						titlematch = ''
 						if description != '':
-							# Find event titles in the format [hh:mm] Title
+							# Extract event titles
 							titlematch = findall(r'\[\d{2}:\d{2}\]\s*(.*?)\n', description)
-							# Find event times in the format [hh:mm]
+							# Extract the schedules and descriptions
 							timematch = findall(r'\[(\d{2}:\d{2})\]', description)
-							# Find event descriptions in parentheses (multi-line)
-							descriptionmatch = findall(r'\((.*?)\)', description, DOTALL)
-							# Debug prints
-							print('titlematch=', titlematch)
-							print('timematch=', timematch)
-							# Get server timezone and server time from globalsxp
-							server_timezone = globalsxp.timezone  # Example: "Europe/London"
-							server_time_str = globalsxp.timeserver  # Example: "2025-03-18 21:20:02"
-							print("server_timezone is {}:".format(server_timezone))
-							print("server_time_str is {}:".format(server_time_str))
-
-							"""
-							# Validate server_time_str
-							# if not server_time_str or not isinstance(server_time_str, str):
-								# print("Error: server_time_str is invalid or missing.")
-								# server_time_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")  # Fallback
-							"""
-							# Get server timezone offset
-							server_offset = timezone_offsets.get(server_timezone, 0)  # Default to UTC if not found
-							print("Server timezone: {}, Offset: {} seconds".format(server_timezone, server_offset))
-							# Parse server time
+							epgnowdescription = findall(r'\((.*?)\)', description, DOTALL)
+							# print('timematch =', timematch)
+							# print('descriptionmatch =', epgnowdescription)
+							# Get timezone and timestamp from server
+							server_timezone = globalsxp.timezone
+							server_time_str = globalsxp.timeserver
+							server_timestamp = globalsxp.timestamp
+							print("server_timezone is {}".format(server_timezone))
+							print("server_time_str is {}".format(server_time_str))
+							print("server_timestamp is {}".format(server_timestamp))
+							# Convert server timestamp to datetime
+							server_time = datetime.utcfromtimestamp(server_timestamp)
+							print("Server time converted:", server_time.strftime("%Y-%m-%d %H:%M:%S"))
+							# Calculate the real local time
+							local_time = datetime.now()
+							print("Local system time:", local_time.strftime("%Y-%m-%d %H:%M:%S"))
+							# Calculate the time difference between server and local
+							difference_time = local_time - server_time
+							difference_hour = int(difference_time.total_seconds() / 3600)
+							print("Hour difference (local - server):", difference_hour)
+							# Apply custom offset from cfg
 							try:
-								# Convert server time to a datetime object
-								server_time_struct = strptime(server_time_str, "%Y-%m-%d %H:%M:%S")
-								server_time = datetime.fromtimestamp(mktime(server_time_struct))  # Convert to datetime
-								print("Convert server time to a datetime object time = {}".format(server_time))
+								user_offset = int(cfg.uptimezone.value)
+							except (ValueError, AttributeError):
+								user_offset = 0
+							print("user_offset:", user_offset)
+							final_offset = timedelta(hours=difference_hour + user_offset)
+							print("Total offset (server + user):", final_offset)
+							# Process events (if at least two times found)
+							if len(timematch) >= 2:
+								time1_str = timematch[0]
+								time2_str = timematch[1]
+								# Convert times to datetime
+								base_date = local_time.date()
+								time1_dt = datetime.strptime(time1_str, "%H:%M")
+								time2_dt = datetime.strptime(time2_str, "%H:%M")
+								start_time = datetime.combine(base_date, time1_dt.time())
+								end_time = datetime.combine(base_date, time2_dt.time())
+								# If the end time is before the start time (e.g. 11:00 PM -> 1:00 AM), add a day
+								if end_time <= start_time:
+									end_time += timedelta(days=1)
+								# Add calculated offset
+								start_time += final_offset
+								end_time += final_offset
+								epgnowtime = "[{}-{}]".format(
+									start_time.strftime("%H:%M"),
+									end_time.strftime("%H:%M")
+								)
+								print("Adjusted Event Time EPG Format:", epgnowtime)
+							else:
+								print("There are not enough times found to calculate the duration.")
+
+						# Process the next event (if any)
+						if len(timematch) > 1:
+							next_time_str = timematch[1].strip()
+							try:
+								# Combines the current date with the time of the next event
+								next_event_time = datetime.strptime(local_time.strftime('%Y-%m-%d') + " " + next_time_str, "%Y-%m-%d %H:%M")
+								# Apply local offset
+								next_event_time_utc = next_event_time - timedelta(seconds=local_offset)
+								# If the event is in the past, add a day
+								if next_event_time_utc < local_time_utc:
+									next_event_time_utc += timedelta(days=1)
+									print("Next event is scheduled for tomorrow.")
+								# Calculate the difference from the current time (time remaining)
+								time_diff_next = next_event_time_utc - local_time_utc
+								# Calculate the duration of the next event
+								time1_utc_plus1 = datetime.strptime(timematch[0], "%H:%M")
+								time2_utc_plus1 = datetime.strptime(timematch[1], "%H:%M")
+								diff = (time2_utc_plus1 - time1_utc_plus1).total_seconds() / 60
+								# Calculate the end time of the event
+								end_time_utc = next_event_time_utc + timedelta(minutes=diff)
+								end_time_str_utc = end_time_utc.strftime("%H:%M")
+								epgnexttime = "[{}-{}]".format(
+									next_event_time_utc.strftime("%H:%M"),
+									end_time_str_utc
+								)
+								print("Next Event Adjusted Time (UTC):", epgnexttime)
+								print("Time Difference for Next Event:", format_time_diff(time_diff_next))
+
 							except ValueError as e:
-								print("Error: Invalid server time format. Details: {}".format(e))
-								server_time = datetime.utcnow()  # Fallback to current UTC time
-							# Convert server time to UTC
-							server_time_utc = server_time - timedelta(seconds=server_offset)
-							print("Server time (UTC): {}".format(server_time_utc.strftime('%Y-%m-%d %H:%M:%S')))
-							# Get local timezone offset (in seconds)
-							local_offset = get_local_offset()
-							local_time_utc = datetime.utcnow()  # Local time in UTC
-							local_time = local_time_utc + timedelta(seconds=local_offset)  # Convert to local time
+								print("Error: Invalid next event time format. Details:", e)
 
-							# Apply user-configured time adjustment
-							try:
-								# Ensure cfg.uptimezone.value is an integer (e.g., 1, -2, etc.)
-								time_adjustment_delta = timedelta(hours=int(cfg.uptimezone.value))
-								local_time += time_adjustment_delta  # Apply adjustment
-								print("Local time after adjustment: {}".format(local_time.strftime('%Y-%m-%d %H:%M:%S')))
-							except (ValueError, AttributeError) as e:
-								print("Error: Invalid time adjustment value. Details: {}".format(e))
-								# Fallback to no adjustment if cfg.uptimezone.value is invalid
-								time_adjustment_delta = timedelta(hours=0)
-
-							# Process the first event
-							if timematch:
-								timestamp_str = timematch[0].strip()
-								try:
-									# Combine current date with event time
-									event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + timestamp_str, "%Y-%m-%d %H:%M")
-									event_time = datetime.fromtimestamp(mktime(event_time_struct))  # Convert to datetime
-									event_time_utc = event_time - timedelta(seconds=local_offset)  # Convert to UTC
-									# If the event is in the past, add 1 day
-									if event_time_utc < local_time_utc:
-										event_time_utc += timedelta(days=1)
-										print("Event is scheduled for tomorrow.")
-									# Calculate the difference from the current time (time remaining)
-									time_diff = event_time_utc - local_time_utc
-									# Calculate event duration
-									time1_utc_plus1 = datetime.strptime(timematch[0], "%H:%M")  # Start time in UTC+1
-									time2_utc_plus1 = datetime.strptime(timematch[1], "%H:%M")  # End time in UTC+1
-									diff = (time2_utc_plus1 - time1_utc_plus1).total_seconds() / 60  # Duration in minutes
-									# Calculate event end time in UTC
-									start_time_utc = event_time_utc  # Start time in UTC
-									end_time_utc = start_time_utc + timedelta(minutes=diff)  # Event end time
-									end_time_str_utc = end_time_utc.strftime("%H:%M")  # Format end time
-									# Create the final result in the desired format
-									epgnowtime = "[" + start_time_utc.strftime("%H:%M") + ":" + end_time_str_utc + ")"
-									# Debug prints
-									print("Adjusted Event Time (UTC): {}".format(epgnowtime))
-									print("Time Difference: {}".format(format_time_diff(time_diff)))  # Time remaining
-								except ValueError as e:
-									print("Error: Invalid event time format. Details: {}".format(e))
-
-							# Process the next event (if present)
-							if len(timematch) > 1:
-								next_time_str = timematch[1].strip()
-								try:
-									# Combine current date with next event time
-									next_event_time_struct = strptime(local_time.strftime('%Y-%m-%d') + " " + next_time_str, "%Y-%m-%d %H:%M")
-									next_event_time = datetime.fromtimestamp(mktime(next_event_time_struct))  # Convert to datetime
-									next_event_time_utc = next_event_time - timedelta(seconds=local_offset)  # Convert to UTC
-									# If the event is in the past, add 1 day
-									if next_event_time_utc < local_time_utc:
-										next_event_time_utc += timedelta(days=1)
-										print("Next event is scheduled for tomorrow.")
-									# Calculate the difference from the current time (time remaining)
-									time_diff_next = next_event_time_utc - local_time_utc
-									# Calculate next event duration
-									time1_utc_plus1 = datetime.strptime(timematch[0], "%H:%M")  # Start time in UTC+1
-									time2_utc_plus1 = datetime.strptime(timematch[1], "%H:%M")  # End time in UTC+1
-									diff = (time2_utc_plus1 - time1_utc_plus1).total_seconds() / 60  # Duration in minutes
-									# Calculate next event end time in UTC
-									start_time_utc = next_event_time_utc  # Start time in UTC
-									end_time_utc = start_time_utc + timedelta(minutes=diff)  # Event end time
-									end_time_str_utc = end_time_utc.strftime("%H:%M")  # Format end time
-									# Create the final result in the desired format
-									epgnexttime = "[" + start_time_utc.strftime("%H:%M") + ":" + end_time_str_utc + ")"
-									# Debug prints
-									print("Next Event Adjusted Time (UTC): {}".format(epgnexttime))
-									print("Time Difference for Next Event: {}".format(format_time_diff(time_diff_next)))  # Time remaining
-								except ValueError as e:
-									print("Error: Invalid next event time format. Details: {}".format(e))
-
-							# Titles
-							nameepg = titlematch[0].strip() if len(titlematch) > 0 else ''
 							epgnexttitle = titlematch[1].strip() if len(titlematch) > 1 else ''
-
-							# Descriptions
-							epgnowdescription = descriptionmatch[0].strip() if len(descriptionmatch) > 0 else ''
-							epgnextdescription = descriptionmatch[1].strip() if len(descriptionmatch) > 1 else ''
-
-							# Compose the description
-							description = epgnowdescription  # epgnowtime + ' ' + nameepg + '\n\n' + epgnowdescription
-							description = html_conv.html_unescape(description) + '\n\n'
+							epgnextdescription = epgnowdescription[1].strip() if len(epgnowdescription) > 1 else ''
+							# print('epgnexttitle:', epgnexttitle)
+							# print('epgnextdescription:', epgnextdescription)
+							description = html_conv.html_unescape(epgnowdescription[1] if len(epgnowdescription) > 1 else '') + '\n\n'
 							description2 = epgnexttime + ' ' + epgnexttitle + '\n\n' + epgnextdescription
-							description2 = html_conv.html_unescape(description2) + '\n\n'
 
 					elif ("/movie/" in globalsxp.stream_url) or ("/series/" in globalsxp.stream_url) or ("vod_streams" in globalsxp.stream_url):
 						# print('movie globalsxp.stream_url==================================', globalsxp.stream_url)
