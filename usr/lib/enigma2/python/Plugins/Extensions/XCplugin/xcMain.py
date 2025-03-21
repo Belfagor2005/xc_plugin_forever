@@ -110,7 +110,7 @@ class xc_Main(Screen):
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
 		self.skin = ctrlSkin('xc_Main', skin)
-		print('skin=\n', self.skin)
+		# print('skin=\n', self.skin)
 
 		try:
 			Screen.setTitle(self, _('%s') % 'MAIN MENU')

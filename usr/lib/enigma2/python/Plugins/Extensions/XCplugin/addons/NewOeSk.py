@@ -19,7 +19,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from os.path import isfile
-
+from re import search
 __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
@@ -67,21 +67,72 @@ patterns_to_remove = [
 	r'scrollbarBorderColor="[^"]*"'
 ]
 
+# scrollbarMode="
+patterns_to_remove = [
+	r'scrollbarWidth="[^"]*"',
+	r'scrollbarSliderBorderWidth="[^"]*"',
+	r'textoffsets\s*="[^"]*"',
+	r'secondfont\s*="[^"]*"',
+	r'scrollbarBorderWidth="[^"]*"',
+	r'scrollbarForegroundColor="[^"]*"',
+	r'scrollbarBorderColor="[^"]*"'
+]
 
+
+scrollbar_keywords_patterns = [
+	r'scrollbarMode="list"',
+	r'scrollbarMode="text"',
+	r'scrollbarMode="menu"',
+	r'scrollbarMode="config"',
+	r'scrollbarMode="tasklist"',
+	r'scrollbarMode="menulist"',
+	r'scrollbarMode="menu_list"',
+	r'scrollbarMode="filelist"',
+	r'scrollbarMode="file_list"',
+	r'scrollbarMode="entries"',
+	r'scrollbarMode="Listbox"',
+	r'scrollbarMode="list_left"',
+	r'scrollbarMode="list_right"',
+	r'scrollbarMode="streamlist"',
+	r'scrollbarMode="tablist"',
+	r'scrollbarMode="HelpScrollLabel"',
+]
+
+
+# scrollbarMode="
 def ctrlSkin(pank, skin):
 	from re import sub
 	print('ctrlSkin panel=%s' % pank)
-	scrollbar_keywords = ['list', 'text', 'menu', 'config', 'tasklist', 'menulist']  # , 'menu_list', 'filelist', 'file_list', 'entries', 'Listbox', 'list_left', 'list_right', 'streamlist', 'tablist', 'HelpScrollLabel']
 	# Edit only if `newOE()` is True or `/etc/opkg/nn2-feed.conf` exists
 	if newOE() or isfile('/etc/opkg/nn2-feed.conf') or isfile("/usr/bin/apt-get"):
 		for pattern in patterns_to_remove:
 			skin = sub(pattern, '', skin)
-		# Remove "font" only if a widget has `scrollbarMode` with one of the specific values
-		for keyword in scrollbar_keywords:
-			if 'scrollbarMode="' in skin:  # Cerca scrollbarMode nel widget
-				skin = sub(r'font="[^"]*"', '', skin)
-
+		# Remove "font" only if a scrollbarMode pattern is found
+		for pattern in scrollbar_keywords_patterns:
+			if search(pattern, skin):  # If any pattern in scrollbar_keywords is found
+				skin = sub(r'font="[^"]*"', '', skin)  # Remove font
 		# print('Skin modified:\n', skin)
 	else:
-		print('no Skin modifies a change to the contents of `skin.')
+		print('No Skin modifications applied.')
 	return skin
+
+
+"""
+# def ctrlSkin(pank, skin):
+	# from re import sub
+	# print('ctrlSkin panel=%s' % pank)
+	# scrollbar_keywords = ['list', 'text', 'menu', 'config', 'tasklist', 'menulist']  # , 'menu_list', 'filelist', 'file_list', 'entries', 'Listbox', 'list_left', 'list_right', 'streamlist', 'tablist', 'HelpScrollLabel']
+	# # Edit only if `newOE()` is True or `/etc/opkg/nn2-feed.conf` exists
+	# if newOE() or isfile('/etc/opkg/nn2-feed.conf') or isfile("/usr/bin/apt-get"):
+		# for pattern in patterns_to_remove:
+			# skin = sub(pattern, '', skin)
+		# # Remove "font" only if a widget has `scrollbarMode` with one of the specific values
+		# for keyword in scrollbar_keywords:
+			# if 'scrollbarMode="' in skin:  # Cerca scrollbarMode nel widget
+				# skin = sub(r'font="[^"]*"', '', skin)
+
+		# # print('Skin modified:\n', skin)
+	# else:
+		# print('no Skin modifies a change to the contents of `skin.')
+	# return skin
+"""
