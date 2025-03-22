@@ -79,8 +79,15 @@ class xc_help(Screen):
 		self["helpdesc"] = Label()
 		self["helpdesc2"] = Label()
 		self["paypal"] = Label()
-		self['actions'] = ActionMap(
-			['OkCancelActions', 'DirectionActions', 'HotkeyActions', 'InfobarEPGActions', 'ColorActions', 'ChannelSelectBaseActions'],
+		self["actions"] = ActionMap(
+			[
+				"OkCancelActions",
+				"DirectionActions",
+				"HotkeyActions",
+				"InfobarEPGActions",
+				"ColorActions",
+				"ChannelSelectBaseActions"
+			],
 			{
 				'ok': self.exitx,
 				'back': self.exitx,
@@ -105,13 +112,88 @@ class xc_help(Screen):
 		self.timer.start(500, 1)
 		self.onLayoutFinish.append(self.finishLayout)
 
+	# def check_vers(self):
+		# remote_version = '0.0'
+		# remote_changelog = ''
+
+		# try:
+			# req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
+			# page = urlopen(req).read().decode("utf-8")  # Decodifica diretta
+		# except Exception as e:
+			# print("[ERROR] Unable to fetch version info:", str(e))
+			# return
+
+		# if page:
+			# for line in page.split("\n"):
+				# line = line.strip()
+				# if line.startswith("version"):
+					# remote_version = line.split("=")[-1].strip().strip("'").strip('"')
+				# elif line.startswith("changelog"):
+					# remote_changelog = line.split("=")[-1].strip().strip("'").strip('"')
+					# break
+
+		# self.new_version = remote_version
+		# self.new_changelog = remote_changelog
+		# if not isinstance(self.new_changelog, str):
+			# self.new_changelog = str(self.new_changelog)
+		# if not isinstance(self.new_version, str):
+			# self.new_version = str(self.new_version)
+
+		# # if float(currversion) < float(remote_version):
+		# if currversion < remote_version:
+			# self.Update = True
+			# self['key_yellow'].show()
+			# self['key_green'].show()
+			# self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
+
+	# def update_me(self):
+		# if self.Update is True:
+			# self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog), MessageBox.TYPE_YESNO)
+		# else:
+			# self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+
+	# def update_dev(self):
+		# try:
+			# req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
+			# page = urlopen(req).read()
+			# data = loads(page)
+
+			# if 'pushed_at' not in data:
+				# print("[ERROR] 'pushed_at' key not found in JSON response")
+				# return
+
+			# remote_date = data['pushed_at']
+			# strp_remote_date = strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
+			# formatted_date = strp_remote_date.strftime('%Y-%m-%d')
+
+			# self.session.openWithCallback(
+				# self.install_update,
+				# MessageBox,
+				# _("Do you want to install update ( %s ) now?") % formatted_date,
+				# MessageBox.TYPE_YESNO
+			# )
+
+		# except Exception as e:
+			# print("[ERROR] Failed to fetch update info:", str(e))
+
+	# def install_update(self, answer=False):
+		# if answer:
+			# self.session.open(xcConsole, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
+		# else:
+			# self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+
+	# def myCallback(self, result=None):
+		# print('result:', result)
+		# return
+
 	def check_vers(self):
 		remote_version = '0.0'
 		remote_changelog = ''
+		page = ''
 
 		try:
 			req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
-			page = urlopen(req).read().decode("utf-8")  # Decodifica diretta
+			page = urlopen(req).read().decode("utf-8")
 		except Exception as e:
 			print("[ERROR] Unable to fetch version info:", str(e))
 			return
@@ -131,52 +213,113 @@ class xc_help(Screen):
 			self.new_changelog = str(self.new_changelog)
 		if not isinstance(self.new_version, str):
 			self.new_version = str(self.new_version)
-
 		# if float(currversion) < float(remote_version):
 		if currversion < remote_version:
 			self.Update = True
+			self.show_update_message()
+
+	def show_update_message(self):
+		"""Mostra un MessageBox con le informazioni sull'aggiornamento"""
+		if self.session.current_dialog and getattr(self.session.current_dialog, "isModal", lambda: False)():
+			self.session.open(
+				MessageBox,
+				_("New version %s available\n\nChangelog: %s\n\nPress the green button to start the update.") % (
+					self.new_version, self.new_changelog
+				),
+				MessageBox.TYPE_INFO,
+				timeout=10  # Aumenta il timeout per dare più tempo all'utente
+			)
+		else:
+			self.session.open(
+				MessageBox,
+				_("New version %s available\n\nChangelog: %s") % (
+					self.new_version, self.new_changelog
+				),
+				MessageBox.TYPE_INFO,
+				timeout=10
+			)
+			print("Cannot open modal MessageBox. The current screen is not modal.")
+
+			# self["key_green"].setText(_("Update"))
 			self['key_yellow'].show()
 			self['key_green'].show()
-			self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
 
 	def update_me(self):
-		if self.Update is True:
-			self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog), MessageBox.TYPE_YESNO)
+		if self.Update:
+			message = _("New version %s is available.\n\nChangelog: %s\n\nDo you want to install it now?") % (
+				self.new_version,
+				self.new_changelog
+			)
+			self.session.openWithCallback(
+				self.install_update,
+				MessageBox,
+				message,
+				MessageBox.TYPE_YESNO
+			)
 		else:
-			self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
+			self.session.open(
+				MessageBox,
+				_("Congrats! You already have the latest version..."),
+				MessageBox.TYPE_INFO,
+				timeout=10
+			)
 
 	def update_dev(self):
 		try:
-			req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
-			page = urlopen(req).read()
-			data = loads(page)
-
-			if 'pushed_at' not in data:
-				print("[ERROR] 'pushed_at' key not found in JSON response")
+			from six.moves.urllib.error import URLError
+			AgentRequest = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.3'
+			url = Utils.b64decoder(developer_url)
+			req = Request(url, headers={"User-Agent": AgentRequest})
+			try:
+				response = urlopen(req)
+				page = response.read()
+			except URLError as e:
+				print("Error fetching data from GitHub:", e)
+				self.session.open(MessageBox, _("Failed to fetch update information. Please check your internet connection."), MessageBox.TYPE_ERROR)
 				return
 
-			remote_date = data['pushed_at']
-			strp_remote_date = strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
-			formatted_date = strp_remote_date.strftime('%Y-%m-%d')
+			try:
+				data = loads(page)
+			except ValueError as e:
+				print("Error parsing JSON data:", e)
+				self.session.open(MessageBox, _("Failed to parse update information. Please try again later."), MessageBox.TYPE_ERROR)
+				return
+
+			remote_date = data.get("pushed_at")
+			if not remote_date:
+				print("No 'pushed_at' field found in the response.")
+				self.session.open(MessageBox, _("No update information available."), MessageBox.TYPE_INFO)
+				return
+
+			try:
+				# from datetime import datetime
+				strp_remote_date = datetime.strptime(remote_date, "%Y-%m-%dT%H:%M:%SZ")
+				# strp_remote_date = strptime(remote_date, "%Y-%m-%dT%H:%M:%SZ")
+				formatted_date = strp_remote_date.strftime("%Y-%m-%d")
+			except ValueError as e:
+				print("Error parsing date:", e)
+				self.session.open(MessageBox, _("Invalid date format in update information."), MessageBox.TYPE_ERROR)
+				return
 
 			self.session.openWithCallback(
 				self.install_update,
 				MessageBox,
-				_("Do you want to install update ( %s ) now?") % formatted_date,
+				_("Do you want to install update (%s) now?") % formatted_date,
 				MessageBox.TYPE_YESNO
 			)
 
 		except Exception as e:
-			print("[ERROR] Failed to fetch update info:", str(e))
+			print("Unexpected error in update_dev:", e)
+			self.session.open(MessageBox, _("An unexpected error occurred. Please try again later."), MessageBox.TYPE_ERROR)
 
 	def install_update(self, answer=False):
 		if answer:
-			self.session.open(xcConsole, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
+			self.session.open(xcConsole, "Upgrading...", cmdlist=["wget -q --no-check-certificate " + Utils.b64decoder(installer_url) + " -O - | /bin/sh"], finishedCallback=self.myCallback, closeOnSuccess=False)
 		else:
-			self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
+			self.session.open(MessageBox, _("Update Aborted!"), MessageBox.TYPE_INFO, timeout=3)
 
 	def myCallback(self, result=None):
-		print('result:', result)
+		print("result:", result)
 		return
 
 	def finishLayout(self):
