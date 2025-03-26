@@ -2,6 +2,10 @@ Xc Gold Forever v.4.1 by Lululla
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005)
 
+
+[![Python package](https://github.com/Belfagor2005/xc_plugin_forever/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/xc_plugin_forever/actions/workflows/pylint.yml)
+
+
 <img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.png">
 
 Enigma2 project
