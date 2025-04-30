@@ -29,6 +29,8 @@ from .addons.NewOeSk import ctrlSkin
 from .xcHelp import xc_help
 from .xcSkin import skin_path
 
+from .addons.modul import globalsxp
+
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Components.config import (
@@ -75,6 +77,8 @@ if file_exists('/var/lib/dpkg/info'):
 
 def defaultMoviePath():
 	result = config.usage.default_path.value
+	if not result.endswith("/"):
+		result += "/"
 	if not isdir(result):
 		from Tools import Directories
 		return Directories.defaultRecordingLocation(config.usage.default_path.value)
@@ -85,14 +89,34 @@ if not isdir(config.movielist.last_videodir.value):
 	try:
 		config.movielist.last_videodir.value = defaultMoviePath()
 		config.movielist.last_videodir.save()
-	except:
-		pass
+	except Exception as e:
+		print("Errore durante il salvataggio del percorso:", e)
+
+
+def defaultPiconPath():
+	result = config.usage.picon_dir.value
+	if not result.endswith("/"):
+		result += "/"
+	if not isdir(result):
+		from Tools import Directories
+		return Directories.defaultRecordingLocation(config.usage.picon_dir.value)
+	return result
+
+
+if not isdir(config.usage.picon_dir.value):
+	try:
+		config.usage.picon_dir.value = defaultPiconPath()
+		config.usage.picon_dir.save()
+	except Exception as e:
+		print("Errore durante il salvataggio del percorso:", e)
 
 """
 # def get_help():
 	# from .xcHelp import xc_help  # Import locale
 	# return xc_help
 """
+
+
 print('Xc Version :', version)
 config.plugins.XCplugin = ConfigSubsection()
 cfg = config.plugins.XCplugin
@@ -115,7 +139,7 @@ cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "D
 cfg.picons = ConfigEnableDisable(default=False)
 cfg.port = ConfigText(default="80", fixed_size=False)
 cfg.pthmovie = ConfigDirectory(default=config.movielist.last_videodir.value)
-cfg.pthpicon = ConfigDirectory(default="/media/hdd/picon")
+cfg.pthpicon = ConfigDirectory(default=config.usage.picon_dir.value)
 cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
 cfg.screenxl = ConfigEnableDisable(default=True)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
@@ -126,6 +150,20 @@ cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live 
 cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 Path_XML = str(cfg.pthxmlfile.value) + "/"
+
+
+def update_globals_dynamic():
+	for var_name in globalsxp.__dict__.keys():  # Itera su tutte le chiavi di globalsxp
+		if hasattr(cfg, var_name):  # Verifica se esiste una configurazione con lo stesso nome
+			config_value = getattr(cfg, var_name).value  # Ottieni il valore dalla configurazione
+			current_value = getattr(globalsxp, var_name)
+			if current_value != config_value:
+				setattr(globalsxp, var_name, config_value)  # Aggiorna la variabile globale
+				print(f"Updated global: {var_name} to {config_value}")
+
+
+cfg.save()
+update_globals_dynamic()
 
 
 class xc_config(Screen, ConfigListScreen):
@@ -324,8 +362,8 @@ class xc_config(Screen, ConfigListScreen):
 			self.list.append(getConfigListEntry(indent + (_("Server Username")), cfg.user, (_("Enter Username"))))
 			self.list.append(getConfigListEntry(indent + (_("Server Password")), cfg.passw, (_("Enter Password"))))
 		self.list.append(getConfigListEntry(_("Server Timeout"), cfg.timeout, (_("Timeout Server (sec)"))))
-		self.list.append(getConfigListEntry(_("Adjust Timezone"), cfg.uptimezone, (_("Adjust Timezone (hour)"))))		
-		
+		self.list.append(getConfigListEntry(_("Adjust Timezone"), cfg.uptimezone, (_("Adjust Timezone (hour)"))))
+
 		self.list.append(getConfigListEntry(_("Folder user file .xml"), cfg.pthxmlfile, (_("Configure folder containing .xml files\nPress 'OK' to change location."))))
 		self.list.append(getConfigListEntry(_("Media Folder "), cfg.pthmovie, (_("Configure folder containing movie/media files\nPress 'OK' to change location."))))
 
@@ -502,6 +540,7 @@ class xc_config(Screen, ConfigListScreen):
 			cfg.passw.save()
 			configfile.save()
 			self.xml_plugin()
+			update_globals_dynamic()
 			self.session.open(MessageBox, _("Settings saved successfully !"), MessageBox.TYPE_INFO, timeout=5)
 		self.close()
 

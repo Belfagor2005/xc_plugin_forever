@@ -880,6 +880,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 class xc_Play(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
+		self.session = session
 		skin = join(skin_path, 'xc_Play.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
@@ -926,12 +927,20 @@ class xc_Play(Screen):
 			-2
 		)
 		self.onFirstExecBegin.append(self.openList)
+		# self.onLayoutFinish.append(self.openList)
 		self.onLayoutFinish.append(self.layoutFinished)
 
 	def openList(self):
+
+		def add_trailing_slash(path):
+			if not path.endswith("/"):
+				path += "/"
+			return path
+
 		self.names = []
 		self.Movies = []
 		path = self.name
+		path = add_trailing_slash(path)
 		AA = ['.m3u']
 		for root, dirs, files in walk(path):
 			for name in files:
@@ -939,7 +948,7 @@ class xc_Play(Screen):
 					if x not in name:
 						continue
 					self.names.append(name)
-					self.Movies.append(root + name)
+					self.Movies.append(add_trailing_slash(root) + name)
 		m3ulistxc(self.names, self['list'])
 
 	def layoutFinished(self):
@@ -953,21 +962,39 @@ class xc_Play(Screen):
 
 	def runList(self):
 		idx = self["list"].getSelectionIndex()
-		if idx is None or idx < 0 or idx >= len(self.names):
-			return
-		else:
-			name = self.Movies[idx]
-			if ".m3u" in name:
-				if self.session:
-					self.session.open(xc_M3uPlay, name)
-				else:
-					print("Session is not initialized.")
+		if self.Movies:
+			path = self.Movies[idx]
+			if idx < 0 or idx is None:
 				return
 			else:
-				name = self.names[idx]
-				sref = eServiceReference(4097, 0, name)
-				sref.setName(name)
-				self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
+				name = path
+				if ".m3u" in name:
+					self.session.open(xc_M3uPlayx, name)
+					return
+				else:
+					name = self.names[idx]
+					sref = eServiceReference(4097, 0, path)
+					sref.setName(name)
+					self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
+
+	# def runList(self):
+		# idx = self["list"].getSelectionIndex()
+		# # Validate index for both lists
+		# if idx is None or idx < 0 or idx >= len(self.names) or idx >= len(self.Movies):
+			# return
+
+		# movie_name = self.Movies[idx]
+		# display_name = self.names[idx]
+
+		# # Case-insensitive check for .m3u extension
+		# if os.path.splitext(movie_name)[1].lower() == '.m3u':
+			# self.session.open(xc_M3uPlayx, movie_name)
+			# return
+		# else:
+			# # Handle non-M3U playback
+			# sref = eServiceReference(4097, 0, movie_name)
+			# sref.setName(display_name)
+			# self.session.openWithCallback(self.backToIntialService, xc_Player, sref)
 
 	def backToIntialService(self, ret=None):
 		if cfg.stoplayer.value is True:
@@ -1184,9 +1211,10 @@ class xc_Play(Screen):
 			Utils.ReloadBouquets()
 
 
-class xc_M3uPlay(Screen):
-	def __init__(self, session, name):
+class xc_M3uPlayx(Screen):
+	def __init__(self, session, m3u_path):
 		Screen.__init__(self, session)
+		self.session = session
 		skin = join(skin_path, 'xc_M3uPlay.xml')
 		with codecs.open(skin, "r", encoding="utf-8") as f:
 			skin = f.read()
@@ -1200,7 +1228,7 @@ class xc_M3uPlay(Screen):
 			except:
 				pass
 
-		self.name = name
+		self.name = m3u_path
 		self.downloading = False
 		self.download = None
 		globalsxp.search_ok = False
@@ -1256,7 +1284,7 @@ class xc_M3uPlay(Screen):
 							fpage = f.read()
 					except:
 						pass
-					regexcat = "EXTINF.*?,(.*?)\\n(.*?)\\n"
+					regexcat = '#EXTINF.*?,(.*?)\\n(.*?)\\n'
 					match = compile(regexcat, DOTALL).findall(fpage)
 					for name, url in match:
 						if str(search).lower() in name.lower():
@@ -1264,14 +1292,16 @@ class xc_M3uPlay(Screen):
 							url = url.replace(" ", "").replace("\\n", "")
 							self.names.append(str(name))
 							self.urls.append(str(url))
+
 					if globalsxp.search_ok is True:
 						m3ulistxc(self.names, self["list"])
 						self["live"].setText(str(len(self.names)) + " Stream")
 					else:
 						globalsxp.search_ok = False
 						self.resetSearch()
-			except:
-				pass
+
+			except Exception as e:
+				print('Errore durante il parsing del file M3U:', e)
 		else:
 			self.playList()
 
@@ -1296,20 +1326,26 @@ class xc_M3uPlay(Screen):
 					print("Errore durante la lettura del file:", e)
 					return
 
-				if "#EXTM3U" in fpage:  # and not 'tvg-logo' in fpage:
-					regexcat = r'#EXTINF:-1,(.*?)\n(.*?)\n'
+				if "#EXTM3U" in fpage and 'tvg-logo' in fpage:
+					regexcat = 'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\\n(.*?)\\n'
 					match = compile(regexcat, DOTALL).findall(fpage)
-					for name, url in match:
-						url = url.strip()  # Rimuove spazi e newline
+					for pic, name, url in match:
+						url = url.replace(' ', '').replace('\\n', '')
 						self.names.append(str(name))
 						self.urls.append(str(url))
-						self.pics.append(pic)
-					m3ulistxc(self.names, self['list'])
-					self["live"].setText('N.' + str(len(self.names)) + " Stream")
+						self.pics.append(str(pic))
 				else:
-					self.session.open(MessageBox, _('No valid M3U Format!'), MessageBox.TYPE_INFO, timeout=5)
+					regexcat = '#EXTINF.*?,(.*?)\\n(.*?)\\n'
+					match = compile(regexcat, DOTALL).findall(fpage)
+					for name, url in match:
+						url = url.replace(' ', '').replace('\\n', '')
+						self.names.append(str(name))
+						self.urls.append(str(url))
+						self.pics.append("")
+				m3ulistxc(self.names, self['list'])
+				self["live"].setText('N.' + str(len(self.names)) + " Stream")
 			else:
-				self.session.open(MessageBox, _('File non trovato!'), MessageBox.TYPE_INFO, timeout=5)
+				self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
 		except Exception as e:
 			print('Errore durante il parsing del file M3U:', e)
 
@@ -1431,30 +1467,6 @@ class xc_M3uPlay(Screen):
 		else:
 			self.close()
 
-	def abort(self, answer=True):
-		if answer is False:
-			return
-		if not self.downloading:
-			self.downloading = False
-			self.close()
-		elif self.download is not None:
-			self.downloading = False
-			self.download.stop
-			info = _('Aborting...')
-			self['status'].setText(info)
-			self.remove_target()
-			self.close()
-		else:
-			self.downloading = False
-			self.close()
-
-	def remove_target(self):
-		try:
-			if file_exists(self.name_m3u):
-				remove(self.name_m3u)
-		except:
-			pass
-
 
 class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotifications, InfoBarAudioSelection, IPTVInfoBarShowHide, InfoBarSubtitleSupport):
 	STATE_IDLE = 0
@@ -1466,8 +1478,6 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 	def __init__(self, session, name, url):
 		Screen.__init__(self, session)
 		self.skinName = 'MoviePlayer'
-
-		# Init InfoBar
 		InfoBarMenu.__init__(self)
 		InfoBarNotifications.__init__(self)
 		InfoBarBase.__init__(self, steal_current_service=True)
