@@ -90,7 +90,7 @@ if not isdir(config.movielist.last_videodir.value):
 		config.movielist.last_videodir.value = defaultMoviePath()
 		config.movielist.last_videodir.save()
 	except Exception as e:
-		print("Errore durante il salvataggio del percorso:", e)
+		print("Error saving path:", e)
 
 
 def defaultPiconPath():
@@ -99,16 +99,24 @@ def defaultPiconPath():
 		result += "/"
 	if not isdir(result):
 		from Tools import Directories
-		return Directories.defaultRecordingLocation(config.usage.picon_dir.value)
+		default_path = Directories.defaultRecordingLocation(config.usage.picon_dir.value)
+		if default_path and isdir(default_path):
+			return default_path
+		else:
+			return "/usr/share/enigma2/picon/"
 	return result
 
 
 if not isdir(config.usage.picon_dir.value):
 	try:
-		config.usage.picon_dir.value = defaultPiconPath()
+		new_path = defaultPiconPath()
+		config.usage.picon_dir.value = new_path
 		config.usage.picon_dir.save()
 	except Exception as e:
-		print("Errore durante il salvataggio del percorso:", e)
+		print(f"Error setting picon directory: {e}")
+		# Optionally set a hardcoded default if all else fails
+		config.usage.picon_dir.value = "/usr/share/enigma2/picon/"
+
 
 """
 # def get_help():
