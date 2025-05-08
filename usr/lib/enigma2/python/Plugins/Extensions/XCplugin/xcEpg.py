@@ -4,42 +4,47 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla               *
-#             skin by MMark             *
-#  update     29/12/2024                *
-#       Skin by MMark                   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
-from . import _
-from .addons import html_conv
-from .addons import Utils
-from .addons.modul import copy_poster, globalsxp
-from .addons.NewOeSk import ctrlSkin
-from .xcSkin import skin_path
+
+# Built-in imports
+import codecs
+from os.path import exists, exists as file_exists, join
+from re import sub
+
+# Enigma2 imports
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
-from os.path import exists as file_exists
 from Screens.Screen import Screen
-from Tools.Directories import (SCOPE_PLUGINS, resolveFilename)
-from os.path import join, exists
-import codecs
-from re import sub
+from Tools.Directories import SCOPE_PLUGINS, resolveFilename
+
+# Local imports
+from . import _
+from .addons import Utils, html_conv
+from .addons.NewOeSk import ctrlSkin
+from .addons.modul import copy_poster, globalsxp
+from .xcSkin import skin_path
 
 global _session
 

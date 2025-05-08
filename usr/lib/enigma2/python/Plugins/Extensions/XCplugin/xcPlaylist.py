@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     23/02/2025               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,27 +19,33 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
 
-from . import _, version, retTest
-from .addons.modul import globalsxp
-from .addons.NewOeSk import ctrlSkin
-from .xcConfig import cfg
-from .xcSkin import skin_path, m3ulistxc, xcM3UList
+# Built-in imports
+import codecs
+from os.path import exists as file_exists, join
+from re import match
+from time import gmtime, strftime
 
+# Enigma2 imports
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from os.path import exists as file_exists, join
-import codecs
-from re import match
-from time import strftime, gmtime
+
+# Local imports
+from . import _, retTest, version
+from .addons.NewOeSk import ctrlSkin
+from .addons.modul import globalsxp
+from .xcConfig import cfg
+from .xcSkin import m3ulistxc, skin_path, xcM3UList
+
+# Commented code
 # from .plugin import iptv_streamse
 
 Path_XML = str(cfg.pthxmlfile.value) + "/"
@@ -177,7 +184,7 @@ class xc_Playlist(Screen):
 			nom = self.names[idx]
 			dom = self.urls[idx]
 			if 'active' not in nom.lower():
-				message = ("User: %s\n\nIs Not Active or Server not responding!\nSelect another list...") % (str(nom))
+				message = "User: " + str(nom) + "\n\nIs Not Active or Server not responding!\nSelect another list..."
 				print(str(message))
 				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
 				return
@@ -195,12 +202,22 @@ class xc_Playlist(Screen):
 				cfg.user.setValue(str(username))
 				cfg.passw.setValue(str(password))
 
-				message = ("User: %s\n\nIs Active on Config") % (str(username))
+				self.save_config()
+
+				message = "User: " + str(username) + "\n\nIs Active on Config"
 				print(str(message))
 				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
 				self.close()
 		except IOError as e:
-			print(e)
+			print(str(e))
+
+	def save_config(self):
+		"""Save the updated configurations in the configuration file."""
+		try:
+			cfg.save()
+			print("Configurations saved successfully.")
+		except Exception as e:
+			print("Error saving configurations: " + str(e))
 
 	def infoxc(self):
 		try:

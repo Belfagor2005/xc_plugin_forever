@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,17 +19,18 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
+
+# Local imports
 from . import plugin_path
 from .addons.modul import globalsxp
 
-from Components.MenuList import MenuList
-from Components.MultiContent import (MultiContentEntryText, MultiContentEntryPixmapAlphaTest)
+# Enigma2 imports
 from enigma import (
 	getDesktop,
 	loadPNG,
@@ -38,6 +40,15 @@ from enigma import (
 	gFont,
 	eListboxPythonMultiContent,
 )
+
+# Components imports
+from Components.MenuList import MenuList
+from Components.MultiContent import (
+	MultiContentEntryText,
+	MultiContentEntryPixmapAlphaTest,
+)
+
+# os.path import
 from os.path import join
 
 global skin_path

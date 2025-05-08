@@ -4,40 +4,47 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla               *
-#             skin by MMark             *
-#  update     29/12/2024                *
-#       Skin by MMark                   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
-from . import _, version, plugin_path
-from .addons import Utils
-from .addons.Console import Console as xcConsole
-from .addons.modul import globalsxp
-from .addons.NewOeSk import ctrlSkin
-from .xcConfig import cfg
-from .xcSkin import skin_path
+
+# Built-in imports
+import codecs
+from os import listdir, remove, rename, system
+from os.path import exists as file_exists, isdir, join
+
+# Enigma2 imports
 from Components.ActionMap import HelpableActionMap
 from Components.Label import Label
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from os import listdir, remove, system, rename
-from os.path import isdir, join, exists as file_exists
-import codecs
+
+# Local imports
+from . import _, plugin_path, version
+from .addons import Utils
+from .addons.Console import Console as xcConsole
+from .addons.NewOeSk import ctrlSkin
+from .addons.modul import globalsxp
+from .xcConfig import cfg
+from .xcSkin import skin_path
 
 global _session
 

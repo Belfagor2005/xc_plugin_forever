@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,41 +19,43 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
-from . import (
-	_,
-	version,
-	retTest,
-	plugin_path,
-)
-from .addons import Utils
-from .addons.modul import (
-	cleanNames,
-	copy_poster,
-	EXTDOWN,
-	globalsxp,
-)
-from .addons.downloader2 import imagedownloadScreen
-from .addons.NewOeSk import ctrlSkin
-from .xcConfig import cfg
-from .xcEpg import show_more_infos
-from .xcHelp import xc_help
-from .xcSkin import skin_path, FONT_0, FONT_1, BLOCK_H, channelEntryIPTVplaylist
-from .xcPlayerUri import nIPTVplayer, xc_Player, sslverify, SNIFactory, aspect_manager, AVSwitch
-from .xcTask import xc_StreamTasks, downloadJob
 
+# Built-in imports
+import codecs
+from json import dump, load
+from os import remove, stat, system
+from os.path import exists as file_exists, join, splitext
+from re import DOTALL, compile
+from shutil import copy
+from socket import setdefaulttimeout
+from time import gmtime, strftime, time
+
+# Third-party imports
+from requests import codes, get
+from six import PY3, ensure_binary, text_type
+from six.moves.urllib.parse import urlparse
+from twisted.web.client import downloadPage
+
+# Enigma2 imports
 from Components.ActionMap import HelpableActionMap
-from Components.config import config
 from Components.Label import Label
 from Components.MenuList import MenuList
 from Components.Pixmap import Pixmap
 from Components.Sources.StaticText import StaticText
 from Components.Task import job_manager as JobManager
+from Components.config import config
+from Screens.MessageBox import MessageBox
+from Screens.MovieSelection import MovieSelection
+from Screens.Screen import Screen
+from Screens.Standby import Standby
+from Screens.TaskView import JobView
+from Screens.VirtualKeyBoard import VirtualKeyBoard
 from enigma import (
 	eListboxPythonMultiContent,
 	ePicLoad,
@@ -60,26 +63,42 @@ from enigma import (
 	eTimer,
 	gFont,
 )
-from os import remove, system, stat
-from os.path import splitext, join, exists as file_exists
-from Screens.MovieSelection import MovieSelection
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from Screens.Standby import Standby
-from Screens.TaskView import JobView
-from Screens.VirtualKeyBoard import VirtualKeyBoard
-from re import compile, DOTALL
-from six.moves.urllib.parse import urlparse
-from six import text_type, ensure_binary, PY3
-from twisted.web.client import downloadPage
-from time import time, strftime, gmtime
-# from datetime import timedelta
-from json import dump, load
-from shutil import copy
-from requests import get, codes
-from socket import setdefaulttimeout
-import codecs
 
+# Local package imports
+from . import (
+	_,
+	plugin_path,
+	retTest,
+	version,
+)
+from .addons import Utils
+from .addons.NewOeSk import ctrlSkin
+from .addons.downloader2 import imagedownloadScreen
+from .addons.modul import (
+	EXTDOWN,
+	cleanNames,
+	copy_poster,
+	globalsxp,
+)
+from .xcConfig import cfg
+from .xcEpg import show_more_infos
+from .xcHelp import xc_help
+from .xcPlayerUri import (
+	AVSwitch,
+	SNIFactory,
+	aspect_manager,
+	nIPTVplayer,
+	sslverify,
+	xc_Player,
+)
+from .xcSkin import (
+	BLOCK_H,
+	FONT_0,
+	FONT_1,
+	channelEntryIPTVplaylist,
+	skin_path,
+)
+from .xcTask import downloadJob, xc_StreamTasks
 
 # global fixed
 _session = None

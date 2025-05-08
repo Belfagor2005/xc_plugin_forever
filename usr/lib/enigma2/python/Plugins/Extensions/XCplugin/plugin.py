@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,12 +19,42 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
+
+# Built-in imports
+import codecs
+from datetime import datetime, timedelta
+from os import chmod
+from os.path import join
+from re import DOTALL, findall
+from socket import setdefaulttimeout
+from sys import version_info
+from time import altzone, timezone, localtime  # , strftime, strptime, mktime
+
+# Conditional imports
+try:
+	from xml.etree.ElementTree import fromstring, tostring
+except ImportError:
+	from xml.etree.cElementTree import fromstring, tostring
+
+# Third-party imports
+from six import PY3, text_type
+
+# Enigma2 imports
+from Components.ActionMap import HelpableActionMap
+from Components.Label import Label
+from Screens.MessageBox import MessageBox
+from Plugins.Plugin import PluginDescriptor
+from Screens.MovieSelection import MovieSelection
+from Screens.Screen import Screen
+from enigma import getDesktop
+
+# Local package imports
 from . import (
 	_,
 	b64decoder,
@@ -32,44 +63,19 @@ from . import (
 	check_port,
 	plugin_path,
 )
-from .addons import Utils
-from .addons import html_conv
+from .addons import Utils, html_conv
 from .addons.Console import Console as xcConsole
-from .addons.modul import (
-	globalsxp,
-	Panel_list,
-)
 from .addons.NewOeSk import ctrlSkin
+from .addons.modul import globalsxp, Panel_list
 from .xcConfig import cfg, xc_config
 from .xcHelp import xc_help
 from .xcMain import xc_Main
 from .xcMaker import xc_maker
 from .xcPlaylist import xc_Playlist
-from .xcPlayerUri import xc_Play, aspect_manager
+from .xcPlayerUri import aspect_manager, xc_Play
 from .xcShared import autostart
-from .xcTask import xc_StreamTasks
 from .xcSkin import skin_path, xcm3ulistEntry, xcM3UList
-
-from Components.ActionMap import HelpableActionMap
-from Components.Label import Label
-from enigma import getDesktop
-from Plugins.Plugin import PluginDescriptor
-from Screens.MovieSelection import MovieSelection
-from Screens.Screen import Screen
-from datetime import timedelta, datetime
-from time import altzone, timezone, localtime  # , strftime, strptime, mktime
-from six import text_type, PY3
-try:
-	from xml.etree.ElementTree import fromstring, tostring
-except ImportError:
-	from xml.etree.cElementTree import fromstring, tostring
-
-from os.path import join
-from os import chmod
-import codecs
-from re import DOTALL, findall
-from socket import setdefaulttimeout
-from sys import version_info
+from .xcTask import xc_StreamTasks
 
 # global fixed
 _session = None
@@ -196,14 +202,39 @@ class xc_home(Screen):
 		self.session.open(MovieSelection)
 
 	def OpenList(self, callback=None):
-		globalsxp.STREAMS = iptv_streamse()
-		globalsxp.STREAMS.read_config()
-		if "exampleserver" not in globalsxp.STREAMS.xtream_e2portal_url:
-			globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
-			self.session.openWithCallback(check_configuring, xc_Main)
+		host, port, username, password = self.load_config()
+
+		if host and username and password:
+			globalsxp.STREAMS = iptv_streamse()
+			globalsxp.STREAMS.read_config()
+			if "exampleserver" not in globalsxp.STREAMS.xtream_e2portal_url:
+				globalsxp.STREAMS.get_list(globalsxp.STREAMS.xtream_e2portal_url)
+				self.session.openWithCallback(check_configuring, xc_Main)
+			else:
+				message = _("First Select the list or enter it in Config")
+				Utils.web_info(message)
 		else:
-			message = (_("First Select the list or enter it in Config"))
-			Utils.web_info(message)
+			message = _("Please configure the server details first")
+			self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
+
+	def load_config(self):
+		try:
+			# Verifica se esistono valori salvati nella configurazione
+			host = cfg.hostaddress.value
+			port = cfg.port.value
+			username = cfg.user.value
+			password = cfg.passw.value
+			# Controlla se ci sono valori validi
+			if host and username and password:
+				print("Loaded config: " + host + ", " + str(port) + ", " + username)
+				# Restituisci i valori configurati
+				return host, port, username, password
+			else:
+				print("No valid config found.")
+				return None, None, None, None
+		except Exception as e:
+			print("Error loading config: " + str(e))
+			return None, None, None, None
 
 	def updateMenuList(self):
 		self.menu_list = []

@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,20 +19,22 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
-from . import _, version
-from .addons.NewOeSk import ctrlSkin
-from .xcHelp import xc_help
-from .xcSkin import skin_path
 
-from .addons.modul import globalsxp
+# Built-in imports
+import codecs
+from os import stat
+from os.path import exists as file_exists, isdir, join
+from re import DOTALL, findall
 
+# Enigma2 imports
 from Components.ActionMap import HelpableActionMap
+from Components.ConfigList import ConfigListScreen
 from Components.Label import Label
 from Components.config import (
 	ConfigClock,
@@ -48,15 +51,18 @@ from Components.config import (
 	getConfigListEntry,
 	NoSave,
 )
-from Components.ConfigList import ConfigListScreen
 from Screens.LocationBox import LocationBox
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-from os.path import exists as file_exists, isdir, join
-from os import stat
-from re import DOTALL, findall
-import codecs
+from Tools import Directories
+
+# Local package imports
+from . import _, version
+from .addons.NewOeSk import ctrlSkin
+from .addons.modul import globalsxp
+from .xcHelp import xc_help
+from .xcSkin import skin_path
 
 
 xc_list = "/tmp/xc.txt"
@@ -80,7 +86,6 @@ def defaultMoviePath():
 	if not result.endswith("/"):
 		result += "/"
 	if not isdir(result):
-		from Tools import Directories
 		return Directories.defaultRecordingLocation(config.usage.default_path.value)
 	return result
 
@@ -98,7 +103,6 @@ def defaultPiconPath():
 	if not result.endswith("/"):
 		result += "/"
 	if not isdir(result):
-		from Tools import Directories
 		default_path = Directories.defaultRecordingLocation(config.usage.picon_dir.value)
 		if default_path and isdir(default_path):
 			return default_path
@@ -113,8 +117,7 @@ if not isdir(config.usage.picon_dir.value):
 		config.usage.picon_dir.value = new_path
 		config.usage.picon_dir.save()
 	except Exception as e:
-		print(f"Error setting picon directory: {e}")
-		# Optionally set a hardcoded default if all else fails
+		print("Error setting picon directory:", e)
 		config.usage.picon_dir.value = "/usr/share/enigma2/picon/"
 
 

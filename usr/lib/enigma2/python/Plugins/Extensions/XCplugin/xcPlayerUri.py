@@ -4,69 +4,49 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla               *
-#             skin by MMark             *
-#  update     29/12/2024                *
-#       Skin by MMark                   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
-from . import _, version, isDreamOS
-from .addons import Utils
-from .addons.downloader import downloadWithProgress
-from .addons.downloader2 import imagedownloadScreen
-from .addons.modul import (
-	cleanNames,
-	clear_caches,
-	copy_poster,
-	EXTDOWN,
-	getAspect,
-	globalsxp,
-	nextAR,
-	prevAR,
-	setAspect,
-)
-from .addons.NewOeSk import ctrlSkin
-from .xcConfig import cfg
-from .xcEpg import returnIMDB, show_more_infos
-from .xcHelp import xc_help
-from .xcSkin import skin_path, m3ulistxc, xcM3UList
-from .xcTask import downloadJob
 
+# Built-in imports
+import codecs
+from os import remove, system, walk
+from os.path import exists as file_exists, join, splitext
+from re import DOTALL, compile
+from time import time
+
+# Third-party imports
+from six import PY3, ensure_binary
+from six.moves.urllib.parse import urlparse
+from twisted.web.client import downloadPage
+
+# Enigma2 imports
 from Components.ActionMap import ActionMap, HelpableActionMap
-from Components.config import config
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
-from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
+from Components.ServiceEventTracker import InfoBarBase, ServiceEventTracker
 from Components.Sources.StaticText import StaticText
 from Components.Task import job_manager as JobManager
-from enigma import (
-	ePicLoad,
-	eServiceReference,
-	eTimer,
-	iPlayableService,
-)
-from os import remove, system, walk
-from os.path import splitext, join, exists as file_exists
-
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from Screens.TaskView import JobView
-from Screens.VirtualKeyBoard import VirtualKeyBoard
+from Components.config import config
 from Screens.InfoBarGenerics import (
 	InfoBarAudioSelection,
 	InfoBarMenu,
@@ -74,12 +54,39 @@ from Screens.InfoBarGenerics import (
 	InfoBarSeek,
 	InfoBarSubtitleSupport,
 )
-from six.moves.urllib.parse import urlparse
-from twisted.web.client import downloadPage
-from re import DOTALL, compile
-from six import ensure_binary, PY3
-from time import time
-import codecs
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from Screens.TaskView import JobView
+from Screens.VirtualKeyBoard import VirtualKeyBoard
+from enigma import (
+	ePicLoad,
+	eServiceReference,
+	eTimer,
+	iPlayableService,
+)
+
+# Local package imports
+from . import _, isDreamOS, version
+from .addons import Utils
+from .addons.NewOeSk import ctrlSkin
+from .addons.downloader import downloadWithProgress
+from .addons.downloader2 import imagedownloadScreen
+from .addons.modul import (
+	EXTDOWN,
+	cleanNames,
+	clear_caches,
+	copy_poster,
+	getAspect,
+	globalsxp,
+	nextAR,
+	prevAR,
+	setAspect,
+)
+from .xcConfig import cfg
+from .xcEpg import returnIMDB, show_more_infos
+from .xcHelp import xc_help
+from .xcSkin import m3ulistxc, skin_path, xcM3UList
+from .xcTask import downloadJob
 
 ntimeout = float(cfg.timeout.value)
 

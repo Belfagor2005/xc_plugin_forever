@@ -4,13 +4,14 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla              *
-#             skin by MMark            *
-#  update     29/12/2024               *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
 #       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
@@ -18,20 +19,25 @@
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
+
+# Built-in imports
+from time import asctime, localtime, time
+
+# Enigma2 imports
+from enigma import eTimer
+
+# Local imports
 from . import _
-from .addons.modul import globalsxp
 from .addons.Utils import web_info
+from .addons.modul import globalsxp
 from .xcConfig import cfg
 from .xcMaker import xc_maker, save_old
-
-from enigma import eTimer
-from time import time, asctime, localtime
 
 
 class AutoStartTimer:

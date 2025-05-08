@@ -4,26 +4,40 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla               *
-#             skin by MMark             *
-#  update     29/12/2024                *
-#       Skin by MMark                   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
+
+# Built-in imports
+from os import listdir, remove, statvfs
+from os.path import exists as file_exists, isdir, join
+from re import findall
+from six import PY3
+from time import time
+import codecs
+
+# Enigma2 imports
+from enigma import eTimer, eServiceReference
+
+# Local imports
 from . import _
 from .addons import Utils
 from .addons.modul import (
@@ -36,6 +50,7 @@ from .addons.NewOeSk import ctrlSkin
 from .xcConfig import cfg
 from .xcSkin import skin_path
 
+# Components imports
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.Sources.List import List
@@ -45,17 +60,10 @@ from Components.Task import (
 	Job,
 	Task,
 )
-from enigma import eTimer, eServiceReference
-from os.path import exists as file_exists
-from os import listdir, remove, statvfs
-from os.path import isdir, join
+
+# Screens imports
 from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
-from re import findall
-from six import PY3
-from time import time
-import codecs
-
 
 try:
 	from Components.AVSwitch import AVSwitch

@@ -4,26 +4,45 @@
 # ======================================================================
 # XCForever Plugin
 #
-# Original code by Dave Sully, Doug Mackay\
-# rewritten by Lululla
+# Original code by Dave Sully, Doug Mackay
+# Rewritten by Lululla
+# Skin by MMark
 #
 # ***************************************
-#        coded by Lululla               *
-#             skin by MMark             *
-#  update     06/02/2025                *
-#       Skin by MMark                   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-# You must not remove the credits at
-# all and you must make the modified
+#
+# You must not remove the credits at all and you must make the modified
 # code open to everyone. by Lululla
 # ======================================================================
 
 from __future__ import print_function
+
+# Built-in imports
+import codecs
+from datetime import datetime
+from json import loads
+from os.path import exists, join
+
+# Third-party imports
+from six import PY2, PY3, text_type
+
+# Enigma2 imports
+from Components.ActionMap import ActionMap
+from Components.Label import Label
+from Screens.MessageBox import MessageBox
+from Screens.Screen import Screen
+from enigma import eTimer
+
+# Local package imports
 from . import (
 	_,
 	currversion,
@@ -36,24 +55,13 @@ from .addons import Utils
 from .addons.Console import Console as xcConsole
 from .addons.NewOeSk import ctrlSkin
 from .xcSkin import skin_path
-from Components.ActionMap import ActionMap
-from Components.Label import Label
-from datetime import datetime
-from enigma import eTimer
-from Screens.MessageBox import MessageBox
-from Screens.Screen import Screen
-from six import text_type
-import codecs
-from os.path import join, exists
-from json import loads
-from six import PY3, PY2
-from time import strptime
 
+# Conditional imports based on Python version
 if PY3:
 	unicode = text_type
-	from urllib.request import (urlopen, Request)
+	from urllib.request import Request, urlopen
 elif PY2:
-	from urllib2 import (urlopen, Request)
+	from urllib2 import Request, urlopen
 
 
 class xc_help(Screen):
@@ -111,80 +119,6 @@ class xc_help(Screen):
 			self.timer.callback.append(self.check_vers)
 		self.timer.start(500, 1)
 		self.onLayoutFinish.append(self.finishLayout)
-
-	# def check_vers(self):
-		# remote_version = '0.0'
-		# remote_changelog = ''
-
-		# try:
-			# req = Request(Utils.b64decoder(installer_url), headers={'User-Agent': 'Mozilla/5.0'})
-			# page = urlopen(req).read().decode("utf-8")  # Decodifica diretta
-		# except Exception as e:
-			# print("[ERROR] Unable to fetch version info:", str(e))
-			# return
-
-		# if page:
-			# for line in page.split("\n"):
-				# line = line.strip()
-				# if line.startswith("version"):
-					# remote_version = line.split("=")[-1].strip().strip("'").strip('"')
-				# elif line.startswith("changelog"):
-					# remote_changelog = line.split("=")[-1].strip().strip("'").strip('"')
-					# break
-
-		# self.new_version = remote_version
-		# self.new_changelog = remote_changelog
-		# if not isinstance(self.new_changelog, str):
-			# self.new_changelog = str(self.new_changelog)
-		# if not isinstance(self.new_version, str):
-			# self.new_version = str(self.new_version)
-
-		# # if float(currversion) < float(remote_version):
-		# if currversion < remote_version:
-			# self.Update = True
-			# self['key_yellow'].show()
-			# self['key_green'].show()
-			# self.session.open(MessageBox, _('New version %s is available\n\nChangelog: %s\n\nPress info_long or yellow_long button to start force updating.') % (self.new_version, self.new_changelog), MessageBox.TYPE_INFO, timeout=5)
-
-	# def update_me(self):
-		# if self.Update is True:
-			# self.session.openWithCallback(self.install_update, MessageBox, _("New version %s is available.\n\nChangelog: %s \n\nDo you want to install it now?") % (self.new_version, self.new_changelog), MessageBox.TYPE_YESNO)
-		# else:
-			# self.session.open(MessageBox, _("Congrats! You already have the latest version..."),  MessageBox.TYPE_INFO, timeout=4)
-
-	# def update_dev(self):
-		# try:
-			# req = Request(Utils.b64decoder(developer_url), headers={'User-Agent': 'Mozilla/5.0'})
-			# page = urlopen(req).read()
-			# data = loads(page)
-
-			# if 'pushed_at' not in data:
-				# print("[ERROR] 'pushed_at' key not found in JSON response")
-				# return
-
-			# remote_date = data['pushed_at']
-			# strp_remote_date = strptime(remote_date, '%Y-%m-%dT%H:%M:%SZ')
-			# formatted_date = strp_remote_date.strftime('%Y-%m-%d')
-
-			# self.session.openWithCallback(
-				# self.install_update,
-				# MessageBox,
-				# _("Do you want to install update ( %s ) now?") % formatted_date,
-				# MessageBox.TYPE_YESNO
-			# )
-
-		# except Exception as e:
-			# print("[ERROR] Failed to fetch update info:", str(e))
-
-	# def install_update(self, answer=False):
-		# if answer:
-			# self.session.open(xcConsole, title='Upgrading...', cmdlist=('wget -q "--no-check-certificate" ' + Utils.b64decoder(installer_url) + ' -O - | /bin/sh'), finishedCallback=self.myCallback, closeOnSuccess=False, showStartStopText=True, skin=None)
-		# else:
-			# self.session.open(MessageBox, _("Update Aborted!"),  MessageBox.TYPE_INFO, timeout=3)
-
-	# def myCallback(self, result=None):
-		# print('result:', result)
-		# return
 
 	def check_vers(self):
 		remote_version = '0.0'
