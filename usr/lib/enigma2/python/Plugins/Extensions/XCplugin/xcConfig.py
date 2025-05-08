@@ -170,7 +170,7 @@ def update_globals_dynamic():
 			current_value = getattr(globalsxp, var_name)
 			if current_value != config_value:
 				setattr(globalsxp, var_name, config_value)  # Aggiorna la variabile globale
-				print(f"Updated global: {var_name} to {config_value}")
+				print("Updated global: %s to %s" % (var_name, config_value))
 
 
 cfg.save()
