@@ -81,46 +81,6 @@ if file_exists('/var/lib/dpkg/info'):
 	modemovie.append(("8193", "eServiceUri(8193)"))
 
 
-def defaultMoviePath():
-	result = config.usage.default_path.value
-	if not result.endswith("/"):
-		result += "/"
-	if not isdir(result):
-		return Directories.defaultRecordingLocation(config.usage.default_path.value)
-	return result
-
-
-if not isdir(config.movielist.last_videodir.value):
-	try:
-		config.movielist.last_videodir.value = defaultMoviePath()
-		config.movielist.last_videodir.save()
-	except Exception as e:
-		print("Error saving path:", e)
-
-
-def defaultPiconPath():
-	result = config.usage.picon_dir.value
-	if not result.endswith("/"):
-		result += "/"
-	if not isdir(result):
-		default_path = Directories.defaultRecordingLocation(config.usage.picon_dir.value)
-		if default_path and isdir(default_path):
-			return default_path
-		else:
-			return "/usr/share/enigma2/picon/"
-	return result
-
-
-if not isdir(config.usage.picon_dir.value):
-	try:
-		new_path = defaultPiconPath()
-		config.usage.picon_dir.value = new_path
-		config.usage.picon_dir.save()
-	except Exception as e:
-		print("Error setting picon directory:", e)
-		config.usage.picon_dir.value = "/usr/share/enigma2/picon/"
-
-
 """
 # def get_help():
 	# from .xcHelp import xc_help  # Import locale
@@ -150,7 +110,7 @@ cfg.pdownmovie = ConfigSelection(default="JobManager", choices=["JobManager", "D
 cfg.picons = ConfigEnableDisable(default=False)
 cfg.port = ConfigText(default="80", fixed_size=False)
 cfg.pthmovie = ConfigDirectory(default=config.movielist.last_videodir.value)
-cfg.pthpicon = ConfigDirectory(default=config.usage.picon_dir.value)
+cfg.pthpicon = ConfigDirectory(default="/usr/share/enigma2/picon/")
 cfg.pthxmlfile = ConfigDirectory(default="/etc/enigma2/xc")
 cfg.screenxl = ConfigEnableDisable(default=True)
 cfg.services = ConfigSelection(default='4097', choices=modemovie)
@@ -161,6 +121,51 @@ cfg.typelist = ConfigSelection(default="Multi Live & VOD", choices=["Multi Live 
 cfg.typem3utv = ConfigSelection(default="MPEGTS to TV", choices=["M3U to TV", "MPEGTS to TV"])
 cfg.updateinterval = ConfigSelectionNumber(default=24, min=1, max=48, stepwidth=1)
 Path_XML = str(cfg.pthxmlfile.value) + "/"
+
+
+# Ensure movie path
+def defaultMoviePath():
+	result = config.usage.default_path.value
+	if not result.endswith("/"):
+		result += "/"
+	if not isdir(result):
+		return Directories.defaultRecordingLocation(config.usage.default_path.value)
+	return result
+
+
+if not isdir(config.movielist.last_videodir.value):
+	try:
+		config.movielist.last_videodir.value = defaultMoviePath()
+		config.movielist.last_videodir.save()
+	except Exception as e:
+		print("Error saving movie path:", e)
+
+
+def defaultPiconPath():
+	# get the configured picon directory
+	result = cfg.pthpicon.value
+	if not result.endswith("/"):
+		result += "/"
+	# if it does not exist, try Enigma2 default location
+	if not isdir(result):
+		default_path = Directories.defaultRecordingLocation(result)
+		if default_path and isdir(default_path):
+			return default_path
+		else:
+			return "/usr/share/enigma2/picon/"
+	return result
+
+
+# ensure the directory exists and save back into the plugin config
+if not isdir(cfg.pthpicon.value):
+	try:
+		new_path = defaultPiconPath()
+		cfg.pthpicon.value = new_path
+		cfg.pthpicon.save()
+	except Exception as e:
+		print("Error setting picon directory:", e)
+		cfg.pthpicon.value = "/usr/share/enigma2/picon/"
+		cfg.pthpicon.save()
 
 
 def update_globals_dynamic():
