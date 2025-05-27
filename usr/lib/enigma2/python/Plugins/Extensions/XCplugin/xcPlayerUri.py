@@ -9,10 +9,10 @@
 # Skin by MMark
 #
 # ***************************************
-#        Coded by Lululla              *
-#             Skin by MMark            *
-#  Latest Update: 08/05/2025           *
-#       Skin by MMark                  *
+#		 Coded by Lululla			   *
+#			  Skin by MMark			   *
+#  Latest Update: 08/05/2025		   *
+#		Skin by MMark				   *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
@@ -379,7 +379,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
 
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 		self.close()
 
 	def setCover(self):
@@ -483,7 +483,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 
 	def show_info(self):
 		if globalsxp.STREAMS.play_vod is True:
-			self["state"].setText(" PLAY     >")
+			self["state"].setText(" PLAY	 >")
 		self.hideTimer.start(5000, True)
 		if self.cont_play:
 			self["cont_play"].setText("Auto Play ON")
@@ -603,7 +603,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		print("seekable status changed!")
 
 	def __serviceStarted(self):
-		self["state"].setText(" PLAY     >")
+		self["state"].setText(" PLAY	 >")
 		self["cont_play"].setText("Auto Play OFF")
 		self.state = self.STATE_PLAYING
 
@@ -637,15 +637,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		self.hideTimer.start(5000, True)
 		text = " " + self.seekstate[3]
 		if self.seekstate[3] == ">":
-			text = " PLAY     >"
+			text = " PLAY	  >"
 		if self.seekstate[3] == "||":
-			text = "PAUSE   ||"
+			text = "PAUSE	||"
 		if self.seekstate[3] == ">> 2x":
-			text = "        x2         >>"
+			text = "		x2		   >>"
 		if self.seekstate[3] == ">> 4x":
-			text = "        x4         >>"
+			text = "		x4		   >>"
 		if self.seekstate[3] == ">> 8x":
-			text = "        x8         >>"
+			text = "		x8		   >>"
 		self["state"].setText(text)
 
 	def play_vod(self):
@@ -753,7 +753,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 		self.close()
 
 	def nextAR(self):
@@ -1008,10 +1008,10 @@ class xc_Play(Screen):
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 
 	def cancel(self):
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 		self.close()
 
 	def message1(self, answer=None):
@@ -1024,7 +1024,7 @@ class xc_Play(Screen):
 		elif answer:
 			try:
 				remove(dom)
-				self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
+				self.session.open(MessageBox, dom + _("	  has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
 				del self.names[idx]
 				self.refreshmylist()
 			except OSError as error:
@@ -1325,36 +1325,154 @@ class xc_M3uPlayx(Screen):
 		pic = globalsxp.pictmp
 		try:
 			if file_exists(self.name):
-				fpage = ''
-				try:
-					with codecs.open(self.name, "r", encoding="utf-8") as f:
-						fpage = f.read()
-				except Exception as e:
-					print("Errore durante la lettura del file:", e)
-					return
-
-				if "#EXTM3U" in fpage and 'tvg-logo' in fpage:
-					regexcat = 'EXTINF.*?tvg-logo="(.*?)".*?,(.*?)\\n(.*?)\\n'
-					match = compile(regexcat, DOTALL).findall(fpage)
-					for pic, name, url in match:
-						url = url.replace(' ', '').replace('\\n', '')
-						self.names.append(str(name))
-						self.urls.append(str(url))
-						self.pics.append(str(pic))
-				else:
-					regexcat = '#EXTINF.*?,(.*?)\\n(.*?)\\n'
-					match = compile(regexcat, DOTALL).findall(fpage)
-					for name, url in match:
-						url = url.replace(' ', '').replace('\\n', '')
-						self.names.append(str(name))
-						self.urls.append(str(url))
-						self.pics.append("")
-				m3ulistxc(self.names, self['list'])
-				self["live"].setText('N.' + str(len(self.names)) + " Stream")
+				self.parse_m3u(self.name)
 			else:
 				self.session.open(MessageBox, _('File Unknow!!!'), MessageBox.TYPE_INFO, timeout=5)
 		except Exception as e:
 			print('Errore durante il parsing del file M3U:', e)
+
+	def parse_m3u(self, filename):
+		"""Analyze M3U files with advanced attribute management"""
+		try:
+			from re import sub
+			with open(filename, 'r', encoding='utf-8', errors='replace') as f:
+				data = f.read()
+
+			self.m3u_list = []
+			self.filename = filename
+			channels = self._parse_m3u_content(data)
+
+			self.names = []
+			self.urls = []
+			self.pics = []
+			display_list = []
+
+			for c in channels:
+				name = sub(r'\[.*?\]', '', c.get('title', '')).strip()
+				group = c.get('group-title', '').strip()
+				url = self.process_url(c.get('uri', ''))
+				logo = c.get('tvg-logo', '')
+
+				label = group + " - " + name if group else name
+				display_list.append(label)
+
+				self.names.append(name)
+				self.urls.append(url)
+				self.pics.append(logo)
+
+				self.m3u_list.append({
+					'name': name,
+					'group': group,
+					'tvg_name': c.get('tvg-name', ''),
+					'logo': logo,
+					'url': url,
+					'duration': c.get('length', ''),
+					'user_agent': c.get('user_agent', ''),
+					'program_id': c.get('program-id', '')
+				})
+
+			m3ulistxc(display_list, self['list'])
+			self["live"].setText("N." + str(len(self.m3u_list)) + " Stream")
+
+		except Exception as e:
+			print("Errore parsing M3U:", str(e))
+			self.session.open(
+				MessageBox,
+				_("Formato file non valido:\n%s") % str(e),
+				MessageBox.TYPE_ERROR
+			)
+
+	def _parse_m3u_content(self, data):
+		"""Advanced parser for M3U content"""
+
+		def get_attributes(txt, first_key_as_length=False):
+			attribs = {}
+			current_key = ''
+			current_value = ''
+			parse_state = 0	 # 0=key, 1=value
+			txt = txt.strip()
+
+			for char in txt:
+				if parse_state == 0:
+					if char == '=':
+						parse_state = 1
+						if first_key_as_length and not attribs:
+							attribs['length'] = current_key.strip()
+							current_key = ''
+						else:
+							current_key = current_key.strip()
+					else:
+						current_key += char
+				elif parse_state == 1:
+					if char == '"':
+						if current_value:
+							attribs[current_key] = current_value
+							current_key = ''
+							current_value = ''
+							parse_state = 0
+						else:
+							parse_state = 2
+					else:
+						current_value += char
+				elif parse_state == 2:
+					if char == '"':
+						attribs[current_key] = current_value
+						current_key = ''
+						current_value = ''
+						parse_state = 0
+					else:
+						current_value += char
+
+			return attribs
+
+		entries = []
+		current_params = {}
+		data = data.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+
+		for line in data:
+			line = line.strip()
+			if not line:
+				continue
+
+			if line.startswith('#EXTINF:'):
+				current_params = {'f_type': 'inf', 'title': '', 'uri': ''}
+				parts = line[8:].split(',', 1)
+				if len(parts) > 1:
+					current_params['title'] = parts[1].strip()
+				attribs = get_attributes(parts[0], first_key_as_length=True)
+				current_params.update(attribs)
+
+			elif line.startswith('#EXTGRP:'):
+				current_params['group-title'] = line[8:].strip()
+
+			elif line.startswith('#EXTVLCOPT:'):
+				opts = line[11:].split('=', 1)
+				if len(opts) == 2:
+					key = opts[0].lower().strip()
+					value = opts[1].strip()
+					if key == 'http-user-agent':
+						current_params['user_agent'] = value
+					elif key == 'program':
+						current_params['program-id'] = value
+
+			elif line.startswith('#'):
+				continue
+
+			else:  # URL del canale
+				if current_params.get('title'):
+					current_params['uri'] = line.strip()
+					entries.append(current_params)
+					current_params = {}
+
+		return entries
+
+	def process_url(self, url):
+		"""Process URLs based on settings"""
+		url = url.replace(":", "%3a")
+		if config.plugins.m3uconverter.hls_convert.value:
+			if any(url.lower().endswith(x) for x in ('.m3u8', '.stream')):
+				url = f"hls://{url}"
+		return url
 
 	def runChannel(self):
 		idx = self["list"].getSelectionIndex()
@@ -1541,7 +1659,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 
 	def cicleStreamType(self):
 		from itertools import cycle, islice
-		self.servicetype = int(cfg.services.value)  # '4097'
+		self.servicetype = int(cfg.services.value)
 		url = str(self.url)
 		if str(splitext(self.url)[-1]) == ".m3u8":
 			if self.servicetype == "1":
@@ -1592,7 +1710,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()  # Restore aspect on exit
+		aspect_manager.restore_aspect()	 # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
@@ -1607,4 +1725,4 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 # thanks again to KiddaC for all the tricks we exchanged, and not just the tricks ;)
 # -------------------------------------------------------------------------------------
 # ===================Skin by Mmark Edition for Xc Plugin Infinity please don't copy o remove this
-# send credits to autor Lululla  ;)
+# send credits to autor Lululla	 ;)
