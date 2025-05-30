@@ -15,6 +15,11 @@ import re
 import requests
 import ssl
 import sys
+import six
+from six import unichr, iteritems
+from six.moves import html_entities
+import types
+
 requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
@@ -29,6 +34,8 @@ PY3 = sys.version_info[0] == 3
 PY34 = sys.version_info[0:2] >= (3, 4)
 PY39 = sys.version_info[0:2] >= (3, 9)
 PY3 = sys.version_info.major >= 3
+
+
 if PY3:
     bytes = bytes
     unicode = str
@@ -36,13 +43,42 @@ if PY3:
     from urllib.request import urlopen
     from urllib.request import Request
     from urllib.error import HTTPError, URLError
-
-if PY2:
+    ssl_context = ssl.create_default_context()
+    # Disabilita SSLv2, SSLv3, TLS1.0 e TLS1.1 esplicitamente
+    ssl_context.options |= ssl.OP_NO_SSLv2
+    ssl_context.options |= ssl.OP_NO_SSLv3
+    ssl_context.options |= ssl.OP_NO_TLSv1
+    ssl_context.options |= ssl.OP_NO_TLSv1_1
+    unichr_func = unichr
+else:
     str = str
     from urllib import quote
     from urllib2 import urlopen
     from urllib2 import Request
     from urllib2 import HTTPError, URLError
+    ssl_context = None
+
+try:
+    from Components.AVSwitch import AVSwitch
+except ImportError:
+    from Components.AVSwitch import eAVControl as AVSwitch
+
+
+class_types = (type,) if six.PY3 else (type, types.ClassType)
+text_type = six.text_type  # unicode in Py2, str in Py3
+binary_type = six.binary_type  # str in Py2, bytes in Py3
+MAXSIZE = sys.maxsize  # Compatibile con entrambe le versioni
+
+_UNICODE_MAP = {k: unichr(v) for k, v in iteritems(html_entities.name2codepoint)}
+_ESCAPE_RE = re.compile(r"[&<>\"']")
+_UNESCAPE_RE = re.compile(r"&\s*(#?)(\w+?)\s*;")
+_ESCAPE_DICT = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&apos;",
+}
 
 
 if sys.version_info[0] < 3:
@@ -101,22 +137,32 @@ def getEncodedString(value):
     return returnValue
 
 
-def ensure_str(text, encoding='utf-8', errors='strict'):
-    if type(text) is str:
-        return text
-    if PY2:
-        if isinstance(text, unicode):
-            try:
-                return text.encode(encoding, errors)
-            except Exception:
-                return text.encode(encoding, 'ignore')
-    else:  # PY3
-        if isinstance(text, bytes):
-            try:
-                return text.decode(encoding, errors)
-            except Exception:
-                return text.decode(encoding, 'ignore')
-    return text
+def ensure_str(s, encoding="utf-8", errors="strict"):
+    if isinstance(s, str):
+        return s
+    if isinstance(s, binary_type):
+        return s.decode(encoding, errors)
+    raise TypeError("not expecting type '%s'" % type(s))
+
+
+def html_escape(value):
+    """Escape HTML special characters"""
+    return _ESCAPE_RE.sub(lambda m: _ESCAPE_DICT[m.group(0)], value.strip())
+
+
+def html_unescape(value):
+    """Unescape HTML entities"""
+    return _UNESCAPE_RE.sub(_convert_entity, ensure_str(value).strip())
+
+
+def _convert_entity(m):
+    """Helper for HTML entity conversion, compatible with Python 2 and 3"""
+    if m.group(1) == "#":
+        try:
+            return unichr(int(m.group(2)[1:], 16)) if m.group(2)[:1].lower() == "x" else unichr(int(m.group(2)))
+        except ValueError:
+            return "&#%s;" % m.group(2)
+    return _UNICODE_MAP.get(m.group(2), "&%s;" % m.group(2))
 
 
 def checkGZIP(url):
@@ -171,6 +217,32 @@ def ssl_urlopen(url):
         return urlopen(url, context=sslContext)
     else:
         return urlopen(url)
+
+
+class AspectManager:
+    """Manages aspect ratio settings for the plugin"""
+    def __init__(self):
+        self.init_aspect = self.get_current_aspect()
+        print("[INFO] Initial aspect ratio:", self.init_aspect)
+
+    def get_current_aspect(self):
+        """Get current aspect ratio setting"""
+        try:
+            return int(AVSwitch().getAspectRatioSetting())
+        except Exception as e:
+            print("[ERROR] Failed to get aspect ratio:", str(e))
+            return 0
+
+    def restore_aspect(self):
+        """Restore original aspect ratio"""
+        try:
+            print("[INFO] Restoring aspect ratio to:", self.init_aspect)
+            AVSwitch().setAspectRatio(self.init_aspect)
+        except Exception as e:
+            print("[ERROR] Failed to restore aspect ratio:", str(e))
+
+
+aspect_manager = AspectManager()
 
 
 def getDesktopSize():
@@ -339,13 +411,6 @@ def mySkin():
     return currentSkin
 
 
-if exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPlayer'):
-    from Plugins.Extensions.MediaPlayer import *
-    MediaPlayerInstalled = True
-else:
-    MediaPlayerInstalled = False
-
-
 def getFreeMemory():
     mem_free = None
     mem_total = None
@@ -438,12 +503,13 @@ def listDir(what):
     return f
 
 
-def purge(dir, pattern):
-    for f in listdir(dir):
-        file_path = join(dir, f)
-        if isfile(file_path):
-            if re.search(pattern, f):
-                remove(file_path)
+def purge(directory, pattern):
+    """Delete files matching pattern in directory"""
+    from re import search
+    for f in listdir(directory):
+        file_path = join(directory, f)
+        if isfile(file_path) and search(pattern, f):
+            remove(file_path)
 
 
 def getLanguage():
@@ -523,14 +589,13 @@ downloadm3u = config.movielist.last_videodir.value
 
 
 # this def returns the current playing service name and stream_url from give sref
-def getserviceinfo(sref):
+def getserviceinfo(service_ref):
+    """Get service name and URL from service reference"""
     try:
         from ServiceReference import ServiceReference
-        p = ServiceReference(sref)
-        servicename = str(p.getServiceName())
-        serviceurl = str(p.getPath())
-        return servicename, serviceurl
-    except:
+        ref = ServiceReference(service_ref)
+        return ref.getServiceName(), ref.getPath()
+    except Exception:
         return None, None
 
 
@@ -674,30 +739,20 @@ def b64encoder(source):
     return content
 
 
-def b64decoder(s):
-    s = str(s).strip()
+def b64decoder(data):
+    """Robust base64 decoding with padding correction"""
+    data = data.strip()
+    pad = len(data) % 4
+    if pad == 1:  # Invalid base64 length
+        return ""
+    if pad:
+        data += "=" * (4 - pad)
     try:
-        output = base64.b64decode(s)
-        if pythonVer == 3:
-            output = output.decode('utf-8')
-        return output
-
-    except Exception:
-        padding = len(s) % 4
-        if padding == 1:
-            print('Invalid base64 string: {}'.format(s))
-            return ""
-        elif padding == 2:
-            s += b'=='
-        elif padding == 3:
-            s += b'='
-        else:
-            return ""
-
-        output = base64.b64decode(s)
-        if pythonVer == 3:
-            output = output.decode('utf-8')
-        return output
+        decoded = base64.b64decode(data)
+        return decoded.decode('utf-8') if PY3 else decoded
+    except Exception as e:
+        print("Base64 decoding error: %s" % e)
+        return ""
 
 
 def __createdir(list):
@@ -713,20 +768,46 @@ def __createdir(list):
 
 
 is_tmdb = False
+is_TMDB = False
 is_imdb = False
+
+tmdb = None
+TMDB = None
+imdb = None
+
 try:
     from Plugins.Extensions.tmdb import tmdb
     is_tmdb = True
 except ImportError:
-    is_tmdb = False
-
+    pass
 
 try:
     from Plugins.Extensions.IMDb.plugin import main as imdb
     is_imdb = True
 except Exception as e:
-    print('error: ', e)
-    is_imdb = False
+    print("error:", e)
+
+try:
+    from Plugins.Extensions.TMDB import TMDB
+    is_TMDB = True
+except Exception as e:
+    print("error:", e)
+
+
+print("is_tmdb =", is_tmdb)
+print("is_TMDB =", is_TMDB)
+print("is_imdb =", is_imdb)
+
+
+# Utilizzo "dummy" per evitare il warning W0611
+if is_tmdb:
+    tmdb  # Dummy usage
+
+if is_TMDB:
+    TMDB  # Dummy usage
+
+if is_imdb:
+    imdb  # Dummy usage
 
 
 def substr(data, start, end):
@@ -744,9 +825,11 @@ def uniq(inlist):
 
 
 def ReloadBouquets():
+    """Reload Enigma2 bouquets and service lists"""
     from enigma import eDVBDB
-    eDVBDB.getInstance().reloadServicelist()
-    eDVBDB.getInstance().reloadBouquets()
+    db = eDVBDB.getInstance()
+    db.reloadServicelist()
+    db.reloadBouquets()
 
 
 def deletetmp():
@@ -775,12 +858,12 @@ def OnclearMem():
 
 
 def MemClean():
+    """Clear system memory cache"""
     try:
         system('sync')
-        system('echo 1 > /proc/sys/vm/drop_caches')
-        system('echo 2 > /proc/sys/vm/drop_caches')
-        system('echo 3 > /proc/sys/vm/drop_caches')
-    except:
+        for i in range(1, 4):
+            system("echo " + str(i) + " > /proc/sys/vm/drop_caches")
+    except Exception:
         pass
 
 
@@ -1238,60 +1321,26 @@ def get_safe_filename(filename, fallback=''):
 
 
 def decodeHtml(text):
-    # List of HTML and Unicode entities to replace
-    import six
-    if six.PY2:
-        from six.moves import (html_parser)
-        h = html_parser.HTMLParser()
-        text = h.unescape(text.decode('utf8')).encode('utf8')
-    else:
+    if PY3:
         import html
         text = html.unescape(text)
+    else:
+        from six.moves import html_parser
+        h = html_parser.HTMLParser()
+        text = h.unescape(text.decode('utf8')).encode('utf8')
 
-    charlist = [
-        ('&#034;', '"'), ('&#038;', '&'), ('&#039;', "'"), ('&#060;', ' '),
-        ('&#062;', ' '), ('&#160;', ' '), ('&#174;', ''), ('&#192;', 'À'),
-        ('&#193;', 'Á'), ('&#194;', 'Â'), ('&#196;', 'Ä'), ('&#204;', 'Ì'),
-        ('&#205;', 'Í'), ('&#206;', 'Î'), ('&#207;', 'Ï'), ('&#210;', 'Ò'),
-        ('&#211;', 'Ó'), ('&#212;', 'Ô'), ('&#214;', 'Ö'), ('&#217;', 'Ù'),
-        ('&#218;', 'Ú'), ('&#219;', 'Û'), ('&#220;', 'Ü'), ('&#223;', 'ß'),
-        ('&#224;', 'à'), ('&#225;', 'á'), ('&#226;', 'â'), ('&#228;', 'ä'),
-        ('&#232;', 'è'), ('&#233;', 'é'), ('&#234;', 'ê'), ('&#235;', 'ë'),
-        ('&#236;', 'ì'), ('&#237;', 'í'), ('&#238;', 'î'), ('&#239;', 'ï'),
-        ('&#242;', 'ò'), ('&#243;', 'ó'), ('&#244;', 'ô'), ('&#246;', 'ö'),
-        ('&#249;', 'ù'), ('&#250;', 'ú'), ('&#251;', 'û'), ('&#252;', 'ü'),
-        ('&#8203;', ''), ('&#8211;', '-'), ('&#8212;', '—'), ('&#8216;', "'"),
-        ('&#8217;', "'"), ('&#8220;', '"'), ('&#8221;', '"'), ('&#8222;', ','),
-        ('&#8230;', '...'), ('&#x21;', '!'), ('&#x26;', '&'), ('&#x27;', "'"),
-        ('&#x3f;', '?'), ('&#xB7;', '·'), ('&#xC4;', 'Ä'), ('&#xD6;', 'Ö'),
-        ('&#xDC;', 'Ü'), ('&#xDF;', 'ß'), ('&#xE4;', 'ä'), ('&#xE9;', 'é'),
-        ('&#xF6;', 'ö'), ('&#xF8;', 'ø'), ('&#xFB;', 'û'), ('&#xFC;', 'ü'),
-        ('&8221;', '”'), ('&8482;', '™'), ('&Aacute;', 'Á'), ('&Acirc;', 'Â'),
-        ('&Agrave;', 'À'), ('&Auml;', 'Ä'), ('&Iacute;', 'Í'), ('&Icirc;', 'Î'),
-        ('&Igrave;', 'Ì'), ('&Iuml;', 'Ï'), ('&Oacute;', 'Ó'), ('&Ocirc;', 'Ô'),
-        ('&Ograve;', 'Ò'), ('&Ouml;', 'Ö'), ('&Uacute;', 'Ú'), ('&Ucirc;', 'Û'),
-        ('&Ugrave;', 'Ù'), ('&Uuml;', 'Ü'), ('&aacute;', 'á'), ('&acirc;', 'â'),
-        ('&acute;', "'"), ('&agrave;', 'à'), ('&amp;', '&'), ('&apos;', "'"),
-        ('&auml;', 'ä'), ('&bdquo;', '"'), ('&eacute;', 'é'), ('&ecirc;', 'ê'),
-        ('&egrave;', 'è'), ('&euml;', 'ë'), ('&gt;', '>'), ('&hellip;', '...'),
-        ('&iacute;', 'í'), ('&icirc;', 'î'), ('&igrave;', 'ì'), ('&iuml;', 'ï'),
-        ('&laquo;', '"'), ('&ldquo;', '"'), ('&lsquo;', "'"), ('&lt;', '<'),
-        ('&mdash;', '—'), ('&nbsp;', ' '), ('&ndash;', '-'), ('&oacute;', 'ó'),
-        ('&ocirc;', 'ô'), ('&ograve;', 'ò'), ('&ouml;', 'ö'), ('&quot;', '"'),
-        ('&raquo;', '"'), ('&rsquo;', "'"), ('&szlig;', 'ß'), ('&uacute;', 'ú'),
-        ('&ucirc;', 'û'), ('&ugrave;', 'ù'), ('&uuml;', 'ü'), ('&ntilde;', '~'),
-        ('&equals;', '='), ('&quest;', '?'), ('&comma;', ','), ('&period;', '.'),
-        ('&colon;', ':'), ('&lpar;', '('), ('&rpar;', ')'), ('&excl;', '!'),
-        ('&dollar;', '$'), ('&num;', '#'), ('&ast;', '*'), ('&lowbar;', '_'),
-        ('&lsqb;', '['), ('&rsqb;', ']'), ('&half;', '1/2'), ('&DiacriticalTilde;', '~'),
-        ('&OpenCurlyDoubleQuote;', '"'), ('&CloseCurlyDoubleQuote;', '"'),
-    ]
+    replacements = {
+        '&amp;': '&', '&apos;': "'", '&lt;': '<', '&gt;': '>', '&ndash;': '-',
+        '&quot;': '"', '&ntilde;': '~', '&rsquo;': "'", '&nbsp;': ' ',
+        '&equals;': '=', '&quest;': '?', '&comma;': ',', '&period;': '.',
+        '&colon;': ':', '&lpar;': '(', '&rpar;': ')', '&excl;': '!',
+        '&dollar;': '$', '&num;': '#', '&ast;': '*', '&lowbar;': '_',
+        '&lsqb;': '[', '&rsqb;': ']', '&half;': '1/2', '&DiacriticalTilde;': '~',
+        '&OpenCurlyDoubleQuote;': '"', '&CloseCurlyDoubleQuote;': '"'
+    }
+    for entity, char in replacements.items():
+        text = text.replace(entity, char)
 
-    # Replacing all HTML entities with their respective characters
-    for repl in charlist:
-        text = text.replace(repl[0], repl[1])
-    # Remove any remaining HTML tags
-    text = re.sub('<[^>]+>', '', text)
     return text.strip()
 
 
@@ -1549,37 +1598,41 @@ def cleanTitle(x):
     return x
 
 
-def remove_line(filename, what):
-    if isfile(filename):
-        file_read = open(filename).readlines()
-        file_write = open(filename, 'w')
-        for line in file_read:
-            if what not in line:
-                file_write.write(line)
-        file_write.close()
+def remove_line(filename, pattern):
+    """Remove lines containing pattern from file"""
+    if not isfile(filename):
+        return
+    with open(filename, 'r') as f:
+        lines = [line for line in f if pattern not in line]
+    with open(filename, 'w') as f:
+        f.writelines(lines)
 
 
 def badcar(name):
     name = name
-    bad_chars = ["sd", "hd", "fhd", "uhd", "4k", "1080p", "720p", "blueray", "x264", "aac", "ozlem", "hindi", "hdrip", "(cache)", "(kids)", "[3d-en]", "[iran-dubbed]", "imdb", "top250", "multi-audio",
-                 "multi-subs", "multi-sub", "[audio-pt]", "[nordic-subbed]", "[nordic-subbeb]",
-                 "SD", "HD", "FHD", "UHD", "4K", "1080P", "720P", "BLUERAY", "X264", "AAC", "OZLEM", "HINDI", "HDRIP", "(CACHE)", "(KIDS)", "[3D-EN]", "[IRAN-DUBBED]", "IMDB", "TOP250", "MULTI-AUDIO",
-                 "MULTI-SUBS", "MULTI-SUB", "[AUDIO-PT]", "[NORDIC-SUBBED]", "[NORDIC-SUBBEB]",
-                 "-ae-", "-al-", "-ar-", "-at-", "-ba-", "-be-", "-bg-", "-br-", "-cg-", "-ch-", "-cz-", "-da-", "-de-", "-dk-", "-ee-", "-en-", "-es-", "-ex-yu-", "-fi-", "-fr-", "-gr-", "-hr-", "-hu-", "-in-", "-ir-", "-it-", "-lt-", "-mk-",
-                 "-mx-", "-nl-", "-no-", "-pl-", "-pt-", "-ro-", "-rs-", "-ru-", "-se-", "-si-", "-sk-", "-tr-", "-uk-", "-us-", "-yu-",
-                 "-AE-", "-AL-", "-AR-", "-AT-", "-BA-", "-BE-", "-BG-", "-BR-", "-CG-", "-CH-", "-CZ-", "-DA-", "-DE-", "-DK-", "-EE-", "-EN-", "-ES-", "-EX-YU-", "-FI-", "-FR-", "-GR-", "-HR-", "-HU-", "-IN-", "-IR-", "-IT-", "-LT-", "-MK-",
-                 "-MX-", "-NL-", "-NO-", "-PL-", "-PT-", "-RO-", "-RS-", "-RU-", "-SE-", "-SI-", "-SK-", "-TR-", "-UK-", "-US-", "-YU-",
-                 "|ae|", "|al|", "|ar|", "|at|", "|ba|", "|be|", "|bg|", "|br|", "|cg|", "|ch|", "|cz|", "|da|", "|de|", "|dk|", "|ee|", "|en|", "|es|", "|ex-yu|", "|fi|", "|fr|", "|gr|", "|hr|", "|hu|", "|in|", "|ir|", "|it|", "|lt|", "|mk|",
-                 "|mx|", "|nl|", "|no|", "|pl|", "|pt|", "|ro|", "|rs|", "|ru|", "|se|", "|si|", "|sk|", "|tr|", "|uk|", "|us|", "|yu|",
-                 "|AE|", "|AL|", "|AR|", "|AT|", "|BA|", "|BE|", "|BG|", "|BR|", "|CG|", "|CH|", "|CZ|", "|DA|", "|DE|", "|DK|", "|EE|", "|EN|", "|ES|", "|EX-YU|", "|FI|", "|FR|", "|GR|", "|HR|", "|HU|", "|IN|", "|IR|", "|IT|", "|LT|", "|MK|",
-                 "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
-                 "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|", "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|",
-                 "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
-                 "(", ")", "[", "]", "u-", "3d", "'", "#", "/",
-                 "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11", "PF12", "PF13", "PF14", "PF15", "PF16", "PF17", "PF18", "PF19", "PF20", "PF21", "PF22", "PF23", "PF24", "PF25", "PF26", "PF27", "PF28", "PF29", "PF30",
-                 "480p", "4K", "720p", "ANIMAZIONE",  "AVVENTURA", "BIOGRAFICO",  "BDRip",  "BluRay",  "CINEMA", "COMMEDIA", "DOCUMENTARIO", "DRAMMATICO", "FANTASCIENZA", "FANTASY", "HDCAM", "HDTC", "HDTS", "LD", "MARVEL", "MD", "NEW_AUDIO",
-                 "R3", "R6", "SD", "SENTIMENTALE", "TC", "TELECINE", "TELESYNC", "THRILLER", "Uncensored", "V2", "WEBDL", "WEBRip", "WEB", "WESTERN", "-", "_", ".", "+", "[", "]"
-                 ]
+    bad_chars = [
+        "sd", "hd", "fhd", "uhd", "4k", "1080p", "720p", "blueray", "x264", "aac", "ozlem", "hindi", "hdrip", "(cache)", "(kids)", "[3d-en]", "[iran-dubbed]", "imdb", "top250", "multi-audio",
+        "multi-subs", "multi-sub", "[audio-pt]", "[nordic-subbed]", "[nordic-subbeb]",
+        "SD", "HD", "FHD", "UHD", "4K", "1080P", "720P", "BLUERAY", "X264", "AAC", "OZLEM", "HINDI", "HDRIP", "(CACHE)", "(KIDS)", "[3D-EN]", "[IRAN-DUBBED]", "IMDB", "TOP250", "MULTI-AUDIO",
+        "MULTI-SUBS", "MULTI-SUB", "[AUDIO-PT]", "[NORDIC-SUBBED]", "[NORDIC-SUBBEB]",
+        "-ae-", "-al-", "-ar-", "-at-", "-ba-", "-be-", "-bg-", "-br-", "-cg-", "-ch-", "-cz-", "-da-", "-de-", "-dk-", "-ee-", "-en-", "-es-", "-ex-yu-", "-fi-", "-fr-", "-gr-", "-hr-", "-hu-",
+        "-in-", "-ir-", "-it-", "-lt-", "-mk-", "-mx-", "-nl-", "-no-", "-pl-", "-pt-", "-ro-", "-rs-", "-ru-", "-se-", "-si-", "-sk-", "-tr-", "-uk-", "-us-", "-yu-",
+        "-AE-", "-AL-", "-AR-", "-AT-", "-BA-", "-BE-", "-BG-", "-BR-", "-CG-", "-CH-", "-CZ-", "-DA-", "-DE-", "-DK-", "-EE-", "-EN-", "-ES-", "-EX-YU-", "-FI-", "-FR-", "-GR-", "-HR-", "-HU-",
+        "-IN-", "-IR-", "-IT-", "-LT-", "-MK-", "-MX-", "-NL-", "-NO-", "-PL-", "-PT-", "-RO-", "-RS-", "-RU-", "-SE-", "-SI-", "-SK-", "-TR-", "-UK-", "-US-", "-YU-",
+        "|ae|", "|al|", "|ar|", "|at|", "|ba|", "|be|", "|bg|", "|br|", "|cg|", "|ch|", "|cz|", "|da|", "|de|", "|dk|", "|ee|", "|en|", "|es|", "|ex-yu|", "|fi|", "|fr|", "|gr|", "|hr|", "|hu|",
+        "|in|", "|ir|", "|it|", "|lt|", "|mk|", "|mx|", "|nl|", "|no|", "|pl|", "|pt|", "|ro|", "|rs|", "|ru|", "|se|", "|si|", "|sk|", "|tr|", "|uk|", "|us|", "|yu|",
+        "|AE|", "|AL|", "|AR|", "|AT|", "|BA|", "|BE|", "|BG|", "|BR|", "|CG|", "|CH|", "|CZ|", "|DA|", "|DE|", "|DK|", "|EE|", "|EN|", "|ES|", "|EX-YU|", "|FI|", "|FR|", "|GR|", "|HR|", "|HU|",
+        "|IN|", "|IR|", "|IT|", "|LT|", "|MK|", "|MX|", "|NL|", "|NO|", "|PL|", "|PT|", "|RO|", "|RS|", "|RU|", "|SE|", "|SI|", "|SK|", "|TR|", "|UK|", "|US|", "|YU|",
+        "|Ae|", "|Al|", "|Ar|", "|At|", "|Ba|", "|Be|", "|Bg|", "|Br|", "|Cg|", "|Ch|", "|Cz|", "|Da|", "|De|", "|Dk|", "|Ee|", "|En|", "|Es|", "|Ex-Yu|", "|Fi|", "|Fr|", "|Gr|", "|Hr|", "|Hu|",
+        "|In|", "|Ir|", "|It|", "|Lt|", "|Mk|", "|Mx|", "|Nl|", "|No|", "|Pl|", "|Pt|", "|Ro|", "|Rs|", "|Ru|", "|Se|", "|Si|", "|Sk|", "|Tr|", "|Uk|", "|Us|", "|Yu|",
+        "(", ")", "[", "]", "u-", "3d", "'", "#", "/", "-", "_", ".", "+",
+        "PF1", "PF2", "PF3", "PF4", "PF5", "PF6", "PF7", "PF8", "PF9", "PF10", "PF11", "PF12", "PF13", "PF14", "PF15", "PF16", "PF17", "PF18", "PF19", "PF20",
+        "PF21", "PF22", "PF23", "PF24", "PF25", "PF26", "PF27", "PF28", "PF29", "PF30",
+        "480p", "ANIMAZIONE", "AVVENTURA", "BIOGRAFICO", "BDRip", "BluRay", "CINEMA", "COMMEDIA",
+        "DOCUMENTARIO", "DRAMMATICO", "FANTASCIENZA", "FANTASY", "HDCAM", "HDTC", "HDTS", "LD",
+        "MARVEL", "MD", "NEW_AUDIO", "R3", "R6", "SENTIMENTALE", "TC", "TELECINE", "TELESYNC",
+        "THRILLER", "Uncensored", "V2", "WEBDL", "WEBRip", "WEB", "WESTERN"
+    ]
 
     for j in range(1900, 2025):
         bad_chars.append(str(j))

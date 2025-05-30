@@ -1471,7 +1471,7 @@ class xc_M3uPlayx(Screen):
 		url = url.replace(":", "%3a")
 		if config.plugins.m3uconverter.hls_convert.value:
 			if any(url.lower().endswith(x) for x in ('.m3u8', '.stream')):
-				url = f"hls://{url}"
+				url = "hls://" + url
 		return url
 
 	def runChannel(self):
