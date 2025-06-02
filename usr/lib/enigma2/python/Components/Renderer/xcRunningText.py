@@ -23,7 +23,8 @@ from __future__ import absolute_import
 # - this renderer can be used in OLED display with dmm oe2.0 images
 # - due to changing to eWidget in combination with eLabel transparent flag is possible (still cpu killer!)
 # - fixed left / right scrolling , fixed nowrap-mode
-# take a look at the discussion: http://board.dreambox-tools.info/showthread.php?6050-Erweiterung-Running-Text-render
+# take a look at the discussion:
+# http://board.dreambox-tools.info/showthread.php?6050-Erweiterung-Running-Text-render
 
 from enigma import eWidget, eLabel, eTimer, ePoint, eSize, gFont, \
     RT_HALIGN_LEFT, RT_HALIGN_CENTER, RT_HALIGN_RIGHT, RT_HALIGN_BLOCK, \
@@ -64,7 +65,9 @@ class xcRunningText(Renderer):
         self.X = self.Y = self.W = self.H = self.mStartDelay = 0
         self.mAlways = 1  # always move text
         self.mStep = 1  # moving step: 1 pixel per 1 time
-        self.mStepTimeout = 50  # step timeout: 1 step per 50 milliseconds ( speed: 20 pixel per second )
+        # step timeout: 1 step per 50 milliseconds ( speed: 20 pixel per second
+        # )
+        self.mStepTimeout = 50
         self.direction = LEFT
         self.mLoopTimeout = self.mOneShot = 0
         self.mRepeat = 0
@@ -86,17 +89,17 @@ class xcRunningText(Renderer):
 
         try:
             self.mTimer_conn = self.mTimer.timeout.connect(self.movingLoop)
-        except:
+        except BaseException:
             try:
                 self.mTimer.callback.append(self.movingLoop)
-            except:
+            except BaseException:
                 pass
 
     def preWidgetRemove(self, instance):
         self.mTimer.stop()
         try:
             self.mTimer.callback.remove(self.movingLoop)
-        except:
+        except BaseException:
             self.mTimer_conn = self.mTimer.timeout.disconnect(self.movingLoop)
 
         """
@@ -113,7 +116,7 @@ class xcRunningText(Renderer):
                     x = min(limit, int(val))
                 else:
                     x = max(limit, int(val))
-            except:
+            except BaseException:
                 x = default
             return x
 
@@ -141,11 +144,25 @@ class xcRunningText(Renderer):
                 elif attrib == "borderWidth":  # fake for openpli-enigma2
                     self.soffset = (-int(value), -int(value))
                 elif attrib == "valign" and value in ("top", "center", "bottom"):
-                    valign = {"top": eLabel.alignTop, "center": eLabel.alignCenter, "bottom": eLabel.alignBottom}[value]
-                    self.txtflags |= {"top": RT_VALIGN_TOP, "center": RT_VALIGN_CENTER, "bottom": RT_VALIGN_BOTTOM}[value]
+                    valign = {
+                        "top": eLabel.alignTop,
+                        "center": eLabel.alignCenter,
+                        "bottom": eLabel.alignBottom}[value]
+                    self.txtflags |= {
+                        "top": RT_VALIGN_TOP,
+                        "center": RT_VALIGN_CENTER,
+                        "bottom": RT_VALIGN_BOTTOM}[value]
                 elif attrib == "halign" and value in ("left", "center", "right", "block"):
-                    self.halign = {"left": eLabel.alignLeft, "center": eLabel.alignCenter, "right": eLabel.alignRight, "block": eLabel.alignBlock}[value]
-                    self.txtflags |= {"left": RT_HALIGN_LEFT, "center": RT_HALIGN_CENTER, "right": RT_HALIGN_RIGHT, "block": RT_HALIGN_BLOCK}[value]
+                    self.halign = {
+                        "left": eLabel.alignLeft,
+                        "center": eLabel.alignCenter,
+                        "right": eLabel.alignRight,
+                        "block": eLabel.alignBlock}[value]
+                    self.txtflags |= {
+                        "left": RT_HALIGN_LEFT,
+                        "center": RT_HALIGN_CENTER,
+                        "right": RT_HALIGN_RIGHT,
+                        "block": RT_HALIGN_BLOCK}[value]
                 elif attrib == "noWrap":
                     setWrapFlag(attrib, value)
                 elif attrib == "options":
@@ -161,17 +178,24 @@ class xcRunningText(Renderer):
                         elif opt in ("wrap", "nowrap"):
                             setWrapFlag(opt, val)
                         elif opt == "movetype" and val in ("none", "running", "swimming"):
-                            self.type = {"none": NONE, "running": RUNNING, "swimming": SWIMMING}[val]
+                            self.type = {
+                                "none": NONE,
+                                "running": RUNNING,
+                                "swimming": SWIMMING}[val]
                         elif opt == "direction" and val in ("left", "right", "top", "bottom"):
-                            self.direction = {"left": LEFT, "right": RIGHT, "top": TOP, "bottom": BOTTOM}[val]
+                            self.direction = {
+                                "left": LEFT, "right": RIGHT, "top": TOP, "bottom": BOTTOM}[val]
                         elif opt == "step" and val:
                             self.mStep = retValue(val, 1, self.mStep)
                         elif opt == "steptime" and val:
-                            self.mStepTimeout = retValue(val, 25, self.mStepTimeout)
+                            self.mStepTimeout = retValue(
+                                val, 25, self.mStepTimeout)
                         elif opt == "startdelay" and val:
-                            self.mStartDelay = retValue(val, 0, self.mStartDelay)
+                            self.mStartDelay = retValue(
+                                val, 0, self.mStartDelay)
                         elif opt == "pause" and val:
-                            self.mLoopTimeout = retValue(val, 0, self.mLoopTimeout)
+                            self.mLoopTimeout = retValue(
+                                val, 0, self.mLoopTimeout)
                         elif opt == "oneshot" and val:
                             self.mOneShot = retValue(val, 0, self.mOneShot)
                         elif opt == "repeat" and val:
@@ -183,7 +207,8 @@ class xcRunningText(Renderer):
                         elif opt == "pagedelay" and val:
                             self.mPageDelay = retValue(val, 0, self.mPageDelay)
                         elif opt == "pagelength" and val:
-                            self.mPageLength = retValue(val, 0, self.mPageLength)
+                            self.mPageLength = retValue(
+                                val, 0, self.mPageLength)
                 else:
                     attribs.append((attrib, value))
                     if attrib == "backgroundColor":
@@ -211,7 +236,11 @@ class xcRunningText(Renderer):
         # test for auto correction text height:
         if self.direction in (TOP, BOTTOM):
             from enigma import fontRenderClass
-            flh = int(fontRenderClass.getInstance().getLineHeight(self.txfont) or self.txfont.pointSize // 6 + self.txfont.pointSize)
+            flh = int(
+                fontRenderClass.getInstance().getLineHeight(
+                    self.txfont) or self.txfont.pointSize //
+                6 +
+                self.txfont.pointSize)
             self.scroll_label.setText("WQq")
             if flh > self.scroll_label.calculateSize().height():
                 self.lineHeight = flh
@@ -243,13 +272,24 @@ class xcRunningText(Renderer):
                     self.moveLabel(self.X, self.Y)
 
     def moveLabel(self, X, Y):
-        self.scroll_label.move(ePoint(X - self.soffset[0], Y - self.soffset[1]))
+        self.scroll_label.move(
+            ePoint(
+                X - self.soffset[0],
+                Y - self.soffset[1]))
 
     def calcMoving(self):
         try:
             self.X = self.Y = 0
             if not (self.txtflags & RT_WRAP):
-                self.txtext = self.txtext.replace("\xe0\x8a", " ").replace(chr(0x8A), " ").replace("\n", " ").replace("\r", " ")
+                self.txtext = self.txtext.replace(
+                    "\xe0\x8a",
+                    " ").replace(
+                    chr(0x8A),
+                    " ").replace(
+                    "\n",
+                    " ").replace(
+                    "\r",
+                    " ")
 
             self.scroll_label.setText(self.txtext)
 
@@ -258,20 +298,32 @@ class xcRunningText(Renderer):
                self.scroll_label is None:
                 return False
 
-            if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
-                self.scroll_label.resize(eSize(self.txfont.pointSize * len(self.txtext), self.H))  # stupid workaround, have no better idea right now...
+            if self.direction in (
+                    LEFT, RIGHT) or not (
+                    self.txtflags & RT_WRAP):
+                # stupid workaround, have no better idea right now...
+                self.scroll_label.resize(
+                    eSize(self.txfont.pointSize * len(self.txtext), self.H))
 
             text_size = self.scroll_label.calculateSize()
             text_width = text_size.width()
             text_height = text_size.height()
 
-            if self.direction in (LEFT, RIGHT) or not (self.txtflags & RT_WRAP):
+            if self.direction in (
+                    LEFT, RIGHT) or not (
+                    self.txtflags & RT_WRAP):
                 text_width += 10
 
             self.mStop = None
             # text height correction if necessary:
             if self.lineHeight and self.direction in (TOP, BOTTOM):
-                text_height = max(text_height, (text_height + self.lineHeight - 1) / self.lineHeight * self.lineHeight)
+                text_height = max(
+                    text_height,
+                    (text_height +
+                     self.lineHeight -
+                     1) /
+                    self.lineHeight *
+                    self.lineHeight)
             # self.type =     0 - NONE; 1 - RUNNING; 2 - SWIMMING; 3 - AUTO(???)
             # self.direction =    0 - LEFT; 1 - RIGHT;   2 - TOP;      3 - BOTTOM
             # self.halign =       0 - LEFT; 1 - RIGHT;   2 - CENTER;   3 - BLOCK
@@ -280,7 +332,8 @@ class xcRunningText(Renderer):
                 if not self.mAlways and text_width <= self.W:
                     return False
                 if self.type == RUNNING:
-                    self.A = self.X - text_width - self.soffset[0] - abs(self.mStep)
+                    self.A = self.X - text_width - \
+                        self.soffset[0] - abs(self.mStep)
                     self.B = self.W - self.soffset[0] + abs(self.mStep)
                     if self.direction == LEFT:
                         self.mStep = -abs(self.mStep)
@@ -288,13 +341,16 @@ class xcRunningText(Renderer):
                         self.P = self.B
                     else:
                         self.mStep = abs(self.mStep)
-                        self.mStop = self.B - text_width + self.soffset[0] - self.mStep
+                        self.mStop = self.B - text_width + \
+                            self.soffset[0] - self.mStep
                         self.P = self.A
                     if self.mStartPoint is not None:
                         if self.direction == LEFT:
-                            self.mStop = self.P = max(self.A, min(self.W, self.mStartPoint))
+                            self.mStop = self.P = max(
+                                self.A, min(self.W, self.mStartPoint))
                         else:
-                            self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_width + self.soffset[0]))
+                            self.mStop = self.P = max(self.A, min(
+                                self.B, self.mStartPoint - text_width + self.soffset[0]))
                 elif self.type == SWIMMING:
                     if text_width < self.W:
                         self.A = self.X + 1  # incomprehensible indent '+ 1' ???
@@ -307,7 +363,8 @@ class xcRunningText(Renderer):
                             self.mStep = -abs(self.mStep)
                         else:  # if self.halign in (CENTER, BLOCK):
                             self.P = int(self.B / 2)
-                            self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
+                            self.mStep = (self.direction == RIGHT) and abs(
+                                self.mStep) or -abs(self.mStep)
                     else:
                         if text_width == self.W:
                             text_width += max(2, text_width // 20)
@@ -321,14 +378,16 @@ class xcRunningText(Renderer):
                             self.mStep = abs(self.mStep)
                         else:  # if self.halign in (CENTER, BLOCK):
                             self.P = int(self.A / 2)
-                            self.mStep = (self.direction == RIGHT) and abs(self.mStep) or -abs(self.mStep)
+                            self.mStep = (self.direction == RIGHT) and abs(
+                                self.mStep) or -abs(self.mStep)
                 else:
                     return False
             elif self.direction in (TOP, BOTTOM):
                 if not self.mAlways and text_height <= self.H:
                     return False
                 if self.type == RUNNING:
-                    self.A = self.Y - text_height - self.soffset[1] - abs(self.mStep)
+                    self.A = self.Y - text_height - \
+                        self.soffset[1] - abs(self.mStep)
                     self.B = self.H - self.soffset[1] + abs(self.mStep)
                     if self.direction == TOP:
 
@@ -338,13 +397,16 @@ class xcRunningText(Renderer):
                     else:
 
                         self.mStep = abs(self.mStep)
-                        self.mStop = self.B - text_height + self.soffset[1] - self.mStep
+                        self.mStop = self.B - text_height + \
+                            self.soffset[1] - self.mStep
                         self.P = self.A
                     if self.mStartPoint is not None:
                         if self.direction == TOP:
-                            self.mStop = self.P = max(self.A, min(self.H, self.mStartPoint))
+                            self.mStop = self.P = max(
+                                self.A, min(self.H, self.mStartPoint))
                         else:
-                            self.mStop = self.P = max(self.A, min(self.B, self.mStartPoint - text_height + self.soffset[1]))
+                            self.mStop = self.P = max(self.A, min(
+                                self.B, self.mStartPoint - text_height + self.soffset[1]))
                 elif self.type == SWIMMING:
                     if text_height < self.H:
                         self.A = self.Y
@@ -397,7 +459,8 @@ class xcRunningText(Renderer):
             else:  # if self.direction in (TOP,BOTTOM)
                 self.moveLabel(self.X, self.P)
             timeout = self.mStepTimeout
-            if (self.mStop is not None) and (self.mStop + abs(self.mStep) > self.P >= self.mStop):
+            if (self.mStop is not None) and (
+                    self.mStop + abs(self.mStep) > self.P >= self.mStop):
                 if (self.type == RUNNING) and (self.mOneShot > 0):
                     if (self.mRepeat > 0) and (self.mCount - 1 <= 0):
                         return

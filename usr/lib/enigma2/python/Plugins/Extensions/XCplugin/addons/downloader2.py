@@ -25,12 +25,12 @@ except ImportError:
 
 try:
     from Components.HTMLComponent import *
-except:
+except BaseException:
     print("KeyAdder: No HTMLComponent file found")
 
 try:
     from Components.GUIComponent import *
-except:
+except BaseException:
     print("KeyAdder: No GUIComponent file found")
 
 
@@ -78,14 +78,15 @@ def log(label, data):
 
 def getversioninfo():
     currversion = '1.0'
-    version_file = resolveFilename(SCOPE_PLUGINS, "Extensions/KeyAdder/tools/version")
+    version_file = resolveFilename(
+        SCOPE_PLUGINS, "Extensions/KeyAdder/tools/version")
     if os.path.exists(version_file):
         try:
             fp = open(version_file, 'r').readlines()
             for line in fp:
                 if 'version' in line:
                     currversion = line.split('=')[1].strip()
-        except:
+        except BaseException:
             pass
     return (currversion)
 
@@ -105,8 +106,8 @@ class imagedownloadScreen(Screen):
         self['activityslider'].setValue(0)
         self['status'] = Label()
         self['package'] = Label()
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {'ok': self.dexit,
-                                                                          'cancel': self.dexit}, -1)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {
+                                    'ok': self.dexit, 'cancel': self.dexit}, -1)
         self['status'].setText(_('Downloading,please wait..'))
         self.downloading = False
         self.downloader = None
@@ -114,7 +115,7 @@ class imagedownloadScreen(Screen):
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.startDownload)
-        except:
+        except BaseException:
             self.timer_conn = self.timer.timeout.connect(self.startDownload)
         self.timer.start(5000, 1)
 
@@ -122,7 +123,7 @@ class imagedownloadScreen(Screen):
         try:
             self.timer.stop()
             del self.timer
-        except:
+        except BaseException:
             pass
         self.currentIndex = 0
         self.count_success = 0
@@ -134,8 +135,9 @@ class imagedownloadScreen(Screen):
         try:
             req = Request(url)
             try:
-                response = urlopen(req, context=ssl._create_unverified_context())
-            except:
+                response = urlopen(
+                    req, context=ssl._create_unverified_context())
+            except BaseException:
                 response = urlopen(req)
             r = response.read()
             response.close()
@@ -172,12 +174,15 @@ class imagedownloadScreen(Screen):
             self.downloading = True
             self.downloader = downloadWithProgress(self.url, self.target)
             self.downloader.addProgress(self.progress)
-            self.downloader.start().addCallback(self.responseCompleted).addErrback(self.responseFailed)
+            self.downloader.start().addCallback(
+                self.responseCompleted).addErrback(
+                self.responseFailed)
 
     def progress(self, current, total):
         p = int(100 * current // float(total))
         self['activityslider'].setValue(p)
-        info = _('Downloading') + ' ' + '%d of %d kBytes (%.2f%%)' % (current // 1024, total // 1024, 100 * current // float(total))
+        info = _('Downloading') + ' ' + '%d of %d kBytes (%.2f%%)' % (current //
+                                                                      1024, total // 1024, 100 * current // float(total))
         self['package'].setText(self.name)
         self['status'].setText(info)
         self.setTitle(_('Downloading') + ' ' + str(p) + '%...')
@@ -214,10 +219,11 @@ class imagedownloadScreen(Screen):
     def dexit(self):
         try:
             path = os.path.split(self.target)[0]
-        except:
+        except BaseException:
             pass
         if self.downloading:
-            self.session.openWithCallback(self.abort, MessageBox, _('Are you sure to stop download.'), MessageBox.TYPE_YESNO)
+            self.session.openWithCallback(self.abort, MessageBox, _(
+                'Are you sure to stop download.'), MessageBox.TYPE_YESNO)
         else:
             self.close(False)
 
@@ -226,7 +232,7 @@ class imagedownloadScreen(Screen):
         try:
             if os.path.exists(self.target):
                 os.remove(self.target)
-        except:
+        except BaseException:
             pass
 
     def abort(self, answer=True):
@@ -245,7 +251,7 @@ class imagedownloadScreen(Screen):
             self.remove_target()
             try:
                 self.close(False)
-            except:
+            except BaseException:
                 pass
         else:
             self.close(False)
@@ -263,14 +269,14 @@ class imagedownloadScreen2(Screen):
         self['status'] = Label()
         self['package'] = Label()
         self.downloading = False
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {'ok': self.dexit,
-                                                                          'cancel': self.dexit}, -1)
+        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {
+                                    'ok': self.dexit, 'cancel': self.dexit}, -1)
         self['status'].setText(_('Downloading,please wait..'))
         self.setTitle(_('Connecting') + '...')
         self.timer = eTimer()
         try:
             self.timer.callback.append(self.startDownload)
-        except:
+        except BaseException:
             self.timer_conn = self.timer.timeout.connect(self.startDownload)
         self.timer.start(5000, 1)
 
@@ -279,7 +285,7 @@ class imagedownloadScreen2(Screen):
             self.timer.stop()
             self.downloading = True
             del self.timer
-        except:
+        except BaseException:
             pass
         self.downloadfile2()
 
@@ -292,7 +298,7 @@ class imagedownloadScreen2(Screen):
             self.downloading = True
             try:
                 self.responseCompleted()
-            except:
+            except BaseException:
                 self.responseFailed()
 
     def responseCompleted(self, data=None):
@@ -327,10 +333,11 @@ class imagedownloadScreen2(Screen):
     def dexit(self):
         try:
             path = os.path.split(self.target)[0]
-        except:
+        except BaseException:
             pass
         if self.downloading:
-            self.session.openWithCallback(self.abort, MessageBox, _('Are you sure to stop download.'), MessageBox.TYPE_YESNO)
+            self.session.openWithCallback(self.abort, MessageBox, _(
+                'Are you sure to stop download.'), MessageBox.TYPE_YESNO)
         else:
             self.close(False)
 
@@ -339,7 +346,7 @@ class imagedownloadScreen2(Screen):
         try:
             if os.path.exists(self.target):
                 os.remove(self.target)
-        except:
+        except BaseException:
             pass
 
     def abort(self, answer=True):
@@ -359,7 +366,7 @@ class imagedownloadScreen2(Screen):
             try:
                 self.close(False)
 
-            except:
+            except BaseException:
                 pass
         else:
             self.close(False)

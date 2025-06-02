@@ -52,280 +52,338 @@ Path_XML = str(cfg.pthxmlfile.value) + "/"
 
 
 class xc_Playlist(Screen):
-	def __init__(self, session, STREAMS):
-		Screen.__init__(self, session)
-		skin = join(skin_path, 'xc_Playlist.xml')
-		with codecs.open(skin, "r", encoding="utf-8") as f:
-			skin = f.read()
-		self.skin = ctrlSkin('xc_Playlist', skin)
-		try:
-			Screen.setTitle(self, _('%s') % 'SERVER MENU')
-		except:
-			try:
-				self.setTitle(_('%s') % 'SERVER MENU')
-			except:
-				pass
+    def __init__(self, session, STREAMS):
+        Screen.__init__(self, session)
+        skin = join(skin_path, 'xc_Playlist.xml')
+        with codecs.open(skin, "r", encoding="utf-8") as f:
+            skin = f.read()
+        self.skin = ctrlSkin('xc_Playlist', skin)
+        try:
+            Screen.setTitle(self, _('%s') % 'SERVER MENU')
+        except BaseException:
+            try:
+                self.setTitle(_('%s') % 'SERVER MENU')
+            except BaseException:
+                pass
 
-		self.list = []
-		self.streams = STREAMS
-		if self.streams is None:
-			raise ValueError("STREAMS must not be None")
+        self.list = []
+        self.streams = STREAMS
+        if self.streams is None:
+            raise ValueError("STREAMS must not be None")
 
-		# self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-		if hasattr(self.session, 'nav'):
-			self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
-		else:
-			self.initialservice = None  # Gestisci il caso quando 'nav' non è disponibile
-		self["list"] = xcM3UList([])
-		self["Text"] = Label("Select Server")
-		self["version"] = Label(version)
-		self["infoname"] = Label("")
-		self["key_red"] = Label(_("Back"))
-		self["key_green"] = Label("Select")
-		self["key_yellow"] = Label(_("Remove"))
-		self["key_blue"] = Label(_("Info"))
-		self["live"] = Label("")
+        # self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+        if hasattr(self.session, 'nav'):
+            self.initialservice = self.session.nav.getCurrentlyPlayingServiceReference()
+        else:
+            self.initialservice = None  # Gestisci il caso quando 'nav' non è disponibile
+        self["list"] = xcM3UList([])
+        self["Text"] = Label("Select Server")
+        self["version"] = Label(version)
+        self["infoname"] = Label("")
+        self["key_red"] = Label(_("Back"))
+        self["key_green"] = Label("Select")
+        self["key_yellow"] = Label(_("Remove"))
+        self["key_blue"] = Label(_("Info"))
+        self["live"] = Label("")
 
-		self["actions"] = HelpableActionMap(self, "XCpluginActions", {
-			"ok": self.selectlist,
-			"green": self.selectlist,
-			"home": self.close,
-			"cancel": self.close,
-			"yellow": self.message1,
-			"blue": self.infoxc,
-			"info": self.xc_Help,
-			"help": self.xc_Help}, -1)
-		self.onLayoutFinish.append(self.openList)
+        self["actions"] = HelpableActionMap(self, "XCpluginActions", {
+            "ok": self.selectlist,
+            "green": self.selectlist,
+            "home": self.close,
+            "cancel": self.close,
+            "yellow": self.message1,
+            "blue": self.infoxc,
+            "info": self.xc_Help,
+            "help": self.xc_Help}, -1)
+        self.onLayoutFinish.append(self.openList)
 
-	def selOn(self, host, port, username, password):
-		try:
-			TIME_GMT = '%d-%m-%Y'
-			auth = "N/A"
-			exp_date = "N/A"
-			status = "N/A"
-			globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
-			self.ycse = retTest(globalsxp.urlinfo)
-			if self.ycse:
-				y = self.ycse
-				if "user_info" in y and "auth" in y["user_info"]:
-					if y["user_info"]["auth"] == 1:
-						exp_date = y["user_info"].get("exp_date", "N/A")
-						exp_date = strftime(TIME_GMT, gmtime(int(exp_date))) if exp_date else "N/A"
-						status = y["user_info"].get("status", "N/A")
-						auth = status if status in ["Active", "Banned", "Disabled", "Expired", "None"] else "N/A"
-					else:
-						auth = "Server Not Responding"
+    def selOn(self, host, port, username, password):
+        try:
+            TIME_GMT = '%d-%m-%Y'
+            auth = "N/A"
+            exp_date = "N/A"
+            status = "N/A"
+            globalsxp.urlinfo = 'http://' + str(host) + ':' + str(
+                port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
+            self.ycse = retTest(globalsxp.urlinfo)
+            if self.ycse:
+                y = self.ycse
+                if "user_info" in y and "auth" in y["user_info"]:
+                    if y["user_info"]["auth"] == 1:
+                        exp_date = y["user_info"].get("exp_date", "N/A")
+                        exp_date = strftime(
+                            TIME_GMT, gmtime(
+                                int(exp_date))) if exp_date else "N/A"
+                        status = y["user_info"].get("status", "N/A")
+                        auth = status if status in [
+                            "Active", "Banned", "Disabled", "Expired", "None"] else "N/A"
+                    else:
+                        auth = "Server Not Responding"
 
-					time_now = (y["server_info"]["time_now"])
-					time_zone = (y["server_info"]["timezone"])
-					time_stamp = (y["server_info"]["timestamp_now"])
-					if time_now:
-						globalsxp.timeserver = str(time_now)
-					if time_zone:
-						globalsxp.timezone = str(time_zone)
-					if time_stamp:
-						globalsxp.time_stamp = str(time_stamp)
+                    time_now = (y["server_info"]["time_now"])
+                    time_zone = (y["server_info"]["timezone"])
+                    time_stamp = (y["server_info"]["timestamp_now"])
+                    if time_now:
+                        globalsxp.timeserver = str(time_now)
+                    if time_zone:
+                        globalsxp.timezone = str(time_zone)
+                    if time_stamp:
+                        globalsxp.time_stamp = str(time_stamp)
 
-			return auth, exp_date
+            return auth, exp_date
 
-		except Exception as e:
-			print("selOn Error Exception: %s" % e)
-			return "N/A", "N/A"
+        except Exception as e:
+            print("selOn Error Exception: %s" % e)
+            return "N/A", "N/A"
 
-	def openList(self):
-		self.names = []
-		self.urls = []
+    def openList(self):
+        self.names = []
+        self.urls = []
 
-		if file_exists(Path_XML + '/xclink.txt'):
-			with codecs.open(Path_XML + '/xclink.txt', "r", encoding="utf-8") as f:
-				lines = f.readlines()
-				name = ''
-				host = ''
-				port = '80'
-				username = ''
-				password = ''
-				exp_date = ''
-				for line in lines:
-					if line.startswith('#'):
-						continue
-					elif line.startswith('http'):
-						pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
-						matchx = match(pattern, line)
+        if file_exists(Path_XML + '/xclink.txt'):
+            with codecs.open(Path_XML + '/xclink.txt', "r", encoding="utf-8") as f:
+                lines = f.readlines()
+                name = ''
+                host = ''
+                port = '80'
+                username = ''
+                password = ''
+                exp_date = ''
+                for line in lines:
+                    if line.startswith('#'):
+                        continue
+                    elif line.startswith('http'):
+                        pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
+                        matchx = match(pattern, line)
 
-						if matchx:
-							host = matchx.group(1)
-							if matchx.group(2):
-								port = matchx.group(2)
-							username = matchx.group(3)
-							password = matchx.group(4)
-							namelx, exp_date = self.selOn(str(host), str(port), str(username), str(password))
-							if namelx in [None, "None"]:
-								namelx = "N/A"
-							# print('namelx, exp_date=', namelx, exp_date)
-							name = '(' + str(namelx) + ')' + ' ' + str(username) + ' Expiry:' + str(exp_date)
-							user, passw = self.streams.read_config()  # Ora restituisce i valori corretti
-							# print('globalsxp.STREAMS.read_config:', user, passw)
-							if str(username) == user and str(password) == passw:
-								name = "X (" + str(namelx) + ") " + str(username) + " Expiry:" + str(exp_date)
-							self.names.append(name)
-							self.urls.append(line)
+                        if matchx:
+                            host = matchx.group(1)
+                            if matchx.group(2):
+                                port = matchx.group(2)
+                            username = matchx.group(3)
+                            password = matchx.group(4)
+                            namelx, exp_date = self.selOn(
+                                str(host), str(port), str(username), str(password))
+                            if namelx in [None, "None"]:
+                                namelx = "N/A"
+                            # print('namelx, exp_date=', namelx, exp_date)
+                            name = '(' + str(namelx) + ')' + ' ' + \
+                                str(username) + ' Expiry:' + str(exp_date)
+                            user, passw = self.streams.read_config()  # Ora restituisce i valori corretti
+                            # print('globalsxp.STREAMS.read_config:', user, passw)
+                            if str(username) == user and str(
+                                    password) == passw:
+                                name = "X (" + str(namelx) + ") " + \
+                                    str(username) + " Expiry:" + str(exp_date)
+                            self.names.append(name)
+                            self.urls.append(line)
 
-		m3ulistxc(self.names, self["list"])
-		self["live"].setText(str(len(self.names)) + " Team")
-		if cfg.infoexp.getValue():
-			globalsxp.infoname = str(cfg.infoname.value)
-		self["infoname"].setText(globalsxp.infoname)
+        m3ulistxc(self.names, self["list"])
+        self["live"].setText(str(len(self.names)) + " Team")
+        if cfg.infoexp.getValue():
+            globalsxp.infoname = str(cfg.infoname.value)
+        self["infoname"].setText(globalsxp.infoname)
 
-	def selectlist(self):
-		try:
-			idx = self["list"].getSelectionIndex()
-			if idx is None or idx < 0 or idx >= len(self.names):
-				return
-			nom = self.names[idx]
-			dom = self.urls[idx]
-			if 'active' not in nom.lower():
-				message = "User: " + str(nom) + "\n\nIs Not Active or Server not responding!\nSelect another list..."
-				print(str(message))
-				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
-				return
-			port = '80'
-			pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"  # &output=([^&]+)"
-			matchx = match(pattern, dom)
-			if matchx:
-				host = matchx.group(1)
-				if matchx.group(2):
-					port = matchx.group(2)
-				cfg.port.setValue(str(port))
-				username = matchx.group(3)
-				password = matchx.group(4)
-				cfg.hostaddress.setValue(str(host))
-				cfg.user.setValue(str(username))
-				cfg.passw.setValue(str(password))
+    def selectlist(self):
+        try:
+            idx = self["list"].getSelectionIndex()
+            if idx is None or idx < 0 or idx >= len(self.names):
+                return
+            nom = self.names[idx]
+            dom = self.urls[idx]
+            if 'active' not in nom.lower():
+                message = "User: " + \
+                    str(nom) + "\n\nIs Not Active or Server not responding!\nSelect another list..."
+                print(str(message))
+                self.session.open(
+                    MessageBox,
+                    message,
+                    type=MessageBox.TYPE_INFO,
+                    timeout=10)
+                return
+            port = '80'
+            # &output=([^&]+)"
+            pattern = r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)"
+            matchx = match(pattern, dom)
+            if matchx:
+                host = matchx.group(1)
+                if matchx.group(2):
+                    port = matchx.group(2)
+                cfg.port.setValue(str(port))
+                username = matchx.group(3)
+                password = matchx.group(4)
+                cfg.hostaddress.setValue(str(host))
+                cfg.user.setValue(str(username))
+                cfg.passw.setValue(str(password))
 
-				self.save_config()
+                self.save_config()
 
-				message = "User: " + str(username) + "\n\nIs Active on Config"
-				print(str(message))
-				self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=10)
-				self.close()
-		except IOError as e:
-			print(str(e))
+                message = "User: " + str(username) + "\n\nIs Active on Config"
+                print(str(message))
+                self.session.open(
+                    MessageBox,
+                    message,
+                    type=MessageBox.TYPE_INFO,
+                    timeout=10)
+                self.close()
+        except IOError as e:
+            print(str(e))
 
-	def save_config(self):
-		"""Save the updated configurations in the configuration file."""
-		try:
-			cfg.save()
-			print("Configurations saved successfully.")
-		except Exception as e:
-			print("Error saving configurations: " + str(e))
+    def save_config(self):
+        """Save the updated configurations in the configuration file."""
+        try:
+            cfg.save()
+            print("Configurations saved successfully.")
+        except Exception as e:
+            print("Error saving configurations: " + str(e))
 
-	def infoxc(self):
-		try:
-			idx = self["list"].getSelectionIndex()
-			if idx is None or idx < 0 or idx >= len(self.names):
-				return
-			dom = self.urls[idx]
-			TIME_GMT = '%d-%m-%Y %H:%M'
-			auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = time_now = '- ? -'
-			host = ''
-			username = ''
-			password = ''
-			port = '80'
-			pattern = (r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)")
-			matchx = match(pattern, dom)
-			if matchx:
-				host = matchx.group(1)
-				if matchx.group(2):
-					port = matchx.group(2)
-				username = matchx.group(3)
-				password = matchx.group(4)
-			globalsxp.urlinfo = ('http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password))
-			self.ycse = retTest(globalsxp.urlinfo)
-			if self.ycse:
-				y = self.ycse
-				if "user_info" in y:
-					if "auth" in y["user_info"]:
-						if y["user_info"]["auth"] == 1:
-							auth = y["user_info"]["auth"]
-							status = y["user_info"]["status"]
-							created_at = y["user_info"]["created_at"]
-							exp_date = y["user_info"]["exp_date"]
-							active_cons = y["user_info"]["active_cons"]
-							max_connections = y["user_info"]["max_connections"]
-							server_protocol = y["server_info"]["server_protocol"]
-							time_now = y["server_info"]["time_now"]
-							time_zone = y["server_info"]["timezone"]
+    def infoxc(self):
+        try:
+            idx = self["list"].getSelectionIndex()
+            if idx is None or idx < 0 or idx >= len(self.names):
+                return
+            dom = self.urls[idx]
+            TIME_GMT = '%d-%m-%Y %H:%M'
+            auth = status = created_at = exp_date = active_cons = max_connections = server_protocol = time_now = '- ? -'
+            host = ''
+            username = ''
+            password = ''
+            port = '80'
+            pattern = (
+                r"http://([^:/]+)(?::(\d+))?/get.php\?username=([^&]+)&password=([^&]+)&type=([^&]+)")
+            matchx = match(pattern, dom)
+            if matchx:
+                host = matchx.group(1)
+                if matchx.group(2):
+                    port = matchx.group(2)
+                username = matchx.group(3)
+                password = matchx.group(4)
+            globalsxp.urlinfo = (
+                'http://' +
+                str(host) +
+                ':' +
+                str(port) +
+                '/player_api.php?username=' +
+                str(username) +
+                '&password=' +
+                str(password))
+            self.ycse = retTest(globalsxp.urlinfo)
+            if self.ycse:
+                y = self.ycse
+                if "user_info" in y:
+                    if "auth" in y["user_info"]:
+                        if y["user_info"]["auth"] == 1:
+                            auth = y["user_info"]["auth"]
+                            status = y["user_info"]["status"]
+                            created_at = y["user_info"]["created_at"]
+                            exp_date = y["user_info"]["exp_date"]
+                            active_cons = y["user_info"]["active_cons"]
+                            max_connections = y["user_info"]["max_connections"]
+                            server_protocol = y["server_info"]["server_protocol"]
+                            time_now = y["server_info"]["time_now"]
+                            time_zone = y["server_info"]["timezone"]
 
-							created_at = strftime(TIME_GMT, gmtime(int(created_at))) if created_at else "Null"
-							exp_date = strftime(TIME_GMT, gmtime(int(exp_date))) if exp_date else "Null"
-							status_messages = {
-								"Active": "Active\nExp date: " + str(exp_date),
-								"Banned": "Banned\nExp date: " + str(exp_date),
-								"Disabled": "Disabled",
-								"Expired": "Expired\nExp date: " + str(exp_date),
-							}
-							auth = status_messages.get(status, "Server Not Responding\nExp date: " + str(exp_date))
+                            created_at = strftime(TIME_GMT, gmtime(
+                                int(created_at))) if created_at else "Null"
+                            exp_date = strftime(
+                                TIME_GMT, gmtime(
+                                    int(exp_date))) if exp_date else "Null"
+                            status_messages = {
+                                "Active": "Active\nExp date: " +
+                                str(exp_date),
+                                "Banned": "Banned\nExp date: " +
+                                str(exp_date),
+                                "Disabled": "Disabled",
+                                "Expired": "Expired\nExp date: " +
+                                str(exp_date),
+                            }
+                            auth = status_messages.get(
+                                status, "Server Not Responding\nExp date: " + str(exp_date))
 
-							active_cons = "User Active Now: " + str(active_cons)
-							max_connections = "Max Connect: " + str(max_connections)
-							server_protocol = "Protocol: " + str(server_protocol)
-							time_now = "Time Now: " + str(time_now)
-							time_zone = "Time Zone: " + str(time_zone)
+                            active_cons = "User Active Now: " + \
+                                str(active_cons)
+                            max_connections = "Max Connect: " + \
+                                str(max_connections)
+                            server_protocol = "Protocol: " + \
+                                str(server_protocol)
+                            time_now = "Time Now: " + str(time_now)
+                            time_zone = "Time Zone: " + str(time_zone)
 
-							# # Apply user-configured time adjustment
-							# time_adjustment_delta = timedelta(hours=cfg.uptimezone.value)
-							# next_event_time_utc += time_adjustment_delta  # Apply adjustment after converting to UTC
-							# globalsxp.timeserver = time_now
-							# globalsxp.timezone = time_zone
+                            # # Apply user-configured time adjustment
+                            # time_adjustment_delta = timedelta(hours=cfg.uptimezone.value)
+                            # next_event_time_utc += time_adjustment_delta  # Apply adjustment after converting to UTC
+                            # globalsxp.timeserver = time_now
+                            # globalsxp.timezone = time_zone
 
-							message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s") % (
-								str(username), str(auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(time_now), str(time_zone)
-							)
-							print(str(message))
-							self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
+                            message = ("User: %s\n\nStatus: %s\n\nLine make at: %s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s") % (str(username), str(
+                                auth), str(created_at), str(active_cons), str(max_connections), str(server_protocol), str(time_now), str(time_zone))
+                            print(str(message))
+                            self.session.open(
+                                MessageBox, message, type=MessageBox.TYPE_INFO, timeout=20)
 
-		except Exception as e:
-			status = 'N/A'
-			message = ("Error Exception %s") % (e)
-			print(str(message))
-		except Exception as e:
-			message = ("Error %s") % (e)
-			print(str(message))
-			self.session.open(MessageBox, message, type=MessageBox.TYPE_INFO, timeout=5)
+        except Exception as e:
+            status = 'N/A'
+            message = ("Error Exception %s") % (e)
+            print(str(message))
+        except Exception as e:
+            message = ("Error %s") % (e)
+            print(str(message))
+            self.session.open(
+                MessageBox,
+                message,
+                type=MessageBox.TYPE_INFO,
+                timeout=5)
 
-	def message1(self, answer=None):
-		idx = self["list"].getSelectionIndex()
-		if idx is None or idx < 0 or idx >= len(self.names):
-			return
-		nam = self.names[idx]
-		dom = self.urls[idx]
-		if answer is None:
-			self.session.openWithCallback(self.message1, MessageBox, _("Do you want to remove: %s?") % nam)
-		elif answer:
-			try:
-				with codecs.open(Path_XML + '/xclink.txt', "r+") as f:
-					lines = f.readlines()
-					f.seek(0)
-					f.truncate()
-					for line in lines:
-						if str(dom) in line:
-							line = "#%s" % line
-						f.write(line)
-					self.session.open(MessageBox, nam + _(" has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
-					del self.names[idx]
-					del self.urls[idx]
-			except OSError as error:
-				print(error)
-				self.session.open(MessageBox, nam + _(" not exist!\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
-			self["live"].setText(str(len(self.names)) + " Team")
-			m3ulistxc(self.names, self["list"])
-		else:
-			return
+    def message1(self, answer=None):
+        idx = self["list"].getSelectionIndex()
+        if idx is None or idx < 0 or idx >= len(self.names):
+            return
+        nam = self.names[idx]
+        dom = self.urls[idx]
+        if answer is None:
+            self.session.openWithCallback(
+                self.message1,
+                MessageBox,
+                _("Do you want to remove: %s?") %
+                nam)
+        elif answer:
+            try:
+                with codecs.open(Path_XML + '/xclink.txt', "r+") as f:
+                    lines = f.readlines()
+                    f.seek(0)
+                    f.truncate()
+                    for line in lines:
+                        if str(dom) in line:
+                            line = "#%s" % line
+                        f.write(line)
+                    self.session.open(
+                        MessageBox,
+                        nam +
+                        _(" has been successfully deleted\nwait time to refresh the list..."),
+                        MessageBox.TYPE_INFO,
+                        timeout=5)
+                    del self.names[idx]
+                    del self.urls[idx]
+            except OSError as error:
+                print(error)
+                self.session.open(
+                    MessageBox,
+                    nam +
+                    _(" not exist!\nwait time to refresh the list..."),
+                    MessageBox.TYPE_INFO,
+                    timeout=5)
+            self["live"].setText(str(len(self.names)) + " Team")
+            m3ulistxc(self.names, self["list"])
+        else:
+            return
 
-	def xc_Help(self):
-		self.session.open(MessageBox, _("Put your lines to the %s/xclink.txt'.\nFormat type:\n\nhttp://YOUR_HOST/get.php?username=USERNAME&password=PASSWORD&type=m3u\n\nhttp://YOUR_HOST:YOUR_PORT/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus'\n\nSelect list from Menulist" % Path_XML), MessageBox.TYPE_INFO, timeout=5)
+    def xc_Help(self):
+        self.session.open(
+            MessageBox, _(
+                "Put your lines to the %s/xclink.txt'.\nFormat type:\n\nhttp://YOUR_HOST/get.php?username=USERNAME&password=PASSWORD&type=m3u\n\nhttp://YOUR_HOST:YOUR_PORT/get.php?username=USERNAME&password=PASSWORD&type=m3u_plus'\n\nSelect list from Menulist" %
+                Path_XML), MessageBox.TYPE_INFO, timeout=5)
 
-# ===================Time is what we want most, but what we use worst===================
+# ===================Time is what we want most, but what we use worst=====
 #
 # Time is the best author. It always writes the perfect ending (Charlie Chaplin)
 #
