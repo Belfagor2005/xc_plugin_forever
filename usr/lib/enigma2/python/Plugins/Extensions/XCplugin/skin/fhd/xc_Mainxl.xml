@@ -2,7 +2,7 @@
 <screen name="xc_Main" position="0,0" size="1920,1080" title="Main Menu" backgroundColor="#FF000000" flags="wfNoBorder">
 	<ePixmap position="0,0" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/backb.png" scale="stretch" zPosition="1" />
 	<ePixmap position="195,25" size="160,100" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xc.png" scale="stretch" alphatest="blend" zPosition="3" />
-	<widget name="playlist" position="360,30" size="940,100" font="Regular;50" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" />
+	<widget name="playlist" position="360,30" size="940,100" font="Regular;50" halign="left" valign="center" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" zPosition="2" scrollbarMode="showNever" />
 	<eLabel position="150,120" size="1570,5" backgroundColor="#202020" zPosition="2" />
 	<!-- Clock -->
 	<widget source="global.CurrentTime" render="Label" position="1320,30" size="400,80" font="Regular;34" halign="right" valign="center" foregroundColor="#808080" backgroundColor="#101010" transparent="1" zPosition="2">
@@ -10,7 +10,7 @@
 	</widget>
 	<widget name="menulist" position="158,155" size="1141,513" foregroundColor="#a0a0a0" backgroundColor="#10000000" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1365,150" size="308,423" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
-	<widget name="version" position="1360,580" size="310,30" halign="center" font="Regular;22" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="192,128" size="310,28" halign="left" font="Regular;22" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="153,677" size="1565,8" backgroundColor="#202020" zPosition="1" />
 	<widget source="description" render="xcRunningText" position="153,692" size="1151,278" font="Regular;28" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 
@@ -22,7 +22,7 @@
 	<widget position="1316,761" size="400,40" name="server_protocol" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
     <widget position="1316,941" size="400,50" name="timezone" font="Regular;32" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1316,691" size="400,85" name="created_at" font="Regular;32" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
-	<widget position="1359,627" size="310,40" name="state" font="Regular;28" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1370,647" size="310,40" name="state" font="Regular;28" halign="center" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1284,1091" size="340,40" name="key_text" font="Regular;32" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
 	<ePixmap position="1435,1007" size="112,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
@@ -40,4 +40,9 @@
 	<ePixmap position="1760,950" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/help.png" zPosition="3" alphatest="blend" transparent="1" />
 	<ePixmap position="1760,1010" size="100,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/fhd/info.png" zPosition="3" alphatest="blend" transparent="1" />
 	<widget name="info" position="858,1098" size="400,30" font="Regular;24" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
+	
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars" position="1364,607" size="315,32" alphatest="blend" transparent="1" zPosition="10" />
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars_fill" position="1364,607" size="315,32" alphatest="blend" transparent="1" zPosition="11" />
+	<widget source="session.Event_Now" render="Label" name="rating_value" position="1474,571" size="80,40" font="Regular; 36" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" halign="right" zPosition="12" />
+
 </screen>

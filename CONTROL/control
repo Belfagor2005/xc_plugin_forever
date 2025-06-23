@@ -1,10 +1,10 @@
 Package: enigma2-plugin-extensions-xcplugin-forever
-Version: 4.6
+Version: 4.7
 Section: extra
 Priority: optional
 Architecture: all
 Maintainer: Lululla <ekekaz@gmail.com>
 Description: plugin, for the free streaming.
-Source: none
+Source: enigma2-plugin-extensions-xcplugin-forever
 Homepage: 
 OE: OE2.0

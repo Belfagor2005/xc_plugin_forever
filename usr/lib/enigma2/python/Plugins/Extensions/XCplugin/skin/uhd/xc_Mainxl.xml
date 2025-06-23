@@ -10,7 +10,7 @@
 	</widget>
 	<widget name="menulist" position="211,207" size="1522,684" foregroundColor="#ffff00" backgroundColor="#101010" enableWrapAround="1" scrollbarMode="showOnDemand" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/slider.png" transparent="1" zPosition="2" />
 	<widget name="poster" position="1820,200" size="411,564" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/iptvlogo.jpg" alphatest="blend" zPosition="2" />
-	<widget name="version" position="1830,778" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
+	<widget name="version" position="156,168" size="400,40" halign="center" font="Regular;30" foregroundColor="yellow" backgroundColor="#000000" transparent="1" zPosition="6" />
 	<eLabel position="204,903" size="2087,11" backgroundColor="#202020" zPosition="1" />
 	<widget source="description" render="xcRunningText" position="204,923" size="1535,371" font="Regular;38" foregroundColor="#ffb75b" backgroundColor="#101010" halign="center" transparent="1" zPosition="4" options="movetype=running,startpoint=0,direction=top,steptime=80,repeat=0,always=0,oneshot=0,startdelay=6000,wrap=1" />
 
@@ -43,4 +43,9 @@
 	<ePixmap position="2347,1267" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/help.png" zPosition="3" alphatest="blend" transparent="1" />
 	<ePixmap position="2347,1347" size="134,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/info.png" zPosition="3" alphatest="blend" transparent="1" />
 	<widget name="info" position="944,1459" size="534,40" font="Regular;32" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
+
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars" position="1943,782" size="315,32" alphatest="blend" transparent="1" zPosition="10" />
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars_fill" position="1942,778" size="315,32" alphatest="blend" transparent="1" zPosition="11" />
+	<widget source="session.Event_Now" render="Label" name="rating_value" position="1847,778" size="80,40" font="Regular; 36" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" halign="right" zPosition="12" />
+
 </screen>
