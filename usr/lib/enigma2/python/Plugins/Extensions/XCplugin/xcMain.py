@@ -379,9 +379,6 @@ class xc_Main(Screen):
 			self.index = self.mlist.getSelectionIndex()
 			selected_channel = self.channel_list[self.index]
 
-			# Rating stars
-			# Initialize once, e.g. nel __init__ o quando crei la schermata
-			selected_channel = self.channel_list[self.index]
 			try:
 				rating = 0.0
 				if len(selected_channel) > 9 and selected_channel[9]:
@@ -389,60 +386,60 @@ class xc_Main(Screen):
 						rating = float(selected_channel[9])
 					except (ValueError, TypeError):
 						rating = 0.0
-				
+
 				rating = max(0.0, min(10.0, rating))
 				percent = rating / 10.0
-				
+
 				empty_path = "/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/starsbar_empty.png"
 				filled_path = "/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/starsbar_filled.png"
-				
+
 				if self.stars_empty_pixmap is None:
 					self.stars_empty_pixmap = LoadPixmap(empty_path)
-					print(f"[RATING] Empty pixmap loaded: {'success' if self.stars_empty_pixmap else 'failed'}")
-				
+					print("[RATING] Empty pixmap loaded: " + ("success" if self.stars_empty_pixmap else "failed"))
+
 				if self.stars_filled_pixmap is None:
 					self.stars_filled_pixmap = LoadPixmap(filled_path)
-					print(f"[RATING] Filled pixmap loaded: {'success' if self.stars_filled_pixmap else 'failed'}")
-				
+					print("[RATING] Filled pixmap loaded: " + ("success" if self.stars_filled_pixmap else "failed"))
+
 				if self.stars_empty_pixmap:
 					self["rating_stars"].instance.setPixmap(self.stars_empty_pixmap)
 					self["rating_stars"].show()
 					print("[RATING] Empty stars shown")
-				
+
 				filled_width = max(1, int(self.bar_width * percent))
-				
+
 				if self.stars_filled_pixmap and filled_width > 0:
 					current_pos = self["rating_stars_fill"].getPosition()
-					print(f"[RATING] Current position before: {current_pos}")
-					
+					print("[RATING] Current position before: " + str(current_pos))
+
 					self["rating_stars_fill"].instance.setPixmap(self.stars_filled_pixmap)
 					self["rating_stars_fill"].instance.resize(eSize(filled_width, self.bar_height))
-					
+
 					if self.stars_fill_position is None:
 						x, y = self["rating_stars"].getPosition()
 						self.stars_fill_position = (x, y)
-						print(f"[RATING] Initial position set: ({x}, {y})")
-					
+						print("[RATING] Initial position set: (" + str(x) + ", " + str(y) + ")")
+
 					self["rating_stars_fill"].move(ePoint(self.stars_fill_position[0], self.stars_fill_position[1]))
-					
+
 					new_pos = self["rating_stars_fill"].getPosition()
-					print(f"[RATING] New position after move: {new_pos}")
-					
+					print("[RATING] New position after move: " + str(new_pos))
+
 					self["rating_stars_fill"].hide()
 					self["rating_stars_fill"].show()
-					print(f"[RATING] Filled stars shown at {filled_width}px")
+					print("[RATING] Filled stars shown at " + str(filled_width) + "px")
 				else:
 					self["rating_stars_fill"].hide()
 					print("[RATING] Filled stars hidden")
-				
+
 				if "rating_value" in self:
-					self["rating_value"].setText(f"{rating:.1f}")
+					self["rating_value"].setText("{0:.1f}".format(rating))
 					self["rating_value"].show()
-				
-				print(f"[RATING] Updated to {rating}/10.0")
-				
+
+				print("[RATING] Updated to " + str(rating) + "/10.0")
+
 			except Exception as e:
-				print(f"[RATING ERROR] {str(e)}")
+				print("[RATING ERROR] " + str(e))
 				import traceback
 				traceback.print_exc()
 

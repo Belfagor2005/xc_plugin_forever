@@ -9,10 +9,10 @@
 # Skin by MMark
 #
 # ***************************************
-#		 Coded by Lululla			   *
-#			  Skin by MMark			   *
-#  Latest Update: 08/05/2025		   *
-#		Skin by MMark				   *
+#        Coded by Lululla              *
+#             Skin by MMark            *
+#  Latest Update: 08/05/2025           *
+#       Skin by MMark                  *
 # ***************************************
 # ATTENTION PLEASE...
 # This is free software; you can redistribute it and/or modify it under
@@ -379,7 +379,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
 
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def setCover(self):
@@ -483,7 +483,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 
 	def show_info(self):
 		if globalsxp.STREAMS.play_vod is True:
-			self["state"].setText(" PLAY	 >")
+			self["state"].setText(" PLAY     >")
 		self.hideTimer.start(5000, True)
 		if self.cont_play:
 			self["cont_play"].setText("Auto Play ON")
@@ -603,7 +603,7 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		print("seekable status changed!")
 
 	def __serviceStarted(self):
-		self["state"].setText(" PLAY	 >")
+		self["state"].setText(" PLAY     >")
 		self["cont_play"].setText("Auto Play OFF")
 		self.state = self.STATE_PLAYING
 
@@ -637,15 +637,15 @@ class xc_Player(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek,
 		self.hideTimer.start(5000, True)
 		text = " " + self.seekstate[3]
 		if self.seekstate[3] == ">":
-			text = " PLAY	  >"
+			text = " PLAY     >"
 		if self.seekstate[3] == "||":
-			text = "PAUSE	||"
+			text = "PAUSE   ||"
 		if self.seekstate[3] == ">> 2x":
-			text = "		x2		   >>"
+			text = "        x2         >>"
 		if self.seekstate[3] == ">> 4x":
-			text = "		x4		   >>"
+			text = "        x4         >>"
 		if self.seekstate[3] == ">> 8x":
-			text = "		x8		   >>"
+			text = "        x8         >>"
 		self["state"].setText(text)
 
 	def play_vod(self):
@@ -753,7 +753,7 @@ class nIPTVplayer(Screen, InfoBarBase, IPTVInfoBarShowHide, InfoBarSeek, InfoBar
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def nextAR(self):
@@ -1008,10 +1008,10 @@ class xc_Play(Screen):
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 
 	def cancel(self):
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def message1(self, answer=None):
@@ -1024,7 +1024,7 @@ class xc_Play(Screen):
 		elif answer:
 			try:
 				remove(dom)
-				self.session.open(MessageBox, dom + _("	  has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
+				self.session.open(MessageBox, dom + _("   has been successfully deleted\nwait time to refresh the list..."), MessageBox.TYPE_INFO, timeout=5)
 				del self.names[idx]
 				self.refreshmylist()
 			except OSError as error:
@@ -1322,7 +1322,7 @@ class xc_M3uPlayx(Screen):
 		self.names = []
 		self.urls = []
 		self.pics = []
-		pic = globalsxp.pictmp
+		# pic = globalsxp.pictmp
 		try:
 			if file_exists(self.name):
 				self.parse_m3u(self.name)
@@ -1389,7 +1389,7 @@ class xc_M3uPlayx(Screen):
 			attribs = {}
 			current_key = ''
 			current_value = ''
-			parse_state = 0	 # 0=key, 1=value
+			parse_state = 0  # 0=key, 1=value
 			txt = txt.strip()
 
 			for char in txt:
@@ -1710,7 +1710,7 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 			globalsxp.STREAMS.play_vod = False
 			self.session.nav.stopService()
 			self.session.nav.playService(self.initialservice)
-		aspect_manager.restore_aspect()	 # Restore aspect on exit
+		aspect_manager.restore_aspect()  # Restore aspect on exit
 		self.close()
 
 	def leavePlayer(self):
@@ -1725,4 +1725,4 @@ class M3uPlay2(Screen, InfoBarMenu, InfoBarBase, InfoBarSeek, InfoBarNotificatio
 # thanks again to KiddaC for all the tricks we exchanged, and not just the tricks ;)
 # -------------------------------------------------------------------------------------
 # ===================Skin by Mmark Edition for Xc Plugin Infinity please don't copy o remove this
-# send credits to autor Lululla	 ;)
+# send credits to autor Lululla  ;)
