@@ -22,9 +22,10 @@
 	<widget position="1347,435" size="534,67" name="server_protocol" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
     <widget position="1347,640" size="534,107" name="timezone" font="Regular;43" halign="left" valign="center" foregroundColor="#606060" backgroundColor="#101010" transparent="1" zPosition="2" />
 	<widget position="1347,192" size="534,114" name="created_at" font="Regular;43" halign="left" valign="center" foregroundColor="#66ffcc" backgroundColor="#101010" transparent="1" zPosition="2" />     
-	<widget position="1504,754" size="355,54" name="state" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
+	<widget position="1891,1331" size="355,54" name="state" font="Regular;38" halign="left" valign="center" foregroundColor="#ffff00" backgroundColor="#000000" transparent="1" zPosition="5" />
 	<widget position="1712,1455" size="454,54" name="key_text" font="Regular;43" halign="left" foregroundColor="#ffffff" backgroundColor="#101010" transparent="1" zPosition="1" />	
-	<ePixmap position="1347,754" size="150,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/epg.png" alphatest="blend" zPosition="10" />
+	<ePixmap position="1787,776" size="50,50" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/star.png" alphatest="blend" zPosition="10" />
+	<ePixmap position="1368,759" size="150,54" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/uhd/epg.png" alphatest="blend" zPosition="10" />
 	<!-- Buttons Colors -->
 	<eLabel position="200,1275" size="2094,7" backgroundColor="#202020" zPosition="1" />
 	<eLabel backgroundColor="#00ff0000" position="275,1334" size="300,6" zPosition="12" />
@@ -44,6 +45,6 @@
 	<widget name="info" position="352,1510" size="534,40" font="Regular;32" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
 	<widget source="session.Event_Now" render="Pixmap" name="rating_stars" position="1943,782" size="315,32" alphatest="blend" transparent="1" zPosition="10" />
 	<widget source="session.Event_Now" render="Pixmap" name="rating_stars_fill" position="1942,781" size="315,32" alphatest="blend" transparent="1" zPosition="11" />
-	<widget source="session.Event_Now" render="Label" name="rating_value" position="1847,783" size="80,40" font="Regular; 36" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" halign="right" zPosition="12" />
+	<widget source="session.Event_Now" render="Label" name="rating_value" position="1850,781" size="80,40" font="Regular; 36" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" halign="center" zPosition="12" />
 
 </screen>
