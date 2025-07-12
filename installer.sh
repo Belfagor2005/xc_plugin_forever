@@ -11,118 +11,114 @@ FILEPATH=/tmp/main.tar.gz
 OSTYPE=Dream
 STATUS=/var/lib/opkg/status
 if [ ! -d /usr/lib64 ]; then
-	PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/XCplugin
+    PLUGINPATH=/usr/lib/enigma2/python/Plugins/Extensions/XCplugin
 else
-	PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/XCplugin
+    PLUGINPATH=/usr/lib64/enigma2/python/Plugins/Extensions/XCplugin
 fi
 
 ## Remove tmp directory
-[ -r $TMPPATH ] && rm -f $TMPPATH > /dev/null 2>&1
+[ -r $TMPPATH ] && rm -rf $TMPPATH > /dev/null 2>&1
 
-## Remove tmp directory
+## Remove tmp file
 [ -r $FILEPATH ] && rm -f $FILEPATH > /dev/null 2>&1
 
 ## Remove old plugin directory
-[ -r $PLUGINPATH ] && rm -rf $PLUGINPATH
+[ -r $PLUGINPATH ] && rm -rf $PLUGINPATH > /dev/null 2>&1
 
 ## check depends packges
 if [ -f /var/lib/dpkg/status ]; then
-   STATUS=/var/lib/dpkg/status
-   OSTYPE=DreamOs
+    STATUS=/var/lib/dpkg/status
+    OSTYPE=DreamOs
 else
-   STATUS=/var/lib/opkg/status
-   OSTYPE=Dream
+    STATUS=/var/lib/opkg/status
+    OSTYPE=Dream
 fi
-echo ""
 
+echo ""
 if [ -f /usr/bin/wget ]; then
     echo "wget exist"
 else
-	if [ $OSTYPE = "DreamOs" ]; then
-		echo "dreamos"
-		apt-get update && apt-get install wget
-	else
-		opkg update && opkg install wget
-	fi
+    if [ $OSTYPE = "DreamOs" ]; then
+        echo "Installing wget for DreamOS..."
+        apt-get update && apt-get install wget -y
+    else
+        echo "Installing wget..."
+        opkg update && opkg install wget
+    fi
 fi
 
 if python --version 2>&1 | grep -q '^Python 3\.'; then
-	echo "You have Python3 image"
-	PYTHON=PY3
-	Packagesix=python3-six
-	Packagerequests=python3-requests
+    echo "You have Python3 image"
+    PYTHON=PY3
+    Packagesix=python3-six
+    Packagerequests=python3-requests
 else
-	echo "You have Python2 image"
-	PYTHON=PY2
-	Packagerequests=python-requests
+    echo "You have Python2 image"
+    PYTHON=PY2
+    Packagerequests=python-requests
 fi
 
+echo ""
 if [ $PYTHON = "PY3" ]; then
-	if grep -qs "Package: $Packagesix" cat $STATUS ; then
-		echo ""
-	else
-		opkg update && opkg --force-reinstall --force-overwrite install python3-six
-	fi
+    if ! grep -qs "Package: $Packagesix" $STATUS; then
+        echo "Installing python3-six..."
+        if [ $OSTYPE = "DreamOs" ]; then
+            apt-get update && apt-get install python3-six -y
+        else
+            opkg update && opkg install python3-six
+        fi
+    fi
 fi
+
 echo ""
-if grep -qs "Package: $Packagerequests" cat $STATUS ; then
-	echo ""
-else
-	echo "Need to install $Packagerequests"
-	echo ""
-	if [ $OSTYPE = "DreamOs" ]; then
-		apt-get update && apt-get install python-requests -y
-	else
-		if [ $PYTHON = "PY3" ]; then
-			opkg update && opkg --force-reinstall --force-overwrite install python3-requests
-		# elif [ $PYTHON = "PY2" ]; then
-		else
-			opkg update && opkg --force-reinstall --force-overwrite install python-requests
-		fi
-	fi
+if ! grep -qs "Package: $Packagerequests" $STATUS; then
+    echo "Installing $Packagerequests..."
+    if [ $OSTYPE = "DreamOs" ]; then
+        apt-get update && apt-get install $Packagerequests -y
+    else
+        opkg update && opkg install $Packagerequests
+    fi
 fi
-echo ""
 
 ## Download and install plugin
-## check depends packges
 mkdir -p $TMPPATH
 cd $TMPPATH
 set -e
+
 if [ $OSTYPE = "DreamOs" ]; then
-   echo "# Your image is OE2.5/2.6 #"
-   echo ""
+    echo "# Your image is OE2.5/2.6 #"
 else
-   echo "# Your image is OE2.0 #"
-   echo ""
+    echo "# Your image is OE2.0 #"
+    echo "Installing additional dependencies..."
+    opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
 fi
 
-if [ $OSTYPE != "DreamOs" ]; then
-	opkg update && opkg --force-reinstall --force-overwrite install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp
-fi
-sleep 2
-
-wget --no-check-certificate 'https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz'
-tar -xzf main.tar.gz
-cp -r 'xc_plugin_forever-main/usr' '/'
-## cp -r 'xc_plugin_forever-main/etc' '/'
+echo "Downloading plugin..."
+wget --no-check-certificate -O $FILEPATH 'https://github.com/Belfagor2005/xc_plugin_forever/archive/refs/heads/main.tar.gz'
+tar -xzf $FILEPATH -C $TMPPATH
+cp -r $TMPPATH/xc_plugin_forever-main/usr /
 set +e
-cd
-sleep 2
 
 ## Check if plugin installed correctly
 if [ ! -d $PLUGINPATH ]; then
-	echo "Some thing wrong .. Plugin not installed"
-	exit 1
+    echo "Error: Plugin not installed correctly!"
+    rm -rf $TMPPATH > /dev/null 2>&1
+    rm -f $FILEPATH > /dev/null 2>&1
+    exit 1
 fi
 
+## Cleanup
 rm -rf $TMPPATH > /dev/null 2>&1
+rm -f $FILEPATH > /dev/null 2>&1
 sync
-# # Identify the box type from the hostname file
+
+## Show install info
 FILE="/etc/image-version"
-box_type=$(head -n 1 /etc/hostname)
-distro_value=$(grep '^distro=' "$FILE" | awk -F '=' '{print $2}')
-distro_version=$(grep '^version=' "$FILE" | awk -F '=' '{print $2}')
+box_type=$(head -n 1 /etc/hostname 2>/dev/null)
+distro_value=$(grep '^distro=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
+distro_version=$(grep '^version=' "$FILE" 2>/dev/null | awk -F '=' '{print $2}')
 python_vers=$(python --version 2>&1)
+
 echo "#########################################################
 #               INSTALLED SUCCESSFULLY                  #
 #                developed by LULULLA                   #
@@ -136,6 +132,7 @@ OO SYSTEM: $OSTYPE
 PYTHON: $python_vers
 IMAGE NAME: $distro_value
 IMAGE VERSION: $distro_version"
+
 sleep 5
 killall -9 enigma2
 exit 0
