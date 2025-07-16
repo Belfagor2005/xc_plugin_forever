@@ -52,6 +52,10 @@ from .addons.modul import globalsxp
 from .xcConfig import cfg
 from .xcSkin import m3ulistxc, skin_path, xcM3UList
 
+try:
+    unicode
+except NameError:
+    unicode = str
 
 Path_XML = str(cfg.pthxmlfile.value) + "/"
 DEFAULT_HOST = "exampleserver.com"
