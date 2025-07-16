@@ -123,10 +123,34 @@ class xc_Playlist(Screen):
 		self.onLayoutFinish.append(self.openList)
 		self.onClose.append(self.cleanup)
 
+	# def cleanup(self):
+		# """Clean up resources when the screen is closed"""
+		# self.active = False
+		# self.session_http.close()
+
 	def cleanup(self):
 		"""Clean up resources when the screen is closed"""
 		self.active = False
-		self.session_http.close()
+		try:
+			if hasattr(self, 'gui_update_timer'):
+				self.gui_update_timer.stop()
+				try:
+					self.gui_update_timer_conn = None
+				except:
+					pass
+		except:
+			pass
+		
+		try:
+			self.session_http.close()
+		except:
+			pass
+		
+		try:
+			if hasattr(self, 'executor'):
+				self.executor.shutdown(wait=False)
+		except:
+			pass
 
 	def selOn(self, host, port, username, password):
 		"""Check server status with caching and timeout"""
@@ -215,7 +239,7 @@ class xc_Playlist(Screen):
 		if not self.entries:
 			return
 		try:
-			with ThreadPoolExecutor(max_workers=10) as executor:
+			with ThreadPoolExecutor(max_workers=5) as executor:
 				futures = {}
 				for idx, (host, port, username, password) in enumerate(self.entries):
 					if not self.active:
@@ -457,6 +481,15 @@ class xc_Playlist(Screen):
 			"Select list from Menulist"
 		)
 		self.session.open(MessageBox, help_msg, MessageBox.TYPE_INFO, timeout=10)
+
+	def close(self, *args, **kwargs):
+		self.cleanup()
+		try:
+			if self.initialservice and hasattr(self.session, 'nav'):
+				self.session.nav.playService(self.initialservice)
+		except:
+			pass
+		Screen.close(self, *args, **kwargs)
 
 
 # ===================Time is what we want most, but what we use worst===================
