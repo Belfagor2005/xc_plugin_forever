@@ -202,6 +202,7 @@ class xc_Playlist(Screen):
 			print("selOn Error: " + str(e))
 			return "N/A", "N/A"
 
+	"""
 	def openList(self):
 		self.names = []
 		self.urls = []
@@ -233,6 +234,67 @@ class xc_Playlist(Screen):
 		self["infoname"].setText(globalsxp.infoname)
 
 		Thread(target=self.verify_servers).start()
+	"""
+
+	def openList(self):
+		self.names = []
+		self.urls = []
+		self.entries = []
+
+		try:
+			if file_exists(Path_XML + "/xclink.txt"):
+				with codecs.open(Path_XML + "/xclink.txt", "r", encoding="utf-8") as f:
+					for line in f:
+						line = line.strip()
+						if line.startswith("#"):
+							continue
+
+						matchx = self.url_pattern.match(line)
+						if matchx:
+							host = matchx.group(1)
+							port = matchx.group(2) or "80"
+							username = matchx.group(3)
+							password = matchx.group(4)
+							
+							# Ensure all strings are properly encoded
+							host = host.encode('utf-8') if isinstance(host, unicode) else str(host)
+							username = username.encode('utf-8') if isinstance(username, unicode) else str(username)
+							
+							if host == DEFAULT_HOST or username == DEFAULT_USER:
+								print("Skipping default values")
+								continue
+								
+							self.names.append("(Checking...) " + username)
+							self.urls.append(line)
+							self.entries.append((host, port, username, password))
+
+			# Initialize GUI elements properly
+			if not self.names:
+				self.names.append(_("No valid playlists found"))
+				
+			# Use proper string conversion for Python 2
+			self["live"].setText(str(len(self.names)) + _(" Server(s)"))
+			if cfg.infoexp.getValue():
+				globalsxp.infoname = str(cfg.infoname.value)
+				self["infoname"].setText(globalsxp.infoname)
+
+			# Ensure list widget is properly initialized
+			if hasattr(self["list"], 'setList'):
+				self["list"].setList([(x,) for x in self.names])
+			else:
+				m3ulistxc(self.names, self["list"])
+
+			# Re-enable keys
+			self["actions"].setEnabled(True)
+			
+			# Start verification in background
+			if self.entries:
+				Thread(target=self.verify_servers).start()
+
+		except Exception as e:
+			print("openList error: " + str(e))
+			self["Text"].setText(_("Error loading playlists"))
+			self["list"].setList([(_("Error loading data"),)])
 
 	def verify_servers(self):
 		"""Parallel verification of servers"""
