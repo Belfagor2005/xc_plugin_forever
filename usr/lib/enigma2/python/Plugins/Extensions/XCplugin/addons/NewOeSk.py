@@ -38,8 +38,11 @@ def newOE():
     try:
         from enigma import PACKAGE_VERSION
         major, minor, patch = [int(n) for n in PACKAGE_VERSION.split('.')]
-        if major > 4 or (major == 4 and minor >= 2):  # if major > 4 or major == 4 and minor >= 2:
-            boo = True  # new enigma core (DreamElite, DreamOS, Merlin, ...) ===== e2 core: OE 2.2+ ====================== (c)Dreambox core
+        # if major > 4 or major == 4 and minor >= 2:
+        if major > 4 or (major == 4 and minor >= 2):
+            # new enigma core (DreamElite, DreamOS, Merlin, ...) ===== e2 core:
+            # OE 2.2+ ====================== (c)Dreambox core
+            boo = True
     except Exception:
         pass
     try:
@@ -125,16 +128,14 @@ def ctrlSkin(pank, skin):
             r'(<widget\b(?:(?!>).)*?scrollbarMode\s*=\s*"[^"]*"(?:(?!>).)*?)(?:\sfont\s*=\s*"[^"]*")',
             r'\1',
             skin,
-            flags=DOTALL
-        )
+            flags=DOTALL)
 
         # 3. Rimozione aggiuntiva per widget 'config'
         skin = sub(
             r'(<widget\b(?:(?!>).)*?name\s*=\s*"config"(?:(?!>).)*?)(?:\sfont\s*=\s*"[^"]*")',
             r'\1',
             skin,
-            flags=DOTALL
-        )
+            flags=DOTALL)
     else:
         print('No Skin modifications applied.')
 
