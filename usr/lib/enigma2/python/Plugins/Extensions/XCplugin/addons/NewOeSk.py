@@ -19,7 +19,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 from os.path import isfile
-from re import search
+# from re import search
 __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
@@ -38,11 +38,8 @@ def newOE():
     try:
         from enigma import PACKAGE_VERSION
         major, minor, patch = [int(n) for n in PACKAGE_VERSION.split('.')]
-        # if major > 4 or major == 4 and minor >= 2:
-        if major > 4 or (major == 4 and minor >= 2):
-            # new enigma core (DreamElite, DreamOS, Merlin, ...) ===== e2 core:
-            # OE 2.2+ ====================== (c)Dreambox core
-            boo = True
+        if major > 4 or (major == 4 and minor >= 2):  # if major > 4 or major == 4 and minor >= 2:
+            boo = True  # new enigma core (DreamElite, DreamOS, Merlin, ...) ===== e2 core: OE 2.2+ ====================== (c)Dreambox core
     except Exception:
         pass
     try:
@@ -71,16 +68,6 @@ patterns_to_remove = [
 ]
 
 # scrollbarMode="
-patterns_to_remove = [
-    r'scrollbarWidth="[^"]*"',
-    r'scrollbarSliderBorderWidth="[^"]*"',
-    r'textoffsets\s*="[^"]*"',
-    r'secondfont\s*="[^"]*"',
-    r'scrollbarBorderWidth="[^"]*"',
-    r'scrollbarForegroundColor="[^"]*"',
-    r'scrollbarBorderColor="[^"]*"'
-]
-
 
 scrollbar_keywords_patterns = [
     r'scrollbarMode="list"',
@@ -102,23 +89,55 @@ scrollbar_keywords_patterns = [
 ]
 
 
+"""
 # scrollbarMode="
+# def ctrlSkin(pank, skin):
+    # from re import sub
+    # print('ctrlSkin panel=%s' % pank)
+    # # Edit only if `newOE()` is True or `/etc/opkg/nn2-feed.conf` exists
+    # if newOE() or isfile('/etc/opkg/nn2-feed.conf') or isfile("/usr/bin/apt-get"):
+        # for pattern in patterns_to_remove:
+            # skin = sub(pattern, '', skin)
+        # # Remove "font" only if a scrollbarMode pattern is found
+        # for pattern in scrollbar_keywords_patterns:
+            # if search(pattern, skin):  # If any pattern in scrollbar_keywords is found
+                # skin = sub(r'font="[^"]*"', '', skin)  # Remove font
+        # # print('Skin modified:\n', skin)
+    # else:
+        # print('No Skin modifications applied.')
+    # return skin
+"""
+
+
 def ctrlSkin(pank, skin):
-    from re import sub
+    from re import sub, DOTALL
     print('ctrlSkin panel=%s' % pank)
-    # Edit only if `newOE()` is True or `/etc/opkg/nn2-feed.conf` exists
+
+    # Applica modifiche solo per DreamOS/NewOE
     if newOE() or isfile('/etc/opkg/nn2-feed.conf') or isfile("/usr/bin/apt-get"):
+        # 1. Rimuovi attributi globali problematici
         for pattern in patterns_to_remove:
             skin = sub(pattern, '', skin)
-        # Remove "font" only if a scrollbarMode pattern is found
-        for pattern in scrollbar_keywords_patterns:
-            if search(
-                    pattern,
-                    skin):  # If any pattern in scrollbar_keywords is found
-                skin = sub(r'font="[^"]*"', '', skin)  # Remove font
-        # print('Skin modified:\n', skin)
+
+        # 2. Rimuovi 'font' specificamente dai widget con scrollbarMode
+        # Gestisce qualsiasi ordine degli attributi
+        skin = sub(
+            r'(<widget\b(?:(?!>).)*?scrollbarMode\s*=\s*"[^"]*"(?:(?!>).)*?)(?:\sfont\s*=\s*"[^"]*")',
+            r'\1',
+            skin,
+            flags=DOTALL
+        )
+
+        # 3. Rimozione aggiuntiva per widget 'config'
+        skin = sub(
+            r'(<widget\b(?:(?!>).)*?name\s*=\s*"config"(?:(?!>).)*?)(?:\sfont\s*=\s*"[^"]*")',
+            r'\1',
+            skin,
+            flags=DOTALL
+        )
     else:
         print('No Skin modifications applied.')
+
     return skin
 
 

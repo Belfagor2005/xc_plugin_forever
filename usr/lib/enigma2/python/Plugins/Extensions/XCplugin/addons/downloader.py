@@ -24,7 +24,7 @@ try:
     from twisted.internet import ssl
     from twisted.internet._sslverify import ClientTLSOptions
     sslverify = True
-except BaseException:
+except:
     sslverify = False
 
 
@@ -54,8 +54,7 @@ class DownloadWithProgress:
         self.errorCallback = None
         self.stopFlag = False
         self.timer = eTimer()
-        # Assicurati che il timer venga configurato nel thread principale
-        reactor.callFromThread(self._setTimer)
+        reactor.callFromThread(self._setTimer)  # Assicurati che il timer venga configurato nel thread principale
 
     def _setTimer(self):
         # Configura il timer nel thread principale
@@ -73,22 +72,16 @@ class DownloadWithProgress:
             feedFile = urlopen(request)
             metaData = feedFile.headers
             self.totalSize = int(metaData.get("Content-Length", 0))
-            self.blockSize = max(min(self.totalSize //
-                                     100, 1024), 131071) if self.totalSize else 65536
+            self.blockSize = max(min(self.totalSize // 100, 1024), 131071) if self.totalSize else 65536
         except OSError as err:
             if self.errorCallback:
                 self.errorCallback(err)
             return self
-        # Esegui il download in un thread separato
-        reactor.callInThread(self.run)
+        reactor.callInThread(self.run)  # Esegui il download in un thread separato
         return self
 
     def run(self):
-        response = requests.get(
-            self.url,
-            headers={
-                "User-agent": RequestAgent()},
-            stream=True)
+        response = requests.get(self.url, headers={"User-agent": RequestAgent()}, stream=True)
         try:
             with open(self.outputFile, "wb") as fd:
                 for buffer in response.iter_content(self.blockSize):
@@ -99,14 +92,10 @@ class DownloadWithProgress:
                         return True
                     self.progress += len(buffer)
                     if self.progressCallback:
-                        # Passa il controllo al thread principale per
-                        # aggiornare il progresso
-                        reactor.callFromThread(self._updateProgress)
+                        reactor.callFromThread(self._updateProgress)  # Passa il controllo al thread principale per aggiornare il progresso
                     fd.write(buffer)
             if self.endCallback:
-                # Passa il controllo al thread principale quando il download è
-                # terminato
-                reactor.callFromThread(self._endDownload)
+                reactor.callFromThread(self._endDownload)  # Passa il controllo al thread principale quando il download è terminato
         except OSError as err:
             if self.errorCallback:
                 self.errorCallback(err)
@@ -142,20 +131,16 @@ class DownloadWithProgress:
     def setAgent(self, userAgent):
         self.userAgent = userAgent
 
-    # Temporary supprt for deprecated callbacks.
-    def addErrback(self, errorCallback):
+    def addErrback(self, errorCallback):  # Temporary supprt for deprecated callbacks.
         # print("[Downloader] Warning: DownloadWithProgress 'addErrback' is deprecated use 'addError' instead!")
         self.errorCallback = errorCallback
         return self
 
-    # Temporary supprt for deprecated callbacks.
-    def addCallback(self, endCallback):
+    def addCallback(self, endCallback):  # Temporary supprt for deprecated callbacks.
         # print("[Downloader] Warning: DownloadWithProgress 'addCallback' is deprecated use 'addEnd' instead!")
         self.endCallback = endCallback
         return self
 
 
-# Class names should start with a Capital letter, this catches old code
-# until that code can be updated.
-class downloadWithProgress(DownloadWithProgress):
+class downloadWithProgress(DownloadWithProgress):  # Class names should start with a Capital letter, this catches old code until that code can be updated.
     pass

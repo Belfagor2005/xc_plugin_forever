@@ -14,31 +14,24 @@ from Components.ProgressBar import ProgressBar
 from Tools.Downloader import downloadWithProgress
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 import os
-import ssl
 
 
 try:
-    from urllib.request import urlopen, Request
-    from urllib.error import URLError
-except ImportError:
-    from urllib2 import urlopen, Request, URLError
+	from Components.HTMLComponent import *
+except:
+	print("KeyAdder: No HTMLComponent file found")
 
 try:
-    from Components.HTMLComponent import *
-except BaseException:
-    print("KeyAdder: No HTMLComponent file found")
-
-try:
-    from Components.GUIComponent import *
-except BaseException:
-    print("KeyAdder: No GUIComponent file found")
+	from Components.GUIComponent import *
+except:
+	print("KeyAdder: No GUIComponent file found")
 
 
 # imagedownloadScreen screen
 sz_w = getDesktop(0).size().width()
 
 if sz_w == 1280:
-    SKIN_imagedownloadScreen = """
+	SKIN_imagedownloadScreen = """
 <screen name="imagedownloadScreen" position="center,center" size="560,155" title="Downloading image...">
 <widget name="activityslider" position="20,50" size="510,20" borderWidth="1" transparent="1" />
 <widget name="package" position="20,5" size="510,45" font="Regular;18" halign="center" valign="center" transparent="1" />
@@ -46,7 +39,7 @@ if sz_w == 1280:
 </screen>"""
 
 else:
-    SKIN_imagedownloadScreen = """
+	SKIN_imagedownloadScreen = """
 <screen name="imagedownloadScreen" position="center,center" size="805,232" title="Downloading image...">
 <widget name="activityslider" position="30,75" size="755,30" borderWidth="1" transparent="1" />
 <widget name="package" position="30,7" size="755,60" font="Regular;27" halign="center" valign="center" transparent="1" />
@@ -57,14 +50,14 @@ else:
 sz_w = getDesktop(0).size().width()
 
 if sz_w == 1280:
-    SKIN_Progress = """
+	SKIN_Progress = """
 <screen position="350,250"  size="550,155" title="Command execution..." >
 <widget name="text" position="10,10"  size="550,130" font="Console;18" />
 <widget name="slider" position="0,142" size="550,15" borderWidth="1" transparent="1" />
 </screen>"""
 
 else:
-    SKIN_Progress = """
+	SKIN_Progress = """
 <screen position="500,430"  size="850,200" title="Command execution..." >
 <widget name="text" position="20,20"  size="850,160" font="Console;24" />
 <widget name="slider" position="0,185" size="850,20" borderWidth="1" transparent="1" />
@@ -72,302 +65,140 @@ else:
 
 
 def log(label, data):
-    data = str(data)
-    open("/tmp/KeyAdder.log", "a").write("\n" + label + ":>" + data)
+	data = str(data)
+	open("/tmp/KeyAdder.log", "a").write("\n" + label + ":>" + data)
 
 
 def getversioninfo():
-    currversion = '1.0'
-    version_file = resolveFilename(
-        SCOPE_PLUGINS, "Extensions/KeyAdder/tools/version")
-    if os.path.exists(version_file):
-        try:
-            fp = open(version_file, 'r').readlines()
-            for line in fp:
-                if 'version' in line:
-                    currversion = line.split('=')[1].strip()
-        except BaseException:
-            pass
-    return (currversion)
+	currversion = '1.0'
+	version_file = resolveFilename(SCOPE_PLUGINS, "Extensions/KeyAdder/tools/version")
+	if os.path.exists(version_file):
+		try:
+			fp = open(version_file, 'r').readlines()
+			for line in fp:
+				if 'version' in line:
+					currversion = line.split('=')[1].strip()
+		except:
+			pass
+	return (currversion)
 
 
 class imagedownloadScreen(Screen):
-    def __init__(self, session, name='', target='', url=''):
-        Screen.__init__(self, session)
-        self.skin = SKIN_imagedownloadScreen
-        self.target = target
-        self.name = name
-        self.url = url
-        self.shown = True
-        self.count_success = 0
-        self.success = False
-        self['activityslider'] = ProgressBar()
-        self['activityslider'].setRange((0, 100))
-        self['activityslider'].setValue(0)
-        self['status'] = Label()
-        self['package'] = Label()
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {
-                                    'ok': self.dexit, 'cancel': self.dexit}, -1)
-        self['status'].setText(_('Downloading,please wait..'))
-        self.downloading = False
-        self.downloader = None
-        self.setTitle(_('Connecting') + '...')
-        self.timer = eTimer()
-        try:
-            self.timer.callback.append(self.startDownload)
-        except BaseException:
-            self.timer_conn = self.timer.timeout.connect(self.startDownload)
-        self.timer.start(5000, 1)
+	def __init__(self, session, name='', target='', url=''):
+		Screen.__init__(self, session)
+		self.skin = SKIN_imagedownloadScreen
+		self.target = target
+		self.name = name
+		self.url = url
+		self["activityslider"] = ProgressBar()
+		self["activityslider"].setRange((0, 100))
+		self["activityslider"].setValue(0)
+		self["status"] = Label(_("Downloading, please wait..."))
+		self["package"] = Label(name)
 
-    def startDownload(self):
-        try:
-            self.timer.stop()
-            del self.timer
-        except BaseException:
-            pass
-        self.currentIndex = 0
-        self.count_success = 0
-        self.count_failed = 0
-        self.downloading = True
-        self.downloadfile2(self.url, self.target)
+		self["actions"] = ActionMap(
+			["OkCancelActions", "ColorActions"],
+			{
+				"ok": self.dexit,
+				"cancel": self.dexit
+			},
+			-1
+		)
+		self.downloading = False
+		self.downloader = None
+		self.setTitle(_('Connecting') + '...')
+		self.timer = eTimer()
+		try:
+			self.timer.callback.append(self.startDownload)
+		except AttributeError:
+			self.timer_conn = self.timer.timeout.connect(self.startDownload)
+		self.timer.start(5000, 1)
 
-    def downloadfile(self, url, target):
-        try:
-            req = Request(url)
-            try:
-                response = urlopen(
-                    req, context=ssl._create_unverified_context())
-            except BaseException:
-                response = urlopen(req)
-            r = response.read()
-            response.close()
-            with open(target, 'wb') as f:
-                f.write(r.content)
-            f.close()
-            self['status'].setText('downloaded successfully')
-        except URLError as e:
-            # trace_error()
-            if hasattr(e, 'code'):
-                print('We failed with error code - %s.' % e.code)
-                if '401' in str(e.code):
-                    self['status'].setText('Falied to download 401')
-                    return None
-                if '404' in str(e.code):
-                    self['status'].setText('Falied to download 404')
-                    return None
-                if '400' in str(e.code):
-                    self['status'].setText('Falied to download 400')
-                    return None
-                if '403' in str(e.code):
-                    self['status'].setText('Falied to download 403')
-                    return None
-            elif hasattr(e, 'reason'):
-                self['status'].setText('Falied to download')
-                return None
+	def startDownload(self):
+		try:
+			self.timer.stop()
+			del self.timer
+		except Exception:
+			pass
+		self.downloading = True
+		self['status'].setText(_('Connecting to server...'))
 
-    def downloadfile2(self, url=None, ofile=''):
-        debug = True
-        if True:
-            self['package'].setText(self.name)
-            self.setTitle(_('Connecting') + '...')
-            self['status'].setText(_('Connecting') + ' to server....')
-            self.downloading = True
-            self.downloader = downloadWithProgress(self.url, self.target)
-            self.downloader.addProgress(self.progress)
-            self.downloader.start().addCallback(
-                self.responseCompleted).addErrback(
-                self.responseFailed)
+		# Use downloadWithProgress async downloader
+		self.downloader = downloadWithProgress(self.url, self.target)
+		self.downloader.addProgress(self.progress)
+		d = self.downloader.start()
+		d.addCallback(self.responseCompleted)
+		d.addErrback(self.responseFailed)
 
-    def progress(self, current, total):
-        p = int(100 * current // float(total))
-        self['activityslider'].setValue(p)
-        info = _('Downloading') + ' ' + '%d of %d kBytes (%.2f%%)' % (current //
-                                                                      1024, total // 1024, 100 * current // float(total))
-        self['package'].setText(self.name)
-        self['status'].setText(info)
-        self.setTitle(_('Downloading') + ' ' + str(p) + '%...')
+	def progress(self, current, total):
+		# Update progress bar and labels
+		if total == 0:
+			percent = 0
+		else:
+			percent = int(100 * current / float(total))
 
-    def responseCompleted(self, data=None):
-        print('[downloader] Download succeeded. ')
-        info = 'Download completed successfully.\npress Ok To Exit'
-        self['status'].setText(info)
-        self.setTitle(_('Download completed successfully.'))
-        self.downloading = False
-        self.success = True
-        self.instance.show()
-        return
+		self['activityslider'].setValue(percent)
+		info = _('Downloading') + ' ' + '%d of %d kBytes (%.2f%%)' % (current // 1024, total // 1024, 100 * current / float(total))
+		self['package'].setText(self.name)
+		self['status'].setText(info)
+		self.setTitle(_('Downloading') + ' ' + str(percent) + '%...')
 
-    def responseFailed(self, failure_instance=None, error_message=''):
-        print('[downloader] Download failed. ')
-        self.error_message = error_message
-        if error_message == '' and failure_instance is not None:
-            self.error_message = failure_instance.getErrorMessage()
-        info = self.error_message
-        self['status'].setText(info)
-        self.setTitle(_('Download failed Press Ok To Exit'))
-        cmd = "echo 'message' > /tmp/.download_error.log"
-        cmd = cmd.replace('message', info)
-        self.container = eConsoleAppContainer()
-        self.container.execute(cmd)
-        self.downloading = False
-        self.success = False
-        self['key_green'].hide()
-        self.instance.show()
-        self.remove_target()
-        return
+	def responseCompleted(self, data=None):
+		# Called when download finished successfully
+		print('[downloader] Download succeeded.')
+		info = _('Download completed successfully.\nPress OK to exit.')
+		self['status'].setText(info)
+		self.setTitle(_('Download completed successfully.'))
+		self.downloading = False
+		self.success = True
+		self.instance.show()
 
-    def dexit(self):
-        try:
-            path = os.path.split(self.target)[0]
-        except BaseException:
-            pass
-        if self.downloading:
-            self.session.openWithCallback(self.abort, MessageBox, _(
-                'Are you sure to stop download.'), MessageBox.TYPE_YESNO)
-        else:
-            self.close(False)
+	def responseFailed(self, failure_instance=None, error_message=''):
+		# Called when download fails
+		print('[downloader] Download failed.')
+		self.error_message = error_message
+		if error_message == '' and failure_instance is not None:
+			self.error_message = failure_instance.getErrorMessage()
+		info = self.error_message
+		self['status'].setText(info)
+		self.setTitle(_('Download failed. Press OK to exit.'))
+		self.downloading = False
+		self.success = False
+								
+		self.instance.show()
+		self.remove_target()
 
-    def remove_target(self):
-        import os
-        try:
-            if os.path.exists(self.target):
-                os.remove(self.target)
-        except BaseException:
-            pass
+	def dexit(self):
+		if self.downloading:
+			self.session.openWithCallback(self.abort, MessageBox, _('Are you sure to stop download?'), MessageBox.TYPE_YESNO)
+		else:
+			self.close(False)
 
-    def abort(self, answer=True):
-        if answer is False:
-            return
-        if not self.downloading:
-            if os_path.exists('/tmp/download_install.log'):
-                os.remove('/tmp/download_install.log')
-            self.close(False)
-        elif self.downloader is not None:
-            self.downloader.stop
-            info = _('Aborting...')
-            self['status'].setText(info)
-            cmd = 'echo canceled > /tmp/.download_error.log ; rm target'
-            cmd = cmd.replace('target', self.target)
-            self.remove_target()
-            try:
-                self.close(False)
-            except BaseException:
-                pass
-        else:
-            self.close(False)
-        return
+	def remove_target(self):
+		# Remove partially downloaded target file
+		try:
+			if os_path.exists(self.target):
+				os.remove(self.target)
+		except Exception:
+			pass
 
-
-class imagedownloadScreen2(Screen):
-    def __init__(self, session, name=''):
-        Screen.__init__(self, session)
-        self.skin = SKIN_imagedownloadScreen
-        self.name = name
-        self['activityslider'] = ProgressBar()
-        self['activityslider'].setRange((0, 100))
-        self['activityslider'].setValue(0)
-        self['status'] = Label()
-        self['package'] = Label()
-        self.downloading = False
-        self['actions'] = ActionMap(['OkCancelActions', 'ColorActions'], {
-                                    'ok': self.dexit, 'cancel': self.dexit}, -1)
-        self['status'].setText(_('Downloading,please wait..'))
-        self.setTitle(_('Connecting') + '...')
-        self.timer = eTimer()
-        try:
-            self.timer.callback.append(self.startDownload)
-        except BaseException:
-            self.timer_conn = self.timer.timeout.connect(self.startDownload)
-        self.timer.start(5000, 1)
-
-    def startDownload(self):
-        try:
-            self.timer.stop()
-            self.downloading = True
-            del self.timer
-        except BaseException:
-            pass
-        self.downloadfile2()
-
-    def downloadfile2(self, ofile=''):
-        debug = True
-        if True:
-            self['package'].setText(self.name)
-            self.setTitle(_('Connecting') + '...')
-            self['status'].setText(_('Connecting') + ' to server....')
-            self.downloading = True
-            try:
-                self.responseCompleted()
-            except BaseException:
-                self.responseFailed()
-
-    def responseCompleted(self, data=None):
-        self['activityslider'].setValue(int(100 * 100))
-        print('[downloader] Download succeeded. ')
-        info = 'Download completed successfully.\npress Ok To Exit'
-        self['status'].setText(info)
-        self.setTitle(_('Download completed successfully.'))
-        self.downloading = False
-        self.success = True
-        self.instance.show()
-
-    def responseFailed(self, failure_instance=None, error_message=''):
-        print('[downloader] Download failed. ')
-        self.error_message = error_message
-        if error_message == '' and failure_instance is not None:
-            self.error_message = failure_instance.getErrorMessage()
-        info = self.error_message
-        self['status'].setText(info)
-        self.setTitle(_('Download failed Press Ok To Exit'))
-        cmd = "echo 'message' > /tmp/.download_error.log"
-        cmd = cmd.replace('message', info)
-        self.container = eConsoleAppContainer()
-        self.container.execute(cmd)
-        self.downloading = False
-        self.success = False
-        self['key_green'].hide()
-        self.instance.show()
-        self.remove_target()
-        return
-
-    def dexit(self):
-        try:
-            path = os.path.split(self.target)[0]
-        except BaseException:
-            pass
-        if self.downloading:
-            self.session.openWithCallback(self.abort, MessageBox, _(
-                'Are you sure to stop download.'), MessageBox.TYPE_YESNO)
-        else:
-            self.close(False)
-
-    def remove_target(self):
-        import os
-        try:
-            if os.path.exists(self.target):
-                os.remove(self.target)
-        except BaseException:
-            pass
-
-    def abort(self, answer=True):
-        if answer is False:
-            return
-        if not self.downloading:
-            if os_path.exists('/tmp/download_install.log'):
-                os.remove('/tmp/download_install.log')
-            self.close(False)
-        elif self.downloader is not None:
-            self.downloader.stop
-            info = _('Aborting...')
-            self['status'].setText(info)
-            cmd = 'echo canceled > /tmp/.download_error.log ; rm target'
-            cmd = cmd.replace('target', self.target)
-            self.remove_target()
-            try:
-                self.close(False)
-
-            except BaseException:
-                pass
-        else:
-            self.close(False)
-        return
+	def abort(self, answer=True):
+		if not answer:
+			return
+		if not self.downloading:
+			try:
+				if os_path.exists('/tmp/download_install.log'):
+					os.remove('/tmp/download_install.log')
+			except Exception:
+				pass
+			self.close(False)
+		elif self.downloader is not None:
+			self.downloader.stop()
+			self['status'].setText(_('Aborting...'))
+			self.remove_target()
+			try:
+				self.close(False)
+			except Exception:
+				pass
+		else:
+			self.close(False)
