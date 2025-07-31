@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ## setup command=wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh?inline=false" -O - | /bin/sh
 
 ## Only This 2 lines to edit with new version ######
@@ -32,7 +33,7 @@ install_requirements() {
     echo "Checking system requirements..."
     
     # Install wget if missing
-    if ! command -v wget >/dev/null; then
+    if ! command -v wget >/dev/null 2>&1; then
         echo "Installing wget..."
         if [ "$OSTYPE" = "DreamOs" ]; then
             apt-get update && apt-get install -y wget || return 1
@@ -62,7 +63,7 @@ install_requirements() {
         fi
     fi
     
-    # For OE2.0 systems
+    # For OE2.0 systems install additional deps
     if [ "$OSTYPE" = "Dream" ]; then
         echo "Installing additional dependencies..."
         opkg update && opkg install ffmpeg gstplayer exteplayer3 enigma2-plugin-systemplugins-serviceapp || return 1
@@ -75,7 +76,6 @@ install_requirements() {
 install_plugin() {
     echo "Downloading plugin..."
     
-    # Use raw GitHub URL for direct download
     GITHUB_URL="https://github.com/Belfagor2005/xc_plugin_forever/archive/main.tar.gz"
     
     if ! wget --no-check-certificate -O "$FILEPATH" "$GITHUB_URL"; then
@@ -83,7 +83,6 @@ install_plugin() {
         return 1
     fi
     
-    # Verify download
     if [ ! -s "$FILEPATH" ]; then
         echo "Downloaded file is empty!"
         return 1
@@ -101,13 +100,11 @@ install_plugin() {
 
 ## Main installation process
 if install_requirements && install_plugin; then
-    # Verify installation
     if [ -d "$PLUGINPATH" ]; then
         echo "#########################################################"
         echo "#               INSTALLED SUCCESSFULLY                  #"
         echo "#########################################################"
         
-        # Show system info
         echo "System Information:"
         echo "BOX MODEL: $(head -n 1 /etc/hostname 2>/dev/null || echo "Unknown")"
         echo "IMAGE: $(grep '^distro=' /etc/image-version 2>/dev/null | cut -d= -f2)"
