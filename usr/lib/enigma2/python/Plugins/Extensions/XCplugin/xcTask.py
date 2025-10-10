@@ -75,24 +75,23 @@ except ImportError:
 
 class AspectManager:
     def __init__(self):
-        self.init_aspect = self.get_current_aspect()
-        print("[INFO] Initial aspect ratio:", self.init_aspect)
+        try:
+            self.init_aspect = self.get_current_aspect()
+            print("[INFO] Initial aspect ratio:", self.init_aspect)
+        except Exception as e:
+            print("[ERROR] Failed to initialize aspect manager:", str(e))
+            self.init_aspect = 2  # Default 16:9
 
     def get_current_aspect(self):
-        """Restituisce l'aspect ratio attuale del dispositivo."""
         try:
-            return int(AVSwitch().getAspectRatioSetting())
+            aspect = AVSwitch().getAspectRatioSetting()
+            if isinstance(aspect, int):
+                return aspect
+            else:
+                return 2  # Fallback to 16:9
         except Exception as e:
             print("[ERROR] Failed to get aspect ratio:", str(e))
-            return 0  # Valore di default in caso di errore
-
-    def restore_aspect(self):
-        """Ripristina l'aspect ratio originale all'uscita del plugin."""
-        try:
-            print("[INFO] Restoring aspect ratio to:", self.init_aspect)
-            AVSwitch().setAspectRatio(self.init_aspect)
-        except Exception as e:
-            print("[ERROR] Failed to restore aspect ratio:", str(e))
+            return 2
 
 
 aspect_manager = AspectManager()
@@ -141,8 +140,20 @@ class xc_StreamTasks(Screen):
         self.onLayoutFinish.append(self.layoutFinished)
         self.onClose.append(self.__onClose)
 
+    # def __onClose(self):
+        # del self.Timer
+
     def __onClose(self):
-        del self.Timer
+        try:
+            if self.Timer and self.Timer.isActive():
+                self.Timer.stop()
+            del self.Timer
+        except:
+            pass
+            
+        # Cleanup esplicito
+        import gc
+        gc.collect()
 
     def layoutFinished(self):
         self.Timer.startLongTimer(2)
@@ -170,27 +181,43 @@ class xc_StreamTasks(Screen):
             self.close()
 
     def getTaskList(self):
-        for job in JobManager.getPendingJobs():
-            # Only add jobs that are not finished yet
-            if job.status != job.FINISHED:
-                self.movielist.append((
-                    job,
-                    job.name,
-                    job.getStatustext(),
-                    int(100 * job.progress // float(job.end)),
-                    str(100 * job.progress // float(job.end)) + "%"))
-            else:
-                # Manage finished jobs separately
-                self.movielist.append((
-                    job,
-                    job.name,
-                    _("Finished"),
-                    100,
-                    "100%"))
+        try:
+            pending_jobs = JobManager.getPendingJobs()
+            for job in pending_jobs:
+                try:
+                    # Controlli di sicurezza
+                    if not hasattr(job, 'status') or not hasattr(job, 'progress'):
+                        continue
 
-        # Set timer to update list
-        if len(self.movielist) >= 0:
-            self.Timer.startLongTimer(10)
+                    if job.status != job.FINISHED:
+                        # Evita divisione per zero
+                        progress_percent = 0
+                        if hasattr(job, 'end') and job.end and job.end > 0:
+                            progress_percent = min(100, int(100 * job.progress / float(job.end)))
+
+                        # Compatibilità Py2 (no f-string)
+                        progress_str = "{}%".format(progress_percent)
+
+                        self.movielist.append((
+                            job,
+                            getattr(job, 'name', 'Unknown'),
+                            job.getStatustext() if hasattr(job, 'getStatustext') else 'Unknown',
+                            progress_percent,
+                            progress_str
+                        ))
+
+                except Exception as e:
+                    # Stampa compatibile Py2/3
+                    try:
+                        print("Error processing job: {}".format(e))
+                    except Exception:
+                        print("Error processing job (non-UTF8 message)")
+
+        except Exception as e:
+            try:
+                print("Error in getTaskList: {}".format(e))
+            except Exception:
+                print("Error in getTaskList (non-UTF8 message)")
 
     def getMovieList(self):
         global file1
@@ -407,18 +434,22 @@ class downloadJob(Job):
         def enigma_quote(s):
             if isinstance(s, bytes):
                 s = s.decode('utf-8', 'ignore')
-            s = s.replace("'", "'\"'\"'")
+            s = str(s).replace("'", "'\"'\"'")
             return "'" + s + "'"
 
         # Converti lista in stringa quotata
         if isinstance(cmdline, list):
             quoted_cmd = []
             for arg in cmdline:
-                if ' ' in arg or any(char in arg for char in '()[]{}!$&*?;'):
-                    quoted_cmd.append(enigma_quote(arg))
+                arg_str = str(arg)
+                if ' ' in arg_str or any(char in arg_str for char in '()[]{}!$&*?;'):
+                    quoted_cmd.append(enigma_quote(arg_str))
                 else:
-                    quoted_cmd.append(arg)
+                    quoted_cmd.append(arg_str)
             cmdline = " ".join(quoted_cmd)
+        else:
+            # Assicurati che cmdline sia stringa
+            cmdline = str(cmdline)
 
         self.cmdline = cmdline
         print("cmdline=", self.cmdline)
@@ -428,13 +459,6 @@ class downloadJob(Job):
         self.toolbox = toolbox
         self.retrycount = 0
         downloadTask(self, self.cmdline, filename, filmtitle)
-
-    def retry(self):
-        assert self.status == self.FAILED
-        self.restart()
-
-    def cancel(self):
-        self.abort()
 
 
 class downloadTaskPostcondition(Condition):
@@ -500,46 +524,53 @@ class downloadTask(Task):
         self.starttime = time()
 
     def processOutput(self, data):
-        # Gestione compatibilità Python 2/3
-        if not PY3:
-            # In Python 2, data è già una stringa
-            pass
-        elif isinstance(data, bytes):
-            # In Python 3, decodifichiamo i bytes in stringa
-            data = data.decode("utf-8", "ignore")
+        if data is None:
+            return
 
         try:
-            if data.find("%") != -1:
-                tmpvalue = findall(r'(\d+?%)', data)[-1].rstrip("%")
-                self.progress = int(float(tmpvalue))
+            # Gestione dati vuoti
+            if not data:
+                return
 
-                if self.firstrun:
-                    self.firstrun = False
-                    if hasattr(self.toolbox, 'updatescreen'):
-                        self.toolbox.updatescreen()
+            # Compatibilità Python 2/3
+            import sys
+            PY3 = sys.version_info[0] == 3
 
-                elif self.progress == 100:
-                    self.lastprogress = int(self.progress)
-                    if hasattr(self.toolbox, 'updatescreen'):
-                        self.toolbox.updatescreen()
+            if PY3 and isinstance(data, bytes):
+                data = data.decode("utf-8", "ignore")
+            elif not PY3:
+                try:
+                    unicode  # noqa: F821
+                    if isinstance(data, unicode):  # noqa: F821
+                        data = data.encode("utf-8", "ignore")
+                except NameError:
+                    pass  # unicode non esiste in Py3, tutto ok
 
-                elif int(self.progress) != int(self.lastprogress):
-                    self.lastprogress = int(self.progress)
-                    elapsed_time = time() - self.starttime
-                    if elapsed_time > 2:
-                        self.starttime = time()
-                        if hasattr(self.toolbox, 'updatescreen'):
-                            self.toolbox.updatescreen()
+            # Verifica tipo stringa
+            if PY3:
+                if not isinstance(data, str):
+                    return
             else:
-                # Passa i dati alla gestione originale
-                if PY3:
-                    # In Python 3, riconverti in bytes se necessario
-                    Task.processOutput(self, data.encode("utf-8"))
-                else:
-                    Task.processOutput(self, data)
+                if not isinstance(data, (str, unicode)):  # noqa: F821
+                    return
+
+            # Se c'è una percentuale, prova a estrarre il progresso
+            if "%" in data:
+                try:
+                    matches = findall(r'(\d+?)%', data)
+                    if matches:
+                        tmpvalue = matches[-1]
+                        self.progress = min(100, max(0, int(tmpvalue)))  # clamp 0–100
+
+                        if self.progress != self.lastprogress:
+                            self.lastprogress = self.progress
+                            if hasattr(self.toolbox, 'updatescreen'):
+                                self.toolbox.updatescreen()
+                except (ValueError, IndexError) as err:
+                    print("Error parsing progress: {}".format(err))
+
         except Exception as errormsg:
-            print("Error processOutput: " + str(errormsg))
-            Task.processOutput(self, data)
+            print("Error in processOutput: {}".format(errormsg))
 
     def processOutputLine(self, line):
         pass
