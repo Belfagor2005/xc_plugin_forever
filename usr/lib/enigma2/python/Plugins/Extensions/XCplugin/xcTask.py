@@ -156,9 +156,9 @@ class xc_StreamTasks(Screen):
             if self.Timer and self.Timer.isActive():
                 self.Timer.stop()
             del self.Timer
-        except:
+        except BaseException:
             pass
-            
+
         # Cleanup esplicito
         import gc
         gc.collect()
@@ -194,25 +194,25 @@ class xc_StreamTasks(Screen):
             for job in pending_jobs:
                 try:
                     # Controlli di sicurezza
-                    if not hasattr(job, 'status') or not hasattr(job, 'progress'):
+                    if not hasattr(
+                            job, 'status') or not hasattr(
+                            job, 'progress'):
                         continue
 
                     if job.status != job.FINISHED:
                         # Evita divisione per zero
                         progress_percent = 0
                         if hasattr(job, 'end') and job.end and job.end > 0:
-                            progress_percent = min(100, int(100 * job.progress / float(job.end)))
+                            progress_percent = min(
+                                100, int(100 * job.progress / float(job.end)))
 
                         # Compatibilità Py2 (no f-string)
                         progress_str = "{}%".format(progress_percent)
 
-                        self.movielist.append((
-                            job,
-                            getattr(job, 'name', 'Unknown'),
-                            job.getStatustext() if hasattr(job, 'getStatustext') else 'Unknown',
-                            progress_percent,
-                            progress_str
-                        ))
+                        self.movielist.append(
+                            (job, getattr(
+                                job, 'name', 'Unknown'), job.getStatustext() if hasattr(
+                                job, 'getStatustext') else 'Unknown', progress_percent, progress_str))
 
                 except Exception as e:
                     # Stampa compatibile Py2/3
@@ -450,7 +450,8 @@ class downloadJob(Job):
             quoted_cmd = []
             for arg in cmdline:
                 arg_str = str(arg)
-                if ' ' in arg_str or any(char in arg_str for char in '()[]{}!$&*?;'):
+                if ' ' in arg_str or any(
+                        char in arg_str for char in '()[]{}!$&*?;'):
                     quoted_cmd.append(enigma_quote(arg_str))
                 else:
                     quoted_cmd.append(arg_str)
@@ -568,7 +569,8 @@ class downloadTask(Task):
                     matches = findall(r'(\d+?)%', data)
                     if matches:
                         tmpvalue = matches[-1]
-                        self.progress = min(100, max(0, int(tmpvalue)))  # clamp 0–100
+                        self.progress = min(
+                            100, max(0, int(tmpvalue)))  # clamp 0–100
 
                         if self.progress != self.lastprogress:
                             self.lastprogress = self.progress
