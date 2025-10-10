@@ -93,6 +93,14 @@ class AspectManager:
             print("[ERROR] Failed to get aspect ratio:", str(e))
             return 2
 
+    def restore_aspect(self):
+        """Ripristina l'aspect ratio originale all'uscita del plugin."""
+        try:
+            print("[INFO] Restoring aspect ratio to:", self.init_aspect)
+            AVSwitch().setAspectRatio(self.init_aspect)
+        except Exception as e:
+            print("[ERROR] Failed to restore aspect ratio:", str(e))
+
 
 aspect_manager = AspectManager()
 
