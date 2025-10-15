@@ -41,8 +41,8 @@
     <ePixmap position="1173,633" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/help.png" zPosition="3" alphatest="blend" transparent="1" />
     <ePixmap position="1173,673" size="66,26" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/hd/info.png" zPosition="3" alphatest="blend" transparent="1" />
     <widget name="info" position="176,754" size="266,20" font="Regular;16" halign="left" valign="center" foregroundColor="#5ad200" backgroundColor="#101010" transparent="1" zPosition="20" />	
-	<widget source="session.Event_Now" render="Pixmap" name="rating_stars" position="875,390" size="270,30" alphatest="blend" scale="stretch" transparent="1" zPosition="10" />
-	<widget source="session.Event_Now" render="Pixmap" name="rating_stars_fill" position="875,390" size="275,30" scale="stretch" alphatest="blend" transparent="1" zPosition="11" />
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars" position="875,390" size="315,32" alphatest="blend" transparent="1" zPosition="10" />
+	<widget source="session.Event_Now" render="Pixmap" name="rating_stars_fill" position="875,390" size="315,32" alphatest="blend" transparent="1" zPosition="11" />
 	<widget source="session.Event_Now" render="Label" name="rating_value" position="1015,413" size="80,40" font="Regular; 36" foregroundColor="#fed170" backgroundColor="#303030" transparent="1" halign="left" zPosition="12" />
 
 </screen>
