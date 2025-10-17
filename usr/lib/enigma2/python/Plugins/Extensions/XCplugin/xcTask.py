@@ -766,74 +766,26 @@ class downloadJob(Job):
             self.toolbox.updatescreen()
 
 
-class downloadTaskPostcondition(Condition):
-    RECOVERABLE = True
+class ReturncodePostcondition(Condition):
 
     def check(self, task):
-        """Check if task completed successfully"""
-        if not isinstance(task, downloadTask):
-            return False
-
-        # The task is considered successful if:
-        # 1. The return code is 0
-        # 2. There are no errors set
-        # 3. The file exists and is of reasonable size
-        success = (task.returncode == 0 and
-                   task.error is None and
-                   file_exists(task.filename) and
-                   getsize(task.filename) > 1024)
-
-        print("[POST-CONDITION] Check result for {}: {}".format(task.filmtitle, success))
-        return success
+        return task.returncode == 0
 
     def getErrorMessage(self, task):
-        if not isinstance(task, downloadTask):
-            return _("Unknown task error")
-
-        errors = {
-            task.ERROR_CORRUPT_FILE: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("DOWNLOADED FILE CORRUPTED:") +
-            '\n%s' %
-            task.lasterrormsg,
-            task.ERROR_RTMP_ReadPacket: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("COULD NOT READ RTMP PACKET:") +
-            '\n%s' %
-            task.lasterrormsg,
-            task.ERROR_SEGFAULT: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("SEGMENTATION FAULT:") +
-            '\n%s' %
-            task.lasterrormsg,
-            task.ERROR_SERVER: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("SERVER RETURNED ERROR:") +
-            '\n%s' %
-            task.lasterrormsg,
-            task.ERROR_FILESYSTEM: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("FILESYSTEM ERROR:") +
-            '\n%s' %
-            task.lasterrormsg,
-            task.ERROR_UNKNOWN: _("MOVIE DOWNLOAD FAILED!") +
-            '\n\n' +
-            _("UNKNOWN ERROR:") +
-            '\n%s' %
-            task.lasterrormsg}
-
-        error_msg = errors.get(task.error, _("Unknown error: %s") % task.lasterrormsg)
-        print("[POST-CONDITION] Error message for {}: {}".format(task.filmtitle, error_msg))
-        return error_msg
+        if hasattr(task, 'log') and task.log:
+            log = ''.join(task.log).strip()
+            log = log.split('\n')[-3:]
+            log = '\n'.join(log)
+            return log
+        else:
+            return _("Error code") + ": %s" % task.returncode
 
 
 class downloadTask(Task):
     if PY3:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(
-            range(5))
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = list(range(6))
     else:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(
-            5)
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = range(6)
 
     def __init__(self, job, cmdline, filename, filmtitle):
         Task.__init__(self, job, "Downloading ..." + filmtitle)
@@ -844,45 +796,34 @@ class downloadTask(Task):
         self.error = None
         self.lasterrormsg = None
         self.progress = 0
-        self.lastprogress = 0
 
-        self.postconditions = [downloadTaskPostcondition()]
+        self.postconditions = []
+        self.postconditions.append(ReturncodePostcondition())
+
         print("[TASK] Task created for: {}".format(filmtitle))
 
     def processOutput(self, data):
         """Process wget output to extract progress"""
-        try:
-            if data is None:
-                return
+        if data is None:
+            return
 
-            data_str = ""
+        try:
             if isinstance(data, bytes):
-                try:
-                    data_str = data.decode("utf-8", "ignore")
-                except UnicodeDecodeError:
-                    data_str = data.decode("latin-1", "ignore")
-            elif isinstance(data, str):
-                data_str = data
+                data_str = data.decode("utf-8", "ignore")
             else:
                 data_str = str(data)
-
-            # if data_str.strip():
-                # print("[DOWNLOAD OUTPUT] {}".format(data_str.strip()))
 
             if '%' in data_str:
                 percentages = findall(r'(\d+)%', data_str)
                 if percentages:
-                    try:
-                        new_progress = max(map(int, percentages))
-                        if 0 <= new_progress <= 100 and new_progress > self.progress:
-                            self.progress = new_progress
-                            self.setProgress(self.progress)
-                            print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
+                    new_progress = max(map(int, percentages))
+                    if 0 <= new_progress <= 100 and new_progress > self.progress:
+                        self.progress = new_progress
+                        self.setProgress(self.progress)
+                        print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
 
-                            if hasattr(self.toolbox, 'updatescreen'):
-                                self.toolbox.updatescreen()
-                    except ValueError as e:
-                        print("[PROGRESS PARSE ERROR] {}".format(e))
+                        if hasattr(self.toolbox, 'updatescreen'):
+                            self.toolbox.updatescreen()
 
         except Exception as e:
             print("[PROGRESS ERROR] {}".format(e))
@@ -934,14 +875,9 @@ class downloadTask(Task):
         """Process individual output lines"""
         pass
 
-    def prepare(self):
-        """Prepare task before execution"""
-        print("[DOWNLOAD TASK] Preparing download: {}".format(self.filmtitle))
-        return 0
-
     def cleanup(self, failed):
         """Cleanup after task completion"""
-        print("[DOWNLOAD TASK] Cleanup for: {} (failed: {})".format(self.filmtitle, failed))
+        print("[TASK CLEANUP] {} - failed: {}".format(self.filmtitle, failed))
 
 
 # ===================Time is what we want most, but what we use worst=====
