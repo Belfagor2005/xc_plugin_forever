@@ -430,7 +430,8 @@ class xc_StreamTasks(Screen):
 
                     job_class_name = job.__class__.__name__
                     if job_class_name != 'downloadJob':
-                        print("[DEBUG] Skipping system job: {}".format(job_class_name))
+                        print(
+                            "[DEBUG] Skipping system job: {}".format(job_class_name))
                         continue
 
                     NOT_STARTED = 0
@@ -822,8 +823,12 @@ class downloadTaskPostcondition(Condition):
             '\n%s' %
             task.lasterrormsg}
 
-        error_msg = errors.get(task.error, _("Unknown error: %s") % task.lasterrormsg)
-        print("[POST-CONDITION] Error message for {}: {}".format(task.filmtitle, error_msg))
+        error_msg = errors.get(
+            task.error,
+            _("Unknown error: %s") %
+            task.lasterrormsg)
+        print(
+            "[POST-CONDITION] Error message for {}: {}".format(task.filmtitle, error_msg))
         return error_msg
 
 
@@ -877,7 +882,9 @@ class downloadTask(Task):
                         if 0 <= new_progress <= 100 and new_progress > self.progress:
                             self.progress = new_progress
                             self.setProgress(self.progress)
-                            print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
+                            print(
+                                "[DOWNLOAD PROGRESS] {}: {}%".format(
+                                    self.filmtitle, self.progress))
 
                             if hasattr(self.toolbox, 'updatescreen'):
                                 self.toolbox.updatescreen()
@@ -889,25 +896,32 @@ class downloadTask(Task):
 
     def afterRun(self):
         """Called after download completes"""
-        print("[DOWNLOAD TASK] afterRun called - Progress: {}%, Return code: {}".format(self.progress, self.returncode))
+        print(
+            "[DOWNLOAD TASK] afterRun called - Progress: {}%, Return code: {}".format(
+                self.progress,
+                self.returncode))
 
         try:
             if self.returncode == 0:
                 if file_exists(self.filename):
                     file_size = getsize(self.filename)
-                    print("[DOWNLOAD TASK] File exists, size: {} bytes".format(file_size))
+                    print(
+                        "[DOWNLOAD TASK] File exists, size: {} bytes".format(file_size))
 
                     if file_size > 1024:
                         self.progress = 100
                         self.setProgress(100)
-                        print("[DOWNLOAD COMPLETE] {}: 100%".format(self.filmtitle))
+                        print(
+                            "[DOWNLOAD COMPLETE] {}: 100%".format(
+                                self.filmtitle))
 
                         if hasattr(self.toolbox, 'updatescreen'):
                             self.toolbox.updatescreen()
 
                         try:
                             if hasattr(self.toolbox, 'download_finished'):
-                                self.toolbox.download_finished(self.filename, self.filmtitle)
+                                self.toolbox.download_finished(
+                                    self.filename, self.filmtitle)
                         except Exception as e:
                             print("Error in download_finished:", e)
                     else:
@@ -919,14 +933,18 @@ class downloadTask(Task):
                     self.error = self.ERROR_FILESYSTEM
                     self.lasterrormsg = _("Downloaded file not found")
             else:
-                print("[DOWNLOAD FAILED] {}: returncode={}".format(self.filmtitle, self.returncode))
+                print(
+                    "[DOWNLOAD FAILED] {}: returncode={}".format(
+                        self.filmtitle, self.returncode))
                 self.error = self.ERROR_UNKNOWN
-                self.lasterrormsg = _("Download failed with return code: {}").format(self.returncode)
+                self.lasterrormsg = _(
+                    "Download failed with return code: {}").format(self.returncode)
 
         except Exception as e:
             print("Error in afterRun:", e)
             self.error = self.ERROR_UNKNOWN
-            self.lasterrormsg = _("Error verifying download: {}").format(str(e))
+            self.lasterrormsg = _(
+                "Error verifying download: {}").format(str(e))
 
         Task.afterRun(self)
 
@@ -941,7 +959,9 @@ class downloadTask(Task):
 
     def cleanup(self, failed):
         """Cleanup after task completion"""
-        print("[DOWNLOAD TASK] Cleanup for: {} (failed: {})".format(self.filmtitle, failed))
+        print(
+            "[DOWNLOAD TASK] Cleanup for: {} (failed: {})".format(
+                self.filmtitle, failed))
 
 
 # ===================Time is what we want most, but what we use worst=====
