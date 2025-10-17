@@ -31,7 +31,7 @@ from os import listdir, remove, statvfs
 from os.path import exists as file_exists, isdir, join, getsize
 from re import findall
 from six import PY3
-from time import time
+# from time import time
 import codecs
 
 # Enigma2 imports
@@ -163,7 +163,7 @@ class xc_StreamTasks(Screen):
             self.progress_timer_conn = self.progress_timer.timeout.connect(self.updateProgress)
         except BaseException:
             self.progress_timer.callback.append(self.updateProgress)
-        self.progress_timer.start(2000)
+        self.progress_timer.start(6500)
 
     def updateProgress(self):
         """Force progress update"""
@@ -174,15 +174,12 @@ class xc_StreamTasks(Screen):
             self.movielist = []
             print("[DEBUG] Starting rebuildMovieList - cleared movielist")
 
-            # First add all jobs (in progress, paused, failed)
             self.getTaskList()
 
-            # Then add only completed movies that don't have corresponding jobs
             temp_movielist = []
             filelist = listdir(cfg.pthmovie.value) if isdir(cfg.pthmovie.value) else []
 
             if filelist:
-                # Collect all active job filenames
                 active_job_files = set()
                 for job in JobManager.getPendingJobs() + JobManager.active_jobs:
                     if hasattr(job, 'filename') and job.filename:
@@ -190,7 +187,6 @@ class xc_StreamTasks(Screen):
                         base_name = os.path.basename(job.filename)
                         active_job_files.add(base_name.lower())
 
-                # Add only movies that don't have active jobs
                 for filename in filelist:
                     if filename.lower() not in active_job_files:
                         full_path = globalsxp.Path_Movies + filename
@@ -200,7 +196,6 @@ class xc_StreamTasks(Screen):
                                 temp_movielist.append(("movie", filename, "Finished", 100, "100%"))
                                 print("[DEBUG] Added completed movie: {}".format(filename))
 
-            # Merge lists
             self.movielist.extend(temp_movielist)
 
             print("[DEBUG] Final movielist: {} items".format(len(self.movielist)))
@@ -247,40 +242,30 @@ class xc_StreamTasks(Screen):
             if job.status == NOT_STARTED:
                 print("[TASK] Starting job: {}".format(job_name))
                 job.start_manually()
-                self.session.open(
-                    MessageBox,
-                    _("Download started: {}").format(job_name),
-                    MessageBox.TYPE_INFO,
-                    timeout=3
-                )
+                message = _("Download started: {}").format(job_name)
 
             elif job.status == IN_PROGRESS:
-                print("[TASK] Pausing job: {}".format(job_name))
+                print("[TASK] Stopping job: {}".format(job_name))
                 job.abort()
-                self.session.open(
-                    MessageBox,
-                    _("Download paused: {}").format(job_name),
-                    MessageBox.TYPE_INFO,
-                    timeout=3
-                )
+
+                job.status = NOT_STARTED
+                message = _("Download stopped: {}").format(job_name)
 
             elif job.status == FAILED:
-                print("[TASK] Retrying job: {}".format(job_name))
-                job.retry()
-                self.session.open(
-                    MessageBox,
-                    _("Download retried: {}").format(job_name),
-                    MessageBox.TYPE_INFO,
-                    timeout=3
-                )
+                print("[TASK] Restarting failed job: {}".format(job_name))
+                job.status = IN_PROGRESS
+                job.start_manually()
+                message = _("Download restarted: {}").format(job_name)
 
-            else:
-                self.session.open(
-                    MessageBox,
-                    _("Cannot modify this task status"),
-                    MessageBox.TYPE_INFO,
-                    timeout=3
-                )
+            else:  # FINISHED
+                message = _("Cannot modify this task status")
+
+            self.session.open(
+                MessageBox,
+                message,
+                MessageBox.TYPE_INFO,
+                timeout=3
+            )
 
             self.rebuildMovieList()
 
@@ -416,6 +401,11 @@ class xc_StreamTasks(Screen):
                     if not hasattr(job, 'status'):
                         continue
 
+                    job_class_name = job.__class__.__name__
+                    if job_class_name != 'downloadJob':
+                        print("[DEBUG] Skipping system job: {}".format(job_class_name))
+                        continue
+
                     NOT_STARTED = 0
                     IN_PROGRESS = 1
                     FINISHED = 2
@@ -503,7 +493,6 @@ class xc_StreamTasks(Screen):
                     timeout=5
                 )
         elif isinstance(job, str):
-            # Placeholder for Job handling
             self.session.open(
                 MessageBox,
                 _("Invalid or unsupported job type"),
@@ -694,6 +683,8 @@ class downloadJob(Job):
         self.retrycount = 0
 
         self.task = downloadTask(self, self.cmdline, filename, filmtitle)
+        self.addTask(self.task)
+
         self.status = self.NOT_STARTED
         print("[JOB] Job created in MANUAL state: {}".format(filmtitle))
 
@@ -703,22 +694,62 @@ class downloadJob(Job):
             print("[JOB] Manually starting: {}".format(self.name))
             self.status = self.IN_PROGRESS
             self.runNext()
+        else:
+            print("[JOB] Cannot start job - status is: {}".format(self.status))
 
     def retry(self):
-        assert self.status == self.FAILED
-        self.restart()
+        """Retry failed job"""
+        if self.status == self.FAILED:
+            print("[JOB] Retrying: {}".format(self.name))
+            self.status = self.NOT_STARTED
+            self.start_manually()
+        else:
+            print("[JOB] Cannot retry job - status is: {}".format(self.status))
 
     def cancel(self):
+        """Cancel job"""
+        print("[JOB] Cancelling: {}".format(self.name))
         self.abort()
+
+    def jobFinished(self, job, task, events):
+        """Called when job finishes"""
+        print("[JOB] Job finished: {}".format(self.name))
+        self.status = self.FINISHED
+        if hasattr(self.toolbox, 'updatescreen'):
+            self.toolbox.updatescreen()
+
+    def jobFailed(self, job, task, events):
+        """Called when job fails"""
+        print("[JOB] Job failed: {}".format(self.name))
+        self.status = self.FAILED
+        if hasattr(self.toolbox, 'updatescreen'):
+            self.toolbox.updatescreen()
 
 
 class downloadTaskPostcondition(Condition):
     RECOVERABLE = True
 
     def check(self, task):
-        return task.returncode == 0 and task.error is None
+        """Check if task completed successfully"""
+        if not isinstance(task, downloadTask):
+            return False
+
+        # The task is considered successful if:
+        # 1. The return code is 0
+        # 2. There are no errors set
+        # 3. The file exists and is of reasonable size
+        success = (task.returncode == 0 and
+                   task.error is None and
+                   file_exists(task.filename) and
+                   getsize(task.filename) > 1024)
+
+        print("[POST-CONDITION] Check result for {}: {}".format(task.filmtitle, success))
+        return success
 
     def getErrorMessage(self, task):
+        if not isinstance(task, downloadTask):
+            return _("Unknown task error")
+
         errors = {
             task.ERROR_CORRUPT_FILE: _("MOVIE DOWNLOAD FAILED!") +
             '\n\n' +
@@ -750,14 +781,17 @@ class downloadTaskPostcondition(Condition):
             _("UNKNOWN ERROR:") +
             '\n%s' %
             task.lasterrormsg}
-        return errors.get(task.error, _("Unknown error"))
+
+        error_msg = errors.get(task.error, _("Unknown error: %s") % task.lasterrormsg)
+        print("[POST-CONDITION] Error message for {}: {}".format(task.filmtitle, error_msg))
+        return error_msg
 
 
 class downloadTask(Task):
     if PY3:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = list(range(6))
     else:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = range(6)
 
     def __init__(self, job, cmdline, filename, filmtitle):
         Task.__init__(self, job, "Downloading ..." + filmtitle)
@@ -769,80 +803,103 @@ class downloadTask(Task):
         self.lasterrormsg = None
         self.progress = 0
         self.lastprogress = 0
-        self.firstrun = True
-        self.starttime = time()
-        self.last_update_time = time()
+
+        self.postconditions = [downloadTaskPostcondition()]
+        print("[TASK] Task created for: {}".format(filmtitle))
 
     def processOutput(self, data):
         """Process wget output to extract progress"""
-        if data is None:
-            return
-
         try:
+            if data is None:
+                return
+
+            data_str = ""
             if isinstance(data, bytes):
-                data_str = data.decode("utf-8", "ignore")
+                try:
+                    data_str = data.decode("utf-8", "ignore")
+                except UnicodeDecodeError:
+                    data_str = data.decode("latin-1", "ignore")
+            elif isinstance(data, str):
+                data_str = data
             else:
                 data_str = str(data)
+
+            # if data_str.strip():
+                # print("[DOWNLOAD OUTPUT] {}".format(data_str.strip()))
 
             if '%' in data_str:
                 percentages = findall(r'(\d+)%', data_str)
                 if percentages:
-                    new_progress = max(map(int, percentages))
-                    if 0 <= new_progress <= 100 and new_progress > self.progress:
-                        self.progress = new_progress
-                        print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
+                    try:
+                        new_progress = max(map(int, percentages))
+                        if 0 <= new_progress <= 100 and new_progress > self.progress:
+                            self.progress = new_progress
+                            self.setProgress(self.progress)
+                            print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
 
-                        if hasattr(self.toolbox, 'updatescreen'):
-                            self.toolbox.updatescreen()
+                            if hasattr(self.toolbox, 'updatescreen'):
+                                self.toolbox.updatescreen()
+                    except ValueError as e:
+                        print("[PROGRESS PARSE ERROR] {}".format(e))
 
         except Exception as e:
             print("[PROGRESS ERROR] {}".format(e))
 
     def afterRun(self):
         """Called after download completes"""
-        print("[DOWNLOAD TASK] afterRun - Progress: {}%, Return code: {}".format(self.progress, self.returncode))
+        print("[DOWNLOAD TASK] afterRun called - Progress: {}%, Return code: {}".format(self.progress, self.returncode))
 
-        if self.returncode == 0:
-            try:
+        try:
+            if self.returncode == 0:
                 if file_exists(self.filename):
                     file_size = getsize(self.filename)
                     print("[DOWNLOAD TASK] File exists, size: {} bytes".format(file_size))
 
-                    if file_size > 0:
+                    if file_size > 1024:
                         self.progress = 100
+                        self.setProgress(100)
                         print("[DOWNLOAD COMPLETE] {}: 100%".format(self.filmtitle))
 
                         if hasattr(self.toolbox, 'updatescreen'):
                             self.toolbox.updatescreen()
 
                         try:
-                            self.toolbox.download_finished(self.filename, self.filmtitle)
+                            if hasattr(self.toolbox, 'download_finished'):
+                                self.toolbox.download_finished(self.filename, self.filmtitle)
                         except Exception as e:
                             print("Error in download_finished:", e)
                     else:
-                        print("[DOWNLOAD TASK] Download failed - empty file")
-                        self.ERROR_FILESYSTEM = 5
+                        print("[DOWNLOAD TASK] Download failed - file too small")
                         self.error = self.ERROR_FILESYSTEM
-                        self.lasterrormsg = _("Downloaded file is empty")
+                        self.lasterrormsg = _("Downloaded file is too small")
                 else:
                     print("[DOWNLOAD TASK] Download failed - file not found")
-                    self.ERROR_FILESYSTEM = 5
                     self.error = self.ERROR_FILESYSTEM
                     self.lasterrormsg = _("Downloaded file not found")
+            else:
+                print("[DOWNLOAD FAILED] {}: returncode={}".format(self.filmtitle, self.returncode))
+                self.error = self.ERROR_UNKNOWN
+                self.lasterrormsg = _("Download failed with return code: {}").format(self.returncode)
 
-            except Exception as e:
-                print("Error in afterRun file check:", e)
-                self.ERROR_FILESYSTEM = 5
-                self.error = self.ERROR_FILESYSTEM
-                self.lasterrormsg = _("Error verifying download: {}").format(str(e))
-        else:
-            self.ERROR_FILESYSTEM = 5
-            self.error = self.ERROR_FILESYSTEM
-            self.lasterrormsg = _("Download failed with return code: {}").format(self.returncode)
-            print("[DOWNLOAD FAILED] {}: returncode={}".format(self.filmtitle, self.returncode))
+        except Exception as e:
+            print("Error in afterRun:", e)
+            self.error = self.ERROR_UNKNOWN
+            self.lasterrormsg = _("Error verifying download: {}").format(str(e))
+
+        Task.afterRun(self)
 
     def processOutputLine(self, line):
+        """Process individual output lines"""
         pass
+
+    def prepare(self):
+        """Prepare task before execution"""
+        print("[DOWNLOAD TASK] Preparing download: {}".format(self.filmtitle))
+        return 0
+
+    def cleanup(self, failed):
+        """Cleanup after task completion"""
+        print("[DOWNLOAD TASK] Cleanup for: {} (failed: {})".format(self.filmtitle, failed))
 
 
 # ===================Time is what we want most, but what we use worst=====
