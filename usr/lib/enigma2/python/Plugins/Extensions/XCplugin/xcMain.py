@@ -30,7 +30,7 @@ from __future__ import print_function
 import codecs
 from json import dump, load
 from os import remove, stat, system, makedirs
-from os.path import exists as file_exists, join, splitext, normpath
+from os.path import exists as file_exists, join, splitext, normpath, getsize
 from re import DOTALL, compile
 from shutil import copy
 from socket import setdefaulttimeout
