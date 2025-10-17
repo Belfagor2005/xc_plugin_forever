@@ -145,10 +145,10 @@ class xc_Main(Screen):
 
         try:
             Screen.setTitle(self, _('%s') % 'MAIN MENU')
-        except:
+        except BaseException:
             try:
                 self.setTitle(_('%s') % 'MAIN MENU')
-            except:
+            except BaseException:
                 pass
 
         self.checkinf()  # test for timezone
@@ -166,7 +166,10 @@ class xc_Main(Screen):
         self.temp_playname = str(globalsxp.STREAMS.playlistname)
         self.filter_search = []
 
-        self.mlist = MenuList([], enableWrapAround=True, content=eListboxPythonMultiContent)
+        self.mlist = MenuList(
+            [],
+            enableWrapAround=True,
+            content=eListboxPythonMultiContent)
         self.mlist.l.setFont(0, gFont(FONT_0[0], FONT_0[1]))
         self.mlist.l.setFont(1, gFont(FONT_1[0], FONT_1[1]))
         self.mlist.l.setItemHeight(BLOCK_H)
@@ -251,7 +254,11 @@ class xc_Main(Screen):
 
     def ok(self):
         if not len(globalsxp.iptv_list_tmp):
-            self.session.open(MessageBox, _("No data or playlist not compatible with XCplugin."), type=MessageBox.TYPE_WARNING, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("No data or playlist not compatible with XCplugin."),
+                type=MessageBox.TYPE_WARNING,
+                timeout=5)
             return
 
         self.index = self.mlist.getSelectionIndex()
@@ -263,7 +270,8 @@ class xc_Main(Screen):
 
         if config.ParentalControl.configured.value:
             a = '+18', 'adult', 'hot', 'porn', 'sex', 'xxx'
-            if any(s in str(selected_channel[1] or selected_channel[4] or selected_channel[5] or selected_channel[6]).lower() for s in a):
+            if any(s in str(selected_channel[1] or selected_channel[4]
+                   or selected_channel[5] or selected_channel[6]).lower() for s in a):
                 self.allow2()
             else:
                 self.pin = True
@@ -274,12 +282,23 @@ class xc_Main(Screen):
 
     def allow2(self):
         from Screens.InputBox import PinInput
-        self.session.openWithCallback(self.pinEntered2, PinInput, pinList=[config.ParentalControl.setuppin.value], triesEntry=config.ParentalControl.retries.servicepin, title=_("Please enter the parental control pin code"), windowTitle=_("Enter pin code"))
+        self.session.openWithCallback(
+            self.pinEntered2,
+            PinInput,
+            pinList=[
+                config.ParentalControl.setuppin.value],
+            triesEntry=config.ParentalControl.retries.servicepin,
+            title=_("Please enter the parental control pin code"),
+            windowTitle=_("Enter pin code"))
 
     def pinEntered2(self, result):
         if not result:
             self.pin = False
-            self.session.open(MessageBox, _("The pin code you entered is wrong."), type=MessageBox.TYPE_ERROR, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("The pin code you entered is wrong."),
+                type=MessageBox.TYPE_ERROR,
+                timeout=5)
         self.ok_checked()
 
     def ok_checked(self):
@@ -299,7 +318,8 @@ class xc_Main(Screen):
                     if entry is None:
                         return ''
                     elif isinstance(entry, (tuple, list)):
-                        return type(entry)(convert_to_string(item) for item in entry)
+                        return type(entry)(convert_to_string(item)
+                                           for item in entry)
                     else:
                         return str(entry)
                 string_channel_list = list(map(convert_to_string, data))
@@ -328,9 +348,11 @@ class xc_Main(Screen):
             globalsxp.STREAMS.video_status = True
             globalsxp.STREAMS.play_vod = True
             if cfg.LivePlayer.value is False:
-                self.session.openWithCallback(self.check_standby, xc_Player)  # vod
+                self.session.openWithCallback(
+                    self.check_standby, xc_Player)  # vod
             else:
-                self.session.openWithCallback(self.check_standby, nIPTVplayer)  # live
+                self.session.openWithCallback(
+                    self.check_standby, nIPTVplayer)  # live
         else:
             print("----------------------- MOVIE ------------------")
             globalsxp.STREAMS.video_status = True
@@ -339,7 +361,8 @@ class xc_Main(Screen):
         copy_poster()
 
     def go(self):
-        self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
+        self.mlist.setList(
+            list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.mlist.onSelectionChanged.append(self.update_description)
         self["menulist"] = self.mlist
         self["menulist"].moveToIndex(0)
@@ -405,14 +428,17 @@ class xc_Main(Screen):
 
                 if self.stars_empty_pixmap is None:
                     self.stars_empty_pixmap = LoadPixmap(empty_path)
-                    print("[RATING] Empty pixmap loaded: " + ("success" if self.stars_empty_pixmap else "failed"))
+                    print("[RATING] Empty pixmap loaded: " +
+                          ("success" if self.stars_empty_pixmap else "failed"))
 
                 if self.stars_filled_pixmap is None:
                     self.stars_filled_pixmap = LoadPixmap(filled_path)
-                    print("[RATING] Filled pixmap loaded: " + ("success" if self.stars_filled_pixmap else "failed"))
+                    print("[RATING] Filled pixmap loaded: " +
+                          ("success" if self.stars_filled_pixmap else "failed"))
 
                 if self.stars_empty_pixmap:
-                    self["rating_stars"].instance.setPixmap(self.stars_empty_pixmap)
+                    self["rating_stars"].instance.setPixmap(
+                        self.stars_empty_pixmap)
                     self["rating_stars"].show()
                     print("[RATING] Empty stars shown")
 
@@ -420,24 +446,35 @@ class xc_Main(Screen):
 
                 if self.stars_filled_pixmap and filled_width > 0:
                     current_pos = self["rating_stars_fill"].getPosition()
-                    print("[RATING] Current position before: " + str(current_pos))
+                    print(
+                        "[RATING] Current position before: " +
+                        str(current_pos))
 
-                    self["rating_stars_fill"].instance.setPixmap(self.stars_filled_pixmap)
-                    self["rating_stars_fill"].instance.resize(eSize(filled_width, self.bar_height))
+                    self["rating_stars_fill"].instance.setPixmap(
+                        self.stars_filled_pixmap)
+                    self["rating_stars_fill"].instance.resize(
+                        eSize(filled_width, self.bar_height))
 
                     if self.stars_fill_position is None:
                         x, y = self["rating_stars"].getPosition()
                         self.stars_fill_position = (x, y)
-                        print("[RATING] Initial position set: (" + str(x) + ", " + str(y) + ")")
+                        print(
+                            "[RATING] Initial position set: (" + str(x) + ", " + str(y) + ")")
 
-                    self["rating_stars_fill"].move(ePoint(self.stars_fill_position[0], self.stars_fill_position[1]))
+                    self["rating_stars_fill"].move(
+                        ePoint(
+                            self.stars_fill_position[0],
+                            self.stars_fill_position[1]))
 
                     new_pos = self["rating_stars_fill"].getPosition()
                     print("[RATING] New position after move: " + str(new_pos))
 
                     self["rating_stars_fill"].hide()
                     self["rating_stars_fill"].show()
-                    print("[RATING] Filled stars shown at " + str(filled_width) + "px")
+                    print(
+                        "[RATING] Filled stars shown at " +
+                        str(filled_width) +
+                        "px")
                 else:
                     self["rating_stars_fill"].hide()
                     print("[RATING] Filled stars hidden")
@@ -474,9 +511,14 @@ class xc_Main(Screen):
                     scheme = parsed.scheme
                     if scheme == "https" and sslverify:
                         sniFactory = SNIFactory(domain)
-                        downloadPage(pixim, globalsxp.pictmp, sniFactory, timeout=ntimeout).addCallback(
-                            self.image_downloaded, globalsxp.pictmp
-                        ).addErrback(self.downloadError)
+                        downloadPage(
+                            pixim,
+                            globalsxp.pictmp,
+                            sniFactory,
+                            timeout=ntimeout).addCallback(
+                            self.image_downloaded,
+                            globalsxp.pictmp).addErrback(
+                            self.downloadError)
                     else:
                         downloadPage(pixim, globalsxp.pictmp).addCallback(
                             self.image_downloaded, globalsxp.pictmp
@@ -502,7 +544,8 @@ class xc_Main(Screen):
                 self.scale = AVSwitch().getFramebufferScale()
                 self.picload = ePicLoad()
                 AVSwitch().setAspectRatio(globalsxp.STREAMS.ar_id_player)
-                self.picload.setPara([size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
+                self.picload.setPara(
+                    [size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, 'FF000000'])
                 if file_exists('/var/lib/dpkg/info'):
                     self.picload.startDecode(png, False)
                 else:
@@ -533,11 +576,30 @@ class xc_Main(Screen):
 
             streamfile = '/tmp/streamfile.txt'
             with open(streamfile, 'w') as f:
-                f.write(str(self.channel_list).replace("\t", "").replace("\r", "").replace('None', '').replace("'',", "").replace(' , ', '').replace("), ", ")\n").replace("''", '').replace(" ", ""))
+                f.write(
+                    str(
+                        self.channel_list).replace(
+                        "\t",
+                        "").replace(
+                        "\r",
+                        "").replace(
+                        'None',
+                        '').replace(
+                        "'',",
+                        "").replace(
+                            ' , ',
+                            '').replace(
+                                "), ",
+                                ")\n").replace(
+                                    "''",
+                                    '').replace(
+                                        " ",
+                        ""))
                 f.write('\n')
                 f.close()
         self.mlist.moveToIndex(0)
-        self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
+        self.mlist.setList(
+            list(map(channelEntryIPTVplaylist, self.channel_list)))
         self.update_description()
 
     def show_all(self):
@@ -555,7 +617,8 @@ class xc_Main(Screen):
                     if entry is None:
                         return ''
                     elif isinstance(entry, (tuple, list)):
-                        return type(entry)(convert_to_str(item) for item in entry)
+                        return type(entry)(convert_to_str(item)
+                                           for item in entry)
                     elif isinstance(entry, str):
                         return entry
                     elif isinstance(entry, text_type):
@@ -563,11 +626,11 @@ class xc_Main(Screen):
                     else:
                         return str(entry)
 
-                self.mlist.setList(
-                    list(map(lambda x: channelEntryIPTVplaylist(convert_to_str(x)), self.channel_list))
-                )
+                self.mlist.setList(list(map(lambda x: channelEntryIPTVplaylist(
+                    convert_to_str(x)), self.channel_list)))
             else:
-                self.mlist.setList(list(map(channelEntryIPTVplaylist, self.channel_list)))
+                self.mlist.setList(
+                    list(map(channelEntryIPTVplaylist, self.channel_list)))
             self.mlist.moveToIndex(0)
             self.mlist.selectionEnabled(1)
             self.button_updater()
@@ -577,17 +640,23 @@ class xc_Main(Screen):
     def search_text(self):
         if globalsxp.re_search is True:
             globalsxp.re_search = False
-        self.session.openWithCallback(self.filterChannels, VirtualKeyBoard, title=_("Filter this category..."), text=self.search)
+        self.session.openWithCallback(
+            self.filterChannels,
+            VirtualKeyBoard,
+            title=_("Filter this category..."),
+            text=self.search)
 
     def filterChannels(self, result):
         if result:
             self.filter_search = []
             self.search = result
-            self.filter_search = [channel for channel in self.channel_list if str(result).lower() in channel[1].lower()]
+            self.filter_search = [channel for channel in self.channel_list if str(
+                result).lower() in channel[1].lower()]
             if len(self.filter_search):
                 globalsxp.re_search = True
                 globalsxp.iptv_list_tmp = self.filter_search
-                self.mlist.setList(list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
+                self.mlist.setList(
+                    list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
                 self.mlist.onSelectionChanged.append(self.update_description)
                 self.index = self.mlist.getSelectionIndex()
                 self["menulist"] = self.mlist
@@ -606,10 +675,12 @@ class xc_Main(Screen):
                 if entry is None:
                     return ''
                 elif isinstance(entry, (tuple, list)):
-                    return type(entry)(convert_to_string(item) for item in entry)
+                    return type(entry)(convert_to_string(item)
+                                       for item in entry)
                 else:
                     return str(entry)
-            string_channel_list = list(map(convert_to_string, self.channel_list))
+            string_channel_list = list(
+                map(convert_to_string, self.channel_list))
 
             with codecs.open(input_file, "w", encoding="utf-8") as f:
                 dump(string_channel_list, f)
@@ -631,7 +702,8 @@ class xc_Main(Screen):
             globalsxp.iptv_list_tmp = self.channel_list
             globalsxp.STREAMS.iptv_list = self.channel_list
 
-            self.mlist.setList(list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
+            self.mlist.setList(
+                list(map(channelEntryIPTVplaylist, globalsxp.iptv_list_tmp)))
             self.mlist.onSelectionChanged.append(self.update_description)
             self.index = self.mlist.getSelectionIndex()
             self["menulist"] = self.mlist
@@ -730,7 +802,8 @@ class xc_Main(Screen):
                 username = cfg.user.value
             if cfg.passw != '******':
                 password = cfg.passw.value
-            globalsxp.urlinfo = 'http://' + str(host) + ':' + str(port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
+            globalsxp.urlinfo = 'http://' + str(host) + ':' + str(
+                port) + '/player_api.php?username=' + str(username) + '&password=' + str(password)
             self.ycse = retTest(globalsxp.urlinfo)
             if self.ycse:
                 y = self.ycse
@@ -743,37 +816,50 @@ class xc_Main(Screen):
                                 created_at = (y["user_info"]["created_at"])
                                 exp_date = (y["user_info"]["exp_date"])
                                 active_cons = (y["user_info"]["active_cons"])
-                                max_connections = (y["user_info"]["max_connections"])
+                                max_connections = (
+                                    y["user_info"]["max_connections"])
                                 if exp_date:
-                                    exp_date = strftime(TIME_GMT, gmtime(int(exp_date)))
+                                    exp_date = strftime(
+                                        TIME_GMT, gmtime(int(exp_date)))
 
                                 if str(auth) == "1":
                                     if str(status) == "Active":
-                                        self["exp"].setText("Active\nExp date: " + str(exp_date))
+                                        self["exp"].setText(
+                                            "Active\nExp date: " + str(exp_date))
                                     elif str(status) == "Banned":
                                         self["exp"].setText("Banned")
                                     elif str(status) == "Disabled":
                                         self["exp"].setText("Disabled")
                                     elif str(status) == "Expired":
-                                        self["exp"].setText("Expired\nExp date: " + str(exp_date))
+                                        self["exp"].setText(
+                                            "Expired\nExp date: " + str(exp_date))
                                     else:
-                                        self["exp"].setText("Server Not Responding" + str(exp_date))
+                                        self["exp"].setText(
+                                            "Server Not Responding" + str(exp_date))
                                     if created_at:
-                                        created_at = strftime(TIME_GMT, gmtime(int(created_at)))
-                                        self["created_at"].setText('Start date:\n' + created_at)
+                                        created_at = strftime(
+                                            TIME_GMT, gmtime(int(created_at)))
+                                        self["created_at"].setText(
+                                            'Start date:\n' + created_at)
 
-                                    self["max_connect"].setText("Max Connect: " + str(max_connections))
-                                    self["active_cons"].setText("User Active: " + str(active_cons))
-                                server_protocol = (y["server_info"]["server_protocol"])
-                                self["server_protocol"].setText("Protocol: " + str(server_protocol))
+                                    self["max_connect"].setText(
+                                        "Max Connect: " + str(max_connections))
+                                    self["active_cons"].setText(
+                                        "User Active: " + str(active_cons))
+                                server_protocol = (
+                                    y["server_info"]["server_protocol"])
+                                self["server_protocol"].setText(
+                                    "Protocol: " + str(server_protocol))
                                 time_now = (y["server_info"]["time_now"])
                                 time_zone = (y["server_info"]["timezone"])
-                                time_stamp = (y["server_info"]["timestamp_now"])
+                                time_stamp = (
+                                    y["server_info"]["timestamp_now"])
                                 globalsxp.timeserver = time_now
                                 globalsxp.timezone = time_zone
                                 globalsxp.timestamp = time_stamp
                                 # Apply user-configured time adjustment
-                                self["timezone"].setText("Time Now: " + str(time_now))
+                                self["timezone"].setText(
+                                    "Time Now: " + str(time_now))
                             except Exception as e:
                                 print('error checkinf : ', e)
         except Exception as e:
@@ -784,7 +870,9 @@ class xc_Main(Screen):
         if globalsxp.series is True and globalsxp.btnsearch == 1:
             if answer is None:
                 self.streamfile = '/tmp/streamfile.txt'
-                if file_exists(self.streamfile) and stat(self.streamfile).st_size > 0:
+                if file_exists(
+                        self.streamfile) and stat(
+                        self.streamfile).st_size > 0:
                     self.session.openWithCallback(
                         self.check_download_ser,
                         MessageBox,
@@ -795,7 +883,8 @@ class xc_Main(Screen):
                 try:
                     self["state"].setText("Downloading SERIES")
 
-                    globalsxp.Path_Movies2 = normpath(join(globalsxp.Path_Movies, titleserie))
+                    globalsxp.Path_Movies2 = normpath(
+                        join(globalsxp.Path_Movies, titleserie))
 
                     if not file_exists(globalsxp.Path_Movies2):
                         try:
@@ -810,7 +899,8 @@ class xc_Main(Screen):
                     if read_data != "":
                         try:
                             regexcat = r".*?,'(.*?)','(.*?)'.*?\n"
-                            match = compile(regexcat, DOTALL).findall(read_data)
+                            match = compile(
+                                regexcat, DOTALL).findall(read_data)
 
                             for name, url in match:
                                 if url.startswith('http'):
@@ -821,39 +911,48 @@ class xc_Main(Screen):
                                     self.title = titleserie + '_' + cleanName.lower()
                                     self.icount += 1
 
-                                    output_path = join(globalsxp.Path_Movies2, self.title)
+                                    output_path = join(
+                                        globalsxp.Path_Movies2, self.title)
 
                                     episode_already_downloading = False
                                     for job in JobManager.getPendingJobs() + JobManager.active_jobs:
                                         if (isinstance(job, Job) and
                                             hasattr(job, 'filename') and
-                                            job.filename == output_path):
+                                                job.filename == output_path):
                                             episode_already_downloading = True
-                                            print("[SERIES] Episode skipped - existing job:", self.title)
+                                            print(
+                                                "[SERIES] Episode skipped - existing job:", self.title)
                                             break
 
-                                    episode_already_completed = file_exists(output_path) and getsize(output_path) > 0
+                                    episode_already_completed = file_exists(
+                                        output_path) and getsize(output_path) > 0
                                     if episode_already_completed:
-                                        print("[SERIES] Episode skipped - already completed:", self.title)
+                                        print(
+                                            "[SERIES] Episode skipped - already completed:", self.title)
                                         continue
 
                                     if not episode_already_downloading and not episode_already_completed:
                                         if url.startswith("https"):
-                                            cmd = "wget --no-check-certificate -U 'Enigma2 - XC Forever Plugin' -c {} -O {}".format(url, output_path)
+                                            cmd = "wget --no-check-certificate -U 'Enigma2 - XC Forever Plugin' -c {} -O {}".format(
+                                                url, output_path)
                                         else:
-                                            cmd = "wget -U 'Enigma2 - XC Forever Plugin' -c {} -O {}".format(url, output_path)
+                                            cmd = "wget -U 'Enigma2 - XC Forever Plugin' -c {} -O {}".format(
+                                                url, output_path)
 
-                                        job = downloadJob(self, cmd, output_path, self.title)
+                                        job = downloadJob(
+                                            self, cmd, output_path, self.title)
 
                                         job.status = 0
 
                                         if job not in JobManager.active_jobs:
                                             JobManager.active_jobs.append(job)
 
-                                        print("[SERIES] Job created (PAUSED):", self.title)
+                                        print(
+                                            "[SERIES] Job created (PAUSED):", self.title)
                                         self.downloading = True
                                     else:
-                                        print("[SERIES] Episode skipped (in progress or completed):", self.title)
+                                        print(
+                                            "[SERIES] Episode skipped (in progress or completed):", self.title)
 
                         except Exception as e:
                             print("Error during parsing or download:", e)
@@ -867,7 +966,11 @@ class xc_Main(Screen):
                     print("General error in series download:", e)
                     globalsxp.series = False
         else:
-            self.session.open(MessageBox, _("Only Series Episodes Allowed!!!"), MessageBox.TYPE_INFO, timeout=5)
+            self.session.open(
+                MessageBox,
+                _("Only Series Episodes Allowed!!!"),
+                MessageBox.TYPE_INFO,
+                timeout=5)
 
     def check_download_vod(self):
         self.index = self.mlist.getSelectionIndex()
@@ -885,13 +988,22 @@ class xc_Main(Screen):
                         ext = '.avi'
                     filename = cleanName + ext
                     self.filename = filename.lower()
-                    self.session.openWithCallback(self.download_vod, MessageBox, _("DOWNLOAD VIDEO?"), type=MessageBox.TYPE_YESNO, timeout=5)
+                    self.session.openWithCallback(self.download_vod, MessageBox, _(
+                        "DOWNLOAD VIDEO?"), type=MessageBox.TYPE_YESNO, timeout=5)
                 else:
                     if cfg.LivePlayer.value is True:
-                        self.session.open(MessageBox, _("Live Player Active in Setting: set No for Record Live"), MessageBox.TYPE_INFO, timeout=5)
+                        self.session.open(
+                            MessageBox,
+                            _("Live Player Active in Setting: set No for Record Live"),
+                            MessageBox.TYPE_INFO,
+                            timeout=5)
                         return
             else:
-                self.session.open(MessageBox, _("No Video to Download/Record!!"), MessageBox.TYPE_INFO, timeout=5)
+                self.session.open(
+                    MessageBox,
+                    _("No Video to Download/Record!!"),
+                    MessageBox.TYPE_INFO,
+                    timeout=5)
 
     def download_vod(self, result):
         if result:
@@ -905,23 +1017,38 @@ class xc_Main(Screen):
                 if cfg.pdownmovie.value == "JobManager":
                     try:
                         self.timerDownload.callback.append(self.downloadx)
-                    except:
-                        self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloadx)
+                    except BaseException:
+                        self.timerDownload_conn = self.timerDownload.timeout.connect(
+                            self.downloadx)
 
                 else:
                     try:
                         self.timerDownload.callback.append(self.downloady)
-                    except:
-                        self.timerDownload_conn = self.timerDownload.timeout.connect(self.downloady)
+                    except BaseException:
+                        self.timerDownload_conn = self.timerDownload.timeout.connect(
+                            self.downloady)
                 self.timerDownload.start(300, True)
-            except:
-                self.session.open(MessageBox, _('Download Failed\n\n' + self.filename + "\n\n" + globalsxp.Path_Movies + '\n' + self.filename), MessageBox.TYPE_WARNING)
+            except BaseException:
+                self.session.open(
+                    MessageBox,
+                    _(
+                        'Download Failed\n\n' +
+                        self.filename +
+                        "\n\n" +
+                        globalsxp.Path_Movies +
+                        '\n' +
+                        self.filename),
+                    MessageBox.TYPE_WARNING)
                 self.downloading = False
 
     def downloady(self):
         if self.downloading is True:
             Utils.OnclearMem()
-            self.session.open(imagedownloadScreen, self.filename, self.file_down, self.vod_url)
+            self.session.open(
+                imagedownloadScreen,
+                self.filename,
+                self.file_down,
+                self.vod_url)
         else:
             return
 
@@ -938,8 +1065,10 @@ class xc_Main(Screen):
                 s = s.replace("'", "'\"'\"'")
                 return "'" + s + "'"
 
-            quoted_vod_url = vod_url if ' ' not in vod_url else enigma_quote(vod_url)
-            quoted_file_down = file_down if ' ' not in file_down else enigma_quote(file_down)
+            quoted_vod_url = vod_url if ' ' not in vod_url else enigma_quote(
+                vod_url)
+            quoted_file_down = file_down if ' ' not in file_down else enigma_quote(
+                file_down)
 
             if vod_url.startswith("https"):
                 cmd = 'wget --no-check-certificate -U %s -c %s -O %s' % (
@@ -988,7 +1117,9 @@ class xc_Main(Screen):
         try:
             serviceref = eServiceReference(4097, 0, filename)
             with open("%s/%s.meta" % (globalsxp.Path_Movies, filename), "wb") as f:
-                f.write("%s\n%s\n%s\n%i\n" % (serviceref.toString(), str(filmtitle), "", time()))
+                f.write(
+                    "%s\n%s\n%s\n%i\n" %
+                    (serviceref.toString(), str(filmtitle), "", time()))
         except Exception as e:
             print(e)
         return
@@ -1012,7 +1143,7 @@ class xc_Main(Screen):
             print(e)
     """
 
-# ===================Time is what we want most, but what we use worst===================
+# ===================Time is what we want most, but what we use worst=====
 #
 # Time is the best author. It always writes the perfect ending (Charlie Chaplin)
 #

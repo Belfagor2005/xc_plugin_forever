@@ -159,7 +159,8 @@ class xc_StreamTasks(Screen):
         self.Timer.startLongTimer(2)
         self.progress_timer = eTimer()
         try:
-            self.progress_timer_conn = self.progress_timer.timeout.connect(self.updateProgress)
+            self.progress_timer_conn = self.progress_timer.timeout.connect(
+                self.updateProgress)
         except BaseException:
             self.progress_timer.callback.append(self.updateProgress)
         self.progress_timer.start(2000)
@@ -178,7 +179,9 @@ class xc_StreamTasks(Screen):
 
             # Then add only completed movies that don't have corresponding jobs
             temp_movielist = []
-            filelist = listdir(cfg.pthmovie.value) if isdir(cfg.pthmovie.value) else []
+            filelist = listdir(
+                cfg.pthmovie.value) if isdir(
+                cfg.pthmovie.value) else []
 
             if filelist:
                 # Collect all active job filenames
@@ -196,8 +199,10 @@ class xc_StreamTasks(Screen):
                         if file_exists(full_path):
                             extension = filename.split('.')[-1].lower()
                             if extension in EXTENSIONS and EXTENSIONS[extension] == "movie":
-                                temp_movielist.append(("movie", filename, "Finished", 100, "100%"))
-                                print("[DEBUG] Added completed movie: {}".format(filename))
+                                temp_movielist.append(
+                                    ("movie", filename, "Finished", 100, "100%"))
+                                print(
+                                    "[DEBUG] Added completed movie: {}".format(filename))
 
             # Merge lists
             self.movielist.extend(temp_movielist)
@@ -205,7 +210,8 @@ class xc_StreamTasks(Screen):
             print("[DEBUG] Final movielist: {} items".format(len(self.movielist)))
             for i, item in enumerate(self.movielist):
                 item_type = "JOB" if isinstance(item[0], Job) else "MOVIE"
-                print("  [{}] {}: {} - {}".format(i, item_type, item[1], item[2]))
+                print("  [{}] {}: {} - {}".format(i,
+                      item_type, item[1], item[2]))
 
             self["filelist"].setList(self.movielist)
             self["filelist"].updateList(self.movielist)
@@ -217,7 +223,8 @@ class xc_StreamTasks(Screen):
     def toggle_pause_resume(self):
         """Toggle pause/resume for selected download task"""
         current = self["filelist"].getCurrent()
-        if current is None or not isinstance(current, tuple) or len(current) < 2:
+        if current is None or not isinstance(
+                current, tuple) or len(current) < 2:
             self.session.open(
                 MessageBox,
                 _("No task selected!"),
@@ -296,12 +303,14 @@ class xc_StreamTasks(Screen):
         try:
             if self.Timer and self.Timer.isActive():
                 self.Timer.stop()
-            if hasattr(self, 'progress_timer') and self.progress_timer.isActive():
+            if hasattr(
+                    self,
+                    'progress_timer') and self.progress_timer.isActive():
                 self.progress_timer.stop()
             del self.Timer
             if hasattr(self, 'progress_timer'):
                 del self.progress_timer
-        except:
+        except BaseException:
             pass
 
         import gc
@@ -346,7 +355,9 @@ class xc_StreamTasks(Screen):
                             base_name = os.path.basename(job_filename)
                             active_job_files.add(base_name.lower())
 
-                print("[DEBUG] Active job files: {}".format(len(active_job_files)))
+                print(
+                    "[DEBUG] Active job files: {}".format(
+                        len(active_job_files)))
 
                 for filename in filelist:
                     full_path = globalsxp.Path_Movies + filename
@@ -360,10 +371,14 @@ class xc_StreamTasks(Screen):
                                     break
 
                             if not series_has_active_jobs:
-                                self.movielist.append(("series_folder", filename, "Series Folder", 100, "100%"))
-                                print("[DEBUG] Added series folder: {}".format(filename))
+                                self.movielist.append(
+                                    ("series_folder", filename, "Series Folder", 100, "100%"))
+                                print(
+                                    "[DEBUG] Added series folder: {}".format(filename))
                         except Exception as e:
-                            print("Error processing series folder {}: {}".format(filename, e))
+                            print(
+                                "Error processing series folder {}: {}".format(
+                                    filename, e))
 
                     elif file_exists(full_path):
                         extension = filename.split('.')[-1].lower()
@@ -373,31 +388,40 @@ class xc_StreamTasks(Screen):
                             movieFolder = statvfs(cfg.pthmovie.value)
                             try:
                                 stat = movieFolder
-                                freeSize = Utils.convert_size(float(stat.f_bfree * stat.f_bsize))
+                                freeSize = Utils.convert_size(
+                                    float(stat.f_bfree * stat.f_bsize))
                             except Exception as e:
                                 print(e)
-                            titel2 = '{}: {} {}'.format(folder, str(freeSize), free)
+                            titel2 = '{}: {} {}'.format(
+                                folder, str(freeSize), free)
                             self['label2'].setText(titel2)
-                            self['totalItem'].setText('Item {}'.format(str(self.totalItem)))
+                            self['totalItem'].setText(
+                                'Item {}'.format(str(self.totalItem)))
 
                             filename_lower = filename.lower()
                             has_active_job = filename_lower in active_job_files
 
                             if has_active_job:
-                                print("[DEBUG] Skipping movie {} - has active job".format(filename))
+                                print(
+                                    "[DEBUG] Skipping movie {} - has active job".format(filename))
                             else:
-                                self.movielist.append(("movie", filename, "Finished", 100, "100%"))
-                                print("[DEBUG] Added completed movie: {}".format(filename))
+                                self.movielist.append(
+                                    ("movie", filename, "Finished", 100, "100%"))
+                                print(
+                                    "[DEBUG] Added completed movie: {}".format(filename))
 
                 if not filelist:
                     titel2 = '({} offline)'.format(folder)
                     self['label2'].setText(titel2)
-                    self['totalItem'].setText('Item {}'.format(str(self.totalItem)))
+                    self['totalItem'].setText(
+                        'Item {}'.format(str(self.totalItem)))
 
     def getTaskList(self):
         try:
-            print("[DEBUG] Pending jobs: {}".format(len(JobManager.getPendingJobs())))
-            print("[DEBUG] Active jobs: {}".format(len(JobManager.active_jobs)))
+            print("[DEBUG] Pending jobs: {}".format(
+                len(JobManager.getPendingJobs())))
+            print("[DEBUG] Active jobs: {}".format(
+                len(JobManager.active_jobs)))
 
             all_jobs = JobManager.getPendingJobs() + JobManager.active_jobs
             seen = set()
@@ -408,7 +432,9 @@ class xc_StreamTasks(Screen):
                     seen.add(job_id)
                     unique_jobs.append(job)
 
-            print("[DEBUG] Total unique jobs to process: {}".format(len(unique_jobs)))
+            print(
+                "[DEBUG] Total unique jobs to process: {}".format(
+                    len(unique_jobs)))
 
             for i, job in enumerate(unique_jobs):
                 try:
@@ -423,8 +449,11 @@ class xc_StreamTasks(Screen):
                     job_name = getattr(job, 'name', 'Unknown')
                     job_filename = getattr(job, 'filename', '')
 
-                    is_series = "series" in job_name.lower() or "serie" in job_name.lower() or "episode" in job_name.lower()
-                    print("[DEBUG] Processing job {}: {}, Status: {}, Series: {}".format(i, job_name, job.status, is_series))
+                    is_series = "series" in job_name.lower(
+                    ) or "serie" in job_name.lower() or "episode" in job_name.lower()
+                    print(
+                        "[DEBUG] Processing job {}: {}, Status: {}, Series: {}".format(
+                            i, job_name, job.status, is_series))
 
                     if job.status != FINISHED:
                         current_progress = 0
@@ -442,7 +471,8 @@ class xc_StreamTasks(Screen):
                         elif job.status == FAILED:
                             status_text = _("FAILED")
                         else:
-                            status_text = job.getStatustext() if hasattr(job, 'getStatustext') else _('UNKNOWN')
+                            status_text = job.getStatustext() if hasattr(
+                                job, 'getStatustext') else _('UNKNOWN')
 
                         display_name = job_name
                         if job_filename and is_series:
@@ -458,7 +488,8 @@ class xc_StreamTasks(Screen):
                             "{}%".format(current_progress)
                         )
                         self.movielist.append(list_entry)
-                        print("[DEBUG] ADDED JOB to movielist: {} - Status: {}".format(display_name, job.status))
+                        print(
+                            "[DEBUG] ADDED JOB to movielist: {} - Status: {}".format(display_name, job.status))
 
                 except Exception as e:
                     print("Error processing job {}: {}".format(i, e))
@@ -612,7 +643,8 @@ class xc_StreamTasks(Screen):
     def remove_download(self):
         """Remove download task without deleting file"""
         current = self["filelist"].getCurrent()
-        if current is None or not isinstance(current, tuple) or len(current) < 2:
+        if current is None or not isinstance(
+                current, tuple) or len(current) < 2:
             self.session.open(
                 MessageBox,
                 _("No task selected!"),
@@ -640,7 +672,12 @@ class xc_StreamTasks(Screen):
         if result:
             try:
                 job.cancel()
-                print("[TASK] Removed: {}".format(getattr(job, 'name', 'Unknown')))
+                print(
+                    "[TASK] Removed: {}".format(
+                        getattr(
+                            job,
+                            'name',
+                            'Unknown')))
                 self.rebuildMovieList()
                 self.session.open(
                     MessageBox,
@@ -676,7 +713,8 @@ class downloadJob(Job):
             quoted_cmd = []
             for arg in cmdline:
                 arg_str = str(arg)
-                if ' ' in arg_str or any(char in arg_str for char in '()[]{}!$&*?;'):
+                if ' ' in arg_str or any(
+                        char in arg_str for char in '()[]{}!$&*?;'):
                     quoted_cmd.append(enigma_quote(arg_str))
                 else:
                     quoted_cmd.append(arg_str)
@@ -754,9 +792,11 @@ class downloadTaskPostcondition(Condition):
 
 class downloadTask(Task):
     if PY3:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(range(5))
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = list(
+            range(5))
     else:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(5)
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_UNKNOWN = range(
+            5)
 
     def __init__(self, job, cmdline, filename, filmtitle):
         Task.__init__(self, job, "Downloading ..." + filmtitle)
@@ -789,7 +829,9 @@ class downloadTask(Task):
                     new_progress = max(map(int, percentages))
                     if 0 <= new_progress <= 100 and new_progress > self.progress:
                         self.progress = new_progress
-                        print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
+                        print(
+                            "[DOWNLOAD PROGRESS] {}: {}%".format(
+                                self.filmtitle, self.progress))
 
                         if hasattr(self.toolbox, 'updatescreen'):
                             self.toolbox.updatescreen()
@@ -799,23 +841,30 @@ class downloadTask(Task):
 
     def afterRun(self):
         """Called after download completes"""
-        print("[DOWNLOAD TASK] afterRun - Progress: {}%, Return code: {}".format(self.progress, self.returncode))
+        print(
+            "[DOWNLOAD TASK] afterRun - Progress: {}%, Return code: {}".format(
+                self.progress,
+                self.returncode))
 
         if self.returncode == 0:
             try:
                 if file_exists(self.filename):
                     file_size = getsize(self.filename)
-                    print("[DOWNLOAD TASK] File exists, size: {} bytes".format(file_size))
+                    print(
+                        "[DOWNLOAD TASK] File exists, size: {} bytes".format(file_size))
 
                     if file_size > 0:
                         self.progress = 100
-                        print("[DOWNLOAD COMPLETE] {}: 100%".format(self.filmtitle))
+                        print(
+                            "[DOWNLOAD COMPLETE] {}: 100%".format(
+                                self.filmtitle))
 
                         if hasattr(self.toolbox, 'updatescreen'):
                             self.toolbox.updatescreen()
 
                         try:
-                            self.toolbox.download_finished(self.filename, self.filmtitle)
+                            self.toolbox.download_finished(
+                                self.filename, self.filmtitle)
                         except Exception as e:
                             print("Error in download_finished:", e)
                     else:
@@ -833,12 +882,17 @@ class downloadTask(Task):
                 print("Error in afterRun file check:", e)
                 self.ERROR_FILESYSTEM = 5
                 self.error = self.ERROR_FILESYSTEM
-                self.lasterrormsg = _("Error verifying download: {}").format(str(e))
+                self.lasterrormsg = _(
+                    "Error verifying download: {}").format(str(e))
         else:
             self.ERROR_FILESYSTEM = 5
             self.error = self.ERROR_FILESYSTEM
-            self.lasterrormsg = _("Download failed with return code: {}").format(self.returncode)
-            print("[DOWNLOAD FAILED] {}: returncode={}".format(self.filmtitle, self.returncode))
+            self.lasterrormsg = _(
+                "Download failed with return code: {}").format(self.returncode)
+            print(
+                "[DOWNLOAD FAILED] {}: returncode={}".format(
+                    self.filmtitle,
+                    self.returncode))
 
     def processOutputLine(self, line):
         pass
