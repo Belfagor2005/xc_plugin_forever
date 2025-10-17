@@ -784,9 +784,11 @@ class ReturncodePostcondition(Condition):
 
 class downloadTask(Task):
     if PY3:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = list(range(6))
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = list(
+            range(6))
     else:
-        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = range(6)
+        ERROR_CORRUPT_FILE, ERROR_RTMP_ReadPacket, ERROR_SEGFAULT, ERROR_SERVER, ERROR_FILESYSTEM, ERROR_UNKNOWN = range(
+            6)
 
     def __init__(self, job, cmdline, filename, filmtitle):
         Task.__init__(self, job, "Downloading ..." + filmtitle)
@@ -821,7 +823,9 @@ class downloadTask(Task):
                     if 0 <= new_progress <= 100 and new_progress > self.progress:
                         self.progress = new_progress
                         self.setProgress(self.progress)
-                        print("[DOWNLOAD PROGRESS] {}: {}%".format(self.filmtitle, self.progress))
+                        print(
+                            "[DOWNLOAD PROGRESS] {}: {}%".format(
+                                self.filmtitle, self.progress))
 
                         if hasattr(self.toolbox, 'updatescreen'):
                             self.toolbox.updatescreen()
