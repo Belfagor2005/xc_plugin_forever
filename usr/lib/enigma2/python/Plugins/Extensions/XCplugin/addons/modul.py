@@ -94,14 +94,7 @@ EXTDOWN = {
 
 Panel_list = [('HOME'), ('PLAYLIST'), ('MAKER BOUQUET'),
               ('DOWNLOADER'), ('M3U LOADER'), ('CONFIG'), ('ABOUT & HELP')]
-VIDEO_ASPECT_RATIO_MAP = {
-    0: "4:3 Letterbox",
-    1: "4:3 PanScan",
-    2: "16:9",
-    3: "16:9 Always",
-    4: "16:10 Letterbox",
-    5: "16:10 PanScan",
-    6: "16:9 Letterbox"}
+VIDEO_ASPECT_RATIO_MAP = {0: "4:3 Letterbox", 1: "4:3 PanScan", 2: "16:9", 3: "16:9 Always", 4: "16:10 Letterbox", 5: "16:10 PanScan", 6: "16:9 Letterbox"}
 VIDEO_FMT_PRIORITY_MAP = {"38": 1, "37": 2, "22": 3, "18": 4, "35": 5, "34": 6}
 
 
@@ -110,12 +103,8 @@ try:
         import subprocess
         piclogo = str(globalsxp.piclogo[0])
         pictmp = str(globalsxp.pictmp)
-        if isinstance(
-                globalsxp.piclogo,
-                tuple) and len(
-                globalsxp.piclogo) == 1:
-            # Estrai il percorso dal primo (e unico) elemento della tupla
-            piclogo = str(globalsxp.piclogo[0])
+        if isinstance(globalsxp.piclogo, tuple) and len(globalsxp.piclogo) == 1:
+            piclogo = str(globalsxp.piclogo[0])  # Estrai il percorso dal primo (e unico) elemento della tupla
         else:
             print("Error: piclogo is not a single-element tuple!")
             piclogo = None
@@ -135,7 +124,7 @@ try:
         else:
             print("Command not executed: piclogo or pictmp are invalid.")
     copy_poster()
-except BaseException:
+except:
     pass
 
 
@@ -144,7 +133,7 @@ def clear_caches():
         system("echo 1 > /proc/sys/vm/drop_caches")
         system("echo 2 > /proc/sys/vm/drop_caches")
         system("echo 3 > /proc/sys/vm/drop_caches")
-    except BaseException:
+    except:
         pass
 
 
@@ -186,7 +175,7 @@ def setAspect(aspect):
     config.av.aspectratio.setValue(map[aspect])
     try:
         AVSwitch().setAspectRatio(aspect)
-    except BaseException:
+    except:
         pass
 
 

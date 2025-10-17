@@ -26,8 +26,12 @@
 	</widget>
 	<!-- Buttons Colors -->
 	<eLabel position="150,990" size="1570,5" backgroundColor="#202020" zPosition="1" />
-	<eLabel backgroundColor="#00ff0000" position="154,1004" size="300,6" zPosition="12" />
-	<eLabel backgroundColor="#0000ff00" position="457,1004" size="300,6" zPosition="12" />
-	<widget name="key_red" position="154,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
-	<widget name="key_green" position="457,1016" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<eLabel backgroundColor="#00ff0000" position="194,1014" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#0000ff00" position="497,1014" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#00ffff00" position="802,1014" size="300,6" zPosition="12" />
+	<eLabel backgroundColor="#000000ff" position="1107,1014" size="300,6" zPosition="12" />
+	<widget name="key_red" position="194,1021" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_green" position="497,1021" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_yellow" position="802,1021" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
+	<widget name="key_blue" position="1107,1021" size="300,45" zPosition="11" font="Regular; 30" valign="center" halign="center" backgroundColor="background" transparent="1" foregroundColor="white" />
 </screen>
