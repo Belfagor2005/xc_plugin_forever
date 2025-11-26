@@ -1,35 +1,67 @@
 #!/bin/sh
-echo
-echo "--- PostInst * IPK Scripting v1.0 - date 10.08.2021 ---"
+set -e  # Exit on error
 
-# if [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyo ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyc ]; then
-    # echo
-    # echo "Renaming python modules ... from .pyc to .pyo"
-    # for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyc; do &> /dev/null
-         # mv $file ${file%.pyc}.pyo &> /dev/null
-		 # rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.py &> /dev/null
-    # done
-    
-# elif [ -f /usr/lib/enigma2/python/Plugins/Plugin.pyc ] && [ -f /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/plugin.pyo ]; then
-    # echo
-    # echo "Renaming python modules ... from .pyo to .pyc"
-    # for file in /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.pyo; do &> /dev/null
-         # mv $file ${file%.pyo}.pyc &> /dev/null
-		 # rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin/*.py &> /dev/null
-    # done       
+LOG_FILE="/var/log/xcplugin_install.log"
+PLUGIN_PATH="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin"
 
-	
-# fi
+{
+echo "=== XCplugin Post-Installation Script ==="
+echo "Date: $(date)"
+echo ""
 
-sleep 5
+# Verify installation
+if [ ! -d "$PLUGIN_PATH" ]; then
+    echo "Error: Plugin not installed correctly" >&2
+    exit 1
+fi
 
-echo
+echo "✓ Plugin installed successfully"
+
+# Set proper permissions
+echo "Setting file permissions..."
+chmod -R 755 "$PLUGIN_PATH"
+find "$PLUGIN_PATH" -name "*.py" -exec chmod 644 {} \; 2>/dev/null || true
+
+# Handle Python bytecode compilation based on Enigma2 version
+echo "Handling Python bytecode compilation..."
+
+if python -c "import sys; print(sys.version_info[0])" 2>/dev/null | grep -q "2"; then
+    # Python 2 - compile to .pyo files
+    echo "Compiling Python files for Python 2..."
+    python -m compileall -f "$PLUGIN_PATH" 2>/dev/null || true
+elif python -c "import sys; print(sys.version_info[0])" 2>/dev/null | grep -q "3"; then
+    # Python 3 - __pycache__ system
+    echo "Python 3 detected - using __pycache__ system"
+    python -m py_compile "${PLUGIN_PATH}/plugin.py" 2>/dev/null || true
+else
+    echo "Using system default Python compilation"
+    python -m compileall -f "$PLUGIN_PATH" 2>/dev/null || true
+fi
+
+echo ""
 echo "*******************************************"
 echo "*           - Install finished -          *"
 echo "*                   ***                   *"
-echo "*               Restart GUI               *"
+echo "*      Restart Enigma2 GUI to complete    *"
+echo "*                                         *"
+echo "*              Commands to try:           *"
+echo "*        /etc/init.d/enigma2 restart      *"
+echo "*          systemctl restart enigma2      *"
 echo "*                                         *"
 echo "*                           by Lululla    *"
 echo "*******************************************"
+
+} | tee -a "$LOG_FILE"
+
+# Optional: Prompt for restart
+echo ""
+read -p "Restart Enigma2 now? (y/n) " -n 1 -r
 echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Restarting Enigma2..."
+    /etc/init.d/enigma2 restart 2>/dev/null || systemctl restart enigma2 2>/dev/null || {
+        echo "Please restart Enigma2 manually to complete installation"
+    }
+fi
+
 exit 0

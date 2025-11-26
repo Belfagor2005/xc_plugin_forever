@@ -1,8 +1,8 @@
 #!/bin/bash
 ## setup command=wget -q --no-check-certificate "https://raw.githubusercontent.com/Belfagor2005/xc_plugin_forever/main/installer.sh?inline=false" -O - | /bin/sh
 
-version='5.0'
-changelog='Recoded TaskManager and Major Fix'
+version='5.1'
+changelog='Fix Downloader - request missing'
 
 TMPPATH=/tmp/XCplugin-install
 FILEPATH=/tmp/XCplugin-main.tar.gz

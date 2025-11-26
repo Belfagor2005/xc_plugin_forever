@@ -44,7 +44,7 @@ __author__ = "Lululla"
 __email__ = "ekekaz@gmail.com"
 __copyright__ = 'Copyright (c) 2024 Lululla'
 __license__ = "GPL-v2"
-currversion = '5.0'
+currversion = '5.1'
 version = "XC Forever V.%s" % currversion
 plugin_path = resolveFilename(
     SCOPE_PLUGINS,

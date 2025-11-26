@@ -1,19 +1,37 @@
 #!/bin/sh
-echo
-echo "--- PostRemove * IPK Scripting v1.0 - date 10.02.2021 ---"
-echo
-echo "A shell script which is executed after uninstallation of the package:"
-echo
-echo "Name: XCplugin Xcforever for OEOE2.0"
-echo
-echo "uninstall XCplugin ..."
+set -e  # Exit on error
 
+LOG_FILE="/var/log/xcplugin_uninstall.log"
+PLUGIN_PATH="/usr/lib/enigma2/python/Plugins/Extensions/XCplugin"
 
-rm -rf /usr/lib/enigma2/python/Plugins/Extensions/XCplugin &> /dev/null
+{
+echo "=== XCplugin Post-Removal Script ==="
+echo "Date: $(date)"
+echo "Package: XCplugin Xcforever for OEOE2.0"
+echo ""
 
-if [ ! -d /usr/lib/enigma2/python/Plugins/Extensions/XCplugin ]; then
-     echo
-     echo "Plugin Successfully Removed."
+echo "Starting post-removal cleanup..."
+
+if [ -d "$PLUGIN_PATH" ]; then
+    echo "Removing plugin directory: $PLUGIN_PATH"
+    rm -rf "$PLUGIN_PATH"
+    
+    if [ ! -d "$PLUGIN_PATH" ]; then
+        echo "✓ Plugin successfully removed"
+    else
+        echo "✗ Warning: Plugin directory still exists" >&2
+        exit 1
+    fi
+else
+    echo "✓ Plugin directory already removed"
 fi
-echo
+
+# Additional cleanup if needed
+echo "Cleaning up temporary files..."
+rm -f /tmp/xcplugin_*.log 2>/dev/null || true
+rm -f /var/cache/xcplugin_* 2>/dev/null || true
+
+echo "Post-removal completed successfully"
+} | tee -a "$LOG_FILE"
+
 exit 0
