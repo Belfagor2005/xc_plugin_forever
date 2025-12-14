@@ -1,20 +1,50 @@
-Xc Gold Forever v.5.0 by Lululla
+# ⭐ Xc Gold Forever v5.0
 
 ![](https://komarev.com/ghpvc/?username=Belfagor2005)
 
-
 [![Python package](https://github.com/Belfagor2005/xc_plugin_forever/actions/workflows/pylint.yml/badge.svg)](https://github.com/Belfagor2005/xc_plugin_forever/actions/workflows/pylint.yml)
 
+<p align="center">
+  <img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.png?raw=true" height="140">
+</p>
 
-<img src="https://github.com/Belfagor2005/xc_plugin_forever/blob/main/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/skin/pic/xcgold.png">
+## 📌 Description
+**Enigma2 project**
 
-Enigma2 project
-This plugin does not contain any playlists or channels. 
-All IPTV playlists need to be sourced by user.
+This plugin does **not** contain any playlists or channels.  
+All IPTV playlists must be **provided by the user**.
 
-IPTV is perfectly legal - IPTV providers/playlists that contain unscrambled encrpyted channels are illegal. 
-User is responsible for any downloaded playlist content. 
+---
 
-No video files are stored in this repository. The repository simply contains user-submitted links to publicly available video stream URLs, which to the best of our knowledge have been intentionally made publicly by the copyright holders. If any links in these playlists infringe on your rights as a copyright holder, they may be removed by sending a pull request or opening an issue.
+## ⚖️ Legal Disclaimer
 
-However, note that we have no control over the destination of the link, and just removing the link from the playlist will not remove its contents from the web. Note that linking does not directly infringe copyright because no copy is made on the site providing the link, and thus this is not a valid reason to send a DMCA notice to GitHub. To remove this content from the web, you should contact the web host that's actually hosting the content (not GitHub, nor the maintainers of this repository).
+IPTV is perfectly legal.  
+IPTV providers or playlists that contain **unscrambled encrypted channels** are illegal.
+
+The **user is fully responsible** for any downloaded or used playlist content.
+
+No video files are stored in this repository.  
+This repository only contains **user-submitted links** to publicly available video stream URLs, which— to the best of our knowledge —have been intentionally made public by the copyright holders.
+
+If any links infringe your rights as a copyright holder, they may be removed by:
+- opening an **Issue**
+- submitting a **Pull Request**
+
+---
+
+## ⚠️ DMCA Notice
+
+We have **no control** over the destination of external links.
+
+Removing a link from a playlist **does not remove the content from the web**.
+
+Linking does **not directly infringe copyright**, as no copy is made on this repository.  
+Therefore, this is **not a valid reason** to submit a DMCA notice to GitHub.
+
+To remove content from the web, please contact the **hosting provider** of the content  
+(not GitHub and not the repository maintainers).
+
+---
+
+### 👤 Author
+**by Lululla**
