@@ -1,40 +1,51 @@
-SUMMARY = "Lululla"
+SUMMARY = "XC Plugin Forever"
 MAINTAINER = "Lululla"
 SECTION = "base"
 PRIORITY = "required"
-LICENSE = "proprietary"
+LICENSE = "CLOSED"
 
 require conf/license/license-gplv2.inc
 
-inherit gitpkgv
+inherit gitpkgv allarch
+
 SRCREV = "${AUTOREV}"
-PV = "1.0+git${SRCPV}"
-PKGV = "1.0+git${GITPKGV}"
-VER ="3.9"
+PV = "3.9+git${SRCPV}"
+PKGV = "3.9+git${GITPKGV}"
 PR = "r0"
 
 SRC_URI = "git://github.com/Belfagor2005/xc_plugin_forever.git;protocol=https;branch=main"
 
 S = "${WORKDIR}/git"
 
-#FILES_${PN} = "/usr/* /etc*"
-#do_install() {
-#    cp -rp ${S}/usr* /etc* ${D}/ 
-#}
-
-FILES_${PN} = " ${libdir}/enigma2/python/Components/Renderer/* \
-                ${libdir}/enigma2/python/Plugins/Extensions/XCplugin/* \
-                /etc* \
-                "
 do_patch[noexec] = "1"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
+
 do_install() {
-install -d ${D}${libdir}/enigma2/python/Components/Renderer
-install -d ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin
-cp -af --no-preserve=ownership ${S}/usr/lib/enigma2/python/Components/Renderer/*.py ${D}${libdir}/enigma2/python/Components/Renderer/
-cp -af --no-preserve=ownership ${S}/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/* ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin/
+    install -d ${D}${libdir}/enigma2/python/Components/Renderer
+    install -d ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin
+    
+    # Componenti Renderer
+    if [ -d "${S}/usr/lib/enigma2/python/Components/Renderer" ]; then
+        cp -rf ${S}/usr/lib/enigma2/python/Components/Renderer/*.py \
+               ${D}${libdir}/enigma2/python/Components/Renderer/
+    fi
+    
+    # Plugin XC
+    if [ -d "${S}/usr/lib/enigma2/python/Plugins/Extensions/XCplugin" ]; then
+        cp -rf ${S}/usr/lib/enigma2/python/Plugins/Extensions/XCplugin/* \
+               ${D}${libdir}/enigma2/python/Plugins/Extensions/XCplugin/
+    fi
+    
+    # File di configurazione
+    if [ -d "${S}/etc" ]; then
+        install -d ${D}/etc/enigma2
+        cp -rf ${S}/etc/* ${D}/etc/enigma2/
+    fi
 }
 
-
-
+FILES:${PN} = " \
+    ${libdir}/enigma2/python/Components/Renderer/*.py \
+    ${libdir}/enigma2/python/Plugins/Extensions/XCplugin \
+    /etc/enigma2 \
+"
