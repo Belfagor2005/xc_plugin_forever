@@ -40,7 +40,7 @@ do_install() {
     # File di configurazione
     if [ -d "${S}/etc" ]; then
         install -d ${D}/etc/enigma2
-        cp -rf ${S}/etc/* ${D}/etc/enigma2/
+        cp -rf ${S}/etc/enigma2/xc/* ${D}/etc/enigma2/xc/
     fi
 }
 
