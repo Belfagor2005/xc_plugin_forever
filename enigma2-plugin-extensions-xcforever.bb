@@ -38,9 +38,12 @@ do_install() {
     fi
     
     # File di configurazione
-    if [ -d "${S}/etc" ]; then
+    if [ -d "${S}/etc/enigma2/xc" ]; then
         install -d ${D}/etc/enigma2
-        cp -rf ${S}/etc/enigma2/xc/* ${D}/etc/enigma2/xc/
+        cp -r "${S}/etc/enigma2/xc" "${D}/etc/enigma2/"
+    elif [ -f "${S}/etc/enigma2/xc" ]; then
+        install -d ${D}/etc/enigma2
+        install -m 644 "${S}/etc/enigma2/xc" "${D}/etc/enigma2/xc"
     fi
 }
 
