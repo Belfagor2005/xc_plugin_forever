@@ -1,0 +1,693 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma 2\n"
+"PO-Revision-Date: 2026-02-02 22:53+0100\n"
+"Last-Translator: root <EMAIL@ADDRESS>\n"
+"Language-Team: Armenian\n"
+"Language: hy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid "%s"
+msgstr ""
+
+msgid "%s NOT DETECTED!"
+msgstr ""
+
+msgid "(BLUE BUTTON):\n"
+msgstr ""
+
+msgid "(GREEN BUTTON):\n"
+msgstr ""
+
+msgid "(REC BUTTON):\n"
+msgstr ""
+
+msgid "(STOP BUTTON):\n"
+msgstr ""
+
+msgid "(YELLOW BUTTON):\n"
+msgstr ""
+
+msgid "/etc/enigma2/iptv.sh\n"
+msgstr ""
+
+msgid "/tmp/xc.txt\n"
+msgstr ""
+
+msgid "Aborting..."
+msgstr ""
+
+msgid "Accesso non autorizzato (401)"
+msgstr ""
+
+msgid "Active Automatic Bouquet Update"
+msgstr ""
+
+msgid "Active Main Screen Large"
+msgstr ""
+
+msgid "Adjust Timezone"
+msgstr ""
+
+msgid "Adjust Timezone (hour)"
+msgstr ""
+
+msgid "An unexpected error occurred. Please try again later."
+msgstr ""
+
+msgid "At an interval of hours or at a fixed time"
+msgstr ""
+
+msgid "Automatic bouquet update (schedule):"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Bouquet"
+msgstr ""
+
+msgid "Bouquet style"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cannot modify this task status"
+msgstr ""
+
+msgid "Cannot pause/resume this item"
+msgstr ""
+
+msgid "Cannot remove this item"
+msgstr ""
+
+msgid "Check on favorites lists..."
+msgstr ""
+
+msgid "Choose Directory:"
+msgstr ""
+
+msgid "Choose directory"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Config"
+msgstr ""
+
+msgid "Config Setup Options\n"
+msgstr ""
+
+msgid "Configure at a fixed time"
+msgstr ""
+
+msgid "Configure every interval of hours from now"
+msgstr ""
+
+msgid "Configure name of exported bouquet. Default is myBouquet"
+msgstr ""
+
+msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
+msgid "Configure service Reference Iptv-Gstreamer-Exteplayer3"
+msgstr ""
+
+msgid "Configure the type of conversion in the favorite list"
+msgstr ""
+
+msgid "Configure to place the bouquets of the converted lists"
+msgstr ""
+
+msgid "Configure type of download movie: JobManager/Direct."
+msgstr ""
+
+msgid "Configure type of stream to be downloaded by conversion"
+msgstr ""
+
+msgid "Congrats! You already have the latest version..."
+msgstr ""
+
+msgid "Connessione al server..."
+msgstr ""
+
+msgid "Console"
+msgstr ""
+
+msgid "Conversion %s in progress:"
+msgstr ""
+
+msgid "Conversion type Output"
+msgstr ""
+
+msgid "Convert Playlist to: %s ?"
+msgstr ""
+
+msgid "Create XC Live/VOD Bouquets\n"
+msgstr ""
+
+msgid "DOWNLOAD VIDEO?"
+msgstr ""
+
+msgid "DOWNLOADING"
+msgstr ""
+
+msgid "Data Server Configuration:"
+msgstr ""
+
+msgid "Display XCplugin in Main Menu"
+msgstr ""
+
+msgid "Do you want to Convert %s to favorite .tv ?"
+msgstr ""
+
+msgid "Do you want to install update (%s) now?"
+msgstr ""
+
+msgid "Do you want to remove %s ?"
+msgstr ""
+
+msgid "Do you want to remove: %s ?"
+msgstr ""
+
+msgid "Do you want to remove: %s?"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download Failed!"
+msgstr ""
+
+msgid "Download Finished!"
+msgstr ""
+
+msgid "Download M3u File?"
+msgstr ""
+
+msgid "Download Picons ?"
+msgstr ""
+
+msgid "Download Type"
+msgstr ""
+
+msgid "Download VOD selected channel\n"
+msgstr ""
+
+msgid "Download Video \n"
+msgstr ""
+
+msgid "Download completato"
+msgstr ""
+
+msgid "Download completato con successo!"
+msgstr ""
+
+msgid "Download error: %s"
+msgstr ""
+
+msgid "Download failed with return code: {}"
+msgstr ""
+
+msgid "Download failed:"
+msgstr ""
+
+msgid "Download fallito"
+msgstr ""
+
+msgid "Download in corso"
+msgstr ""
+
+msgid "Download restarted: {}"
+msgstr ""
+
+msgid "Download started: {}"
+msgstr ""
+
+msgid "Download stopped: {}"
+msgstr ""
+
+msgid "Download task removed"
+msgstr ""
+
+msgid "Download: %d%%"
+msgstr ""
+
+msgid "Downloaded file is too small"
+msgstr ""
+
+msgid "Downloaded file not found"
+msgstr ""
+
+msgid "Enter Password"
+msgstr ""
+
+msgid "Enter Server Port Eg.:'8080'"
+msgstr ""
+
+msgid "Enter Server Url without 'http://' your_domine"
+msgstr ""
+
+msgid "Enter Username"
+msgstr ""
+
+msgid "Enter pin code"
+msgstr ""
+
+msgid "Epg guide or imdb/tmdb\n"
+msgstr ""
+
+msgid "Error code"
+msgstr ""
+
+msgid "Error controlling download: {}"
+msgstr ""
+
+msgid "Error deleting the file:"
+msgstr ""
+
+msgid "Error reading or processing %s: %s"
+msgstr ""
+
+msgid "Error reading or processing the file: %s"
+msgstr ""
+
+msgid "Error removing task: {}"
+msgstr ""
+
+msgid "Error verifying download: {}"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export file m3u to Bouquet .tv\n"
+msgstr ""
+
+msgid "FAILED"
+msgstr ""
+
+msgid "Failed to fetch update information. Please check your internet connection."
+msgstr ""
+
+msgid "Failed to parse update information. Please try again later."
+msgstr ""
+
+msgid "File Unknow!!!"
+msgstr ""
+
+msgid "File not found or empty: %s"
+msgstr ""
+
+msgid "File not found!"
+msgstr ""
+
+msgid "Filter Bad Tag"
+msgstr ""
+
+msgid "Filter this category..."
+msgstr ""
+
+msgid "First Select the list or enter it in Config"
+msgstr ""
+
+msgid "Folder user file .xml"
+msgstr ""
+
+msgid "Format:\n"
+msgstr ""
+
+msgid "Free Space"
+msgstr ""
+
+msgid "HELP BUTTON:\n"
+msgstr ""
+
+msgid "HOME"
+msgstr ""
+
+msgid "Help\n"
+msgstr ""
+
+msgid "Hide/Show"
+msgstr ""
+
+msgid "If player active STOP player riproduction on exit"
+msgstr ""
+
+msgid "If you have a file:\n"
+msgstr ""
+
+msgid "If you have a file\n"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import Server from /etc/enigma2/iptv.sh?"
+msgstr ""
+
+msgid "Import Server from /tmp/xc.tx?"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Init Continue Play\n"
+msgstr ""
+
+msgid "Invalid URL!"
+msgstr ""
+
+msgid "Invalid date format in update information."
+msgstr ""
+
+msgid "Invalid file format: not enough or empty lines in %s"
+msgstr ""
+
+msgid "Invalid format in %s. Could not extract server details."
+msgstr ""
+
+msgid "Invalid or unsupported job type"
+msgstr ""
+
+msgid "Is Directory or file not exist"
+msgstr ""
+
+msgid "Last channel update: %s"
+msgstr ""
+
+msgid "Line already exists in playlist"
+msgstr ""
+
+msgid "Line appended to playlist"
+msgstr ""
+
+msgid "Link in Main Menu"
+msgstr ""
+
+msgid "Live Player Active in Setting: set No for Record Live"
+msgstr ""
+
+msgid "Live Player for Stream .ts: set No for Record Live"
+msgstr ""
+
+msgid "Live Services Type"
+msgstr ""
+
+msgid "LivePlayer Active"
+msgstr ""
+
+msgid "M3u"
+msgstr ""
+
+msgid "M3u Loader"
+msgstr ""
+
+msgid "Main"
+msgstr ""
+
+msgid "Main Screen XL"
+msgstr ""
+
+msgid "Make"
+msgstr ""
+
+msgid "Media Folder"
+msgstr ""
+
+msgid "MediaPlayer\n"
+msgstr ""
+
+msgid "Missing or empty file: %s"
+msgstr ""
+
+msgid "Movie"
+msgstr ""
+
+msgid "Movie Folder"
+msgstr ""
+
+msgid "Movie has been successfully deleted"
+msgstr ""
+
+msgid "Name Bouquet Configuration:"
+msgstr ""
+
+msgid "Name Bouquet Export"
+msgstr ""
+
+msgid "Network error!"
+msgstr ""
+
+msgid "No Server Configured to Download!!!"
+msgstr ""
+
+msgid "No Video to Download/Record!!"
+msgstr ""
+
+msgid "No data or playlist not compatible with XCplugin."
+msgstr ""
+
+msgid "No movie selected!"
+msgstr ""
+
+msgid "No task selected!"
+msgstr ""
+
+msgid "No update information available."
+msgstr ""
+
+msgid "Only Series Episodes Allowed!!!"
+msgstr ""
+
+msgid "Only VOD Movie allowed!!!"
+msgstr ""
+
+msgid "Open Movie Folder\n"
+msgstr ""
+
+msgid "PASSWORD='yyyyyyyyy'\n"
+msgstr ""
+
+msgid "PAUSED"
+msgstr ""
+
+msgid "Pause/Resume"
+msgstr ""
+
+msgid "Picons IPTV"
+msgstr ""
+
+msgid "Picons IPTV bouquets to"
+msgstr ""
+
+msgid "Place IPTV bouquets at"
+msgstr ""
+
+msgid "Player"
+msgstr ""
+
+msgid "Please configure the server details first"
+msgstr ""
+
+msgid "Please enter the parental control pin code"
+msgstr ""
+
+msgid "Preparando il download..."
+msgstr ""
+
+msgid "Put .m3u Files in Folder %s"
+msgstr ""
+
+msgid "Put your lines to the"
+msgstr ""
+
+msgid "Really close without saving settings?"
+msgstr ""
+
+msgid "Rec Movie"
+msgstr ""
+
+msgid "Rec Series"
+msgstr ""
+
+msgid "Reload"
+msgstr ""
+
+msgid "Reload List\n"
+msgstr ""
+
+msgid "Reload Playlists in progress..."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Remove Playlist from Bouquets?"
+msgstr ""
+
+msgid "Remove download task for {}?"
+msgstr ""
+
+msgid "Remove file from list\n"
+msgstr ""
+
+msgid "Removes all the bouquets that have been\n"
+msgstr ""
+
+msgid "Resolution Change Failed"
+msgstr ""
+
+msgid "Restart"
+msgstr ""
+
+msgid "Return to Channels List\n"
+msgstr ""
+
+msgid "Risorsa non trovata (404)"
+msgstr ""
+
+msgid "SELECT YOUR CHOICE"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Scaricamento: %d%% - Velocit: %.1f KB/s - Tempo rimanente: %d sec"
+msgstr ""
+
+msgid "Schedule type:"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search LIve/Movie"
+msgstr ""
+
+msgid "Search for a title in the list"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Server PORT"
+msgstr ""
+
+msgid "Server Password"
+msgstr ""
+
+msgid "Server Timeout"
+msgstr ""
+
+msgid "Server URL"
+msgstr ""
+
+msgid "Server Username"
+msgstr ""
+
+msgid "Set 'Live Player Active' in Setting:\n"
+msgstr ""
+
+msgid "Set 'No' for Record Live\n"
+msgstr ""
+
+msgid "Set Name for MakerBouquet"
+msgstr ""
+
+msgid "Settings saved successfully !"
+msgstr ""
+
+msgid "Start Download All Episodes Series\n"
+msgstr ""
+
+msgid "Start Download or Record Selected Channel:\n"
+msgstr ""
+
+msgid "Stop Player on Exit"
+msgstr ""
+
+msgid "The movie does not exist!"
+msgstr ""
+
+msgid "The pin code you entered is wrong."
+msgstr ""
+
+msgid "Time to start update:"
+msgstr ""
+
+msgid "Timeout Server (sec)"
+msgstr ""
+
+msgid "Timeout della connessione"
+msgstr ""
+
+msgid "UNKNOWN"
+msgstr ""
+
+msgid "USERNAME='xxxxxxxxxx'\n"
+msgstr ""
+
+msgid "Update Aborted!"
+msgstr ""
+
+msgid "Update interval (hours):"
+msgstr ""
+
+msgid "Vod Services Type"
+msgstr ""
+
+msgid "Vuoi davvero interrompere il download?"
+msgstr ""
+
+msgid "Wait... downloading in progress ..."
+msgstr ""
+
+msgid "When opening an .m3u file instead:\n"
+msgstr ""
+
+msgid "YELLOW BUTTON:\n"
+msgstr ""
+
+msgid "You need to configure the type of output\n"
+msgstr ""
+
+msgid "Your Server Login and data input"
+msgstr ""
+
+msgid "fixed time"
+msgstr ""
+
+msgid "host\t(host without http:// )\n"
+msgstr ""
+
+msgid "interval"
+msgstr ""
+
+msgid "not exist!"
+msgstr ""
+
+msgid "password\n"
+msgstr ""
+
+msgid "port\n"
+msgstr ""
+
+msgid "user\n"
+msgstr ""
+
+msgid "wait please..."
+msgstr ""
