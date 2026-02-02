@@ -418,11 +418,11 @@ msgid "If player active STOP player riproduction on exit"
 msgstr ""
 
 #, fuzzy
-msgid "If you have a file\n"
+msgid "If you have a file:\n"
 msgstr "            如果您有文件格式:\n"
 
 #, fuzzy
-msgid "If you have a file:\n"
+msgid "If you have a file\n"
 msgstr "            如果您有文件格式:\n"
 
 msgid "Import"
