@@ -374,10 +374,10 @@ msgstr ""
 msgid "If player active STOP player riproduction on exit"
 msgstr ""
 
-msgid "If you have a file\n"
+msgid "If you have a file:\n"
 msgstr ""
 
-msgid "If you have a file:\n"
+msgid "If you have a file\n"
 msgstr ""
 
 msgid "Import"

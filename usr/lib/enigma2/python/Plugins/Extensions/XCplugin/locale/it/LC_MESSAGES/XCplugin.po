@@ -360,10 +360,10 @@ msgstr ""
 msgid "If player active STOP player riproduction on exit"
 msgstr "Se il Player è attivo si fermera all'uscita dal plugin"
 
-msgid "If you have a file\n"
+msgid "If you have a file:\n"
 msgstr ""
 
-msgid "If you have a file:\n"
+msgid "If you have a file\n"
 msgstr ""
 
 msgid "Import"

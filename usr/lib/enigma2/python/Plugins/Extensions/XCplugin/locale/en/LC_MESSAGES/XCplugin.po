@@ -568,6 +568,7 @@ msgstr "SELECT YOUR CHOICE"
 msgid "Save"
 msgstr "Save"
 
+#, fuzzy
 msgid "Scaricamento: %d%% - Velocit: %.1f KB/s - Tempo rimanente: %d sec"
 msgstr "Scaricamento: %d%% - Velocit: %.1f KB/s - Tempo rimanente: %d sec"
 

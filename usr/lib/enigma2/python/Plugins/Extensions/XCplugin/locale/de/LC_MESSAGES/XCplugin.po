@@ -401,13 +401,13 @@ msgid "If player active STOP player riproduction on exit"
 msgstr ""
 
 #, fuzzy
-msgid "If you have a file\n"
+msgid "If you have a file:\n"
 msgstr ""
 "      Wenn Sie eine Datei in folgendem Format haben:\n"
 "\n"
 
 #, fuzzy
-msgid "If you have a file:\n"
+msgid "If you have a file\n"
 msgstr ""
 "      Wenn Sie eine Datei in folgendem Format haben:\n"
 "\n"
