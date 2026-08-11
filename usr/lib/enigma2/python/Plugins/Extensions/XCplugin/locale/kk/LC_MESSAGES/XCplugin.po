@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s АНЫҚТАМАДЫ!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(КӨК ТҮЙМЕ):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(КӨК ТҮЙМЕ):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(ЖАСЫЛ ТҮЙМЕ):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(ЖАСЫЛ ТҮЙМЕ):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(REC ТҮЙМЕСІ):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(REC ТҮЙМЕСІ):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(ТОҚТАТУ ТҮЙМЕСІ):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(ТОҚТАТУ ТҮЙМЕСІ):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(САРЫ ТҮЙМЕ):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(САРЫ ТҮЙМЕ):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "Жабу"
 msgid "Config"
 msgstr "Конфигурация"
 
-msgid "Config Setup Options\n"
-msgstr "Баптау параметрлерін конфигурациялау\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "Баптау параметрлерін конфигурациялау\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Белгіленген уақытта конфигурациялаңыз"
@@ -152,8 +152,8 @@ msgstr "Түрлендіру түрі Шығару"
 msgid "Convert Playlist to: %s ?"
 msgstr "Ойнату тізімін келесіге түрлендіру: %s?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "XC Live/VOD букеттерін жасаңыз\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "XC Live/VOD букеттерін жасаңыз\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ВИДЕОНЫ ЖҮКТЕП АЛУ?"
@@ -200,11 +200,11 @@ msgstr "Пикондарды жүктеп алу керек пе?"
 msgid "Download Type"
 msgstr "Жүктеп алу түрі"
 
-msgid "Download VOD selected channel\n"
-msgstr "VOD таңдалған арнаны жүктеп алыңыз\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "VOD таңдалған арнаны жүктеп алыңыз\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "Видеоны жүктеп алыңыз \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "Видеоны жүктеп алыңыз \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Жүктеп алу аяқталды"
@@ -263,8 +263,8 @@ msgstr "Пайдаланушы атын енгізіңіз"
 msgid "Enter pin code"
 msgstr "Пин кодын енгізіңіз"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "Epg нұсқаулығы немесе imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Epg нұсқаулығы немесе imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Қате коды"
@@ -293,8 +293,8 @@ msgstr "Шығу"
 msgid "Export"
 msgstr "Экспорттау"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "m3u файлын Bouquet .tv қызметіне экспорттау\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "m3u файлын Bouquet .tv қызметіне экспорттау\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "СӘТСІЗ"
@@ -326,20 +326,20 @@ msgstr "Алдымен тізімді таңдаңыз немесе оны Confi
 msgid "Folder user file .xml"
 msgstr ".xml қалта пайдаланушы файлы"
 
-msgid "Format:\n"
-msgstr "Формат:\n"
+msgid "Format:\\\\\\\\n"
+msgstr "Формат:\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Бос кеңістік"
 
-msgid "HELP BUTTON:\n"
-msgstr "Анықтама түймесі:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "Анықтама түймесі:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ҮЙ"
 
-msgid "Help\n"
-msgstr "Анықтама\n"
+msgid "Help\\\\\\\\n"
+msgstr "Анықтама\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Жасыру/көрсету"
@@ -347,11 +347,11 @@ msgstr "Жасыру/көрсету"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Ойыншы белсенді болса, шығу кезінде ойнатқыштың қайта шығарылуын ТОҚТАТУ"
 
-msgid "If you have a file:\n"
-msgstr "Егер сізде файл болса:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "Егер сізде файл болса:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "Файлыңыз болса\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "Файлыңыз болса\\\\\\\\n"
 
 msgid "Import"
 msgstr "Импорттау"
@@ -365,8 +365,8 @@ msgstr "/tmp/xc.tx серверінен импорттау керек пе?"
 msgid "Info"
 msgstr "Ақпарат"
 
-msgid "Init Continue Play\n"
-msgstr "Ойнатуды жалғастыру\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Ойнатуды жалғастыру\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Жарамсыз URL!"
@@ -399,7 +399,7 @@ msgid "Link in Main Menu"
 msgstr "Негізгі мәзірдегі сілтеме"
 
 msgid "Live Player Active in Setting: set No for Record Live"
-msgstr ""Тікелей эфир ойнатқышы" параметрінде белсенді: Live Record үшін "Жоқ" орнатыңыз"
+msgstr "\\\\\\\"Тікелей эфир ойнатқышы\\\\\\\" параметрінде белсенді: Live Record үшін \\\\\\\"Жоқ\\\\\\\" орнатыңыз"
 
 msgid "Live Player for Stream .ts: set No for Record Live"
 msgstr "Stream .ts үшін Live Player: Record Live үшін Жоқ орнатыңыз"
@@ -428,7 +428,7 @@ msgstr "Жасаңыз"
 msgid "Media Folder"
 msgstr "Мультимедиа қалтасы"
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -476,11 +476,11 @@ msgstr "Тек сериалдарға рұқсат етілген!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Тек VOD фильміне рұқсат етіледі!!!"
 
-msgid "Open Movie Folder\n"
-msgstr "Фильм қалтасын ашыңыз\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "Фильм қалтасын ашыңыз\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "PASSWORD='yyyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "PASSWORD='yyyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ТОҚТАТУ"
@@ -527,8 +527,8 @@ msgstr "Rec сериясы"
 msgid "Reload"
 msgstr "Қайта жүктеңіз"
 
-msgid "Reload List\n"
-msgstr "Тізімді қайта жүктеңіз\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "Тізімді қайта жүктеңіз\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Ойнату тізімдерін қайта жүктеу орындалуда..."
@@ -542,11 +542,11 @@ msgstr "Ойнату тізімі букеттерден өшірілсін бе
 msgid "Remove download task for {}?"
 msgstr "{} жүктеп алу тапсырмасын жою керек пе?"
 
-msgid "Remove file from list\n"
-msgstr "Файлды тізімнен жою\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "Файлды тізімнен жою\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "Барлық болған гүл шоқтарын жояды\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Барлық болған гүл шоқтарын жояды\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Ажыратымдылықты өзгерту сәтсіз аяқталды"
@@ -554,8 +554,8 @@ msgstr "Ажыратымдылықты өзгерту сәтсіз аяқтал�
 msgid "Restart"
 msgstr "Қайтадан қосу"
 
-msgid "Return to Channels List\n"
-msgstr "Арналар тізіміне оралу\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "Арналар тізіміне оралу\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Ресурс табылмады (404)"
@@ -599,11 +599,11 @@ msgstr "Сервер URL мекенжайы"
 msgid "Server Username"
 msgstr "Сервер пайдаланушы аты"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "Параметрлерде "Тікелей ойнатқыш белсенді" параметрін орнатыңыз:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "Параметрлерде \\\\\\\"Тікелей ойнатқыш белсенді\\\\\\\" параметрін орнатыңыз:\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "Тікелей жазу үшін "Жоқ" мәнін орнатыңыз\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Тікелей жазу үшін \\\\\\\"Жоқ\\\\\\\" мәнін орнатыңыз\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "MakerBouquet үшін атауды орнатыңыз"
@@ -611,11 +611,11 @@ msgstr "MakerBouquet үшін атауды орнатыңыз"
 msgid "Settings saved successfully !"
 msgstr "Параметрлер сәтті сақталды!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "Барлық сериялар сериясын жүктеп алу\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Барлық сериялар сериясын жүктеп алу\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "Жүктеп алуды бастау немесе таңдалған арнаны жазу:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Жүктеп алуды бастау немесе таңдалған арнаны жазу:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Шығу кезінде ойнатқышты тоқтату"
@@ -638,7 +638,7 @@ msgstr "Қосылу уақыты аяқталды"
 msgid "UNKNOWN"
 msgstr "БЕЛГІСІЗ"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -656,14 +656,14 @@ msgstr "Жүктеп алуды шынымен тоқтатқыңыз келе �
 msgid "Wait... downloading in progress ..."
 msgstr "Күте тұрыңыз... жүктеп алынуда..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "Оның орнына .m3u файлын ашқанда:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "Оның орнына .m3u файлын ашқанда:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "САРЫ ТҮЙМЕ:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "САРЫ ТҮЙМЕ:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "Шығару түрін конфигурациялауыңыз қажет\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "Шығару түрін конфигурациялауыңыз қажет\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Серверге кіру және деректерді енгізу"
@@ -671,8 +671,8 @@ msgstr "Серверге кіру және деректерді енгізу"
 msgid "fixed time"
 msgstr "белгіленген уақыт"
 
-msgid "host\t(host without http:// )\n"
-msgstr "хост\t(http:// жоқ хост)\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "хост\\\\\\\\t(http:// жоқ хост)\\\\\\\\n"
 
 msgid "interval"
 msgstr "интервал"
@@ -680,14 +680,14 @@ msgstr "интервал"
 msgid "not exist!"
 msgstr "жоқ!"
 
-msgid "password\n"
-msgstr "құпия сөз\n"
+msgid "password\\\\\\\\n"
+msgstr "құпия сөз\\\\\\\\n"
 
-msgid "port\n"
-msgstr "порт\n"
+msgid "port\\\\\\\\n"
+msgstr "порт\\\\\\\\n"
 
-msgid "user\n"
-msgstr "пайдаланушы\n"
+msgid "user\\\\\\\\n"
+msgstr "пайдаланушы\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "күтіңіз өтінемін..."

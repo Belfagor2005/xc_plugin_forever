@@ -23,25 +23,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s NO DETECTADO!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(BOTÓN AZUL):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(BOTÓN AZUL):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(BOTÓN VERDE):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(BOTÓN VERDE):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(BOTÓN GRABAR):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(BOTÓN GRABAR):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(BOTÓN DETENER):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(BOTÓN DETENER):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(BOTÓN AMARILLO):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(BOTÓN AMARILLO):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -107,8 +107,8 @@ msgstr "Cerrar"
 msgid "Config"
 msgstr "configuración"
 
-msgid "Config Setup Options\n"
-msgstr "Opciones de configuración\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "Opciones de configuración\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Configurar en un tiempo fijo"
@@ -157,8 +157,8 @@ msgstr "Tipo de conversión Output"
 msgid "Convert Playlist to: %s ?"
 msgstr "Convertir lista de reproducción a: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "Crear ramos XC en vivo/VOD\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Crear ramos XC en vivo/VOD\\\\\\\\n"
 
 #, fuzzy
 msgid "DOWNLOAD VIDEO?"
@@ -214,11 +214,11 @@ msgstr "Descargar Picones?"
 msgid "Download Type"
 msgstr "Download"
 
-msgid "Download VOD selected channel\n"
-msgstr "Descargar canal VOD seleccionado\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "Descargar canal VOD seleccionado\\\\\\\\n"
 
 #, fuzzy
-msgid "Download Video \n"
+msgid "Download Video \\\\\\\\n"
 msgstr "Download"
 
 #, fuzzy
@@ -290,8 +290,8 @@ msgstr "Introduzca su nombre de usuario"
 msgid "Enter pin code"
 msgstr "Ingrese el código pin"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "Guía Epg o imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Guía Epg o imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "código de error"
@@ -320,8 +320,8 @@ msgstr "Salida"
 msgid "Export"
 msgstr "Exportar"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "Exportar archivo m3u a Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "Exportar archivo m3u a Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FALLIDO"
@@ -353,20 +353,20 @@ msgstr "Primero seleccione la lista o ingrésela en Configuración"
 msgid "Folder user file .xml"
 msgstr "Archivos Usuario file .xml"
 
-msgid "Format:\n"
-msgstr "Formato:\n"
+msgid "Format:\\\\\\\\n"
+msgstr "Formato:\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Espacio libre"
 
-msgid "HELP BUTTON:\n"
-msgstr "BOTÓN DE AYUDA:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "BOTÓN DE AYUDA:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "HOGAR"
 
-msgid "Help\n"
-msgstr "Ayuda\n"
+msgid "Help\\\\\\\\n"
+msgstr "Ayuda\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Ocultar/Mostrar"
@@ -374,11 +374,11 @@ msgstr "Ocultar/Mostrar"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Si el jugador está activo, DETENGA la reproducción del jugador al salir."
 
-msgid "If you have a file:\n"
-msgstr "Si tienes un archivo:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "Si tienes un archivo:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "Si tienes un archivo\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "Si tienes un archivo\\\\\\\\n"
 
 msgid "Import"
 msgstr "Importar"
@@ -392,8 +392,8 @@ msgstr "¿Importar servidor desde /tmp/xc.tx?"
 msgid "Info"
 msgstr "Información"
 
-msgid "Init Continue Play\n"
-msgstr "Iniciar Continuar Reproducir\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Iniciar Continuar Reproducir\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "¡URL no válida!"
@@ -457,8 +457,8 @@ msgstr "Hacer"
 msgid "Media Folder"
 msgstr "Carpeta multimedia"
 
-msgid "MediaPlayer\n"
-msgstr "Reproductor multimedia\n"
+msgid "MediaPlayer\\\\\\\\n"
+msgstr "Reproductor multimedia\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "Archivo faltante o vacío: %s"
@@ -485,7 +485,7 @@ msgid "No Server Configured to Download!!!"
 msgstr "¡¡¡No hay ningún servidor configurado para descargar!!!"
 
 msgid "No Video to Download/Record!!"
-msgstr "No se haya video Descargado\\Registrados!!"
+msgstr "No se haya video Descargado\\\\\\\\\\\\\\\\Registrados!!"
 
 msgid "No data or playlist not compatible with XCplugin."
 msgstr "No hay datos ni listas de reproducción no compatibles con XCplugin."
@@ -505,11 +505,11 @@ msgstr "¡¡¡Solo se permiten episodios de series!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "¡¡¡Solo se permiten películas VOD !!!"
 
-msgid "Open Movie Folder\n"
-msgstr "Abrir carpeta de películas\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "Abrir carpeta de películas\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "CONTRASEÑA='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "CONTRASEÑA='yyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "PAUSADO"
@@ -558,8 +558,8 @@ msgstr "Serie recreativa"
 msgid "Reload"
 msgstr "Recargar"
 
-msgid "Reload List\n"
-msgstr "Recargar lista\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "Recargar lista\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Recargar listas de reproducción en progreso..."
@@ -573,11 +573,11 @@ msgstr "¿Quitar la lista de reproducción de Ramos?"
 msgid "Remove download task for {}?"
 msgstr "¿Eliminar tarea de descarga para {}?"
 
-msgid "Remove file from list\n"
-msgstr "Eliminar archivo de la lista\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "Eliminar archivo de la lista\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "Elimina todos los ramos que han sido\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Elimina todos los ramos que han sido\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Error al cambiar la resolución"
@@ -585,8 +585,8 @@ msgstr "Error al cambiar la resolución"
 msgid "Restart"
 msgstr "Reanudar"
 
-msgid "Return to Channels List\n"
-msgstr "Volver a la lista de canales\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "Volver a la lista de canales\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Recurso no encontrado (404)"
@@ -631,11 +631,11 @@ msgid "Server Username"
 msgstr "Servidor Username"
 
 #, fuzzy
-msgid "Set 'Live Player Active' in Setting:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
 msgstr "Live Player Active in Setting: establezca No para Record Live"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "Establezca 'No' para Grabar en vivo\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Establezca 'No' para Grabar en vivo\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Establecer nombre para MakerBouquet"
@@ -643,11 +643,11 @@ msgstr "Establecer nombre para MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "¡La configuración se guardó correctamente!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "Iniciar descarga de la serie de todos los episodios\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Iniciar descarga de la serie de todos los episodios\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "Iniciar descarga o grabar canal seleccionado:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Iniciar descarga o grabar canal seleccionado:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Detener al jugador al salir"
@@ -670,8 +670,8 @@ msgstr "Se agotó el tiempo de conexión"
 msgid "UNKNOWN"
 msgstr "DESCONOCIDO"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "NOMBRE DE USUARIO='xxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "NOMBRE DE USUARIO='xxxxxxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "¡Actualización cancelada!"
@@ -688,14 +688,14 @@ msgstr "¿Realmente quieres detener la descarga?"
 msgid "Wait... downloading in progress ..."
 msgstr "Espera... descarga en curso..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "Al abrir un archivo .m3u en su lugar:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "Al abrir un archivo .m3u en su lugar:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "BOTÓN AMARILLO:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "BOTÓN AMARILLO:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "Necesitas configurar el tipo de salida\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "Necesitas configurar el tipo de salida\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Su servidor de inicio de sesión y entrada de datos"
@@ -703,8 +703,8 @@ msgstr "Su servidor de inicio de sesión y entrada de datos"
 msgid "fixed time"
 msgstr "horario fijo"
 
-msgid "host\t(host without http:// )\n"
-msgstr "host\t(host sin http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\t(host sin http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "intervalo"
@@ -713,15 +713,15 @@ msgid "not exist!"
 msgstr "no existe!"
 
 #, fuzzy
-msgid "password\n"
+msgid "password\\\\\\\\n"
 msgstr "Introducir la contraseña"
 
 #, fuzzy
-msgid "port\n"
+msgid "port\\\\\\\\n"
 msgstr "Importar"
 
-msgid "user\n"
-msgstr "usuario\n"
+msgid "user\\\\\\\\n"
+msgstr "usuario\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "por favor espere..."

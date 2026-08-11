@@ -26,25 +26,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "/media/usb NOT DETECTED!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(PLAVI GUMB):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(PLAVI GUMB):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(ZELENI GUMB):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(ZELENI GUMB):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(GUMB ZA SNIMANJE):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(GUMB ZA SNIMANJE):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(GUMB STOP):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(GUMB STOP):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(ŽUTI GUMB):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(ŽUTI GUMB):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -110,8 +110,8 @@ msgstr "Zatvori"
 msgid "Config"
 msgstr "Konfiguracija"
 
-msgid "Config Setup Options\n"
-msgstr "Opcije podešavanja konfiguracije\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "Opcije podešavanja konfiguracije\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Konfigurirajte u određeno vrijeme"
@@ -160,8 +160,8 @@ msgstr "Vrsta pretvorbe Output "
 msgid "Convert Playlist to: %s ?"
 msgstr "Pretvoriti popis za reprodukciju u: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "Stvorite XC Live/VOD bukete\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Stvorite XC Live/VOD bukete\\\\\\\\n"
 
 #, fuzzy
 msgid "DOWNLOAD VIDEO?"
@@ -217,11 +217,11 @@ msgstr "Preuzeti Picons ?"
 msgid "Download Type"
 msgstr "Download"
 
-msgid "Download VOD selected channel\n"
-msgstr "Preuzmite VOD odabrani kanal\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "Preuzmite VOD odabrani kanal\\\\\\\\n"
 
 #, fuzzy
-msgid "Download Video \n"
+msgid "Download Video \\\\\\\\n"
 msgstr "Download"
 
 #, fuzzy
@@ -293,8 +293,8 @@ msgstr "Unesite korisničko ime"
 msgid "Enter pin code"
 msgstr "Unesite pin kôd"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "EPG vodič ili imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "EPG vodič ili imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Šifra greške"
@@ -323,8 +323,8 @@ msgstr "Izlaz"
 msgid "Export"
 msgstr "Izvoz"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "Izvezite datoteku m3u u Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "Izvezite datoteku m3u u Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "NIJE USPJELO"
@@ -356,20 +356,20 @@ msgstr "Prvo odaberite popis ili ga unesite u Config"
 msgid "Folder user file .xml"
 msgstr "Korisnička datoteka mape .xml"
 
-msgid "Format:\n"
+msgid "Format:\\\\\\\\n"
 msgstr ""
 
 msgid "Free Space"
 msgstr "Slobodan prostor"
 
-msgid "HELP BUTTON:\n"
-msgstr "GUMB ZA POMOĆ:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "GUMB ZA POMOĆ:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "DOM"
 
-msgid "Help\n"
-msgstr "Pomoć\n"
+msgid "Help\\\\\\\\n"
+msgstr "Pomoć\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Sakrij/prikaži"
@@ -377,11 +377,11 @@ msgstr "Sakrij/prikaži"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Ako je igrač aktivan STOP reprodukciju igrača pri izlasku"
 
-msgid "If you have a file:\n"
-msgstr "Ako imate datoteku:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "Ako imate datoteku:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "Ako imate datoteku\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "Ako imate datoteku\\\\\\\\n"
 
 msgid "Import"
 msgstr "Uvoz"
@@ -395,8 +395,8 @@ msgstr "Uvesti poslužitelj iz /tmp/xc.tx?"
 msgid "Info"
 msgstr ""
 
-msgid "Init Continue Play\n"
-msgstr "Pokreni nastavak reprodukcije\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Pokreni nastavak reprodukcije\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Nevažeći URL!"
@@ -460,7 +460,7 @@ msgstr "Napraviti"
 msgid "Media Folder"
 msgstr "Medijska mapa"
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -509,11 +509,11 @@ msgstr "Dozvoljene su samo epizode serije!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Dopušten je samo VOD film!!!"
 
-msgid "Open Movie Folder\n"
-msgstr "Otvorite mapu filma\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "Otvorite mapu filma\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "LOZINKA='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "LOZINKA='yyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "PAUZIRAN"
@@ -562,8 +562,8 @@ msgstr "Serija Rec"
 msgid "Reload"
 msgstr "Ponovno učitaj"
 
-msgid "Reload List\n"
-msgstr "Ponovno učitaj popis\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "Ponovno učitaj popis\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Ponovno učitavanje popisa za reprodukciju u tijeku..."
@@ -577,11 +577,11 @@ msgstr "Ukloniti popis za reprodukciju iz buketa?"
 msgid "Remove download task for {}?"
 msgstr "Ukloniti zadatak preuzimanja za {}?"
 
-msgid "Remove file from list\n"
-msgstr "Ukloni datoteku s popisa\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "Ukloni datoteku s popisa\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "Uklanja sve kitice koje su\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Uklanja sve kitice koje su\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Promjena rezolucije nije uspjela"
@@ -589,8 +589,8 @@ msgstr "Promjena rezolucije nije uspjela"
 msgid "Restart"
 msgstr "Ponovno pokretanje"
 
-msgid "Return to Channels List\n"
-msgstr "Povratak na popis kanala\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "Povratak na popis kanala\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Resurs nije pronađen (404)"
@@ -636,11 +636,11 @@ msgid "Server Username"
 msgstr "Server korisnicko ime"
 
 #, fuzzy
-msgid "Set 'Live Player Active' in Setting:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
 msgstr "Live Player Aktivno u postavci: postavite Ne za snimanje uživo"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "Postavite 'Ne' za snimanje uživo\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Postavite 'Ne' za snimanje uživo\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Postavite naziv za MakerBouquet"
@@ -648,11 +648,11 @@ msgstr "Postavite naziv za MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Postavke su uspješno spremljene!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "Počnite preuzimati sve serije epizoda\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Počnite preuzimati sve serije epizoda\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "Započnite preuzimanje ili snimanje odabranog kanala:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Započnite preuzimanje ili snimanje odabranog kanala:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Zaustavi Player na izlazu"
@@ -675,8 +675,8 @@ msgstr "Veza je istekla"
 msgid "UNKNOWN"
 msgstr "NEPOZNATO"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "USERNAME='xxxxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "USERNAME='xxxxxxxxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "Ažuriranje prekinuto!"
@@ -693,14 +693,14 @@ msgstr "Želite li stvarno zaustaviti preuzimanje?"
 msgid "Wait... downloading in progress ..."
 msgstr "Čekaj... preuzimanje u tijeku..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "Umjesto otvaranja .m3u datoteke:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "Umjesto otvaranja .m3u datoteke:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "ŽUTI GUMB:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "ŽUTI GUMB:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "Morate konfigurirati vrstu izlaza\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "Morate konfigurirati vrstu izlaza\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Vaša prijava na poslužitelj i unos podataka"
@@ -708,8 +708,8 @@ msgstr "Vaša prijava na poslužitelj i unos podataka"
 msgid "fixed time"
 msgstr "fixed time"
 
-msgid "host\t(host without http:// )\n"
-msgstr "domaćin\t(domaćin bez http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "domaćin\\\\\\\\t(domaćin bez http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "interval"
@@ -718,15 +718,15 @@ msgid "not exist!"
 msgstr "ne postoji!"
 
 #, fuzzy
-msgid "password\n"
+msgid "password\\\\\\\\n"
 msgstr "Upišite lozinku"
 
 #, fuzzy
-msgid "port\n"
+msgid "port\\\\\\\\n"
 msgstr "Uvoz"
 
-msgid "user\n"
-msgstr "korisnik\n"
+msgid "user\\\\\\\\n"
+msgstr "korisnik\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "molimo pricekajte ..."

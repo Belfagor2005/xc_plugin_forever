@@ -21,25 +21,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s НЕ ОБНАРУЖЕН!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(СИНЯЯ КНОПКА):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(СИНЯЯ КНОПКА):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(ЗЕЛЕНАЯ КНОПКА):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(ЗЕЛЕНАЯ КНОПКА):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(КНОПКА ЗАПИСИ):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(КНОПКА ЗАПИСИ):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(КНОПКА СТОП):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(КНОПКА СТОП):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(ЖЕЛТАЯ КНОПКА):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(ЖЕЛТАЯ КНОПКА):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -105,8 +105,8 @@ msgstr "Закрывать"
 msgid "Config"
 msgstr "Конфигурация"
 
-msgid "Config Setup Options\n"
-msgstr "Параметры настройки конфигурации\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "Параметры настройки конфигурации\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Настройка в фиксированное время"
@@ -153,8 +153,8 @@ msgstr "Тип преобразования Выход"
 msgid "Convert Playlist to: %s ?"
 msgstr "Преобразовать список воспроизведения в: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "Создание букетов XC Live/VOD\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Создание букетов XC Live/VOD\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "СКАЧАТЬ ВИДЕО?"
@@ -201,11 +201,11 @@ msgstr "Скачать Пиконы?"
 msgid "Download Type"
 msgstr "Тип загрузки"
 
-msgid "Download VOD selected channel\n"
-msgstr "Загрузить выбранный канал VOD\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "Загрузить выбранный канал VOD\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "Скачать видео \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "Скачать видео \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Загрузка завершена"
@@ -264,8 +264,8 @@ msgstr "Введите имя пользователя"
 msgid "Enter pin code"
 msgstr "Введите пин-код"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "Руководство по Epg или imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Руководство по Epg или imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Код ошибки"
@@ -294,8 +294,8 @@ msgstr "Выход"
 msgid "Export"
 msgstr "Экспорт"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "Экспорт файла m3u в Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "Экспорт файла m3u в Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "НЕУСПЕШНЫЙ"
@@ -327,20 +327,20 @@ msgstr "Сначала выберите список или введите ег�
 msgid "Folder user file .xml"
 msgstr "Пользовательский файл папки .xml"
 
-msgid "Format:\n"
-msgstr "Формат:\n"
+msgid "Format:\\\\\\\\n"
+msgstr "Формат:\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Свободное пространство"
 
-msgid "HELP BUTTON:\n"
-msgstr "КНОПКА ПОМОЩИ:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "КНОПКА ПОМОЩИ:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ДОМ"
 
-msgid "Help\n"
-msgstr "Помощь\n"
+msgid "Help\\\\\\\\n"
+msgstr "Помощь\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Скрыть/Показать"
@@ -348,11 +348,11 @@ msgstr "Скрыть/Показать"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Если игрок активен, ОСТАНОВИТЕ воспроизведение игрока при выходе."
 
-msgid "If you have a file:\n"
-msgstr "Если у вас есть файл:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "Если у вас есть файл:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "Если у вас есть файл\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "Если у вас есть файл\\\\\\\\n"
 
 msgid "Import"
 msgstr "Импорт"
@@ -366,8 +366,8 @@ msgstr "Импортировать сервер из /tmp/xc.tx?"
 msgid "Info"
 msgstr "Информация"
 
-msgid "Init Continue Play\n"
-msgstr "Инициал. Продолжить воспроизведение\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Инициал. Продолжить воспроизведение\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Неверный URL!"
@@ -429,8 +429,8 @@ msgstr "Делать"
 msgid "Media Folder"
 msgstr "Медиа-папка"
 
-msgid "MediaPlayer\n"
-msgstr "Медиаплеер\n"
+msgid "MediaPlayer\\\\\\\\n"
+msgstr "Медиаплеер\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "Отсутствует или пустой файл: %s"
@@ -477,11 +477,11 @@ msgstr "Разрешены только серии сериалов!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Разрешены только фильмы по запросу!!!"
 
-msgid "Open Movie Folder\n"
-msgstr "Открыть папку с фильмами\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "Открыть папку с фильмами\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "ПАРОЛЬ='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "ПАРОЛЬ='yyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ПРИОСТАНОВЛЕНО"
@@ -528,8 +528,8 @@ msgstr "Серия записей"
 msgid "Reload"
 msgstr "Перезагрузить"
 
-msgid "Reload List\n"
-msgstr "Обновить список\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "Обновить список\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Выполняется перезагрузка плейлистов..."
@@ -543,11 +543,11 @@ msgstr "Удалить плейлист из букетов?"
 msgid "Remove download task for {}?"
 msgstr "Удалить задачу загрузки для {}?"
 
-msgid "Remove file from list\n"
-msgstr "Удалить файл из списка\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "Удалить файл из списка\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "Удаляет все букеты, которые были\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Удаляет все букеты, которые были\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Изменение разрешения не удалось"
@@ -555,8 +555,8 @@ msgstr "Изменение разрешения не удалось"
 msgid "Restart"
 msgstr "Перезапуск"
 
-msgid "Return to Channels List\n"
-msgstr "Вернуться к списку каналов\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "Вернуться к списку каналов\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Ресурс не найден (404)"
@@ -600,11 +600,11 @@ msgstr "URL-адрес сервера"
 msgid "Server Username"
 msgstr "Имя пользователя сервера"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "Установите «Живой игрок активен» в настройках:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "Установите «Живой игрок активен» в настройках:\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "Установите «Нет» для записи в реальном времени\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Установите «Нет» для записи в реальном времени\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Установить имя для MakerBouquet"
@@ -612,11 +612,11 @@ msgstr "Установить имя для MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Настройки успешно сохранены!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "Начать загрузку всех серий\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Начать загрузку всех серий\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "Начать загрузку или запись выбранного канала:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Начать загрузку или запись выбранного канала:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Остановить игрока при выходе"
@@ -639,8 +639,8 @@ msgstr "Время подключения истекло"
 msgid "UNKNOWN"
 msgstr "НЕИЗВЕСТНЫЙ"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ = 'xxxxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ = 'xxxxxxxxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "Обновление прервано!"
@@ -657,14 +657,14 @@ msgstr "Вы действительно хотите остановить заг
 msgid "Wait... downloading in progress ..."
 msgstr "Подождите... идет загрузка..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "Вместо этого при открытии файла .m3u:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "Вместо этого при открытии файла .m3u:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "ЖЕЛТАЯ КНОПКА:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "ЖЕЛТАЯ КНОПКА:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "Вам необходимо настроить тип вывода\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "Вам необходимо настроить тип вывода\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Вход на ваш сервер и ввод данных"
@@ -672,8 +672,8 @@ msgstr "Вход на ваш сервер и ввод данных"
 msgid "fixed time"
 msgstr "фиксированное время"
 
-msgid "host\t(host without http:// )\n"
-msgstr "хост\t(хост без http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "хост\\\\\\\\t(хост без http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "интервал"
@@ -681,14 +681,14 @@ msgstr "интервал"
 msgid "not exist!"
 msgstr "не существует!"
 
-msgid "password\n"
-msgstr "пароль\n"
+msgid "password\\\\\\\\n"
+msgstr "пароль\\\\\\\\n"
 
-msgid "port\n"
-msgstr "порт\n"
+msgid "port\\\\\\\\n"
+msgstr "порт\\\\\\\\n"
 
-msgid "user\n"
-msgstr "пользователь\n"
+msgid "user\\\\\\\\n"
+msgstr "пользователь\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "подожди, пожалуйста..."

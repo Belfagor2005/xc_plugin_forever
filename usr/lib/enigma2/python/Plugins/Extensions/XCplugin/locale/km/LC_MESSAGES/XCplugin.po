@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s មិនបានរកឃើញទេ!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(ប៊ូតុងពណ៌ខៀវ)៖\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(ប៊ូតុងពណ៌ខៀវ)៖\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(ប៊ូតុងពណ៌បៃតង)៖\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(ប៊ូតុងពណ៌បៃតង)៖\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(ប៊ូតុង REC)៖\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(ប៊ូតុង REC)៖\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(ប៊ូតុងបញ្ឈប់)៖\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(ប៊ូតុងបញ្ឈប់)៖\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(ប៊ូតុងពណ៌លឿង)៖\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(ប៊ូតុងពណ៌លឿង)៖\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "បិទ"
 msgid "Config"
 msgstr "កំណត់រចនាសម្ព័ន្ធ"
 
-msgid "Config Setup Options\n"
-msgstr "កំណត់រចនាសម្ព័ន្ធជម្រើសដំឡើង\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "កំណត់រចនាសម្ព័ន្ធជម្រើសដំឡើង\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "កំណត់រចនាសម្ព័ន្ធនៅពេលកំណត់"
@@ -152,8 +152,8 @@ msgstr "ប្រភេទការបំប្លែងលទ្ធផល"
 msgid "Convert Playlist to: %s ?"
 msgstr "បំប្លែងបញ្ជីចាក់ទៅជា៖ %s ?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "បង្កើតភួង XC Live/VOD\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "បង្កើតភួង XC Live/VOD\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ទាញយកវីដេអូ?"
@@ -200,11 +200,11 @@ msgstr "ទាញយក Picons?"
 msgid "Download Type"
 msgstr "ប្រភេទទាញយក"
 
-msgid "Download VOD selected channel\n"
-msgstr "ទាញយកឆានែលដែលបានជ្រើសរើស VOD\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "ទាញយកឆានែលដែលបានជ្រើសរើស VOD\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "ទាញយកវីដេអូ \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "ទាញយកវីដេអូ \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "ការទាញយកបានបញ្ចប់"
@@ -263,8 +263,8 @@ msgstr "បញ្ចូលឈ្មោះអ្នកប្រើប្រាស
 msgid "Enter pin code"
 msgstr "បញ្ចូលលេខកូដសម្ងាត់"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "ការណែនាំ Epg ឬ imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "ការណែនាំ Epg ឬ imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "លេខកូដកំហុស"
@@ -293,8 +293,8 @@ msgstr "ចេញ"
 msgid "Export"
 msgstr "នាំចេញ"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "នាំចេញឯកសារ m3u ទៅ Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "នាំចេញឯកសារ m3u ទៅ Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "បរាជ័យ"
@@ -326,20 +326,20 @@ msgstr "ដំបូងជ្រើសរើសបញ្ជីឬបញ្ចូ
 msgid "Folder user file .xml"
 msgstr "ថតឯកសារអ្នកប្រើប្រាស់ .xml"
 
-msgid "Format:\n"
-msgstr "ទម្រង់៖\n"
+msgid "Format:\\\\\\\\n"
+msgstr "ទម្រង់៖\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "កន្លែងទំនេរ"
 
-msgid "HELP BUTTON:\n"
-msgstr "ប៊ូតុងជំនួយ៖\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "ប៊ូតុងជំនួយ៖\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ទំព័រដើម"
 
-msgid "Help\n"
-msgstr "ជំនួយ\n"
+msgid "Help\\\\\\\\n"
+msgstr "ជំនួយ\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "លាក់/បង្ហាញ"
@@ -347,11 +347,11 @@ msgstr "លាក់/បង្ហាញ"
 msgid "If player active STOP player riproduction on exit"
 msgstr "ប្រសិនបើអ្នកលេងសកម្ម បញ្ឈប់អ្នកលេង riproduction នៅពេលចេញ"
 
-msgid "If you have a file:\n"
-msgstr "ប្រសិនបើអ្នកមានឯកសារ៖\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "ប្រសិនបើអ្នកមានឯកសារ៖\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "ប្រសិនបើអ្នកមានឯកសារ\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "ប្រសិនបើអ្នកមានឯកសារ\\\\\\\\n"
 
 msgid "Import"
 msgstr "នាំចូល"
@@ -365,8 +365,8 @@ msgstr "នាំចូល Server ពី /tmp/xc.tx?"
 msgid "Info"
 msgstr "ព័ត៌មាន"
 
-msgid "Init Continue Play\n"
-msgstr "Init បន្តលេង\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Init បន្តលេង\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL មិនត្រឹមត្រូវ!"
@@ -428,7 +428,7 @@ msgstr "ធ្វើ"
 msgid "Media Folder"
 msgstr "ថតប្រព័ន្ធផ្សព្វផ្សាយ"
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -476,11 +476,11 @@ msgstr "អនុញ្ញាត​ឱ្យ​មាន​តែ​ស៊េរ
 msgid "Only VOD Movie allowed!!!"
 msgstr "អនុញ្ញាតិអោយតែ VOD Movie !!!"
 
-msgid "Open Movie Folder\n"
-msgstr "បើក​ថត​ភាពយន្ត\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "បើក​ថត​ភាពយន្ត\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "ពាក្យសម្ងាត់='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "ពាក្យសម្ងាត់='yyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ផ្អាក"
@@ -527,8 +527,8 @@ msgstr "ស៊េរី Rec"
 msgid "Reload"
 msgstr "ផ្ទុកឡើងវិញ"
 
-msgid "Reload List\n"
-msgstr "ផ្ទុកបញ្ជីឡើងវិញ\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "ផ្ទុកបញ្ជីឡើងវិញ\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "ផ្ទុកបញ្ជីចាក់ឡើងវិញដែលកំពុងដំណើរការ..."
@@ -542,11 +542,11 @@ msgstr "លុបបញ្ជីចាក់ចេញពីភួងឬ?"
 msgid "Remove download task for {}?"
 msgstr "លុបភារកិច្ចទាញយកសម្រាប់ {}?"
 
-msgid "Remove file from list\n"
-msgstr "លុបឯកសារចេញពីបញ្ជី\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "លុបឯកសារចេញពីបញ្ជី\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "យកភួងទាំងអស់ដែលមាន\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "យកភួងទាំងអស់ដែលមាន\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "ការផ្លាស់ប្តូរដំណោះស្រាយបានបរាជ័យ"
@@ -554,8 +554,8 @@ msgstr "ការផ្លាស់ប្តូរដំណោះស្រាយ
 msgid "Restart"
 msgstr "ចាប់ផ្ដើមឡើងវិញ"
 
-msgid "Return to Channels List\n"
-msgstr "ត្រឡប់ទៅបញ្ជីឆានែល\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "ត្រឡប់ទៅបញ្ជីឆានែល\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "រកមិនឃើញធនធាន (404)"
@@ -599,11 +599,11 @@ msgstr "URL ម៉ាស៊ីនមេ"
 msgid "Server Username"
 msgstr "ឈ្មោះអ្នកប្រើម៉ាស៊ីនមេ"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "កំណត់ 'អ្នកលេងផ្ទាល់សកម្ម' នៅក្នុងការកំណត់៖\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "កំណត់ 'អ្នកលេងផ្ទាល់សកម្ម' នៅក្នុងការកំណត់៖\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "កំណត់ 'ទេ' សម្រាប់ថតផ្ទាល់\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "កំណត់ 'ទេ' សម្រាប់ថតផ្ទាល់\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "កំណត់ឈ្មោះសម្រាប់ MakerBouquet"
@@ -611,11 +611,11 @@ msgstr "កំណត់ឈ្មោះសម្រាប់ MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "ការកំណត់ត្រូវបានរក្សាទុកដោយជោគជ័យ!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "ចាប់​ផ្ដើម​ទាញ​យក​គ្រប់​ភាគ​ស៊េរី\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "ចាប់​ផ្ដើម​ទាញ​យក​គ្រប់​ភាគ​ស៊េរី\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "ចាប់ផ្តើមទាញយក ឬថតឆានែលដែលបានជ្រើសរើស៖\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "ចាប់ផ្តើមទាញយក ឬថតឆានែលដែលបានជ្រើសរើស៖\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "បញ្ឈប់អ្នកលេងនៅពេលចាកចេញ"
@@ -638,8 +638,8 @@ msgstr "ការភ្ជាប់បានអស់ពេល"
 msgid "UNKNOWN"
 msgstr "មិនស្គាល់"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "USERNAME='xxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "USERNAME='xxxxxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "ការអាប់ដេតត្រូវបានលុបចោល!"
@@ -656,14 +656,14 @@ msgstr "តើអ្នកពិតជាចង់បញ្ឈប់ការទ
 msgid "Wait... downloading in progress ..."
 msgstr "រង់ចាំ... ការទាញយកកំពុងដំណើរការ..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "នៅពេលបើកឯកសារ .m3u ជំនួសវិញ៖\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "នៅពេលបើកឯកសារ .m3u ជំនួសវិញ៖\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "ប៊ូតុងពណ៌លឿង៖\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "ប៊ូតុងពណ៌លឿង៖\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "អ្នក​ត្រូវ​កំណត់​រចនាសម្ព័ន្ធ​ប្រភេទ​លទ្ធផល\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "អ្នក​ត្រូវ​កំណត់​រចនាសម្ព័ន្ធ​ប្រភេទ​លទ្ធផល\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "ការចូលម៉ាស៊ីនមេរបស់អ្នក និងការបញ្ចូលទិន្នន័យ"
@@ -671,8 +671,8 @@ msgstr "ការចូលម៉ាស៊ីនមេរបស់អ្នក �
 msgid "fixed time"
 msgstr "ពេលវេលាកំណត់"
 
-msgid "host\t(host without http:// )\n"
-msgstr "host\t(ម៉ាស៊ីនដោយគ្មាន http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\t(ម៉ាស៊ីនដោយគ្មាន http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "ចន្លោះពេល"
@@ -680,14 +680,14 @@ msgstr "ចន្លោះពេល"
 msgid "not exist!"
 msgstr "មិនមានទេ!"
 
-msgid "password\n"
-msgstr "ពាក្យសម្ងាត់\n"
+msgid "password\\\\\\\\n"
+msgstr "ពាក្យសម្ងាត់\\\\\\\\n"
 
-msgid "port\n"
-msgstr "ច្រក\n"
+msgid "port\\\\\\\\n"
+msgstr "ច្រក\\\\\\\\n"
 
-msgid "user\n"
-msgstr "អ្នកប្រើប្រាស់\n"
+msgid "user\\\\\\\\n"
+msgstr "អ្នកប្រើប្រាស់\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "សូមរង់ចាំ..."

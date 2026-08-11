@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s نه دی موندل شوی!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(نیلي تڼۍ):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(نیلي تڼۍ):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(شنه تڼۍ):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(شنه تڼۍ):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(REC بټن):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(REC بټن):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(د بندولو تڼۍ):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(د بندولو تڼۍ):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(ژېړ تڼۍ):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(ژېړ تڼۍ):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "تړل"
 msgid "Config"
 msgstr "ترتیب"
 
-msgid "Config Setup Options\n"
-msgstr "د تنظیم کولو اختیارونه\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "د تنظیم کولو اختیارونه\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "په ټاکلي وخت کې تنظیم کړئ"
@@ -152,8 +152,8 @@ msgstr "د تبادلې ډول محصول"
 msgid "Convert Playlist to: %s ?"
 msgstr "پلی لیست په %s بدل کړئ؟"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "د XC ژوندۍ/VOD ګلدانونه جوړ کړئ\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "د XC ژوندۍ/VOD ګلدانونه جوړ کړئ\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ویډیو ډاونلوډ کړئ؟"
@@ -200,11 +200,11 @@ msgstr "پیکون ډاونلوډ کړئ؟"
 msgid "Download Type"
 msgstr "د ډاونلوډ ډول"
 
-msgid "Download VOD selected channel\n"
-msgstr "د VOD غوره شوی چینل ډاونلوډ کړئ\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "د VOD غوره شوی چینل ډاونلوډ کړئ\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "ویډیو ډاونلوډ کړئ \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "ویډیو ډاونلوډ کړئ \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "ډاونلوډ بشپړ شو"
@@ -263,8 +263,8 @@ msgstr "د کارن نوم دننه کړئ"
 msgid "Enter pin code"
 msgstr "پن کوډ دننه کړئ"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "د Epg لارښود یا imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "د Epg لارښود یا imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "د تېروتنې کوډ"
@@ -293,8 +293,8 @@ msgstr "وتل"
 msgid "Export"
 msgstr "صادرول"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "د M3u فایل بوکیټ .tv ته صادر کړئ\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "د M3u فایل بوکیټ .tv ته صادر کړئ\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "ناکام شو"
@@ -326,20 +326,20 @@ msgstr "لومړی لیست غوره کړئ یا یې په ترتیب کې دن�
 msgid "Folder user file .xml"
 msgstr "د فولډر کاروونکي فایل .xml"
 
-msgid "Format:\n"
-msgstr "بڼه:\n"
+msgid "Format:\\\\\\\\n"
+msgstr "بڼه:\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "وړیا ځای"
 
-msgid "HELP BUTTON:\n"
-msgstr "د مرستې بټن:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "د مرستې بټن:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "کور"
 
-msgid "Help\n"
-msgstr "مرسته\n"
+msgid "Help\\\\\\\\n"
+msgstr "مرسته\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "پټول / ښکاره کول"
@@ -347,11 +347,11 @@ msgstr "پټول / ښکاره کول"
 msgid "If player active STOP player riproduction on exit"
 msgstr "که لوبغاړی فعال وي د وتلو په وخت کې د پلیر تولید STOP"
 
-msgid "If you have a file:\n"
-msgstr "که تاسو یو فایل لرئ:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "که تاسو یو فایل لرئ:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "که تاسو یو فایل لرئ\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "که تاسو یو فایل لرئ\\\\\\\\n"
 
 msgid "Import"
 msgstr "واردول"
@@ -365,8 +365,8 @@ msgstr "له /tmp/xc.tx څخه سرور وارد کړئ؟"
 msgid "Info"
 msgstr "معلومات"
 
-msgid "Init Continue Play\n"
-msgstr "پیل کول ادامه ورکړئ\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "پیل کول ادامه ورکړئ\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "ناسم URL!"
@@ -428,8 +428,8 @@ msgstr "جوړول"
 msgid "Media Folder"
 msgstr "د رسنیو فولډر"
 
-msgid "MediaPlayer\n"
-msgstr "میډیا پلیر\n"
+msgid "MediaPlayer\\\\\\\\n"
+msgstr "میډیا پلیر\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "ورک یا خالي فایل: %s"
@@ -476,11 +476,11 @@ msgstr "یوازې د لړۍ قسطونو ته اجازه ورکول کیږي !!
 msgid "Only VOD Movie allowed!!!"
 msgstr "یوازې د VOD فلم اجازه !!!"
 
-msgid "Open Movie Folder\n"
-msgstr "د فلم فولډر خلاص کړئ\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "د فلم فولډر خلاص کړئ\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "پاسورډ='yyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "پاسورډ='yyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ودرول شو"
@@ -527,8 +527,8 @@ msgstr "د ریک لړۍ"
 msgid "Reload"
 msgstr "بیا پورته کول"
 
-msgid "Reload List\n"
-msgstr "لیست بیا پورته کول\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "لیست بیا پورته کول\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "د پلی لیست بیا پورته کول په پرمختګ کې دي..."
@@ -542,11 +542,11 @@ msgstr "له ګلدوزونو څخه پلی لیست لرې کړئ؟"
 msgid "Remove download task for {}?"
 msgstr "د {} لپاره د ډاونلوډ دنده لرې کړئ؟"
 
-msgid "Remove file from list\n"
-msgstr "له لیست څخه فایل لرې کړئ\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "له لیست څخه فایل لرې کړئ\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "ټول هغه ګلدانونه لرې کوي چې \n شوي دي"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "ټول هغه ګلدانونه لرې کوي چې \\\\\\\\n شوي دي"
 
 msgid "Resolution Change Failed"
 msgstr "د حل بدلون ناکام شو"
@@ -554,8 +554,8 @@ msgstr "د حل بدلون ناکام شو"
 msgid "Restart"
 msgstr "بیا پیل کړئ"
 
-msgid "Return to Channels List\n"
-msgstr "د چینلونو لیست ته راستانه شئ\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "د چینلونو لیست ته راستانه شئ\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "سرچینه ونه موندل شوه (404)"
@@ -599,11 +599,11 @@ msgstr "د سرور URL"
 msgid "Server Username"
 msgstr "د سرور کارن نوم"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "په ترتیب کې 'ژوندی لوبغاړی فعال' تنظیم کړئ:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "په ترتیب کې 'ژوندی لوبغاړی فعال' تنظیم کړئ:\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "د ژوندی ریکارډ لپاره 'نه' وټاکئ\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "د ژوندی ریکارډ لپاره 'نه' وټاکئ\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "د MakerBuquet لپاره نوم وټاکئ"
@@ -611,11 +611,11 @@ msgstr "د MakerBuquet لپاره نوم وټاکئ"
 msgid "Settings saved successfully !"
 msgstr "ترتیبات په بریالیتوب سره خوندي شول!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "د ټولو قسطونو لړۍ ډاونلوډ پیل کړئ\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "د ټولو قسطونو لړۍ ډاونلوډ پیل کړئ\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "ډاونلوډ پیل کړئ یا غوره شوی چینل ثبت کړئ:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "ډاونلوډ پیل کړئ یا غوره شوی چینل ثبت کړئ:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "په وتلو کې پلیر ودروئ"
@@ -638,7 +638,7 @@ msgstr "پیوستون وخت تېر شو"
 msgid "UNKNOWN"
 msgstr "ناخبره"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -656,14 +656,14 @@ msgstr "ایا تاسو واقعیا غواړئ ډاونلوډ ودروئ؟"
 msgid "Wait... downloading in progress ..."
 msgstr "انتظار وکړئ ... ډاونلوډ په پرمختګ کې دی ..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "کله چې د .m3u فایل خلاص کړئ پرځای یې:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "کله چې د .m3u فایل خلاص کړئ پرځای یې:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "ژیړ تڼۍ:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "ژیړ تڼۍ:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "تاسو اړتیا لرئ چې د محصول ډول تنظیم کړئ\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "تاسو اړتیا لرئ چې د محصول ډول تنظیم کړئ\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "ستاسو د سرور ننوتل او د معلوماتو داخلول"
@@ -671,8 +671,8 @@ msgstr "ستاسو د سرور ننوتل او د معلوماتو داخلول"
 msgid "fixed time"
 msgstr "ټاکلی وخت"
 
-msgid "host\t(host without http:// )\n"
-msgstr "کوربه\t(د http:// پرته کوربه)\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "کوربه\\\\\\\\t(د http:// پرته کوربه)\\\\\\\\n"
 
 msgid "interval"
 msgstr "وقفه"
@@ -680,14 +680,14 @@ msgstr "وقفه"
 msgid "not exist!"
 msgstr "شتون نلري!"
 
-msgid "password\n"
-msgstr "پټنوم\n"
+msgid "password\\\\\\\\n"
+msgstr "پټنوم\\\\\\\\n"
 
-msgid "port\n"
-msgstr "بندر\n"
+msgid "port\\\\\\\\n"
+msgstr "بندر\\\\\\\\n"
 
-msgid "user\n"
-msgstr "کارن\n"
+msgid "user\\\\\\\\n"
+msgstr "کارن\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "مهرباني وکړئ انتظار وکړئ ..."

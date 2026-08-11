@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s မတွေ့ပါ။"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(အပြာရောင်ခလုတ်):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(အပြာရောင်ခလုတ်):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(အစိမ်းရောင်ခလုတ်):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(အစိမ်းရောင်ခလုတ်):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(REC ခလုတ်-\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(REC ခလုတ်-\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(ရပ်ရန်ခလုတ်-\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(ရပ်ရန်ခလုတ်-\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(အဝါရောင်ခလုတ်-\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(အဝါရောင်ခလုတ်-\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "ပိတ်လိုက်"
 msgid "Config"
 msgstr "ပြင်ဆင်မှု"
 
-msgid "Config Setup Options\n"
-msgstr "ပြင်ဆင်သတ်မှတ်မှု ရွေးချယ်စရာများ\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "ပြင်ဆင်သတ်မှတ်မှု ရွေးချယ်စရာများ\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "သတ်မှတ်ထားသောအချိန်၌ စီစဉ်ပါ။"
@@ -152,8 +152,8 @@ msgstr "ပြောင်းလဲခြင်း အမျိုးအစာ�
 msgid "Convert Playlist to: %s ?"
 msgstr "Playlist ကို- %s သို့ ပြောင်းမလား။"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "XC တိုက်ရိုက်/ VOD ပန်းစည်းများ ဖန်တီးပါ\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "XC တိုက်ရိုက်/ VOD ပန်းစည်းများ ဖန်တီးပါ\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ဗီဒီယိုကို ဒေါင်းလုဒ်လုပ်မလား။"
@@ -200,11 +200,11 @@ msgstr "Picons ကို ဒေါင်းလုဒ်လုပ်မလား�
 msgid "Download Type"
 msgstr "ဒေါင်းလုဒ်အမျိုးအစား"
 
-msgid "Download VOD selected channel\n"
-msgstr "VOD ရွေးထားသော ချန်နယ်ကို ဒေါင်းလုဒ်လုပ်ပါ\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "VOD ရွေးထားသော ချန်နယ်ကို ဒေါင်းလုဒ်လုပ်ပါ\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "ဗီဒီယိုကို ဒေါင်းလုဒ်လုပ်ပါ \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "ဗီဒီယိုကို ဒေါင်းလုဒ်လုပ်ပါ \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "ဒေါင်းလုဒ် ပြီးပါပြီ။"
@@ -263,8 +263,8 @@ msgstr "အသုံးပြုသူအမည်ထည့်ပါ။"
 msgid "Enter pin code"
 msgstr "ပင်နံပါတ်ထည့်ပါ။"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "Epg လမ်းညွှန် သို့မဟုတ် imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Epg လမ်းညွှန် သို့မဟုတ် imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "အမှားကုဒ်"
@@ -293,8 +293,8 @@ msgstr "ထွက်ပေါက်"
 msgid "Export"
 msgstr "တင်ပို့ခြင်း။"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "m3u ဖိုင်ကို Bouquet .tv\n သို့ ထုတ်ယူပါ။"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "m3u ဖိုင်ကို Bouquet .tv\\\\\\\\n သို့ ထုတ်ယူပါ။"
 
 msgid "FAILED"
 msgstr "မအောင်မြင်ပါ။"
@@ -326,20 +326,20 @@ msgstr "ပထမဆုံး စာရင်းကို ရွေးပါ သ
 msgid "Folder user file .xml"
 msgstr "အသုံးပြုသူဖိုင် .xml ဖိုင်တွဲ"
 
-msgid "Format:\n"
-msgstr "ဖော်မတ်-\n"
+msgid "Format:\\\\\\\\n"
+msgstr "ဖော်မတ်-\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "နေရာလွတ်"
 
-msgid "HELP BUTTON:\n"
-msgstr "အကူအညီခလုတ်-\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "အကူအညီခလုတ်-\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ပင်မ"
 
-msgid "Help\n"
-msgstr "ကူညီပါ\n"
+msgid "Help\\\\\\\\n"
+msgstr "ကူညီပါ\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "ဖျောက်/ပြပါ။"
@@ -347,11 +347,11 @@ msgstr "ဖျောက်/ပြပါ။"
 msgid "If player active STOP player riproduction on exit"
 msgstr "player active ဖြစ်နေလျှင် STOP player riproduction on exit"
 
-msgid "If you have a file:\n"
-msgstr "သင့်တွင် ဖိုင်တစ်ခုရှိလျှင်-\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "သင့်တွင် ဖိုင်တစ်ခုရှိလျှင်-\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "ဖိုင်တစ်ခုရှိလျှင်\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "ဖိုင်တစ်ခုရှိလျှင်\\\\\\\\n"
 
 msgid "Import"
 msgstr "သွင်းကုန်"
@@ -365,8 +365,8 @@ msgstr "/tmp/xc.tx မှ ဆာဗာကို တင်သွင်းမလ�
 msgid "Info"
 msgstr "အချက်အလက်"
 
-msgid "Init Continue Play\n"
-msgstr "စတင်ကစားပါ\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "စတင်ကစားပါ\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "မမှန်ကန်သော URL"
@@ -428,7 +428,7 @@ msgstr "လုပ်ပါ။"
 msgid "Media Folder"
 msgstr "မီဒီယာဖိုလ်ဒါ"
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -476,10 +476,10 @@ msgstr "ဇာတ်လမ်းတွဲ အပိုင်းများက�
 msgid "Only VOD Movie allowed!!!"
 msgstr "VOD Movie များသာခွင့်ပြုသည်!!!"
 
-msgid "Open Movie Folder\n"
-msgstr "ရုပ်ရှင်ဖိုင်တွဲကို ဖွင့်ပါ\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "ရုပ်ရှင်ဖိုင်တွဲကို ဖွင့်ပါ\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
 msgstr ""
 
 msgid "PAUSED"
@@ -527,8 +527,8 @@ msgstr "Rec စီးရီးများ"
 msgid "Reload"
 msgstr "ပြန်တင်ပါ။"
 
-msgid "Reload List\n"
-msgstr "စာရင်းကို ပြန်ဖွင့်ပါ\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "စာရင်းကို ပြန်ဖွင့်ပါ\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "အစီအစဉ်များကို ပြန်လည်စတင်ရန် လုပ်ဆောင်နေသည်..."
@@ -542,11 +542,11 @@ msgstr "ပန်းစည်းများမှ အစီအစဉ်ကိ�
 msgid "Remove download task for {}?"
 msgstr "{} အတွက် ဒေါင်းလုဒ်လုပ်စရာကို ဖယ်ရှားမလား။"
 
-msgid "Remove file from list\n"
-msgstr "ဖိုင်ကို စာရင်းမှ ဖယ်ရှားပါ\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "ဖိုင်ကို စာရင်းမှ ဖယ်ရှားပါ\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "ပြီးခဲ့သော ပန်းစည်းများ\nကို ဖယ်ရှားသည်။"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "ပြီးခဲ့သော ပန်းစည်းများ\\\\\\\\nကို ဖယ်ရှားသည်။"
 
 msgid "Resolution Change Failed"
 msgstr "ဆုံးဖြတ်ချက်ပြောင်းလဲမှု မအောင်မြင်ပါ။"
@@ -554,8 +554,8 @@ msgstr "ဆုံးဖြတ်ချက်ပြောင်းလဲမှု
 msgid "Restart"
 msgstr "ပြန်စတင်သည်"
 
-msgid "Return to Channels List\n"
-msgstr "ချန်နယ်များစာရင်းသို့ ပြန်သွားရန်\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "ချန်နယ်များစာရင်းသို့ ပြန်သွားရန်\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "အရင်းအမြစ်ရှာမတွေ့ပါ (၄၀၄)၊"
@@ -599,11 +599,11 @@ msgstr "ဆာဗာ URL"
 msgid "Server Username"
 msgstr "ဆာဗာအသုံးပြုသူအမည်"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "ဆက်တင်တွင် 'Live Player Active' ကို သတ်မှတ်ပါ-\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "ဆက်တင်တွင် 'Live Player Active' ကို သတ်မှတ်ပါ-\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "တိုက်ရိုက်ထုတ်လွှင့်မှုအတွက် 'No' ကို သတ်မှတ်ပါ\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "တိုက်ရိုက်ထုတ်လွှင့်မှုအတွက် 'No' ကို သတ်မှတ်ပါ\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "MakerBouquet အတွက် အမည်သတ်မှတ်ပါ။"
@@ -611,11 +611,11 @@ msgstr "MakerBouquet အတွက် အမည်သတ်မှတ်ပါ။"
 msgid "Settings saved successfully !"
 msgstr "ဆက်တင်များကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "ဇာတ်လမ်းတွဲများ စီးရီးအားလုံးကို စတင်ဒေါင်းလုဒ်လုပ်ပါ\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "ဇာတ်လမ်းတွဲများ စီးရီးအားလုံးကို စတင်ဒေါင်းလုဒ်လုပ်ပါ\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "ဒေါင်းလုဒ်လုပ်ခြင်း စတင်ပါ သို့မဟုတ် ရွေးချယ်ထားသော ချန်နယ်ကို မှတ်တမ်းတင်ပါ-\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "ဒေါင်းလုဒ်လုပ်ခြင်း စတင်ပါ သို့မဟုတ် ရွေးချယ်ထားသော ချန်နယ်ကို မှတ်တမ်းတင်ပါ-\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Exit တွင် Player ကိုရပ်ပါ။"
@@ -638,8 +638,8 @@ msgstr "ချိတ်ဆက်မှု အချိန်ကုန်သွ�
 msgid "UNKNOWN"
 msgstr "မသိပါ။"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "USERNAME='xxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "USERNAME='xxxxxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "အပ်ဒိတ်ကို ဖျက်သိမ်းလိုက်ပါပြီ။"
@@ -656,14 +656,14 @@ msgstr "ဒေါင်းလုဒ်ကို အမှန်တကယ် ရ�
 msgid "Wait... downloading in progress ..."
 msgstr "စောင့်ပါ... ဒေါင်းလုဒ်လုပ်နေသည်..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "၎င်းအစား .m3u ဖိုင်ကိုဖွင့်သည့်အခါ-\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "၎င်းအစား .m3u ဖိုင်ကိုဖွင့်သည့်အခါ-\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "အဝါရောင်ခလုတ်-\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "အဝါရောင်ခလုတ်-\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "အထွက် အမျိုးအစား\nကို သတ်မှတ်ရန် လိုအပ်သည်။"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "အထွက် အမျိုးအစား\\\\\\\\nကို သတ်မှတ်ရန် လိုအပ်သည်။"
 
 msgid "Your Server Login and data input"
 msgstr "သင်၏ဆာဗာဝင်ရောက်ခြင်းနှင့်ဒေတာထည့်သွင်းခြင်း။"
@@ -671,8 +671,8 @@ msgstr "သင်၏ဆာဗာဝင်ရောက်ခြင်းနှင
 msgid "fixed time"
 msgstr "ပုံသေအချိန်"
 
-msgid "host\t(host without http:// )\n"
-msgstr "host\t(http:// မပါဘဲ host )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\t(http:// မပါဘဲ host )\\\\\\\\n"
 
 msgid "interval"
 msgstr "ကြားကာလ"
@@ -680,14 +680,14 @@ msgstr "ကြားကာလ"
 msgid "not exist!"
 msgstr "မရှိပါ!"
 
-msgid "password\n"
-msgstr "စကားဝှက်\n"
+msgid "password\\\\\\\\n"
+msgstr "စကားဝှက်\\\\\\\\n"
 
-msgid "port\n"
-msgstr "ဆိပ်ကမ်း\n"
+msgid "port\\\\\\\\n"
+msgstr "ဆိပ်ကမ်း\\\\\\\\n"
 
-msgid "user\n"
-msgstr "အသုံးပြုသူ\n"
+msgid "user\\\\\\\\n"
+msgstr "အသုံးပြုသူ\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "ကျေးဇူးပြုပြီး စောင့်ပါ..."

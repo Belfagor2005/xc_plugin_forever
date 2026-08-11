@@ -29,36 +29,36 @@ msgid "%s NOT DETECTED!"
 msgstr "%s未检测到！"
 
 #, fuzzy
-msgid "(BLUE BUTTON):\n"
-msgstr "    (蓝色按钮):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "    (蓝色按钮):\\\\\\\\n"
 
 #, fuzzy
-msgid "(GREEN BUTTON):\n"
-msgstr "   (绿色按钮):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "   (绿色按钮):\\\\\\\\n"
 
 #, fuzzy
-msgid "(REC BUTTON):\n"
-msgstr "（錄製按鈕）：\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "（錄製按鈕）：\\\\\\\\n"
 "    (录制按钮):\n"
 "\n"
 
 #, fuzzy
-msgid "(STOP BUTTON):\n"
-msgstr "（停止按鈕）：\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "（停止按鈕）：\\\\\\\\n"
 "    (停止按钮):\n"
 "\n"
 
 #, fuzzy
-msgid "(YELLOW BUTTON):\n"
-msgstr "黄色按钮\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "黄色按钮\\\\\\\\n"
 
 #, fuzzy
-msgid "/etc/enigma2/iptv.sh\n"
-msgstr "            /etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
+msgstr "            /etc/enigma2/iptv.sh\\\\\\\\n"
 
 #, fuzzy
-msgid "/tmp/xc.txt\n"
-msgstr "            /tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
+msgstr "            /tmp/xc.txt\\\\\\\\n"
 
 msgid "Aborting..."
 msgstr "正在中止..."
@@ -127,8 +127,8 @@ msgid "Config"
 msgstr "配置"
 
 #, fuzzy
-msgid "Config Setup Options\n"
-msgstr "            配置设置选项\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "            配置设置选项\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "在固定时间配置"
@@ -178,8 +178,8 @@ msgid "Convert Playlist to: %s ?"
 msgstr "将播放列表转换为: %s ?"
 
 #, fuzzy
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "   创建 XC直播/点播分组列表\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "   创建 XC直播/点播分组列表\\\\\\\\n"
 
 #, fuzzy
 msgid "DOWNLOAD VIDEO?"
@@ -240,11 +240,11 @@ msgid "Download Type"
 msgstr "下载类型 "
 
 #, fuzzy
-msgid "Download VOD selected channel\n"
-msgstr "           下载点播所选频道\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "           下载点播所选频道\\\\\\\\n"
 
 #, fuzzy
-msgid "Download Video \n"
+msgid "Download Video \\\\\\\\n"
 msgstr "下载类型 "
 
 #, fuzzy
@@ -330,8 +330,8 @@ msgid "Enter pin code"
 msgstr "输入PIN码"
 
 #, fuzzy
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "            Epg 指南或 imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "            Epg 指南或 imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "錯誤代碼"
@@ -361,8 +361,8 @@ msgid "Export"
 msgstr "导出"
 
 #, fuzzy
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "            将文件 m3u 导出到Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "            将文件 m3u 导出到Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "失敗的"
@@ -396,20 +396,20 @@ msgstr "首先，选择列表或在 Config 中输入它"
 msgid "Folder user file .xml"
 msgstr "文件夹用户文件.xml"
 
-msgid "Format:\n"
-msgstr "格式：\n"
+msgid "Format:\\\\\\\\n"
+msgstr "格式：\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "剩余空间"
 
-msgid "HELP BUTTON:\n"
-msgstr "帮助按钮\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "帮助按钮\\\\\\\\n"
 
 msgid "HOME"
 msgstr "家"
 
-msgid "Help\n"
-msgstr "幫助\n"
+msgid "Help\\\\\\\\n"
+msgstr "幫助\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "隱藏/顯示"
@@ -418,12 +418,12 @@ msgid "If player active STOP player riproduction on exit"
 msgstr "如果玩家處於活動狀態，退出時停止玩家複製"
 
 #, fuzzy
-msgid "If you have a file:\n"
-msgstr "            如果您有文件格式:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "            如果您有文件格式:\\\\\\\\n"
 
 #, fuzzy
-msgid "If you have a file\n"
-msgstr "            如果您有文件格式:\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "            如果您有文件格式:\\\\\\\\n"
 
 msgid "Import"
 msgstr "导入"
@@ -439,8 +439,8 @@ msgid "Info"
 msgstr "信息"
 
 #, fuzzy
-msgid "Init Continue Play\n"
-msgstr "            初始化继续播放\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "            初始化继续播放\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "無效網址！"
@@ -509,8 +509,8 @@ msgid "Media Folder"
 msgstr "媒体文件夹 "
 
 #, fuzzy
-msgid "MediaPlayer\n"
-msgstr "            媒体播放器\n"
+msgid "MediaPlayer\\\\\\\\n"
+msgstr "            媒体播放器\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "文件遺失或為空：%s"
@@ -561,12 +561,12 @@ msgid "Only VOD Movie allowed!!!"
 msgstr "只允许点播电影!!"
 
 #, fuzzy
-msgid "Open Movie Folder\n"
+msgid "Open Movie Folder\\\\\\\\n"
 msgstr "影片文件夹"
 
 #, fuzzy
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "            密码='yyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "            密码='yyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "暫停"
@@ -617,8 +617,8 @@ msgid "Reload"
 msgstr "重新加载"
 
 #, fuzzy
-msgid "Reload List\n"
-msgstr "           重新加载列表\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "           重新加载列表\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "正在重新加载播放列表..."
@@ -633,12 +633,12 @@ msgid "Remove download task for {}?"
 msgstr "刪除 {} 的下載任務？"
 
 #, fuzzy
-msgid "Remove file from list\n"
-msgstr "            从列表中删除文件\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "            从列表中删除文件\\\\\\\\n"
 
 #, fuzzy
-msgid "Removes all the bouquets that have been\n"
-msgstr "    移除所有已放置的花束\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "    移除所有已放置的花束\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "解析度變更失敗"
@@ -647,8 +647,8 @@ msgid "Restart"
 msgstr "重新啟動"
 
 #, fuzzy
-msgid "Return to Channels List\n"
-msgstr "            返回频道列表\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "            返回频道列表\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "找不到資源 (404)"
@@ -674,7 +674,7 @@ msgstr "    (蓝色按钮): 搜索 直播/电影"
 
 #, fuzzy
 msgid "Search for a title in the list"
-msgstr "           在列表中搜索标题\n"
+msgstr "           在列表中搜索标题\\\\\\\\n"
 
 msgid "Select"
 msgstr "选择"
@@ -695,12 +695,12 @@ msgid "Server Username"
 msgstr "服务器用户名"
 
 #, fuzzy
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "            Set 'Live Player Active' in Setting:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "            Set 'Live Player Active' in Setting:\\\\\\\\n"
 
 #, fuzzy
-msgid "Set 'No' for Record Live\n"
-msgstr "将“否”设置为“实时录制”\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "将“否”设置为“实时录制”\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "为制作频道分组设置名称"
@@ -709,12 +709,12 @@ msgid "Settings saved successfully !"
 msgstr "设置已成功保存！"
 
 #, fuzzy
-msgid "Start Download All Episodes Series\n"
-msgstr "            开始下载所有剧集系列\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "            开始下载所有剧集系列\\\\\\\\n"
 
 #, fuzzy
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "            开始下载或录制所选频道:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "            开始下载或录制所选频道:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "退出時停止播放器"
@@ -740,8 +740,8 @@ msgid "UNKNOWN"
 msgstr "未知错误："
 
 #, fuzzy
-msgid "USERNAME='xxxxxxxxxx'\n"
-msgstr "            用户名='xxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "            用户名='xxxxxx'\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "更新中止！"
@@ -759,15 +759,15 @@ msgid "Wait... downloading in progress ..."
 msgstr "等待...正在下载..."
 
 #, fuzzy
-msgid "When opening an .m3u file instead:\n"
-msgstr "    当打开 .m3u 文件时:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "    当打开 .m3u 文件时:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "黄色按钮\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "黄色按钮\\\\\\\\n"
 
 #, fuzzy
-msgid "You need to configure the type of output\n"
-msgstr "    您需要配置输出类型\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "    您需要配置输出类型\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "您的服务器登录名和数据输入"
@@ -776,8 +776,8 @@ msgid "fixed time"
 msgstr "固定时间"
 
 #, fuzzy
-msgid "host\t(host without http:// )\n"
-msgstr "            host\t(host不带http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "            host\\\\\\\\t(host不带http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "间隔"
@@ -787,15 +787,15 @@ msgid "not exist!"
 msgstr "   不存在！"
 
 #, fuzzy
-msgid "password\n"
+msgid "password\\\\\\\\n"
 msgstr "输入密码"
 
 #, fuzzy
-msgid "port\n"
+msgid "port\\\\\\\\n"
 msgstr "导入"
 
-msgid "user\n"
-msgstr "使用者\n"
+msgid "user\\\\\\\\n"
+msgstr "使用者\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "请稍等..."

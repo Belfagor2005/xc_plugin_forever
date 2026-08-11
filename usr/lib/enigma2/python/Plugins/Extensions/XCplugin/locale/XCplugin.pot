@@ -5,54 +5,31 @@
 #
 #, fuzzy
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 msgid "%s"
 msgstr ""
 
 msgid "%s NOT DETECTED!"
 msgstr ""
 
-msgid "(BLUE BUTTON):\n"
+msgid "(BLUE BUTTON):\\n"
 msgstr ""
 
-msgid "(GREEN BUTTON):\n"
+msgid "(GREEN BUTTON):\\n"
 msgstr ""
 
-msgid "(REC BUTTON):\n"
+msgid "(REC BUTTON):\\n"
 msgstr ""
 
-msgid "(STOP BUTTON):\n"
+msgid "(STOP BUTTON):\\n"
 msgstr ""
 
-msgid "(YELLOW BUTTON):\n"
+msgid "(YELLOW BUTTON):\\n"
 msgstr ""
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -118,7 +95,7 @@ msgstr ""
 msgid "Config"
 msgstr ""
 
-msgid "Config Setup Options\n"
+msgid "Config Setup Options\\n"
 msgstr ""
 
 msgid "Configure at a fixed time"
@@ -166,7 +143,7 @@ msgstr ""
 msgid "Convert Playlist to: %s ?"
 msgstr ""
 
-msgid "Create XC Live/VOD Bouquets\n"
+msgid "Create XC Live/VOD Bouquets\\n"
 msgstr ""
 
 msgid "DOWNLOAD VIDEO?"
@@ -214,10 +191,10 @@ msgstr ""
 msgid "Download Type"
 msgstr ""
 
-msgid "Download VOD selected channel\n"
+msgid "Download VOD selected channel\\n"
 msgstr ""
 
-msgid "Download Video \n"
+msgid "Download Video \\n"
 msgstr ""
 
 msgid "Download completato"
@@ -277,7 +254,7 @@ msgstr ""
 msgid "Enter pin code"
 msgstr ""
 
-msgid "Epg guide or imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\n"
 msgstr ""
 
 msgid "Error code"
@@ -307,7 +284,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-msgid "Export file m3u to Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\n"
 msgstr ""
 
 msgid "FAILED"
@@ -340,19 +317,19 @@ msgstr ""
 msgid "Folder user file .xml"
 msgstr ""
 
-msgid "Format:\n"
+msgid "Format:\\n"
 msgstr ""
 
 msgid "Free Space"
 msgstr ""
 
-msgid "HELP BUTTON:\n"
+msgid "HELP BUTTON:\\n"
 msgstr ""
 
 msgid "HOME"
 msgstr ""
 
-msgid "Help\n"
+msgid "Help\\n"
 msgstr ""
 
 msgid "Hide/Show"
@@ -361,10 +338,10 @@ msgstr ""
 msgid "If player active STOP player riproduction on exit"
 msgstr ""
 
-msgid "If you have a file:\n"
+msgid "If you have a file:\\n"
 msgstr ""
 
-msgid "If you have a file\n"
+msgid "If you have a file\\n"
 msgstr ""
 
 msgid "Import"
@@ -379,7 +356,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-msgid "Init Continue Play\n"
+msgid "Init Continue Play\\n"
 msgstr ""
 
 msgid "Invalid URL!"
@@ -442,7 +419,7 @@ msgstr ""
 msgid "Media Folder"
 msgstr ""
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -490,10 +467,10 @@ msgstr ""
 msgid "Only VOD Movie allowed!!!"
 msgstr ""
 
-msgid "Open Movie Folder\n"
+msgid "Open Movie Folder\\n"
 msgstr ""
 
-msgid "PASSWORD='yyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\n"
 msgstr ""
 
 msgid "PAUSED"
@@ -541,7 +518,7 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-msgid "Reload List\n"
+msgid "Reload List\\n"
 msgstr ""
 
 msgid "Reload Playlists in progress..."
@@ -556,10 +533,10 @@ msgstr ""
 msgid "Remove download task for {}?"
 msgstr ""
 
-msgid "Remove file from list\n"
+msgid "Remove file from list\\n"
 msgstr ""
 
-msgid "Removes all the bouquets that have been\n"
+msgid "Removes all the bouquets that have been\\n"
 msgstr ""
 
 msgid "Resolution Change Failed"
@@ -568,7 +545,7 @@ msgstr ""
 msgid "Restart"
 msgstr ""
 
-msgid "Return to Channels List\n"
+msgid "Return to Channels List\\n"
 msgstr ""
 
 msgid "Risorsa non trovata (404)"
@@ -613,10 +590,10 @@ msgstr ""
 msgid "Server Username"
 msgstr ""
 
-msgid "Set 'Live Player Active' in Setting:\n"
+msgid "Set 'Live Player Active' in Setting:\\n"
 msgstr ""
 
-msgid "Set 'No' for Record Live\n"
+msgid "Set 'No' for Record Live\\n"
 msgstr ""
 
 msgid "Set Name for MakerBouquet"
@@ -625,10 +602,10 @@ msgstr ""
 msgid "Settings saved successfully !"
 msgstr ""
 
-msgid "Start Download All Episodes Series\n"
+msgid "Start Download All Episodes Series\\n"
 msgstr ""
 
-msgid "Start Download or Record Selected Channel:\n"
+msgid "Start Download or Record Selected Channel:\\n"
 msgstr ""
 
 msgid "Stop Player on Exit"
@@ -652,7 +629,7 @@ msgstr ""
 msgid "UNKNOWN"
 msgstr ""
 
-msgid "USERNAME='xxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -670,13 +647,13 @@ msgstr ""
 msgid "Wait... downloading in progress ..."
 msgstr ""
 
-msgid "When opening an .m3u file instead:\n"
+msgid "When opening an .m3u file instead:\\n"
 msgstr ""
 
-msgid "YELLOW BUTTON:\n"
+msgid "YELLOW BUTTON:\\n"
 msgstr ""
 
-msgid "You need to configure the type of output\n"
+msgid "You need to configure the type of output\\n"
 msgstr ""
 
 msgid "Your Server Login and data input"
@@ -685,7 +662,7 @@ msgstr ""
 msgid "fixed time"
 msgstr ""
 
-msgid "host\t(host without http:// )\n"
+msgid "host\\t(host without http:// )\\n"
 msgstr ""
 
 msgid "interval"
@@ -694,13 +671,13 @@ msgstr ""
 msgid "not exist!"
 msgstr ""
 
-msgid "password\n"
+msgid "password\\n"
 msgstr ""
 
-msgid "port\n"
+msgid "port\\n"
 msgstr ""
 
-msgid "user\n"
+msgid "user\\n"
 msgstr ""
 
 msgid "wait please..."

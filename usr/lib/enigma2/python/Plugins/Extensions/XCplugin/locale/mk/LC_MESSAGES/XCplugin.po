@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s НЕ Е ОТКРИЕНО!"
 
-msgid "(BLUE BUTTON):\n"
-msgstr "(СИНО копче):\n"
+msgid "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(СИНО копче):\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\n"
-msgstr "(ЗЕЛЕНО копче):\n"
+msgid "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(ЗЕЛЕНО копче):\\\\\\\\n"
 
-msgid "(REC BUTTON):\n"
-msgstr "(КОПЧЕ ЗА РЕК):\n"
+msgid "(REC BUTTON):\\\\\\\\n"
+msgstr "(КОПЧЕ ЗА РЕК):\\\\\\\\n"
 
-msgid "(STOP BUTTON):\n"
-msgstr "(КОПЧЕ ЗА СТОП):\n"
+msgid "(STOP BUTTON):\\\\\\\\n"
+msgstr "(КОПЧЕ ЗА СТОП):\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\n"
-msgstr "(ЖОЛТО копче):\n"
+msgid "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(ЖОЛТО копче):\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\n"
+msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "Затвори"
 msgid "Config"
 msgstr "Конфигурација"
 
-msgid "Config Setup Options\n"
-msgstr "Опции за поставување на конфигурација\n"
+msgid "Config Setup Options\\\\\\\\n"
+msgstr "Опции за поставување на конфигурација\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Конфигурирајте во фиксно време"
@@ -152,8 +152,8 @@ msgstr "Тип на конверзија Излез"
 msgid "Convert Playlist to: %s ?"
 msgstr "Конвертирај ја плејлистата во: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\n"
-msgstr "Создајте букети XC Live/VOD\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Создајте букети XC Live/VOD\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ДА СЕ ПРЕЗЕМИ ВИДЕОТО?"
@@ -200,11 +200,11 @@ msgstr "Преземете Picons?"
 msgid "Download Type"
 msgstr "Тип на преземање"
 
-msgid "Download VOD selected channel\n"
-msgstr "Преземете го избраниот канал за VOD\n"
+msgid "Download VOD selected channel\\\\\\\\n"
+msgstr "Преземете го избраниот канал за VOD\\\\\\\\n"
 
-msgid "Download Video \n"
-msgstr "Преземете видео \n"
+msgid "Download Video \\\\\\\\n"
+msgstr "Преземете видео \\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Преземањето е завршено"
@@ -263,8 +263,8 @@ msgstr "Внесете корисничко име"
 msgid "Enter pin code"
 msgstr "Внесете пин-код"
 
-msgid "Epg guide or imdb/tmdb\n"
-msgstr "Epg водич или imdb/tmdb\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Epg водич или imdb/tmdb\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Код за грешка"
@@ -293,8 +293,8 @@ msgstr "Излезете"
 msgid "Export"
 msgstr "Извоз"
 
-msgid "Export file m3u to Bouquet .tv\n"
-msgstr "Извезете ја датотеката m3u во Bouquet .tv\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "Извезете ја датотеката m3u во Bouquet .tv\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "НЕПУШТЕ"
@@ -326,20 +326,20 @@ msgstr "Прво изберете ја листата или внесете ја
 msgid "Folder user file .xml"
 msgstr "Корисничка датотека на папката .xml"
 
-msgid "Format:\n"
-msgstr "Формат:\n"
+msgid "Format:\\\\\\\\n"
+msgstr "Формат:\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Слободен простор"
 
-msgid "HELP BUTTON:\n"
-msgstr "КОПЧЕ ЗА ПОМОШ:\n"
+msgid "HELP BUTTON:\\\\\\\\n"
+msgstr "КОПЧЕ ЗА ПОМОШ:\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ДОМА"
 
-msgid "Help\n"
-msgstr "Помош\n"
+msgid "Help\\\\\\\\n"
+msgstr "Помош\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Скриј/Покажи"
@@ -347,11 +347,11 @@ msgstr "Скриј/Покажи"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Ако играчот е активен СТОП за рипродукција на плеерот при излегување"
 
-msgid "If you have a file:\n"
-msgstr "Ако имате датотека:\n"
+msgid "If you have a file:\\\\\\\\n"
+msgstr "Ако имате датотека:\\\\\\\\n"
 
-msgid "If you have a file\n"
-msgstr "Ако имате датотека\n"
+msgid "If you have a file\\\\\\\\n"
+msgstr "Ако имате датотека\\\\\\\\n"
 
 msgid "Import"
 msgstr "Увоз"
@@ -365,8 +365,8 @@ msgstr "Увези сервер од /tmp/xc.tx?"
 msgid "Info"
 msgstr "Инфо"
 
-msgid "Init Continue Play\n"
-msgstr "Започнете Продолжи со репродукција\n"
+msgid "Init Continue Play\\\\\\\\n"
+msgstr "Започнете Продолжи со репродукција\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Неважечка URL-адреса!"
@@ -428,7 +428,7 @@ msgstr "Направете"
 msgid "Media Folder"
 msgstr "Медиумска папка"
 
-msgid "MediaPlayer\n"
+msgid "MediaPlayer\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -476,11 +476,11 @@ msgstr "Дозволени се само епизоди од серии!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Дозволен е само VOD филм!!!"
 
-msgid "Open Movie Folder\n"
-msgstr "Отворете ја папката за филмови\n"
+msgid "Open Movie Folder\\\\\\\\n"
+msgstr "Отворете ја папката за филмови\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\n"
-msgstr "PASSWORD='yyyyyyyyyy'\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "PASSWORD='yyyyyyyyyy'\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ПАУЗИРАНО"
@@ -527,8 +527,8 @@ msgstr "Rec серија"
 msgid "Reload"
 msgstr "Вчитај повторно"
 
-msgid "Reload List\n"
-msgstr "Повторно вчитај список\n"
+msgid "Reload List\\\\\\\\n"
+msgstr "Повторно вчитај список\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Повторно вчитајте плејлисти во тек..."
@@ -542,11 +542,11 @@ msgstr "Да се ​​отстрани плејлистата од Букет�
 msgid "Remove download task for {}?"
 msgstr "Да се ​​отстрани задачата за преземање за {}?"
 
-msgid "Remove file from list\n"
-msgstr "Отстранете ја датотеката од списокот\n"
+msgid "Remove file from list\\\\\\\\n"
+msgstr "Отстранете ја датотеката од списокот\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\n"
-msgstr "Ги отстранува сите букети што биле\n"
+msgid "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Ги отстранува сите букети што биле\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Промената на резолуцијата не успеа"
@@ -554,8 +554,8 @@ msgstr "Промената на резолуцијата не успеа"
 msgid "Restart"
 msgstr "Рестартирајте"
 
-msgid "Return to Channels List\n"
-msgstr "Вратете се во списокот со канали\n"
+msgid "Return to Channels List\\\\\\\\n"
+msgstr "Вратете се во списокот со канали\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Ресурсот не е пронајден (404)"
@@ -599,11 +599,11 @@ msgstr "URL на серверот"
 msgid "Server Username"
 msgstr "Корисничко име на серверот"
 
-msgid "Set 'Live Player Active' in Setting:\n"
-msgstr "Поставете „Live Player Active“ во Поставка:\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "Поставете „Live Player Active“ во Поставка:\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\n"
-msgstr "Поставете „Не“ за снимање во живо\n"
+msgid "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Поставете „Не“ за снимање во живо\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Поставете име за MakerBouquet"
@@ -611,11 +611,11 @@ msgstr "Поставете име за MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Поставките се успешно зачувани!"
 
-msgid "Start Download All Episodes Series\n"
-msgstr "Започнете со преземање на сериите на сите епизоди\n"
+msgid "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Започнете со преземање на сериите на сите епизоди\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\n"
-msgstr "Започнете со преземање или снимање на избраниот канал:\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Започнете со преземање или снимање на избраниот канал:\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Запрете го играчот при излез"
@@ -638,7 +638,7 @@ msgstr "Времето на врската истече"
 msgid "UNKNOWN"
 msgstr "НЕПОЗНАТ"
 
-msgid "USERNAME='xxxxxxxxxx'\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -656,14 +656,14 @@ msgstr "Дали навистина сакате да го запрете пре
 msgid "Wait... downloading in progress ..."
 msgstr "Чекај... преземањето е во тек..."
 
-msgid "When opening an .m3u file instead:\n"
-msgstr "Наместо тоа, кога отворате датотека .m3u:\n"
+msgid "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "Наместо тоа, кога отворате датотека .m3u:\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\n"
-msgstr "ЖОЛТО копче:\n"
+msgid "YELLOW BUTTON:\\\\\\\\n"
+msgstr "ЖОЛТО копче:\\\\\\\\n"
 
-msgid "You need to configure the type of output\n"
-msgstr "Треба да го конфигурирате типот на излез\n"
+msgid "You need to configure the type of output\\\\\\\\n"
+msgstr "Треба да го конфигурирате типот на излез\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Најава за вашиот сервер и внесување податоци"
@@ -671,8 +671,8 @@ msgstr "Најава за вашиот сервер и внесување под
 msgid "fixed time"
 msgstr "фиксно време"
 
-msgid "host\t(host without http:// )\n"
-msgstr "домаќин\t(домаќин без http:// )\n"
+msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "домаќин\\\\\\\\t(домаќин без http:// )\\\\\\\\n"
 
 msgid "interval"
 msgstr "интервал"
@@ -680,14 +680,14 @@ msgstr "интервал"
 msgid "not exist!"
 msgstr "не постои!"
 
-msgid "password\n"
-msgstr "лозинка\n"
+msgid "password\\\\\\\\n"
+msgstr "лозинка\\\\\\\\n"
 
-msgid "port\n"
-msgstr "порта\n"
+msgid "port\\\\\\\\n"
+msgstr "порта\\\\\\\\n"
 
-msgid "user\n"
-msgstr "корисник\n"
+msgid "user\\\\\\\\n"
+msgstr "корисник\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "почекај ве молам..."
