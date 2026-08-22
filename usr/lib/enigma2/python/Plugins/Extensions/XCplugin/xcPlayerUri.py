@@ -839,18 +839,18 @@ class xc_Player(
         print("===== PLAY_VOD DEBUG =====")
         print("globalsxp.STREAMS.list_index =", globalsxp.STREAMS.list_index)
         print("len(globalsxp.iptv_list_tmp) =", len(globalsxp.iptv_list_tmp))
-        
+
         self.channelx = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
         self.descr = self.channelx[2]
-        
+
         print("titlex =", self.titlex)
         print("vod_url =", self.vod_url)
         print("descr =", self.descr)
-        
+
         globalsxp.STREAMS.current_index = globalsxp.STREAMS.list_index
-        
+
         if self.descr != '' or self.descr is not None:
             text_clear = str(self.descr)
             self["programm"].setText(text_clear)

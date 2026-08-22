@@ -139,11 +139,11 @@ def show_more_infos(name, index, session):
     print("name =", name)
     print("index =", index)
     print("len(globalsxp.iptv_list_tmp) =", len(globalsxp.iptv_list_tmp))
-    
+
     if index < 0 or index >= len(globalsxp.iptv_list_tmp):
         print("ERROR: index out of range in show_more_infos!")
         return
-    
+
     text_clear = sub(r'\b\d{4}\b.*', '', name).strip()
     print("text_clear =", text_clear)
     if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
