@@ -33,23 +33,29 @@ msgstr "%S"
 msgid "%s NOT DETECTED!"
 msgstr "%s NON RILEVATO!"
 
+#, fuzzy
 msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(TASTO BLU):\\\\\\\\n"
+msgstr "(TASTO BLU):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(TASTO VERDE):\\\\\\\\n"
+msgstr "(TASTO VERDE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(TASTO REGISTRAZIONE):\\\\\\\\n"
+msgstr "(TASTO REGISTRAZIONE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(TASTO STOP):\\\\\\\\n"
+msgstr "(TASTO STOP):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(TASTO GIALLO):\\\\\\\\n"
+msgstr "(TASTO GIALLO):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr ""
+msgstr "Importare Server da /ect/enigma2/iptv.sh?"
 
 msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
@@ -117,8 +123,9 @@ msgstr "Chiudi"
 msgid "Config"
 msgstr "Configura"
 
+#, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "Opzioni di impostazione configurazione\\\\\\\\n"
+msgstr "Opzioni di impostazione configurazione\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Configura ad un orario fisso"
@@ -127,7 +134,7 @@ msgid "Configure every interval of hours from now"
 msgstr "Configura ogni intervallo di ore da adesso"
 
 msgid "Configure name of exported bouquet. Default is myBouquet"
-msgstr "Imposta il nome del bouquet. Default è \\\\\\\\\\\\\\\"myBouquet\\\\\\\\\\\\\\\""
+msgstr "Imposta il nome del bouquet. Default è \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"myBouquet\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\""
 
 msgid "Configure service Reference Dvb-Iptv-Gstreamer-Exteplayer3"
 msgstr "Configura servizio reference Dvb-Iptv-Gstreamer-Exteplayer3"
@@ -165,8 +172,9 @@ msgstr "Tipo di conversione Uscita"
 msgid "Convert Playlist to: %s ?"
 msgstr "Converto Playlist a: %s ?"
 
+#, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Crea bouquet XC Live/VOD\\\\\\\\n"
+msgstr "Crea bouquet XC Live/VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "DOWNLOAD VIDEO?"
@@ -213,11 +221,13 @@ msgstr "Scaricare Picons?"
 msgid "Download Type"
 msgstr "Scarica tipo"
 
+#, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Scarica il canale selezionato VOD\\\\\\\\n"
+msgstr "Scarica il canale selezionato VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr "Scarica video\\\\\\\\n"
+msgstr "Scarica video\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr ""
@@ -265,7 +275,7 @@ msgid "Enter Password"
 msgstr "Inserire la password"
 
 msgid "Enter Server Port Eg.:'8080'"
-msgstr "Inserire porta del server. Ad esempio \\\\\\\\\\\\\\\"8080\\\\\\\\\\\\\\\""
+msgstr "Inserire porta del server. Ad esempio \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"8080\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\""
 
 msgid "Enter Server Url without 'http://' your_domine"
 msgstr "Inserisci l'url del server senza  'http://' your_domine"
@@ -276,8 +286,9 @@ msgstr "Inserire username"
 msgid "Enter pin code"
 msgstr "Inserire codice pin"
 
+#, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Guida Epg o imdb/tmdb\\\\\\\\n"
+msgstr "Guida Epg o imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Codice errore"
@@ -306,8 +317,9 @@ msgstr "Uscire"
 msgid "Export"
 msgstr "Esportare"
 
+#, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Esporta il file m3u in Bouquet .tv\\\\\\\\n"
+msgstr "Esporta il file m3u in Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FALLITO"
@@ -339,20 +351,23 @@ msgstr "Selezionare prima la lista o inserire i dati in Config"
 msgid "Folder user file .xml"
 msgstr "Cartella Utente  file .xml"
 
+#, fuzzy
 msgid "Format:\\\\\\\\n"
-msgstr "Formato:\\\\\\\\n"
+msgstr "Formato:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Spazio libero"
 
+#, fuzzy
 msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "PULSANTE AIUTO:\\\\\\\\n"
+msgstr "PULSANTE AIUTO:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "CASA"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Aiuto\\\\\\\\n"
+msgstr "Aiuto\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Nascondi/Mostra"
@@ -360,11 +375,13 @@ msgstr "Nascondi/Mostra"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Se il Player è attivo si fermera all'uscita dal plugin"
 
+#, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "Se hai un file:\\\\\\\\n"
+msgstr "Se hai un file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "Se hai un file\\\\\\\\n"
+msgstr "Se hai un file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Importa"
@@ -378,8 +395,9 @@ msgstr "Importare Server da /tmp/xc.tx?"
 msgid "Info"
 msgstr "Informazioni"
 
+#, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "Inizia Continua a giocare\\\\\\\\n"
+msgstr "Inizia Continua a giocare\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL non valido!"
@@ -441,8 +459,9 @@ msgstr "Crea"
 msgid "Media Folder"
 msgstr "Cartella multimediale"
 
+#, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr "Lettore multimediale\\\\\\\\n"
+msgstr "Lettore multimediale\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "File mancante o vuoto: %s"
@@ -489,8 +508,9 @@ msgstr "Sono ammessi solo episodi della serie !!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "È consentito solo il film VOD !!!"
 
+#, fuzzy
 msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Apri la cartella dei filmati\\\\\\\\n"
+msgstr "Apri la cartella dei filmati\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
 msgstr ""
@@ -540,8 +560,9 @@ msgstr "REC Serie"
 msgid "Reload"
 msgstr "Ricarica"
 
+#, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "Ricarica elenco\\\\\\\\n"
+msgstr "Ricarica elenco\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Ricarica playlist in corso ..."
@@ -555,11 +576,13 @@ msgstr "Riomuovere Playlist dai Bouquets?"
 msgid "Remove download task for {}?"
 msgstr "Rimuovere l'attività di download per {}?"
 
+#, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "Rimuovi il file dall'elenco\\\\\\\\n"
+msgstr "Rimuovi il file dall'elenco\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Rimuove tutti i mazzi di fiori che sono stati\\\\\\\\n"
+msgstr "Rimuove tutti i mazzi di fiori che sono stati\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Modifica della risoluzione non riuscita"
@@ -567,8 +590,9 @@ msgstr "Modifica della risoluzione non riuscita"
 msgid "Restart"
 msgstr "Ricomincia"
 
+#, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "Ritorna all'elenco dei canali\\\\\\\\n"
+msgstr "Ritorna all'elenco dei canali\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr ""
@@ -612,11 +636,13 @@ msgstr "Server URL"
 msgid "Server Username"
 msgstr "Server Username"
 
+#, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Imposta \\\\\\\"Giocatore live attivo\\\\\\\" in Impostazioni:\\\\\\\\n"
+msgstr "Imposta \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Giocatore live attivo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" in Impostazioni:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Imposta 'No' per Registra dal vivo\\\\\\\\n"
+msgstr "Imposta 'No' per Registra dal vivo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Configura il Nome/Tag per Esportazione Bouquet"
@@ -624,11 +650,13 @@ msgstr "Configura il Nome/Tag per Esportazione Bouquet"
 msgid "Settings saved successfully !"
 msgstr "Configurazione salvata con successo!"
 
+#, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Inizia a scaricare tutte le serie di episodi\\\\\\\\n"
+msgstr "Inizia a scaricare tutte le serie di episodi\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Avvia download o registra il canale selezionato:\\\\\\\\n"
+msgstr "Avvia download o registra il canale selezionato:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Arresta il giocatore all'uscita"
@@ -651,8 +679,9 @@ msgstr ""
 msgid "UNKNOWN"
 msgstr "SCONOSCIUTO"
 
+#, fuzzy
 msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
-msgstr "NOMEUTENTE='xxxxxxxxxx'\\\\\\\\n"
+msgstr "NOMEUTENTE='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "Aggiornamento interrotto!"
@@ -669,14 +698,17 @@ msgstr ""
 msgid "Wait... downloading in progress ..."
 msgstr "Attendere... downloading in corso ..."
 
+#, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Quando invece si apre un file .m3u:\\\\\\\\n"
+msgstr "Quando invece si apre un file .m3u:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "PULSANTE GIALLO:\\\\\\\\n"
+msgstr "PULSANTE GIALLO:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "È necessario configurare il tipo di output\\\\\\\\n"
+msgstr "È necessario configurare il tipo di output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Accesso al server e immissione dei dati"
@@ -684,8 +716,9 @@ msgstr "Accesso al server e immissione dei dati"
 msgid "fixed time"
 msgstr "timer fisso"
 
+#, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "host\\\\\\\\t(host senza http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host senza http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "intervallo"
@@ -696,14 +729,19 @@ msgstr "non esistere!"
 msgid "password\\\\\\\\n"
 msgstr ""
 
+#, fuzzy
 msgid "port\\\\\\\\n"
-msgstr "porto\\\\\\\\n"
+msgstr "Esportare"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "utente\\\\\\\\n"
+msgstr "utente\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "attendere prego..."
+
+#~ msgid "port\\\\\\\\\\\\\\\\n"
+#~ msgstr "porto\\\\\\\\\\\\\\\\n"
 
 #~ msgid ""
 #~ "            Close/Stop Movie/Live\n"

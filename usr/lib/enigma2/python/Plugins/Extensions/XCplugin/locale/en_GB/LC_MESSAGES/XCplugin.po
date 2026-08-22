@@ -203,8 +203,9 @@ msgstr ""
 msgid "Download VOD selected channel\\\\\\\\n"
 msgstr ""
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr ""
+msgstr "Download failed"
 
 msgid "Download completato"
 msgstr "Download completed"

@@ -21,25 +21,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s NO S'HA DETECTAT!"
 
-msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(BOTÓ BLAU):\\\\\\\\n"
+msgid "(BLUE BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BOTÓ BLAU):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(BOTÓ VERD):\\\\\\\\n"
+msgid "(GREEN BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BOTÓ VERD):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(BOTÓ REC):\\\\\\\\n"
+msgid "(REC BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BOTÓ REC):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(BOTÓ STOP):\\\\\\\\n"
+msgid "(STOP BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BOTÓ STOP):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(BOTÓ GROC):\\\\\\\\n"
+msgid "(YELLOW BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BOTÓ GROC):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\\\\\\\\n"
+msgid "/tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -105,8 +105,8 @@ msgstr "Tancar"
 msgid "Config"
 msgstr ""
 
-msgid "Config Setup Options\\\\\\\\n"
-msgstr "Opcions de configuració de la configuració\\\\\\\\n"
+msgid "Config Setup Options\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Opcions de configuració de la configuració\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Configurar a una hora fixa"
@@ -153,8 +153,8 @@ msgstr "Tipus de conversió Sortida"
 msgid "Convert Playlist to: %s ?"
 msgstr "Convertir la llista de reproducció a: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Crea rams de XC Live/VOD\\\\\\\\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Crea rams de XC Live/VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "DESCARREGAR VÍDEO?"
@@ -201,11 +201,11 @@ msgstr "Descarregar Picons?"
 msgid "Download Type"
 msgstr "Tipus de descàrrega"
 
-msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Baixeu el canal VOD seleccionat\\\\\\\\n"
+msgid "Download VOD selected channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Baixeu el canal VOD seleccionat\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Download Video \\\\\\\\n"
-msgstr "Descarrega el vídeo \\\\\\\\n"
+msgid "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Descarrega el vídeo \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Descàrrega completada"
@@ -253,10 +253,10 @@ msgid "Enter Password"
 msgstr "Introduïu la contrasenya"
 
 msgid "Enter Server Port Eg.:'8080'"
-msgstr "Introduïu el port del servidor Per exemple: \\\\\\\"8080\\\\\\\""
+msgstr "Introduïu el port del servidor Per exemple: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"8080\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\""
 
 msgid "Enter Server Url without 'http://' your_domine"
-msgstr "Introduïu l'URL del servidor sense \\\\\\\"http://\\\\\\\" el vostre_domini"
+msgstr "Introduïu l'URL del servidor sense \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"http://\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" el vostre_domini"
 
 msgid "Enter Username"
 msgstr "Introduïu el nom d'usuari"
@@ -264,8 +264,8 @@ msgstr "Introduïu el nom d'usuari"
 msgid "Enter pin code"
 msgstr "Introduïu el codi PIN"
 
-msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Guia Epg o imdb/tmdb\\\\\\\\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Guia Epg o imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Codi d'error"
@@ -294,8 +294,8 @@ msgstr "Sortida"
 msgid "Export"
 msgstr "Exporta"
 
-msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Exporta el fitxer m3u a Bouquet .tv\\\\\\\\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Exporta el fitxer m3u a Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FALLAT"
@@ -327,20 +327,20 @@ msgstr "Primer seleccioneu la llista o introduïu-la a Config"
 msgid "Folder user file .xml"
 msgstr "Fitxer d'usuari de la carpeta .xml"
 
-msgid "Format:\\\\\\\\n"
+msgid "Format:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Free Space"
 msgstr "Espai Lliure"
 
-msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "BOTÓ D'AJUDA:\\\\\\\\n"
+msgid "HELP BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "BOTÓ D'AJUDA:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "CASA"
 
-msgid "Help\\\\\\\\n"
-msgstr "Ajuda\\\\\\\\n"
+msgid "Help\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Ajuda\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Amaga/Mostra"
@@ -348,11 +348,11 @@ msgstr "Amaga/Mostra"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Si el jugador està actiu, ATURA la reproducció del jugador a la sortida"
 
-msgid "If you have a file:\\\\\\\\n"
-msgstr "Si teniu un fitxer:\\\\\\\\n"
+msgid "If you have a file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Si teniu un fitxer:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "If you have a file\\\\\\\\n"
-msgstr "Si teniu un fitxer\\\\\\\\n"
+msgid "If you have a file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Si teniu un fitxer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Importar"
@@ -366,8 +366,8 @@ msgstr "Importar el servidor des de /tmp/xc.tx?"
 msgid "Info"
 msgstr "Informació"
 
-msgid "Init Continue Play\\\\\\\\n"
-msgstr "Iniciar Continua la reproducció\\\\\\\\n"
+msgid "Init Continue Play\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Iniciar Continua la reproducció\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL no vàlid!"
@@ -429,7 +429,7 @@ msgstr "Fer"
 msgid "Media Folder"
 msgstr "Carpeta multimèdia"
 
-msgid "MediaPlayer\\\\\\\\n"
+msgid "MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -477,10 +477,10 @@ msgstr "Només es permeten episodis de sèrie!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Només es permet pel·lícula VOD!!!"
 
-msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Obre la carpeta de pel·lícules\\\\\\\\n"
+msgid "Open Movie Folder\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Obre la carpeta de pel·lícules\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "PAUSED"
@@ -528,8 +528,8 @@ msgstr "Sèrie Rec"
 msgid "Reload"
 msgstr "Torna a carregar"
 
-msgid "Reload List\\\\\\\\n"
-msgstr "Torna a carregar la llista\\\\\\\\n"
+msgid "Reload List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Torna a carregar la llista\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Torneu a carregar les llistes de reproducció en curs..."
@@ -543,11 +543,11 @@ msgstr "Vols suprimir la llista de reproducció dels rams?"
 msgid "Remove download task for {}?"
 msgstr "Vols suprimir la tasca de baixada de {}?"
 
-msgid "Remove file from list\\\\\\\\n"
-msgstr "Elimina el fitxer de la llista\\\\\\\\n"
+msgid "Remove file from list\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Elimina el fitxer de la llista\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Elimina tots els rams que han estat\\\\\\\\n"
+msgid "Removes all the bouquets that have been\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Elimina tots els rams que han estat\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "El canvi de resolució ha fallat"
@@ -555,8 +555,8 @@ msgstr "El canvi de resolució ha fallat"
 msgid "Restart"
 msgstr "Reinicieu"
 
-msgid "Return to Channels List\\\\\\\\n"
-msgstr "Torna a la llista de canals\\\\\\\\n"
+msgid "Return to Channels List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Torna a la llista de canals\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "No s'ha trobat el recurs (404)"
@@ -600,11 +600,11 @@ msgstr "URL del servidor"
 msgid "Server Username"
 msgstr "Nom d'usuari del servidor"
 
-msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Estableix \\\\\\\"Reproductor en directe actiu\\\\\\\" a Configuració:\\\\\\\\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Estableix \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Reproductor en directe actiu\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" a Configuració:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Estableix \\\\\\\"No\\\\\\\" per gravar en directe\\\\\\\\n"
+msgid "Set 'No' for Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Estableix \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"No\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" per gravar en directe\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Estableix el nom per a MakerBouquet"
@@ -612,11 +612,11 @@ msgstr "Estableix el nom per a MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "La configuració s'ha desat correctament!"
 
-msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Comenceu a baixar totes les sèries d'episodis\\\\\\\\n"
+msgid "Start Download All Episodes Series\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Comenceu a baixar totes les sèries d'episodis\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Inicieu la baixada o l'enregistrament del canal seleccionat:\\\\\\\\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Inicieu la baixada o l'enregistrament del canal seleccionat:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Atura el jugador a la sortida"
@@ -639,7 +639,7 @@ msgstr "La connexió s'ha esgotat"
 msgid "UNKNOWN"
 msgstr "DESCONEGUT"
 
-msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -657,14 +657,14 @@ msgstr "Realment voleu aturar la descàrrega?"
 msgid "Wait... downloading in progress ..."
 msgstr "Espereu... descàrrega en curs..."
 
-msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Quan obriu un fitxer .m3u:\\\\\\\\n"
+msgid "When opening an .m3u file instead:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Quan obriu un fitxer .m3u:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "BOTÓ GROC:\\\\\\\\n"
+msgid "YELLOW BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "BOTÓ GROC:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "Heu de configurar el tipus de sortida\\\\\\\\n"
+msgid "You need to configure the type of output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Heu de configurar el tipus de sortida\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "El vostre inici de sessió del servidor i entrada de dades"
@@ -672,8 +672,8 @@ msgstr "El vostre inici de sessió del servidor i entrada de dades"
 msgid "fixed time"
 msgstr "temps fix"
 
-msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "host\\\\\\\\t(amfitrió sense http:// )\\\\\\\\n"
+msgid "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host without http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(amfitrió sense http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr ""
@@ -681,14 +681,14 @@ msgstr ""
 msgid "not exist!"
 msgstr "no existeix!"
 
-msgid "password\\\\\\\\n"
-msgstr "contrasenya\\\\\\\\n"
+msgid "password\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "contrasenya\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "port\\\\\\\\n"
+msgid "port\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "user\\\\\\\\n"
-msgstr "usuari\\\\\\\\n"
+msgid "user\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "usuari\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "espera si us plau..."

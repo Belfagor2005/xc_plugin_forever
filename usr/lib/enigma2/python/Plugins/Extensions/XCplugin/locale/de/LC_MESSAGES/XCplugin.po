@@ -26,31 +26,31 @@ msgstr "/media/usb NICHT GEFUNDEN!"
 
 #, fuzzy
 msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "   (BLAUE TASTE):\\\\\\\\n"
+msgstr "   (BLAUE TASTE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "   (GRÜNE TASTE):\\\\\\\\n"
+msgstr "   (GRÜNE TASTE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "   (GRÜNE TASTE):\\\\\\\\n"
+msgstr "   (GRÜNE TASTE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "   (TV-TASTE):\\\\\\\\n"
+msgstr "   (TV-TASTE):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "GELBE TASTE:\\\\\\\\n"
+msgstr "   (GELBE TASTE):\\\\n"
 
 #, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr "Sollen Server-Einstellungen aus der Datei /ect/enigma2/iptv.sh eingelesen werden?\\\\\\\\n"
+msgstr "Sollen Server-Einstellungen aus der Datei /ect/enigma2/iptv.sh eingelesen werden?\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "/tmp/xc.txt\\\\\\\\n"
-msgstr "            /tmp/xc.txt\\\\\\\\n"
+msgstr "            /tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Aborting..."
 msgstr "Abbruch..."
@@ -119,7 +119,7 @@ msgstr "Einstellungen"
 
 #, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "      Einstellungsoptionen konfigurieren.\\\\\\\\n"
+msgstr "      Einstellungsoptionen konfigurieren.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Einen festen Zeitpunkt konfigurieren"
@@ -147,12 +147,12 @@ msgstr "Konfigurieren Sie die Platzierung des Bouquets der konvertierten Listen"
 #, fuzzy
 msgid "Configure type of download movie: JobManager/Direct."
 msgstr "Konfigurieren Sie den Typ des Download-Films: JobManager/Direct."
-"Den Stream-Typ konfigurieren,\n"
+"Konfigurieren Sie den Typ des Download-Films: JobManager/Direct.Den Stream-Typ konfigurieren,\n"
 "der bei der Umwandlung heruntergeladen werden soll"
 
 msgid "Configure type of stream to be downloaded by conversion"
 msgstr "Konfigurieren Sie den Stream-Typ, der durch Konvertierung heruntergeladen werden soll"
-"Den Stream-Typ konfigurieren,\n"
+"Konfigurieren Sie den Stream-Typ, der durch Konvertierung heruntergeladen werden sollDen Stream-Typ konfigurieren,\n"
 "der bei der Umwandlung heruntergeladen werden soll"
 
 msgid "Congrats! You already have the latest version..."
@@ -178,12 +178,12 @@ msgstr "Soll die Wiedergabeliste umgewandelt werden, in:  %s ?"
 
 #, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "   XC-Live/XC-VoD-Bouquets erstellen.\\\\\\\\n"
+msgstr "   XC-Live/XC-VoD-Bouquets erstellen.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "DOWNLOAD VIDEO?"
 msgstr "VIDEO HERUNTERLADEN?"
-"VIDEO HERUNTERLADEN?\n"
+"VIDEO HERUNTERLADEN?VIDEO HERUNTERLADEN?\n"
 "%s"
 
 #, fuzzy
@@ -236,7 +236,7 @@ msgstr "Herunterladen"
 
 #, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "      Den ausgewählten VoD-Kanal herunterladen.\\\\\\\\n"
+msgstr "      Den ausgewählten VoD-Kanal herunterladen.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Download Video \\\\\\\\n"
@@ -314,7 +314,7 @@ msgstr "PIN-Code eingeben"
 
 #, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "      Elektronischer Programmführer oder IMDB/TMDB\\\\\\\\n"
+msgstr "      Elektronischer Programmführer oder IMDB/TMDB\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Fehlercode"
@@ -345,7 +345,7 @@ msgstr "Ausgeben"
 
 #, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "      Datei .m3u nach Bouquet .tv ausgeben.\\\\\\\\n"
+msgstr "      Datei .m3u nach Bouquet .tv ausgeben.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FEHLGESCHLAGEN"
@@ -385,14 +385,16 @@ msgstr ""
 msgid "Free Space"
 msgstr "Freier Speicherplatz"
 
+#, fuzzy
 msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "HILFE-TASTE:\\\\\\\\n"
+msgstr "HILFE-TASTE:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "HEIM"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Hilfe\\\\\\\\n"
+msgstr "Hilfe\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Ausblenden/Einblenden"
@@ -402,14 +404,14 @@ msgstr "Wenn der Spieler aktiv ist, stoppen Sie die Weitergabe des Spielers beim
 
 #, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "Wenn Sie eine Datei haben:\\\\\\\\n"
-"      Wenn Sie eine Datei in folgendem Format haben:\n"
+msgstr "Wenn Sie eine Datei haben:\\\\\\\\\\\\\\\\n"
+"Wenn Sie eine Datei haben:\\\\\\\\\\\\\\\\n      Wenn Sie eine Datei in folgendem Format haben:\n"
 "\n"
 
 #, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "Wenn Sie eine Datei haben\\\\\\\\n"
-"      Wenn Sie eine Datei in folgendem Format haben:\n"
+msgstr "Wenn Sie eine Datei haben\\\\\\\\\\\\\\\\n"
+"Wenn Sie eine Datei haben\\\\\\\\\\\\\\\\n      Wenn Sie eine Datei in folgendem Format haben:\n"
 "\n"
 
 msgid "Import"
@@ -427,7 +429,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "      Film-Ordner öffnen.\\\\\\\\n"
+msgstr "      Film-Ordner öffnen.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Ungültige URL!"
@@ -495,7 +497,7 @@ msgstr "Medien-Ordner "
 
 #, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr "      MediaPlayer\\\\\\\\n"
+msgstr "      MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "Fehlende oder leere Datei: %s"
@@ -528,7 +530,7 @@ msgstr "Kein Video zum Herunterladen/Aufzeichnen!!"
 
 msgid "No data or playlist not compatible with XCplugin."
 msgstr "Keine Daten oder Wiedergabeliste, die nicht mit XCplugin kompatibel ist."
-"Es gibt keine Daten oder Wiedergabelisten,\n"
+"Keine Daten oder Wiedergabeliste, die nicht mit XCplugin kompatibel ist.Es gibt keine Daten oder Wiedergabelisten,\n"
 "die mit dem XCplugin nicht kompatibel sind."
 
 msgid "No movie selected!"
@@ -552,7 +554,7 @@ msgstr "Medien-Ordner "
 
 #, fuzzy
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "            KENNWORT='yyyyyyyyy'\\\\\\\\n"
+msgstr "            KENNWORT='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "PAUSE"
@@ -606,7 +608,7 @@ msgstr "Neu laden"
 
 #, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "      Liste neu laden.\\\\\\\\n"
+msgstr "      Liste neu laden.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Laufende Wiedergabelisten neu laden ..."
@@ -623,11 +625,11 @@ msgstr "Download-Aufgabe für {} entfernen?"
 
 #, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "      Datei aus der Liste entfernen.\\\\\\\\n"
+msgstr "      Datei aus der Liste entfernen.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "    Entfernt alle vorhandene Bouquets,\\\\\\\\n"
+msgstr "    Entfernt alle vorhandene Bouquets,\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Auflösungsänderung fehlgeschlagen"
@@ -637,7 +639,7 @@ msgstr "Neustart"
 
 #, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "      Kanäle aus der Wiedergabeliste neu laden.\\\\\\\\n"
+msgstr "      Kanäle aus der Wiedergabeliste neu laden.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Ressource nicht gefunden (404)"
@@ -659,11 +661,11 @@ msgstr "Suchen"
 
 #, fuzzy
 msgid "Search LIve/Movie"
-msgstr "      Suchen!\\\\\\\\n"
+msgstr "      Suchen!\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Search for a title in the list"
-msgstr "      Nach einem Titel in der Liste suchen.\\\\\\\\n"
+msgstr "      Nach einem Titel in der Liste suchen.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Select"
 msgstr "Wählen"
@@ -685,11 +687,11 @@ msgstr "Server-Benutzername"
 
 #, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "     - Einstellung für <Live-Player aktivieren> nachfolgend setzen:\\\\\\\\n"
+msgstr "     - Einstellung für <Live-Player aktivieren> nachfolgend setzen:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "     - - <No> für Live-Aufnahmen\\\\\\\\n"
+msgstr "     - - <No> für Live-Aufnahmen\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Legen Sie den Namen für MakerBouquet fest"
@@ -699,11 +701,11 @@ msgstr "Einstellungen erfolgreich gespeichert!"
 
 #, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "      Herunterladen aller Serienfolgen starten.\\\\\\\\n"
+msgstr "      Herunterladen aller Serienfolgen starten.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "      Herunterladen starten oder ausgewählter Kanal aufnehmen:\\\\\\\\n"
+msgstr "      Herunterladen starten oder ausgewählter Kanal aufnehmen:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Spieler beim Verlassen stoppen"
@@ -728,7 +730,7 @@ msgstr "UNBEKANNT"
 
 #, fuzzy
 msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
-msgstr "            BENUTZERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "            BENUTZERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "Update abgebrochen!"
@@ -748,14 +750,15 @@ msgstr "Laufende Wiedergabelisten neu laden ..."
 
 #, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "    Wenn Sie stattdessen eine .m3u-Datei öffnen:\\\\\\\\n"
+msgstr "    Wenn Sie stattdessen eine .m3u-Datei öffnen:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "GELBE TASTE:\\\\\\\\n"
+msgstr "GELBE TASTE:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 #, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "    Sie müssen den Ausgabetyp\\\\\\\\n"
+msgstr "    Sie müssen den Ausgabetyp\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Ihr Server-Benutzernamen und Dateneingabe"
@@ -765,7 +768,7 @@ msgstr "Festgesetzte Zeit"
 
 #, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "            host\\\\\\\\t(host ohne http:// )\\\\\\\\n"
+msgstr "            host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host ohne http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "Zeitabstand"
@@ -779,13 +782,22 @@ msgstr "Kennwort eingeben"
 
 #, fuzzy
 msgid "port\\\\\\\\n"
-msgstr "Importieren"
+msgstr "Ausgeben"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "Benutzer\\\\\\\\n"
+msgstr "Benutzer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "Bitte warten ..."
+
+#, fuzzy
+#~ msgid "(YELLOW BUTTON):\\\\\\\\\\\\\\\\n"
+#~ msgstr "GELBE TASTE:\\\\\\\\\\\\\\\\n"
+
+#, fuzzy
+#~ msgid "port\\\\\\\\\\\\\\\\n"
+#~ msgstr "Importieren"
 
 #, fuzzy
 #~| msgid "            Open Movie Folder\n"
@@ -918,9 +930,6 @@ msgstr "Bitte warten ..."
 #~ msgstr ""
 #~ "    im Konfig-Menü bestimmen.\n"
 #~ "\n"
-
-#~ msgid "   (YELLOW BUTTON):\n"
-#~ msgstr "   (GELBE TASTE):\n"
 
 #~ msgid " sh"
 #~ msgstr " .sh"

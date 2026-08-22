@@ -22,26 +22,33 @@ msgstr "%s"
 msgid "%s NOT DETECTED!"
 msgstr "%s NOT DETECTED!"
 
+#, fuzzy
 msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(BLUE BUTTON):\\\\\\\\n"
+msgstr "(BLUE BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(GREEN BUTTON):\\\\\\\\n"
+msgstr "(GREEN BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(REC BUTTON):\\\\\\\\n"
+msgstr "(REC BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(STOP BUTTON):\\\\\\\\n"
+msgstr "(STOP BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(YELLOW BUTTON):\\\\\\\\n"
+msgstr "(YELLOW BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr "/etc/enigma2/iptv.sh\\\\\\\\n"
+msgstr "/etc/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "/tmp/xc.txt\\\\\\\\n"
-msgstr "/tmp/xc.txt\\\\\\\\n"
+msgstr "/tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Aborting..."
 msgstr "Aborting..."
@@ -106,8 +113,9 @@ msgstr "Close"
 msgid "Config"
 msgstr "Config"
 
+#, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "Config Setup Options\\\\\\\\n"
+msgstr "Config Setup Options\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Configure at a fixed time"
@@ -154,8 +162,9 @@ msgstr "Conversion type Output"
 msgid "Convert Playlist to: %s ?"
 msgstr "Convert Playlist to: %s ?"
 
+#, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Create XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Create XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "DOWNLOAD VIDEO?"
@@ -202,11 +211,13 @@ msgstr "Download Picons ?"
 msgid "Download Type"
 msgstr "Download Type"
 
+#, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Download VOD selected channel\\\\\\\\n"
+msgstr "Download VOD selected channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr "Download Video \\\\\\\\n"
+msgstr "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Download completato"
@@ -265,8 +276,9 @@ msgstr "Enter Username"
 msgid "Enter pin code"
 msgstr "Enter pin code"
 
+#, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Epg guide or imdb/tmdb\\\\\\\\n"
+msgstr "Epg guide or imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Error code"
@@ -295,8 +307,9 @@ msgstr "Exit"
 msgid "Export"
 msgstr "Export"
 
+#, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Export file m3u to Bouquet .tv\\\\\\\\n"
+msgstr "Export file m3u to Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FAILED"
@@ -328,20 +341,23 @@ msgstr "First Select the list or enter it in Config"
 msgid "Folder user file .xml"
 msgstr "Folder user file .xml"
 
+#, fuzzy
 msgid "Format:\\\\\\\\n"
-msgstr "Format:\\\\\\\\n"
+msgstr "Format:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Free Space"
 
+#, fuzzy
 msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "HELP BUTTON:\\\\\\\\n"
+msgstr "HELP BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "HOME"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Help\\\\\\\\n"
+msgstr "Help\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Hide/Show"
@@ -349,11 +365,13 @@ msgstr "Hide/Show"
 msgid "If player active STOP player riproduction on exit"
 msgstr "If player active STOP player riproduction on exit"
 
+#, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "If you have a file:\\\\\\\\n"
+msgstr "If you have a file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "If you have a file\\\\\\\\n"
+msgstr "If you have a file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Import"
@@ -367,8 +385,9 @@ msgstr "Import Server from /tmp/xc.tx?"
 msgid "Info"
 msgstr "Info"
 
+#, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "Init Continue Play\\\\\\\\n"
+msgstr "Init Continue Play\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Invalid URL!"
@@ -430,8 +449,9 @@ msgstr "Make"
 msgid "Media Folder"
 msgstr "Media Folder"
 
+#, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr "MediaPlayer\\\\\\\\n"
+msgstr "MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Missing or empty file: %s"
 msgstr "Missing or empty file: %s"
@@ -478,11 +498,13 @@ msgstr "Only Series Episodes Allowed!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Only VOD Movie allowed!!!"
 
+#, fuzzy
 msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Open Movie Folder\\\\\\\\n"
+msgstr "Open Movie Folder\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "PASSWORD='yyyyyyyyy'\\\\\\\\n"
+msgstr "PASSWORD='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "PAUSED"
@@ -529,8 +551,9 @@ msgstr "Rec Series"
 msgid "Reload"
 msgstr "Reload"
 
+#, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "Reload List\\\\\\\\n"
+msgstr "Reload List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Reload Playlists in progress..."
@@ -544,11 +567,13 @@ msgstr "Remove Playlist from Bouquets?"
 msgid "Remove download task for {}?"
 msgstr "Remove download task for {}?"
 
+#, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "Remove file from list\\\\\\\\n"
+msgstr "Remove file from list\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Removes all the bouquets that have been\\\\\\\\n"
+msgstr "Removes all the bouquets that have been\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Resolution Change Failed"
@@ -556,8 +581,9 @@ msgstr "Resolution Change Failed"
 msgid "Restart"
 msgstr "Restart"
 
+#, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "Return to Channels List\\\\\\\\n"
+msgstr "Return to Channels List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Risorsa non trovata (404)"
@@ -602,11 +628,13 @@ msgstr "Server URL"
 msgid "Server Username"
 msgstr "Server Username"
 
+#, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Set 'Live Player Active' in Setting:\\\\\\\\n"
+msgstr "Set 'Live Player Active' in Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Set 'No' for Record Live\\\\\\\\n"
+msgstr "Set 'No' for Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Set Name for MakerBouquet"
@@ -614,11 +642,13 @@ msgstr "Set Name for MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Settings saved successfully !"
 
+#, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Start Download All Episodes Series\\\\\\\\n"
+msgstr "Start Download All Episodes Series\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Start Download or Record Selected Channel:\\\\\\\\n"
+msgstr "Start Download or Record Selected Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Stop Player on Exit"
@@ -641,8 +671,9 @@ msgstr "Timeout della connessione"
 msgid "UNKNOWN"
 msgstr "UNKNOWN"
 
+#, fuzzy
 msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
-msgstr "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgstr "USERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Update Aborted!"
 msgstr "Update Aborted!"
@@ -659,14 +690,17 @@ msgstr "Vuoi davvero interrompere il download?"
 msgid "Wait... downloading in progress ..."
 msgstr "Wait... downloading in progress ..."
 
+#, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "When opening an .m3u file instead:\\\\\\\\n"
+msgstr "When opening an .m3u file instead:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "YELLOW BUTTON:\\\\\\\\n"
+msgstr "YELLOW BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "You need to configure the type of output\\\\\\\\n"
+msgstr "You need to configure the type of output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Your Server Login and data input"
@@ -674,8 +708,9 @@ msgstr "Your Server Login and data input"
 msgid "fixed time"
 msgstr "fixed time"
 
+#, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "host\\\\\\\\t(host without http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host without http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "interval"
@@ -683,14 +718,20 @@ msgstr "interval"
 msgid "not exist!"
 msgstr "not exist!"
 
+#, fuzzy
 msgid "password\\\\\\\\n"
-msgstr "password\\\\\\\\n"
+msgstr "password\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "port\\\\\\\\n"
-msgstr "port\\\\\\\\n"
+msgstr "Export"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "user\\\\\\\\n"
+msgstr "user\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "wait please..."
+
+#~ msgid "port\\\\\\\\\\\\\\\\n"
+#~ msgstr "port\\\\\\\\\\\\\\\\n"

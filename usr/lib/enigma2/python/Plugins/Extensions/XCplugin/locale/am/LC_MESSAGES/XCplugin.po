@@ -20,25 +20,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s አልተገኘም!"
 
-msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(ሰማያዊ ቁልፍ):\\\\\\\\n"
+msgid "(BLUE BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(ሰማያዊ ቁልፍ):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(አረንጓዴ ቁልፍ):\\\\\\\\n"
+msgid "(GREEN BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(አረንጓዴ ቁልፍ):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(REC BUTTON):\\\\\\\\n"
+msgid "(REC BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(ማቆሚያ ቁልፍ):\\\\\\\\n"
+msgid "(STOP BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(ማቆሚያ ቁልፍ):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(ቢጫ ቁልፍ):\\\\\\\\n"
+msgid "(YELLOW BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(ቢጫ ቁልፍ):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr "/ወዘተ/enigma2/iptv.sh\\\\\\\\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "/ወዘተ/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "/tmp/xc.txt\\\\\\\\n"
+msgid "/tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "ገጠመ"
 msgid "Config"
 msgstr "አዋቅር"
 
-msgid "Config Setup Options\\\\\\\\n"
-msgstr "የማዋቀር አማራጮች\\\\\\\\n"
+msgid "Config Setup Options\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የማዋቀር አማራጮች\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "በተወሰነ ጊዜ አዋቅር"
@@ -152,8 +152,8 @@ msgstr "የልወጣ አይነት ውፅዓት"
 msgid "Convert Playlist to: %s ?"
 msgstr "አጫዋች ዝርዝሩን ወደ፡%s ቀይር?"
 
-msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "XC Live/VOD Bouquets ይፍጠሩ\\\\\\\\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "XC Live/VOD Bouquets ይፍጠሩ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "ቪዲዮ አውርድ?"
@@ -200,11 +200,11 @@ msgstr "ፒኮኖች ያውርዱ?"
 msgid "Download Type"
 msgstr "የማውረድ አይነት"
 
-msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "VOD የተመረጠውን ቻናል አውርድ\\\\\\\\n"
+msgid "Download VOD selected channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "VOD የተመረጠውን ቻናል አውርድ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Download Video \\\\\\\\n"
-msgstr "ቪዲዮ አውርድ \\\\\\\\n"
+msgid "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ቪዲዮ አውርድ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "ማውረድ ተጠናቅቋል"
@@ -263,8 +263,8 @@ msgstr "የተጠቃሚ ስም አስገባ"
 msgid "Enter pin code"
 msgstr "ፒን ኮድ አስገባ"
 
-msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Epg መመሪያ ወይም imdb/tmdb\\\\\\\\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Epg መመሪያ ወይም imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "የስህተት ኮድ"
@@ -293,8 +293,8 @@ msgstr "ውጣ"
 msgid "Export"
 msgstr "ወደ ውጪ ላክ"
 
-msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "ፋይል m3u ወደ Bouquet .tv\\\\\\\\n ይላኩ።"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ፋይል m3u ወደ Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n ይላኩ።"
 
 msgid "FAILED"
 msgstr "አልተሳካም።"
@@ -326,20 +326,20 @@ msgstr "መጀመሪያ ዝርዝሩን ይምረጡ ወይም Config ውስጥ 
 msgid "Folder user file .xml"
 msgstr "የአቃፊ ተጠቃሚ ፋይል .xml"
 
-msgid "Format:\\\\\\\\n"
-msgstr "ቅርጸት፡\\\\\\\\n"
+msgid "Format:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ቅርጸት፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "ነፃ ቦታ"
 
-msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "የእርዳታ ቁልፍ፡\\\\\\\\n"
+msgid "HELP BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የእርዳታ ቁልፍ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ቤት"
 
-msgid "Help\\\\\\\\n"
-msgstr "እገዛ\\\\\\\\n"
+msgid "Help\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "እገዛ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "ደብቅ/ አሳይ"
@@ -347,11 +347,11 @@ msgstr "ደብቅ/ አሳይ"
 msgid "If player active STOP player riproduction on exit"
 msgstr "ተጫዋች ንቁ ከሆነ STOP የተጫዋች ብስለትን በመውጣት ላይ"
 
-msgid "If you have a file:\\\\\\\\n"
-msgstr "ፋይል ካላችሁ፡\\\\\\\\n"
+msgid "If you have a file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ፋይል ካላችሁ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "If you have a file\\\\\\\\n"
-msgstr "ፋይል ካለህ\\\\\\\\n"
+msgid "If you have a file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ፋይል ካለህ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "አስመጣ"
@@ -365,8 +365,8 @@ msgstr "አገልጋይ ከ/tmp/xc.tx አስመጣ?"
 msgid "Info"
 msgstr "መረጃ"
 
-msgid "Init Continue Play\\\\\\\\n"
-msgstr "Init ቀጥል መጫወት\\\\\\\\n"
+msgid "Init Continue Play\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Init ቀጥል መጫወት\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "ልክ ያልሆነ URL!"
@@ -428,7 +428,7 @@ msgstr "አድርግ"
 msgid "Media Folder"
 msgstr "የሚዲያ አቃፊ"
 
-msgid "MediaPlayer\\\\\\\\n"
+msgid "MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -476,11 +476,11 @@ msgstr "ተከታታይ ክፍሎች ብቻ ተፈቅደዋል!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "ቪኦዲ ፊልም ብቻ ነው የሚፈቀደው!!!"
 
-msgid "Open Movie Folder\\\\\\\\n"
-msgstr "የፊልም አቃፊን ክፈት\\\\\\\\n"
+msgid "Open Movie Folder\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የፊልም አቃፊን ክፈት\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "PASSWORD='yyyyyyyy'\\\\\\\\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "PASSWORD='yyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "ባለበት ቆሟል"
@@ -527,8 +527,8 @@ msgstr "Rec ተከታታይ"
 msgid "Reload"
 msgstr "እንደገና ጫን"
 
-msgid "Reload List\\\\\\\\n"
-msgstr "ዝርዝር ዳግም ጫን\\\\\\\\n"
+msgid "Reload List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ዝርዝር ዳግም ጫን\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "አጫዋች ዝርዝሮችን እንደገና ጫን በሂደት ላይ..."
@@ -542,11 +542,11 @@ msgstr "አጫዋች ዝርዝር ከ Bouquets ይወገድ?"
 msgid "Remove download task for {}?"
 msgstr "ለ{} የማውረድ ተግባር ይወገድ?"
 
-msgid "Remove file from list\\\\\\\\n"
-msgstr "ፋይሉን ከዝርዝር አስወግድ\\\\\\\\n"
+msgid "Remove file from list\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ፋይሉን ከዝርዝር አስወግድ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "ሁሉንም እቅፍ አበባዎች ያስወግዳል\\\\\\\\n"
+msgid "Removes all the bouquets that have been\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ሁሉንም እቅፍ አበባዎች ያስወግዳል\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "የጥራት ለውጥ አልተሳካም።"
@@ -554,8 +554,8 @@ msgstr "የጥራት ለውጥ አልተሳካም።"
 msgid "Restart"
 msgstr "እንደገና ጀምር"
 
-msgid "Return to Channels List\\\\\\\\n"
-msgstr "ወደ ቻናሎች ዝርዝር ተመለስ\\\\\\\\n"
+msgid "Return to Channels List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ወደ ቻናሎች ዝርዝር ተመለስ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "ምንጭ አልተገኘም (404)"
@@ -599,11 +599,11 @@ msgstr "የአገልጋይ URL"
 msgid "Server Username"
 msgstr "የአገልጋይ ተጠቃሚ ስም"
 
-msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "በቅንብር ውስጥ 'የቀጥታ ማጫወቻ ንቁ'ን ያቀናብሩ፡\\\\\\\\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "በቅንብር ውስጥ 'የቀጥታ ማጫወቻ ንቁ'ን ያቀናብሩ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "ለቀጥታ ስርጭት 'አይ' አዘጋጅ\\\\\\\\n"
+msgid "Set 'No' for Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ለቀጥታ ስርጭት 'አይ' አዘጋጅ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "ለ MakerBouquet ስም አዘጋጅ"
@@ -611,11 +611,11 @@ msgstr "ለ MakerBouquet ስም አዘጋጅ"
 msgid "Settings saved successfully !"
 msgstr "ቅንብሮች በተሳካ ሁኔታ ተቀምጠዋል!"
 
-msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "ሁሉንም ተከታታይ ክፍሎች ማውረድ ጀምር\\\\\\\\n"
+msgid "Start Download All Episodes Series\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ሁሉንም ተከታታይ ክፍሎች ማውረድ ጀምር\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "የተመረጠውን ቻናል ያውርዱ ወይም ይቅዱ፡\\\\\\\\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የተመረጠውን ቻናል ያውርዱ ወይም ይቅዱ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "በመውጣት ላይ ተጫዋች አቁም"
@@ -638,7 +638,7 @@ msgstr "ግንኙነቱ ጊዜው አልፎበታል።"
 msgid "UNKNOWN"
 msgstr "ያልታወቀ"
 
-msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -656,14 +656,14 @@ msgstr "በእርግጥ ማውረዱን ማቆም ይፈልጋሉ?"
 msgid "Wait... downloading in progress ..."
 msgstr "ቆይ... ማውረድ በሂደት ላይ..."
 
-msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "በምትኩ የ.m3u ፋይል ሲከፍቱ፡\\\\\\\\n"
+msgid "When opening an .m3u file instead:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "በምትኩ የ.m3u ፋይል ሲከፍቱ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "ቢጫ ቁልፍ፡\\\\\\\\n"
+msgid "YELLOW BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ቢጫ ቁልፍ፡\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "የውጤቱን አይነት ማዋቀር ያስፈልግዎታል\\\\\\\\n"
+msgid "You need to configure the type of output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የውጤቱን አይነት ማዋቀር ያስፈልግዎታል\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "የአገልጋይ መግቢያ እና የውሂብ ግቤት"
@@ -671,8 +671,8 @@ msgstr "የአገልጋይ መግቢያ እና የውሂብ ግቤት"
 msgid "fixed time"
 msgstr "የተወሰነ ጊዜ"
 
-msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "አስተናጋጅ\\\\\\\\t(አስተናጋጅ ያለ http:// )\\\\\\\\n"
+msgid "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host without http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "አስተናጋጅ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(አስተናጋጅ ያለ http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "ክፍተት"
@@ -680,14 +680,14 @@ msgstr "ክፍተት"
 msgid "not exist!"
 msgstr "የለም!"
 
-msgid "password\\\\\\\\n"
-msgstr "የይለፍ ቃል\\\\\\\\n"
+msgid "password\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "የይለፍ ቃል\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "port\\\\\\\\n"
-msgstr "ወደብ\\\\\\\\n"
+msgid "port\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ወደብ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "user\\\\\\\\n"
-msgstr "ተጠቃሚ\\\\\\\\n"
+msgid "user\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ተጠቃሚ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "እባክህን ጠብቅ..."

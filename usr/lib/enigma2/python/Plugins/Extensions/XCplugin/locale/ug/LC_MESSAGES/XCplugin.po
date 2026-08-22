@@ -20,25 +20,25 @@ msgstr "% s"
 msgid "%s NOT DETECTED!"
 msgstr "% s ئېنىقلانمىدى!"
 
-msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(BLUE BUTTON): \\\\\\\\ n"
+msgid "(BLUE BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(BLUE BUTTON): \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(GREEN BUTTON): \\\\\\\\ n"
+msgid "(GREEN BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(GREEN BUTTON): \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(REC BUTTON): \\\\\\\\ n"
+msgid "(REC BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(REC BUTTON): \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(STOP BUTTON): \\\\\\\\ n"
+msgid "(STOP BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(STOP BUTTON): \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(سېرىق رەڭلىك كۇنۇپكا): \\\\\\\\ n"
+msgid "(YELLOW BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(سېرىق رەڭلىك كۇنۇپكا): \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\\\\\\\\n"
+msgid "/tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -104,8 +104,8 @@ msgstr "تاقاش"
 msgid "Config"
 msgstr "سەپلەڭ"
 
-msgid "Config Setup Options\\\\\\\\n"
-msgstr "تەڭشەش تاللانمىلىرىنى تەڭشەش \\\\\\\\ n"
+msgid "Config Setup Options\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "تەڭشەش تاللانمىلىرىنى تەڭشەش \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Configure at a fixed time"
 msgstr "بەلگىلەنگەن ۋاقىتتا سەپلەڭ"
@@ -152,8 +152,8 @@ msgstr "ئايلاندۇرۇش تىپى چىقىرىش"
 msgid "Convert Playlist to: %s ?"
 msgstr "قويۇش تىزىملىكىنى:% s غا ئايلاندۇرامسىز؟"
 
-msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "XC Live / VOD گۈللۈكى قۇرۇش \\\\\\\\ n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "XC Live / VOD گۈللۈكى قۇرۇش \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "VIDEO نى چۈشۈرۈڭ؟"
@@ -200,11 +200,11 @@ msgstr "رەسىملەرنى چۈشۈرۈڭ؟"
 msgid "Download Type"
 msgstr "چۈشۈرۈش تىپى"
 
-msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "VOD تاللانغان قانالنى چۈشۈرۈڭ \\\\\\\\ n"
+msgid "Download VOD selected channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "VOD تاللانغان قانالنى چۈشۈرۈڭ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "Download Video \\\\\\\\n"
-msgstr "Download Video \\\\\\\\ n"
+msgid "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Download completato"
 msgstr "چۈشۈرۈش تاماملاندى"
@@ -263,8 +263,8 @@ msgstr "ئىشلەتكۈچى نامىنى كىرگۈزۈڭ"
 msgid "Enter pin code"
 msgstr "PIN كودىنى كىرگۈزۈڭ"
 
-msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Epg يېتەكچىسى ياكى imdb / tmdb \\\\\\\\ n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Epg يېتەكچىسى ياكى imdb / tmdb \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Error code"
 msgstr "خاتالىق كودى"
@@ -293,8 +293,8 @@ msgstr "چىقىش"
 msgid "Export"
 msgstr "ئېكسپورت"
 
-msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "M3u ھۆججىتىنى Bouquet .tv \\\\\\\\ n غا چىقىرىش"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "M3u ھۆججىتىنى Bouquet .tv \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n غا چىقىرىش"
 
 msgid "FAILED"
 msgstr ""
@@ -326,20 +326,20 @@ msgstr "ئالدى بىلەن تىزىملىكنى تاللاڭ ياكى سەپ�
 msgid "Folder user file .xml"
 msgstr "ھۆججەت قىسقۇچ ئىشلەتكۈچى ھۆججىتى .xml"
 
-msgid "Format:\\\\\\\\n"
-msgstr "فورماتى: \\\\\\\\ n"
+msgid "Format:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "فورماتى: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Free Space"
 msgstr "ھەقسىز بوشلۇق"
 
-msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "ياردەم كۇنۇپكىسى: \\\\\\\\ n"
+msgid "HELP BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ياردەم كۇنۇپكىسى: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "HOME"
 msgstr "ئۆي"
 
-msgid "Help\\\\\\\\n"
-msgstr "ياردەم \\\\\\\\ n"
+msgid "Help\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ياردەم \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Hide/Show"
 msgstr "يوشۇرۇش / كۆرسىتىش"
@@ -347,11 +347,11 @@ msgstr "يوشۇرۇش / كۆرسىتىش"
 msgid "If player active STOP player riproduction on exit"
 msgstr "ئەگەر قويغۇچ ئاكتىپ ھالەتتە STOP قويغۇچ چېكىنىپ چىقسا"
 
-msgid "If you have a file:\\\\\\\\n"
-msgstr "ئەگەر ھۆججىتىڭىز بولسا: \\\\\\\\ n"
+msgid "If you have a file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ئەگەر ھۆججىتىڭىز بولسا: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "If you have a file\\\\\\\\n"
-msgstr "ئەگەر ھۆججىتىڭىز بولسا \\\\\\\\ n"
+msgid "If you have a file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ئەگەر ھۆججىتىڭىز بولسا \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Import"
 msgstr "ئەكىرىش"
@@ -365,8 +365,8 @@ msgstr "مۇلازىمېتىرنى /tmp/xc.tx دىن ئەكىرىڭ؟"
 msgid "Info"
 msgstr "ئۇچۇر"
 
-msgid "Init Continue Play\\\\\\\\n"
-msgstr "Init Continue Play \\\\\\\\ n"
+msgid "Init Continue Play\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Init Continue Play \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Invalid URL!"
 msgstr "ئىناۋەتسىز URL!"
@@ -428,8 +428,8 @@ msgstr "ياساڭ"
 msgid "Media Folder"
 msgstr ""
 
-msgid "MediaPlayer\\\\\\\\n"
-msgstr "MediaPlayer \\\\\\\\ n"
+msgid "MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "MediaPlayer \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Missing or empty file: %s"
 msgstr "يوقاپ كەتكەن ياكى قۇرۇق ھۆججەت:% s"
@@ -476,11 +476,11 @@ msgstr "پەقەت يۈرۈشلۈك قىسىملىرى رۇخسەت قىلىنغ
 msgid "Only VOD Movie allowed!!!"
 msgstr "پەقەت VOD كىنو رۇخسەت قىلىنغان !!!"
 
-msgid "Open Movie Folder\\\\\\\\n"
+msgid "Open Movie Folder\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr "كىنو ھۆججەت قىسقۇچىنى ئېچىڭ"
 
-msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "PASSWORD = 'yyyyyyyyy' \\\\\\\\ n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "PASSWORD = 'yyyyyyyyy' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "PAUSED"
 msgstr ""
@@ -527,8 +527,8 @@ msgstr ""
 msgid "Reload"
 msgstr "قايتا يۈكلەڭ"
 
-msgid "Reload List\\\\\\\\n"
-msgstr "قايتا يۈكلەش تىزىملىكى \\\\\\\\ n"
+msgid "Reload List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "قايتا يۈكلەش تىزىملىكى \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Reload Playlists in progress..."
 msgstr "ئىجرا قىلىنىۋاتقان تىزىملىكلەرنى قايتا يۈكلەڭ ..."
@@ -542,11 +542,11 @@ msgstr "گۈل تىزىملىكىدىن قويۇش تىزىملىكىنى ئۆچ
 msgid "Remove download task for {}?"
 msgstr "Download} ئۈچۈن چۈشۈرۈش ۋەزىپىسىنى ئۆچۈرۈڭ؟"
 
-msgid "Remove file from list\\\\\\\\n"
-msgstr "ھۆججەتنى تىزىملىكتىن ئۆچۈرۈڭ \\\\\\\\ n"
+msgid "Remove file from list\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ھۆججەتنى تىزىملىكتىن ئۆچۈرۈڭ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "\\\\\\\\ N بولغان بارلىق گۈللەرنى ئۆچۈرۈۋېتىدۇ"
+msgid "Removes all the bouquets that have been\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ N بولغان بارلىق گۈللەرنى ئۆچۈرۈۋېتىدۇ"
 
 msgid "Resolution Change Failed"
 msgstr "قارار ئۆزگەرتىش مەغلۇب بولدى"
@@ -554,8 +554,8 @@ msgstr "قارار ئۆزگەرتىش مەغلۇب بولدى"
 msgid "Restart"
 msgstr "قايتا قوزغىتىڭ"
 
-msgid "Return to Channels List\\\\\\\\n"
-msgstr "قاناللار تىزىملىكىگە قايتىش \\\\\\\\ n"
+msgid "Return to Channels List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "قاناللار تىزىملىكىگە قايتىش \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "بايلىق تېپىلمىدى (404)"
@@ -599,10 +599,10 @@ msgstr "مۇلازىمېتىر URL"
 msgid "Server Username"
 msgstr "مۇلازىمېتىر ئىشلەتكۈچى ئىسمى"
 
-msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "تەڭشەشتە «نەق مەيدان قويغۇچ ئاكتىپ» نى تەڭشەڭ: \\\\\\\\ n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "تەڭشەشتە «نەق مەيدان قويغۇچ ئاكتىپ» نى تەڭشەڭ: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "Set 'No' for Record Live\\\\\\\\n"
+msgid "Set 'No' for Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr "نەق مەيدان خاتىرىلەش ئۈچۈن «ياق» نى بەلگىلەڭ"
 
 msgid "Set Name for MakerBouquet"
@@ -611,11 +611,11 @@ msgstr "MakerBouquet نىڭ نامىنى بەلگىلەڭ"
 msgid "Settings saved successfully !"
 msgstr "تەڭشەكلەر مۇۋەپپەقىيەتلىك ساقلاندى!"
 
-msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "بارلىق بۆلەكلەرنى چۈشۈرۈشنى باشلاڭ \\\\\\\\ n"
+msgid "Start Download All Episodes Series\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "بارلىق بۆلەكلەرنى چۈشۈرۈشنى باشلاڭ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "تاللانغان قانالنى چۈشۈرۈش ياكى خاتىرىلەشنى باشلاڭ: \\\\\\\\ n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "تاللانغان قانالنى چۈشۈرۈش ياكى خاتىرىلەشنى باشلاڭ: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Stop Player on Exit"
 msgstr "قويغۇچنى چېكىنىشنى توختىتىڭ"
@@ -638,8 +638,8 @@ msgstr "ئۇلىنىش ۋاقتى توشتى"
 msgid "UNKNOWN"
 msgstr ""
 
-msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
-msgstr "USERNAME = 'xxxxxxxxxx' \\\\\\\\ n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "USERNAME = 'xxxxxxxxxx' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "Update Aborted!"
 msgstr "يېڭىلانغان ئەمەلدىن قالدۇرۇلدى!"
@@ -656,14 +656,14 @@ msgstr "چۈشۈرۈشنى راستىنلا توختاتامسىز؟"
 msgid "Wait... downloading in progress ..."
 msgstr "ساقلاپ تۇرۇڭ ... چۈشۈرۈش باسقۇچىدا ..."
 
-msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "ئۇنىڭ ئورنىغا .m3u ھۆججىتىنى ئاچقاندا: \\\\\\\\ n"
+msgid "When opening an .m3u file instead:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ئۇنىڭ ئورنىغا .m3u ھۆججىتىنى ئاچقاندا: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "سېرىق رەڭلىك كۇنۇپكا: \\\\\\\\ n"
+msgid "YELLOW BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "سېرىق رەڭلىك كۇنۇپكا: \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "چىقىرىش تىپى \\\\\\\\ n نى تەڭشىشىڭىز كېرەك"
+msgid "You need to configure the type of output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "چىقىرىش تىپى \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n نى تەڭشىشىڭىز كېرەك"
 
 msgid "Your Server Login and data input"
 msgstr "مۇلازىمېتىرغا كىرىش ۋە سانلىق مەلۇمات كىرگۈزۈش"
@@ -671,8 +671,8 @@ msgstr "مۇلازىمېتىرغا كىرىش ۋە سانلىق مەلۇمات �
 msgid "fixed time"
 msgstr "مۇقىم ۋاقىت"
 
-msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "host \\\\\\\\ t (http: //) بولمىغان ساھىبجامال"
+msgid "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host without http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "host \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ t (http: //) بولمىغان ساھىبجامال"
 
 msgid "interval"
 msgstr "ئارىلىق"
@@ -680,14 +680,14 @@ msgstr "ئارىلىق"
 msgid "not exist!"
 msgstr "مەۋجۇت ئەمەس!"
 
-msgid "password\\\\\\\\n"
-msgstr "پارول \\\\\\\\ n"
+msgid "password\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "پارول \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "port\\\\\\\\n"
-msgstr "port \\\\\\\\ n"
+msgid "port\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "port \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
-msgid "user\\\\\\\\n"
-msgstr "ئىشلەتكۈچى \\\\\\\\ n"
+msgid "user\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "ئىشلەتكۈچى \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ n"
 
 msgid "wait please..."
 msgstr "ساقلاپ تۇرۇڭ ..."

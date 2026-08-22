@@ -35,8 +35,9 @@ msgstr ""
 msgid "(YELLOW BUTTON):\\\\\\\\n"
 msgstr ""
 
+#, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr ""
+msgstr "Mag-import ng Server mula sa /etc/enigma2/iptv.sh?"
 
 msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
@@ -104,8 +105,9 @@ msgstr "Isara"
 msgid "Config"
 msgstr ""
 
+#, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "Mga Opsyon sa Pag-setup ng Config\\\\\\\\n"
+msgstr "Mga Opsyon sa Pag-setup ng Config\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "I-configure sa isang nakapirming oras"
@@ -152,8 +154,9 @@ msgstr "Uri ng conversion Output"
 msgid "Convert Playlist to: %s ?"
 msgstr "I-convert ang Playlist sa: %s ?"
 
+#, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Gumawa ng XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Gumawa ng XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr ""
@@ -200,11 +203,13 @@ msgstr "I-download ang Picons ?"
 msgid "Download Type"
 msgstr "Uri ng Pag-download"
 
+#, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "I-download ang napiling channel ng VOD\\\\\\\\n"
+msgstr "I-download ang napiling channel ng VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr "I-download ang Video \\\\\\\\n"
+msgstr "I-download ang Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Nakumpleto ang pag-download"
@@ -263,8 +268,9 @@ msgstr "Ipasok ang Username"
 msgid "Enter pin code"
 msgstr "Ilagay ang pin code"
 
+#, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Gabay sa epg o imdb/tmdb\\\\\\\\n"
+msgstr "Gabay sa epg o imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr ""
@@ -293,8 +299,9 @@ msgstr "Lumabas"
 msgid "Export"
 msgstr "I-export"
 
+#, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "I-export ang file m3u sa Bouquet .tv\\\\\\\\n"
+msgstr "I-export ang file m3u sa Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "NABIGO"
@@ -338,8 +345,9 @@ msgstr ""
 msgid "HOME"
 msgstr "BAHAY"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Tulong\\\\\\\\n"
+msgstr "Tulong\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Itago/Ipakita"
@@ -347,11 +355,13 @@ msgstr "Itago/Ipakita"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Kung aktibong player STOP player riproduction sa exit"
 
+#, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "Kung mayroon kang file:\\\\\\\\n"
+msgstr "Kung mayroon kang file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "Kung mayroon kang file\\\\\\\\n"
+msgstr "Kung mayroon kang file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Mag-import"
@@ -365,8 +375,9 @@ msgstr "Mag-import ng Server mula sa /tmp/xc.tx?"
 msgid "Info"
 msgstr "Impormasyon"
 
+#, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "Magpatuloy sa Paglalaro\\\\\\\\n"
+msgstr "Magpatuloy sa Paglalaro\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "Di-wastong URL!"
@@ -428,8 +439,9 @@ msgstr "Gawin"
 msgid "Media Folder"
 msgstr "Folder ng Media"
 
+#, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr ""
+msgstr "Folder ng Media"
 
 msgid "Missing or empty file: %s"
 msgstr "Nawawala o walang laman na file: %s"
@@ -476,8 +488,9 @@ msgstr "Mga Series Episode lang ang pinapayagan!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "VOD Movie lang ang pinapayagan!!!"
 
+#, fuzzy
 msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Buksan ang Folder ng Pelikula\\\\\\\\n"
+msgstr "Buksan ang Folder ng Pelikula\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
 msgstr ""
@@ -527,8 +540,9 @@ msgstr ""
 msgid "Reload"
 msgstr "I-reload"
 
+#, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "I-reload ang Listahan\\\\\\\\n"
+msgstr "I-reload ang Listahan\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "I-reload ang mga kasalukuyang Playlist..."
@@ -542,11 +556,13 @@ msgstr "Alisin ang Playlist sa Bouquets?"
 msgid "Remove download task for {}?"
 msgstr "Alisin ang gawain sa pag-download para sa {}?"
 
+#, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "Alisin ang file sa listahan\\\\\\\\n"
+msgstr "Alisin ang file sa listahan\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Tinatanggal ang lahat ng mga bouquet na\\\\\\\\n"
+msgstr "Tinatanggal ang lahat ng mga bouquet na\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Nabigo ang Pagbabago sa Resolusyon"
@@ -554,8 +570,9 @@ msgstr "Nabigo ang Pagbabago sa Resolusyon"
 msgid "Restart"
 msgstr "I-restart"
 
+#, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "Bumalik sa Listahan ng Mga Channel\\\\\\\\n"
+msgstr "Bumalik sa Listahan ng Mga Channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Hindi natagpuan ang mapagkukunan (404)"
@@ -600,11 +617,13 @@ msgstr "URL ng server"
 msgid "Server Username"
 msgstr "Username ng Server"
 
+#, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Itakda ang 'Live Player Active' sa Setting:\\\\\\\\n"
+msgstr "Itakda ang 'Live Player Active' sa Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Itakda ang 'Hindi' para sa Record Live\\\\\\\\n"
+msgstr "Itakda ang 'Hindi' para sa Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Itakda ang Pangalan para sa MakerBouquet"
@@ -612,11 +631,13 @@ msgstr "Itakda ang Pangalan para sa MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Matagumpay na na-save ang mga setting!"
 
+#, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Simulan ang I-download ang Lahat ng Serye ng Episode\\\\\\\\n"
+msgstr "Simulan ang I-download ang Lahat ng Serye ng Episode\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Simulan ang Pag-download o I-record ang Napiling Channel:\\\\\\\\n"
+msgstr "Simulan ang Pag-download o I-record ang Napiling Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Ihinto ang Manlalaro sa Paglabas"
@@ -657,14 +678,16 @@ msgstr "Gusto mo ba talagang ihinto ang pag-download?"
 msgid "Wait... downloading in progress ..."
 msgstr "Maghintay... kasalukuyang nagda-download..."
 
+#, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Kapag nagbubukas ng .m3u file sa halip:\\\\\\\\n"
+msgstr "Kapag nagbubukas ng .m3u file sa halip:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "YELLOW BUTTON:\\\\\\\\n"
 msgstr ""
 
+#, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "Kailangan mong i-configure ang uri ng output\\\\\\\\n"
+msgstr "Kailangan mong i-configure ang uri ng output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Ang iyong Server Login at data input"
@@ -672,8 +695,9 @@ msgstr "Ang iyong Server Login at data input"
 msgid "fixed time"
 msgstr "takdang oras"
 
+#, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "host\\\\\\\\t(host na walang http:// )\\\\\\\\n"
+msgstr "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host na walang http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "pagitan"
@@ -684,11 +708,13 @@ msgstr "wala!"
 msgid "password\\\\\\\\n"
 msgstr ""
 
+#, fuzzy
 msgid "port\\\\\\\\n"
-msgstr ""
+msgstr "I-export"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "gumagamit\\\\\\\\\\\\\\\\n"
+msgstr "gumagamit\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr ""

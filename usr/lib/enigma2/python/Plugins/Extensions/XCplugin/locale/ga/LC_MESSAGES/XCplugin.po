@@ -21,25 +21,25 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s NÍ BHAINEANN!"
 
-msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(Cnaipe GORM):\\\\\\\\n"
+msgid "(BLUE BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(Cnaipe GORM):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(Cnaipe glas):\\\\\\\\n"
+msgid "(GREEN BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(Cnaipe glas):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(Cnaipe REC):\\\\\\\\n"
+msgid "(REC BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(Cnaipe REC):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(Cnaipe STOP):\\\\\\\\n"
+msgid "(STOP BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(Cnaipe STOP):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(Cnaipe BUÍ):\\\\\\\\n"
+msgid "(YELLOW BUTTON):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "(Cnaipe BUÍ):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
+msgid "/etc/enigma2/iptv.sh\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "/tmp/xc.txt\\\\\\\\n"
+msgid "/tmp/xc.txt\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Aborting..."
@@ -105,8 +105,8 @@ msgstr "Dún"
 msgid "Config"
 msgstr "Cumraíocht"
 
-msgid "Config Setup Options\\\\\\\\n"
-msgstr "Roghanna Socraithe Cumraíochta\\\\\\\\n"
+msgid "Config Setup Options\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Roghanna Socraithe Cumraíochta\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Cumraigh ag am socraithe"
@@ -153,8 +153,8 @@ msgstr "Aschur cineál comhshó"
 msgid "Convert Playlist to: %s ?"
 msgstr "Tiontaigh Seinmliosta go: %s ?"
 
-msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Cruthaigh Bouquets XC Live/VOD\\\\\\\\n"
+msgid "Create XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Cruthaigh Bouquets XC Live/VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "Íoslódálann físeán?"
@@ -201,10 +201,10 @@ msgstr "Íoslódáil Picons?"
 msgid "Download Type"
 msgstr "Cineál íoslódáil"
 
-msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Íoslódáil an cainéal roghnaithe VOD\\\\\\\\n"
+msgid "Download VOD selected channel\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Íoslódáil an cainéal roghnaithe VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Download Video \\\\\\\\n"
+msgid "Download Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr "Íosluchtaigh físeán n"
 
 msgid "Download completato"
@@ -264,8 +264,8 @@ msgstr "Cuir isteach Ainm Úsáideora"
 msgid "Enter pin code"
 msgstr "Cuir isteach cód pin"
 
-msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Treoir epg nó imdb/tmdb\\\\\\\\n"
+msgid "Epg guide or imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Treoir epg nó imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Cód earráide"
@@ -294,8 +294,8 @@ msgstr "Scoir"
 msgid "Export"
 msgstr "Easpórtáil"
 
-msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Easpórtáil comhad m3u go Bouquet .tv\\\\\\\\n"
+msgid "Export file m3u to Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Easpórtáil comhad m3u go Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "FAILTE"
@@ -327,20 +327,20 @@ msgstr "An Chéad Roghnaigh an liosta nó cuir isteach é i Cumraíocht"
 msgid "Folder user file .xml"
 msgstr "Comhad úsáideora fillteán .xml"
 
-msgid "Format:\\\\\\\\n"
-msgstr "Formáid:\\\\\\\\n"
+msgid "Format:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Formáid:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Spás saor in aisce"
 
-msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "Cnaipe Cabhrach:\\\\\\\\n"
+msgid "HELP BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Cnaipe Cabhrach:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "BAILE"
 
-msgid "Help\\\\\\\\n"
-msgstr "Cabhair\\\\\\\\n"
+msgid "Help\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Cabhair\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Folaigh/Taispeáin"
@@ -348,11 +348,11 @@ msgstr "Folaigh/Taispeáin"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Má tá an t-imreoir gníomhach STOP atáirgeadh an imreora ar an imeacht amach"
 
-msgid "If you have a file:\\\\\\\\n"
-msgstr "Má tá comhad agat:\\\\\\\\n"
+msgid "If you have a file:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Má tá comhad agat:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "If you have a file\\\\\\\\n"
-msgstr "Má tá comhad agat\\\\\\\\n"
+msgid "If you have a file\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Má tá comhad agat\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Iompórtáil"
@@ -366,8 +366,8 @@ msgstr "Iompórtáil Freastalaí ó /tmp/xc.tx?"
 msgid "Info"
 msgstr "Eolas"
 
-msgid "Init Continue Play\\\\\\\\n"
-msgstr "Tosaigh ag Seinn\\\\\\\\n"
+msgid "Init Continue Play\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Tosaigh ag Seinn\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL neamhbhailí!"
@@ -429,7 +429,7 @@ msgstr "Déan"
 msgid "Media Folder"
 msgstr "Fillteán Meán"
 
-msgid "MediaPlayer\\\\\\\\n"
+msgid "MediaPlayer\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Missing or empty file: %s"
@@ -477,11 +477,11 @@ msgstr "Eipeasóid Shraith Amháin Ceadaithe!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Níl ach Scannán VOD ceadaithe!!!"
 
-msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Oscail Fillteán Scannán\\\\\\\\n"
+msgid "Open Movie Folder\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Oscail Fillteán Scannán\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "PASSWORD= 'bbyyyyyyy'\\\\\\\\n"
+msgid "PASSWORD='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "PASSWORD= 'bbyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "AR sos"
@@ -528,8 +528,8 @@ msgstr "Sraith Rec"
 msgid "Reload"
 msgstr "Athlódáil"
 
-msgid "Reload List\\\\\\\\n"
-msgstr "Athlódáil an Liosta\\\\\\\\n"
+msgid "Reload List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Athlódáil an Liosta\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Athlódáil Seinmliostaí atá ar siúl..."
@@ -543,11 +543,11 @@ msgstr "An bhfuil fonn ort Seinmliosta a bhaint as Bouquets?"
 msgid "Remove download task for {}?"
 msgstr "Bain tasc íoslódála le haghaidh {}?"
 
-msgid "Remove file from list\\\\\\\\n"
-msgstr "Bain an comhad ón liosta\\\\\\\\n"
+msgid "Remove file from list\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Bain an comhad ón liosta\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Bain na bouquets go léir a bhí\\\\\\\\n"
+msgid "Removes all the bouquets that have been\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Bain na bouquets go léir a bhí\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Theip ar Athrú Taifeach"
@@ -555,8 +555,8 @@ msgstr "Theip ar Athrú Taifeach"
 msgid "Restart"
 msgstr "Atosaigh"
 
-msgid "Return to Channels List\\\\\\\\n"
-msgstr "Fill ar an Liosta Cainéil\\\\\\\\n"
+msgid "Return to Channels List\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Fill ar an Liosta Cainéil\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Acmhainn gan aimsiú (404)"
@@ -600,11 +600,11 @@ msgstr "URL an fhreastalaí"
 msgid "Server Username"
 msgstr "Ainm Úsáideora Freastalaí"
 
-msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Socraigh 'Live Player Active' sa Socrú:\\\\\\\\n"
+msgid "Set 'Live Player Active' in Setting:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Socraigh 'Live Player Active' sa Socrú:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Socraigh 'Níl' le haghaidh Taifead Beo\\\\\\\\n"
+msgid "Set 'No' for Record Live\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Socraigh 'Níl' le haghaidh Taifead Beo\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Socraigh Ainm do MakerBouquet"
@@ -612,11 +612,11 @@ msgstr "Socraigh Ainm do MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Sábháladh na socruithe !"
 
-msgid "Start Download All Episodes Series\\\\\\\\n"
+msgid "Start Download All Episodes Series\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr "Íoslódáil gach eipeasóid den tsraith tús."
 
-msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Tosaigh Íoslódáil nó Taifead Cainéal Roghnaithe:\\\\\\\\n"
+msgid "Start Download or Record Selected Channel:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Tosaigh Íoslódáil nó Taifead Cainéal Roghnaithe:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Stop an tImreoir ar Scoir"
@@ -639,7 +639,7 @@ msgstr "Ceangal thar am"
 msgid "UNKNOWN"
 msgstr "ANNIS"
 
-msgid "USERNAME='xxxxxxxxxx'\\\\\\\\n"
+msgid "USERNAME='xxxxxxxxxx'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
 msgid "Update Aborted!"
@@ -657,14 +657,14 @@ msgstr "An bhfuil tú i ndáiríre ag iarraidh stop a chur leis an íoslódáil?
 msgid "Wait... downloading in progress ..."
 msgstr "Fan ... á íoslódáil ar siúl ..."
 
-msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Agus comhad .m3u á oscailt ina ionad sin:\\\\\\\\n"
+msgid "When opening an .m3u file instead:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Agus comhad .m3u á oscailt ina ionad sin:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "Cnaipe BUÍ:\\\\\\\\n"
+msgid "YELLOW BUTTON:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Cnaipe BUÍ:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "Ní mór duit an cineál aschuir a chumrú\\\\\\\\n"
+msgid "You need to configure the type of output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "Ní mór duit an cineál aschuir a chumrú\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Do Logáil isteach Freastalaí agus ionchur sonraí"
@@ -672,8 +672,8 @@ msgstr "Do Logáil isteach Freastalaí agus ionchur sonraí"
 msgid "fixed time"
 msgstr "am seasta"
 
-msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "óstach \\\\\\\\ t (óstach gan http:// )\\\\\\\\n"
+msgid "host\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(host without http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "óstach \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ t (óstach gan http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "eatramh"
@@ -681,14 +681,14 @@ msgstr "eatramh"
 msgid "not exist!"
 msgstr "níl ann!"
 
-msgid "password\\\\\\\\n"
-msgstr "pasfhocal\\\\\\\\n"
+msgid "password\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "pasfhocal\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
-msgid "port\\\\\\\\n"
+msgid "port\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 msgstr ""
 
-msgid "user\\\\\\\\n"
-msgstr "úsáideoir\\\\\\\\n"
+msgid "user\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
+msgstr "úsáideoir\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "fan le do thoil..."

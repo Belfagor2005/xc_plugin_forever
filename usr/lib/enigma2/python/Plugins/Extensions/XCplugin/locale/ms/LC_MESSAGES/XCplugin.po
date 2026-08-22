@@ -20,23 +20,29 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s TIDAK DIKESAN!"
 
+#, fuzzy
 msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(BUTTON BIRU):\\\\\\\\n"
+msgstr "(BUTTON BIRU):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(BUTTON HIJAU):\\\\\\\\n"
+msgstr "(BUTTON HIJAU):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(BUTTON RKM):\\\\\\\\n"
+msgstr "(BUTTON RKM):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(BUTTON BERHENTI):\\\\\\\\n"
+msgstr "(BUTTON BERHENTI):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(BUTTON KUNING):\\\\\\\\n"
+msgstr "(BUTTON KUNING):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr ""
+msgstr "Import Pelayan daripada /etc/enigma2/iptv.sh?"
 
 msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
@@ -104,8 +110,9 @@ msgstr "tutup"
 msgid "Config"
 msgstr "Konfigurasi"
 
+#, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "Pilihan Persediaan Konfigurasi\\\\\\\\n"
+msgstr "Pilihan Persediaan Konfigurasi\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Konfigurasikan pada masa yang ditetapkan"
@@ -152,8 +159,9 @@ msgstr "Jenis penukaran Output"
 msgid "Convert Playlist to: %s ?"
 msgstr "Tukar Senarai Main kepada: %s ?"
 
+#, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Cipta XC Live/VOD Bouquets\\\\\\\\n"
+msgstr "Cipta XC Live/VOD Bouquets\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "MUAT TURUN VIDEO?"
@@ -200,11 +208,13 @@ msgstr "Muat turun Picons ?"
 msgid "Download Type"
 msgstr "Jenis Muat Turun"
 
+#, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Muat turun saluran yang dipilih VOD\\\\\\\\n"
+msgstr "Muat turun saluran yang dipilih VOD\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr "Muat Turun Video \\\\\\\\n"
+msgstr "Muat Turun Video \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Muat turun selesai"
@@ -263,8 +273,9 @@ msgstr "Masukkan Nama Pengguna"
 msgid "Enter pin code"
 msgstr "Masukkan kod pin"
 
+#, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Panduan epg atau imdb/tmdb\\\\\\\\n"
+msgstr "Panduan epg atau imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Kod ralat"
@@ -293,8 +304,9 @@ msgstr "Keluar"
 msgid "Export"
 msgstr "Eksport"
 
+#, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Eksport fail m3u ke Bouquet .tv\\\\\\\\n"
+msgstr "Eksport fail m3u ke Bouquet .tv\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "GAGAL"
@@ -332,14 +344,16 @@ msgstr ""
 msgid "Free Space"
 msgstr "Ruang Bebas"
 
+#, fuzzy
 msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "BUTTON BANTUAN:\\\\\\\\n"
+msgstr "BUTTON BANTUAN:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "RUMAH"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Bantuan\\\\\\\\n"
+msgstr "Bantuan\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Sembunyi/Tunjukkan"
@@ -347,11 +361,13 @@ msgstr "Sembunyi/Tunjukkan"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Jika pemain aktif STOP pengeluaran pemain semasa keluar"
 
+#, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "Jika anda mempunyai fail:\\\\\\\\n"
+msgstr "Jika anda mempunyai fail:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "Jika anda mempunyai fail\\\\\\\\n"
+msgstr "Jika anda mempunyai fail\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr ""
@@ -365,8 +381,9 @@ msgstr "Import Pelayan daripada /tmp/xc.tx?"
 msgid "Info"
 msgstr "info"
 
+#, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "Mulakan Teruskan Main\\\\\\\\n"
+msgstr "Mulakan Teruskan Main\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL tidak sah!"
@@ -428,8 +445,9 @@ msgstr "buat"
 msgid "Media Folder"
 msgstr "Folder Media"
 
+#, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr ""
+msgstr "Folder Media"
 
 msgid "Missing or empty file: %s"
 msgstr "Fail tiada atau kosong: %s"
@@ -476,11 +494,13 @@ msgstr "Hanya Episod Bersiri Dibenarkan!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "Hanya Filem VOD dibenarkan!!!"
 
+#, fuzzy
 msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Buka Folder Filem\\\\\\\\n"
+msgstr "Buka Folder Filem\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
-msgstr "KATA LALUAN='yyyyyyyyy'\\\\\\\\n"
+msgstr "KATA LALUAN='yyyyyyyyy'\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PAUSED"
 msgstr "DIJEDA"
@@ -527,8 +547,9 @@ msgstr "Siri Rek"
 msgid "Reload"
 msgstr "Muat semula"
 
+#, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "Muat Semula Senarai\\\\\\\\n"
+msgstr "Muat Semula Senarai\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Muat semula Senarai Main sedang dijalankan..."
@@ -542,11 +563,13 @@ msgstr "Alih keluar Senarai Main daripada Bouquets?"
 msgid "Remove download task for {}?"
 msgstr "Alih keluar tugas muat turun untuk {}?"
 
+#, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "Alih keluar fail daripada senarai\\\\\\\\n"
+msgstr "Alih keluar fail daripada senarai\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Mengalih keluar semua jambangan yang telah\\\\\\\\n"
+msgstr "Mengalih keluar semua jambangan yang telah\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Perubahan Penyelesaian Gagal"
@@ -554,8 +577,9 @@ msgstr "Perubahan Penyelesaian Gagal"
 msgid "Restart"
 msgstr "Mulakan semula"
 
+#, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "Kembali ke Senarai Saluran\\\\\\\\n"
+msgstr "Kembali ke Senarai Saluran\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Sumber tidak ditemui (404)"
@@ -600,11 +624,13 @@ msgstr "URL pelayan"
 msgid "Server Username"
 msgstr "Nama Pengguna Pelayan"
 
+#, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Tetapkan 'Live Player Active' dalam Tetapan:\\\\\\\\n"
+msgstr "Tetapkan 'Live Player Active' dalam Tetapan:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Tetapkan 'Tidak' untuk Rekod Langsung\\\\\\\\n"
+msgstr "Tetapkan 'Tidak' untuk Rekod Langsung\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Tetapkan Nama untuk MakerBouquet"
@@ -612,11 +638,13 @@ msgstr "Tetapkan Nama untuk MakerBouquet"
 msgid "Settings saved successfully !"
 msgstr "Tetapan berjaya disimpan!"
 
+#, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Mula Muat Turun Semua Siri Episod\\\\\\\\n"
+msgstr "Mula Muat Turun Semua Siri Episod\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Mulakan Muat Turun atau Rakam Saluran Yang Dipilih:\\\\\\\\n"
+msgstr "Mulakan Muat Turun atau Rakam Saluran Yang Dipilih:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Hentikan Pemain semasa Keluar"
@@ -657,14 +685,17 @@ msgstr "Adakah anda benar-benar mahu menghentikan muat turun?"
 msgid "Wait... downloading in progress ..."
 msgstr "Tunggu... sedang memuat turun..."
 
+#, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Apabila membuka fail .m3u sebaliknya:\\\\\\\\n"
+msgstr "Apabila membuka fail .m3u sebaliknya:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "BUTANG KUNING:\\\\\\\\n"
+msgstr "BUTANG KUNING:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "Anda perlu mengkonfigurasi jenis output\\\\\\\\n"
+msgstr "Anda perlu mengkonfigurasi jenis output\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Log Masuk Pelayan anda dan input data"
@@ -672,8 +703,9 @@ msgstr "Log Masuk Pelayan anda dan input data"
 msgid "fixed time"
 msgstr "masa tetap"
 
+#, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "hos\\\\\\\\t(hos tanpa http:// )\\\\\\\\n"
+msgstr "hos\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t(hos tanpa http:// )\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "selang waktu"
@@ -681,14 +713,20 @@ msgstr "selang waktu"
 msgid "not exist!"
 msgstr "tidak wujud!"
 
+#, fuzzy
 msgid "password\\\\\\\\n"
-msgstr "kata laluan\\\\\\\\n"
+msgstr "kata laluan\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "port\\\\\\\\n"
-msgstr "pelabuhan\\\\\\\\n"
+msgstr "Eksport"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "pengguna\\\\\\\\n"
+msgstr "pengguna\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "tolong tunggu..."
+
+#~ msgid "port\\\\\\\\\\\\\\\\n"
+#~ msgstr "pelabuhan\\\\\\\\\\\\\\\\n"

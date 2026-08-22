@@ -20,23 +20,29 @@ msgstr ""
 msgid "%s NOT DETECTED!"
 msgstr "%s EZ DEKUTETU!"
 
+#, fuzzy
 msgid "(BLUE BUTTON):\\\\\\\\n"
-msgstr "(BOTOI URDINA):\\\\\\\\n"
+msgstr "(BOTOI URDINA):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(GREEN BUTTON):\\\\\\\\n"
-msgstr "(BOTOI BERDEA):\\\\\\\\n"
+msgstr "(BOTOI BERDEA):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(REC BUTTON):\\\\\\\\n"
-msgstr "(REC BOTOIA):\\\\\\\\n"
+msgstr "(REC BOTOIA):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(STOP BUTTON):\\\\\\\\n"
-msgstr "(GELDITU BOTOIA):\\\\\\\\n"
+msgstr "(GELDITU BOTOIA):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "(YELLOW BUTTON):\\\\\\\\n"
-msgstr "(BOTOI HORIA):\\\\\\\\n"
+msgstr "(BOTOI HORIA):\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "/etc/enigma2/iptv.sh\\\\\\\\n"
-msgstr ""
+msgstr "/etc/enigma2/iptv.sh-tik zerbitzaria inportatu?"
 
 msgid "/tmp/xc.txt\\\\\\\\n"
 msgstr ""
@@ -104,8 +110,9 @@ msgstr "Itxi"
 msgid "Config"
 msgstr "Konfig"
 
+#, fuzzy
 msgid "Config Setup Options\\\\\\\\n"
-msgstr "Konfigurazio-aukerak\\\\\\\\n"
+msgstr "Konfigurazio-aukerak\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Configure at a fixed time"
 msgstr "Konfiguratu ordutegi finko batean"
@@ -152,8 +159,9 @@ msgstr "Bihurketa mota Irteera"
 msgid "Convert Playlist to: %s ?"
 msgstr "Erreprodukzio-zerrenda bihurtu: %s?"
 
+#, fuzzy
 msgid "Create XC Live/VOD Bouquets\\\\\\\\n"
-msgstr "Sortu XC Live/VOD sortak\\\\\\\\n"
+msgstr "Sortu XC Live/VOD sortak\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "DOWNLOAD VIDEO?"
 msgstr "BIDEOA DESKARGATU?"
@@ -200,11 +208,13 @@ msgstr "Deskargatu Picons?"
 msgid "Download Type"
 msgstr "Deskarga mota"
 
+#, fuzzy
 msgid "Download VOD selected channel\\\\\\\\n"
-msgstr "Deskargatu VOD hautatutako kanala\\\\\\\\n"
+msgstr "Deskargatu VOD hautatutako kanala\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Download Video \\\\\\\\n"
-msgstr "Deskargatu bideoa \\\\\\\\n"
+msgstr "Deskargatu bideoa \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Download completato"
 msgstr "Deskarga amaitu da"
@@ -263,8 +273,9 @@ msgstr "Sartu erabiltzaile-izena"
 msgid "Enter pin code"
 msgstr "Sartu pin kodea"
 
+#, fuzzy
 msgid "Epg guide or imdb/tmdb\\\\\\\\n"
-msgstr "Epg gida edo imdb/tmdb\\\\\\\\n"
+msgstr "Epg gida edo imdb/tmdb\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Error code"
 msgstr "Errore kodea"
@@ -293,8 +304,9 @@ msgstr "Irten"
 msgid "Export"
 msgstr "Esportatu"
 
+#, fuzzy
 msgid "Export file m3u to Bouquet .tv\\\\\\\\n"
-msgstr "Esportatu m3u fitxategia Bouquet .tv-ra\\\\\\\\n"
+msgstr "Esportatu m3u fitxategia Bouquet .tv-ra\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "FAILED"
 msgstr "HUTS EGIN"
@@ -326,20 +338,23 @@ msgstr "Lehenik eta behin, hautatu zerrenda edo sartu Konfigurazioan"
 msgid "Folder user file .xml"
 msgstr "Karpeta erabiltzailearen fitxategia .xml"
 
+#, fuzzy
 msgid "Format:\\\\\\\\n"
-msgstr "Formatua:\\\\\\\\n"
+msgstr "Formatua:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Free Space"
 msgstr "Espazio librea"
 
+#, fuzzy
 msgid "HELP BUTTON:\\\\\\\\n"
-msgstr "LAGUNTZA BOTOIA:\\\\\\\\n"
+msgstr "LAGUNTZA BOTOIA:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "HOME"
 msgstr "ETXERA"
 
+#, fuzzy
 msgid "Help\\\\\\\\n"
-msgstr "Laguntza\\\\\\\\n"
+msgstr "Laguntza\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Hide/Show"
 msgstr "Ezkutatu/Erakutsi"
@@ -347,11 +362,13 @@ msgstr "Ezkutatu/Erakutsi"
 msgid "If player active STOP player riproduction on exit"
 msgstr "Jokalari aktiboa bada, GELDITU jokalariaren erreprodukzioa irtetean"
 
+#, fuzzy
 msgid "If you have a file:\\\\\\\\n"
-msgstr "Fitxategi bat baduzu:\\\\\\\\n"
+msgstr "Fitxategi bat baduzu:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "If you have a file\\\\\\\\n"
-msgstr "Fitxategi bat baduzu\\\\\\\\n"
+msgstr "Fitxategi bat baduzu\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Import"
 msgstr "Inportatu"
@@ -365,8 +382,9 @@ msgstr "Zerbitzaria /tmp/xc.tx-tik inportatu?"
 msgid "Info"
 msgstr ""
 
+#, fuzzy
 msgid "Init Continue Play\\\\\\\\n"
-msgstr "Hasi Jarraitu erreproduzitzen\\\\\\\\n"
+msgstr "Hasi Jarraitu erreproduzitzen\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Invalid URL!"
 msgstr "URL baliogabea!"
@@ -428,8 +446,9 @@ msgstr "Egin"
 msgid "Media Folder"
 msgstr "Multimedia karpeta"
 
+#, fuzzy
 msgid "MediaPlayer\\\\\\\\n"
-msgstr ""
+msgstr "Multimedia karpeta"
 
 msgid "Missing or empty file: %s"
 msgstr "Fitxategia falta edo hutsik: %s"
@@ -476,8 +495,9 @@ msgstr "Serieko atalak bakarrik onartzen dira!!!"
 msgid "Only VOD Movie allowed!!!"
 msgstr "VOD filma bakarrik onartzen da!!!"
 
+#, fuzzy
 msgid "Open Movie Folder\\\\\\\\n"
-msgstr "Ireki filmaren karpeta\\\\\\\\n"
+msgstr "Ireki filmaren karpeta\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "PASSWORD='yyyyyyyyy'\\\\\\\\n"
 msgstr ""
@@ -527,8 +547,9 @@ msgstr ""
 msgid "Reload"
 msgstr "Berriz kargatu"
 
+#, fuzzy
 msgid "Reload List\\\\\\\\n"
-msgstr "Berriz kargatu zerrenda\\\\\\\\n"
+msgstr "Berriz kargatu zerrenda\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Reload Playlists in progress..."
 msgstr "Kargatu berriro erreprodukzio-zerrendak abian..."
@@ -542,11 +563,13 @@ msgstr "Erreprodukzio-zerrenda sortetatik kendu?"
 msgid "Remove download task for {}?"
 msgstr "{} deskargatzeko zeregina kendu?"
 
+#, fuzzy
 msgid "Remove file from list\\\\\\\\n"
-msgstr "Kendu fitxategia zerrendatik\\\\\\\\n"
+msgstr "Kendu fitxategia zerrendatik\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Removes all the bouquets that have been\\\\\\\\n"
-msgstr "Izan diren sorta guztiak kentzen ditu\\\\\\\\n"
+msgstr "Izan diren sorta guztiak kentzen ditu\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Resolution Change Failed"
 msgstr "Ebazpen-aldaketak huts egin du"
@@ -554,8 +577,9 @@ msgstr "Ebazpen-aldaketak huts egin du"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
+#, fuzzy
 msgid "Return to Channels List\\\\\\\\n"
-msgstr "Itzuli kanalen zerrendara\\\\\\\\n"
+msgstr "Itzuli kanalen zerrendara\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Risorsa non trovata (404)"
 msgstr "Ez da aurkitu baliabidea (404)"
@@ -600,11 +624,13 @@ msgstr "Zerbitzariaren URLa"
 msgid "Server Username"
 msgstr "Zerbitzariaren erabiltzaile-izena"
 
+#, fuzzy
 msgid "Set 'Live Player Active' in Setting:\\\\\\\\n"
-msgstr "Ezarri 'Zuzeneko erreproduzitzailea aktibo' Ezarpenean:\\\\\\\\n"
+msgstr "Ezarri 'Zuzeneko erreproduzitzailea aktibo' Ezarpenean:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Set 'No' for Record Live\\\\\\\\n"
-msgstr "Ezarri 'Ez' zuzenean grabatzeko\\\\\\\\n"
+msgstr "Ezarri 'Ez' zuzenean grabatzeko\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Set Name for MakerBouquet"
 msgstr "Ezarri izena MakerBouquet-erako"
@@ -612,11 +638,13 @@ msgstr "Ezarri izena MakerBouquet-erako"
 msgid "Settings saved successfully !"
 msgstr "Ezarpenak ongi gorde dira!"
 
+#, fuzzy
 msgid "Start Download All Episodes Series\\\\\\\\n"
-msgstr "Hasi Atal guztiak deskargatzen\\\\\\\\n"
+msgstr "Hasi Atal guztiak deskargatzen\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "Start Download or Record Selected Channel:\\\\\\\\n"
-msgstr "Hasi hautatutako kanala deskargatzen edo grabatzen:\\\\\\\\n"
+msgstr "Hasi hautatutako kanala deskargatzen edo grabatzen:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Stop Player on Exit"
 msgstr "Gelditu jokalaria irteeran"
@@ -657,14 +685,17 @@ msgstr "Benetan deskarga gelditu nahi duzu?"
 msgid "Wait... downloading in progress ..."
 msgstr "Itxaron... deskargatzen ari da..."
 
+#, fuzzy
 msgid "When opening an .m3u file instead:\\\\\\\\n"
-msgstr "Horren ordez .m3u fitxategi bat irekitzean:\\\\\\\\n"
+msgstr "Horren ordez .m3u fitxategi bat irekitzean:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "YELLOW BUTTON:\\\\\\\\n"
-msgstr "BOTOI HORIA:\\\\\\\\n"
+msgstr "BOTOI HORIA:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "You need to configure the type of output\\\\\\\\n"
-msgstr "Irteera mota konfiguratu behar duzu\\\\\\\\n"
+msgstr "Irteera mota konfiguratu behar duzu\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "Your Server Login and data input"
 msgstr "Zure zerbitzariaren saioa eta datuen sarrera"
@@ -672,8 +703,9 @@ msgstr "Zure zerbitzariaren saioa eta datuen sarrera"
 msgid "fixed time"
 msgstr "ordu finkoa"
 
+#, fuzzy
 msgid "host\\\\\\\\t(host without http:// )\\\\\\\\n"
-msgstr "ostalaria\\\\\\\\t (ostalaria http:// gabe)\\\\\\\\n"
+msgstr "ostalaria\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\t (ostalaria http:// gabe)\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "interval"
 msgstr "tartea"
@@ -681,14 +713,20 @@ msgstr "tartea"
 msgid "not exist!"
 msgstr "ez existitzen!"
 
+#, fuzzy
 msgid "password\\\\\\\\n"
-msgstr "pasahitza\\\\\\\\n"
+msgstr "pasahitza\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
+#, fuzzy
 msgid "port\\\\\\\\n"
-msgstr "ataka\\\\\\\\n"
+msgstr "Esportatu"
 
+#, fuzzy
 msgid "user\\\\\\\\n"
-msgstr "erabiltzailea\\\\\\\\n"
+msgstr "erabiltzailea\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n"
 
 msgid "wait please..."
 msgstr "itxaron mesedez..."
+
+#~ msgid "port\\\\\\\\\\\\\\\\n"
+#~ msgstr "ataka\\\\\\\\\\\\\\\\n"
