@@ -135,7 +135,17 @@ def returnIMDB(text_clear, session):
 
 
 def show_more_infos(name, index, session):
-    text_clear = sub(r'\b\d{4}\b.*', '', name).strip()  # name
+    print("===== SHOW_MORE_INFOS DEBUG =====")
+    print("name =", name)
+    print("index =", index)
+    print("len(globalsxp.iptv_list_tmp) =", len(globalsxp.iptv_list_tmp))
+    
+    if index < 0 or index >= len(globalsxp.iptv_list_tmp):
+        print("ERROR: index out of range in show_more_infos!")
+        return
+    
+    text_clear = sub(r'\b\d{4}\b.*', '', name).strip()
+    print("text_clear =", text_clear)
     if "exampleserver.com" not in globalsxp.STREAMS.xtream_e2portal_url:
         selected_channel = globalsxp.iptv_list_tmp[index]
         if selected_channel:
@@ -156,6 +166,7 @@ def show_more_infos(name, index, session):
         message = (
             _("Please enter correct server parameters in Config\nNo valid list!"))
         Utils.web_info(message)
+
 
 # ===================Time is what we want most, but what we use worst=====
 #

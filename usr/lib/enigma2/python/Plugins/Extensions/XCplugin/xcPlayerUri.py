@@ -26,20 +26,17 @@
 
 from __future__ import print_function
 
-# Built-in imports
 import codecs
 from os import remove, system, walk
 from os.path import exists as file_exists, join, splitext
-from re import DOTALL, compile, search
+from re import DOTALL, compile, search, sub
 from time import time
 import sys
 
-# Third-party imports
 from six import PY3, ensure_binary
 from six.moves.urllib.parse import urlparse
 from twisted.web.client import downloadPage
 
-# Enigma2 imports
 from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.Label import Label
 from Components.Pixmap import Pixmap
@@ -66,7 +63,6 @@ from enigma import (
     iPlayableService,
 )
 
-# Local package imports
 from . import _, isDreamOS, version
 from .addons import Utils
 from .addons.NewOeSk import ctrlSkin
@@ -366,9 +362,17 @@ class xc_Player(
             )
         except Exception as e:
             print("[ERROR] Failed to initialize ServiceEventTracker:", str(e))
-        self["actions"] = HelpableActionMap(
-            self,
-            "XCpluginActions",
+        self["actions"] = ActionMap(
+            [
+                "InfobarActions",
+                "MoviePlayerActions",
+                "XCpluginActions",
+                "InfobarSeekActions",
+                "MediaPlayerActions",
+                "SetupActions",
+                "ColorActions",
+                "DirectionActions",
+            ],
             {
                 "info": self.show_moreinfo,
                 "epg": self.show_moreinfo,
@@ -388,8 +392,7 @@ class xc_Player(
                 "tv": self.exitx,
                 "stop": self.exitx,
                 "2": self.restartVideo,
-                # "help": self.xc_Help,
-                "power": self.power_off
+                "power": self.power_off,
             },
             -1
         )
@@ -398,6 +401,17 @@ class xc_Player(
         self.onShown.append(self.setCover)
         self.onShown.append(self.show_info)
         self.onPlayStateChanged.append(self.__playStateChanged)
+
+    def action(self, context, action):
+        """Log every remote control event to /tmp/xc_debug.log"""
+        from datetime import datetime
+        with open("/tmp/xc_debug.log", "a") as f:
+            f.write("[{0}] action: context='{1}', action='{2}'\n".format(
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),
+                context, action
+            ))
+        # Passa l'evento al gestore originale (fondamentale!)
+        super(xc_Player, self).action(context, action)
 
     def av(self):
         temp = int(getAspect())
@@ -736,11 +750,75 @@ class xc_Player(
             type=MessageBox.TYPE_INFO,
             timeout=3)
 
+    def showEPG(self):
+        """Override showEPG to show plugin info instead of system EPG"""
+        print("xc_Player: showEPG intercepted")
+        self.show_moreinfo()
+
+    def showInfo(self):
+        """Override showInfo to show plugin info instead of system EPG"""
+        print("xc_Player: showInfo intercepted")
+        self.show_moreinfo()
+
     def show_moreinfo(self):
         index = globalsxp.STREAMS.list_index
+
+        if index < 0 or index >= len(globalsxp.iptv_list_tmp):
+            print("ERROR: index out of range!")
+            return
+
+        channel = globalsxp.iptv_list_tmp[index]
+
         if self.vod_url is not None:
-            name = str(self.channelx[1])
-            show_more_infos(name, index, _session)
+            # For LIVE streams, extract movie title from channel[1]
+            if globalsxp.stream_live is True:
+                film_title = str(channel[1] or "")
+                print("DEBUG channel[1] =", film_title)
+
+                # Extract movie title after the duration
+                # Example: "Sky Cinema Uno +1 HD [16:30 - 18:25] + 107.4 min Memory"
+                match = search(r'\+.*?min\s+(.*?)$', film_title)
+                if match:
+                    film_title = match.group(1).strip()
+                    print("DEBUG extracted from duration =", film_title)
+                else:
+                    # Fallback: try description
+                    desc = str(channel[2] or "")
+                    lines = desc.split('\n')
+                    if lines and lines[0] and len(lines[0]) > 3:
+                        film_title = lines[0].strip()
+                        print("DEBUG extracted from description =", film_title)
+
+                # If still empty or too short, try channel[8]
+                if not film_title or len(film_title) < 3:
+                    film_title = str(channel[8] or "")
+                    print("DEBUG channel[8] =", film_title)
+                    # Extract title after bracket
+                    match = search(r'\]\s*(.*?)$', film_title)
+                    if match:
+                        film_title = match.group(1).strip()
+                        print("DEBUG extracted from channel[8] =", film_title)
+            else:
+                # For VOD streams, use channel[1]
+                film_title = str(self.channelx[1])
+                print("DEBUG VOD title =", film_title)
+
+            # Clean title: remove brackets, duration, time ranges
+            clean_name = sub(r'\+.*?min', '', film_title)
+            clean_name = sub(r'\[.*?\]', '', clean_name)
+            clean_name = sub(r'^[\d:]+ - [\d:]+\s*', '', clean_name)
+            clean_name = sub(r'\s+', ' ', clean_name).strip()
+
+            print("DEBUG clean_name =", clean_name)
+
+            if clean_name and len(clean_name) > 2:
+                show_more_infos(clean_name, index, _session)
+            else:
+                # Ultimate fallback
+                fallback = sub(r'\[.*?\]', '', channel[1]).strip()
+                show_more_infos(fallback, index, _session)
+        else:
+            print("self.vod_url is None!")
 
     def __playStateChanged(self, state):
         self.hideTimer.start(5000, True)
@@ -758,10 +836,21 @@ class xc_Player(
         self["state"].setText(text)
 
     def play_vod(self):
+        print("===== PLAY_VOD DEBUG =====")
+        print("globalsxp.STREAMS.list_index =", globalsxp.STREAMS.list_index)
+        print("len(globalsxp.iptv_list_tmp) =", len(globalsxp.iptv_list_tmp))
+        
         self.channelx = globalsxp.iptv_list_tmp[globalsxp.STREAMS.list_index]
         self.vod_url = self.channelx[4]
         self.titlex = self.channelx[1]
         self.descr = self.channelx[2]
+        
+        print("titlex =", self.titlex)
+        print("vod_url =", self.vod_url)
+        print("descr =", self.descr)
+        
+        globalsxp.STREAMS.current_index = globalsxp.STREAMS.list_index
+        
         if self.descr != '' or self.descr is not None:
             text_clear = str(self.descr)
             self["programm"].setText(text_clear)
@@ -814,6 +903,9 @@ class nIPTVplayer(
         global _session
         _session = session
 
+        print("[DEBUG] nIPTVplayer __init__ started")
+        print("[DEBUG] nIPTVplayer instance:", self)
+
         self.recorder_sref = recorder_sref
         skin = join(skin_path, 'xc_iptv_player.xml')
         with codecs.open(skin, "r", encoding="utf-8") as f:
@@ -843,11 +935,20 @@ class nIPTVplayer(
         else:
             self.index = globalsxp.STREAMS.list_index
 
-        self["actions"] = HelpableActionMap(
-            self,
-            "XCpluginActions",
+        self["actions"] = ActionMap(
+            [
+                "InfobarActions",
+                "MoviePlayerActions",
+                "XCpluginActions",
+                "InfobarSeekActions",
+                "MediaPlayerActions",
+                "SetupActions",
+                "ColorActions",
+                "DirectionActions",
+            ],
             {
                 "info": self.show_more_info,
+                "epg": self.show_more_info,
                 "0": self.av,
                 "home": self.exitx,
                 "cancel": self.exitx,
@@ -859,18 +960,27 @@ class nIPTVplayer(
                 "previous": self.prevChannel,
                 "channelUp": self.nextAR,
                 "channelDown": self.prevAR,
-                "power": self.power_off
+                "power": self.power_off,
             },
             -1
         )
         self.onFirstExecBegin.append(self.play_channel)
+
+    def action(self, context, action):
+        """Log every remote control event to /tmp/xc_debug.log"""
+        from datetime import datetime
+        with open("/tmp/xc_debug.log", "a") as f:
+            f.write("[{0}] action: context='{1}', action='{2}'\n".format(
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),
+                context, action
+            ))
+        super(nIPTVplayer, self).action(context, action)
 
     def av(self):
         temp = int(getAspect())
         temp += 1
         if temp > 6:
             temp = 0
-        # self.new_aspect = temp
         setAspect(temp)
 
     def exitx(self):
@@ -879,7 +989,7 @@ class nIPTVplayer(
             globalsxp.STREAMS.play_vod = False
             self.session.nav.stopService()
             self.session.nav.playService(self.initialservice)
-        aspect_manager.restore_aspect()  # Restore aspect on exit
+        aspect_manager.restore_aspect()
         self.close()
 
     def nextAR(self):
@@ -987,7 +1097,15 @@ class nIPTVplayer(
     def xc_Help(self):
         self.session.open(xc_help)
 
+    def keyEvent(self, key, flag):
+        """Raw key event interceptor - logs everything"""
+        with open("/tmp/xc_keydebug.log", "a") as f:
+            f.write("KEY: key=%d flag=%d\n" % (key, flag))
+        return super(nIPTVplayer, self).keyEvent(key, flag)
+
     def show_more_info(self):
+        with open("/tmp/xc_debug.log", "a") as f:
+            f.write("DEBUG nIPTVplayer: show_more_info() called!\n")
         selected_channel = globalsxp.iptv_list_tmp[self.index]
         if selected_channel:
             name = str(self.titlex)
@@ -1011,8 +1129,6 @@ class nIPTVplayer(
             self.scale = AVSwitch().getFramebufferScale()
             self.picload.setPara(
                 [size.width(), size.height(), self.scale[0], self.scale[1], 0, 1, '#00000000'])
-            # _l = self.picload.PictureData.get()
-            # del _l[:]
             if isDreamOS:
                 self.picload.startDecode(png, False)
             else:
